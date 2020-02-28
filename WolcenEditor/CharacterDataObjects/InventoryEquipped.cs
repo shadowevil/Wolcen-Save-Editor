@@ -1,0 +1,63 @@
+﻿using System.Collections.Generic;
+
+namespace WolcenEditor
+{
+    public class InventoryEquipped
+    {
+        public int BodyPart { get; set; }
+        public int Rarity { get; set; }
+        public int Quality { get; set; }
+        public int Type { get; set; }
+        public string ItemType { get; set; }
+        public string Value { get; set; }
+        public int Level { get; set; }
+        public ItemArmor Armor { get; set; }
+        public ItemWeapon Weapon { get; set; }
+        public IList<Socket> Sockets { get; set; }
+        public ItemMagicEffects MagicEffects { get; set; } 
+    }
+
+    public class ItemWeapon
+    {
+        public string Name { get; set; }
+        public double DamageMin { get; set; }
+        public double DamageMax { get; set; }
+        public double ResourceGeneration { get; set; }
+    }
+
+    public class ItemArmor
+    {
+        public string Name { get; set; }
+        public double Armor { get; set; }
+        public double Health { get; set; }
+        public double Resistance { get; set; }
+
+    }
+
+    public class Socket
+    {
+        public int Type { get; set; }
+        public int Effect { get; set; }
+    }
+
+    public class ItemMagicEffects
+    {
+        public IList<Effect> Default { get; set; }
+        public IList<Effect> RolledAffixes { get; set; }
+
+        public class Effect
+        {
+            public string EffectId { get; set; }
+            public string EffectName { get; set; }
+            public int MaxStack { get; set; }
+            public int bDefault { get; set; }
+            public IList<EffectParams> Parameters { get; set; }
+        }
+
+        public class EffectParams
+        {
+            public string semantic { get; set; }
+            public double value { get; set; }
+        }
+    }
+}
