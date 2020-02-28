@@ -35,32 +35,42 @@ namespace WolcenEditor
 
         private void LoadComboBoxes()
         {
-            foreach (var d in WolcenStaticData.HairColorBank)
+            LoadComboColor(WolcenStaticData.HairColorBank, 100, 45, ref cboHairColor);
+            LoadComboColor(WolcenStaticData.HairColorBank, 100, 45, ref cboBeardColor);
+            LoadComboColor(WolcenStaticData.SkinColor, 100, 20, ref cboSkinColor);
+            LoadCombo(WolcenStaticData.HeadStyle, @".\UIResources\Character\Head\", ref cboFace);
+            LoadCombo(WolcenStaticData.HairStyle, @".\UIResources\Character\Hair\", ref cboHaircut);
+            LoadCombo(WolcenStaticData.EyeColor, @".\UIResources\Character\Eyes\", ref cboLEye);
+            LoadCombo(WolcenStaticData.EyeColor, @".\UIResources\Character\Eyes\", ref cboREye);
+            LoadCombo(WolcenStaticData.Beard, @".\UIResources\Character\Beard\", ref cboBeard);
+        }
+
+        private void LoadComboColor(Dictionary<int, string> dictionary, int width, int height, ref ImageComboBox imgBox)
+        {
+            foreach (var d in dictionary)
             {
-                DropDownItem i = new DropDownItem();
-                Bitmap bmp = new Bitmap(50, 50);
+                Bitmap bmp = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    using (SolidBrush b = new SolidBrush(System.Drawing.ColorTranslator.FromHtml(d.Value)))
+                    using (SolidBrush b = new SolidBrush(ColorTranslator.FromHtml(d.Value)))
                     {
-                        g.FillRectangle(b, 0, 0, 50, 50);
+                        g.FillRectangle(b, 0, 0, width, height);
                     }
                 }
+                DropDownItem i = new DropDownItem("", ColorTranslator.FromHtml(d.Value), width, height);
                 i.Image = bmp;
-                i.Value = String.Empty;
-                cboHairColor.Items.Add(i);
-                cboBeardColor.Items.Add(i);
+                imgBox.Items.Add(i);
             }
+        }
 
-            for (int i = 1; i <= Directory.GetFiles(@".\UIResources\Character\Eyes\").Length; i++)
+        private void LoadCombo(Dictionary<int, string> dictionary, string path, ref ImageComboBox imgBox)
+        {
+            foreach (var d in dictionary)
             {
-                string dirPath = @".\UIResources\Character\Eyes\";
-                Bitmap bmp = new Bitmap(Image.FromFile(dirPath + Convert.ToString(i) + ".png"), 50, 50);
-                DropDownItem it = new DropDownItem();
-                it.Image = bmp;
-                it.Value = String.Empty;
-                cboLEye.Items.Add(it);
-                cboREye.Items.Add(it);
+                int width = 45, height = 45;
+                Bitmap bmp = new Bitmap(Image.FromFile(path + d.Value), width, height);
+                DropDownItem i = new DropDownItem("", bmp);
+                imgBox.Items.Add(i);
             }
         }
 
