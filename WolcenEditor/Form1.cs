@@ -24,8 +24,50 @@ namespace WolcenEditor
             charAgility.KeyPress += numberOnly_KeyPress;
             charToughness.KeyPress += numberOnly_KeyPress;
             charWillpower.KeyPress += numberOnly_KeyPress;
+            charExp.KeyPress += numberOnly_KeyPress;
+            charLevel.KeyPress += numberOnly_KeyPress;
+
+            cboFace.SelectedIndexChanged += _SelectedIndexChanged;
+            cboHaircut.SelectedIndexChanged += _SelectedIndexChanged;
+            cboHairColor.SelectedIndexChanged += _SelectedIndexChanged;
+            cboBeard.SelectedIndexChanged += _SelectedIndexChanged;
+            cboBeardColor.SelectedIndexChanged += _SelectedIndexChanged;
+            cboLEye.SelectedIndexChanged += _SelectedIndexChanged;
+            cboREye.SelectedIndexChanged += _SelectedIndexChanged;
+            cboSkinColor.SelectedIndexChanged += _SelectedIndexChanged;
+
+            panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
 
             LoadComboBoxes();
+        }
+
+        private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((sender as TabControl).SelectedTab.Text == "Inventory")
+            {
+                this.Height += 35;
+            }
+            else
+            {
+                this.Height = 595;
+            }
+        }
+
+        private void _SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int value = Convert.ToInt32((sender as ImageComboBox).SelectedItem.ToString());
+
+            switch ((sender as ImageComboBox).Name)
+            {
+                case "cboSkinColor": cData.Character.CharacterCustomization.SkinColor = value; break;
+                case "cboBeard": cData.Character.CharacterCustomization.Beard = value; break;
+                case "cboBeadColor": cData.Character.CharacterCustomization.BeardColor = value; break;
+                case "cboREye": cData.Character.CharacterCustomization.RightEye = value; break;
+                case "cboLEye": cData.Character.CharacterCustomization.LeftEye = value; break;
+                case "cboHairColor": cData.Character.CharacterCustomization.HairColor = value; break;
+                case "cboHaircut": cData.Character.CharacterCustomization.Haircut = value; break;
+                case "cboFace": cData.Character.CharacterCustomization.Face = value; break;
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -38,7 +80,7 @@ namespace WolcenEditor
             LoadComboColor(WolcenStaticData.HairColorBank, 100, 45, ref cboHairColor);
             LoadComboColor(WolcenStaticData.HairColorBank, 100, 45, ref cboBeardColor);
             LoadComboColor(WolcenStaticData.SkinColor, 100, 20, ref cboSkinColor);
-            LoadCombo(WolcenStaticData.HeadStyle, @".\UIResources\Character\Head\", ref cboFace);
+            LoadCombo(WolcenStaticData.Face, @".\UIResources\Character\Head\", ref cboFace);
             LoadCombo(WolcenStaticData.HairStyle, @".\UIResources\Character\Hair\", ref cboHaircut);
             LoadCombo(WolcenStaticData.EyeColor, @".\UIResources\Character\Eyes\", ref cboLEye);
             LoadCombo(WolcenStaticData.EyeColor, @".\UIResources\Character\Eyes\", ref cboREye);
@@ -57,7 +99,7 @@ namespace WolcenEditor
                         g.FillRectangle(b, 0, 0, width, height);
                     }
                 }
-                DropDownItem i = new DropDownItem("", ColorTranslator.FromHtml(d.Value), width, height);
+                DropDownItem i = new DropDownItem(d.Key.ToString(), ColorTranslator.FromHtml(d.Value), width, height);
                 i.Image = bmp;
                 imgBox.Items.Add(i);
             }
@@ -69,7 +111,7 @@ namespace WolcenEditor
             {
                 int width = 45, height = 45;
                 Bitmap bmp = new Bitmap(Image.FromFile(path + d.Value), width, height);
-                DropDownItem i = new DropDownItem("", bmp);
+                DropDownItem i = new DropDownItem(d.Key.ToString(), bmp);
                 imgBox.Items.Add(i);
             }
         }
@@ -120,19 +162,114 @@ namespace WolcenEditor
 
         private void LoadCharacterData()
         {
-            //text field bindings
-            charName.DataBindings.Add("Text", cData.Character, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
-            charLevel.DataBindings.Add("Text", cData.Character.Stats, "Level", false, DataSourceUpdateMode.OnPropertyChanged);
-            charExp.DataBindings.Add("Text", cData.Character.Stats, "CurrentXP", false, DataSourceUpdateMode.OnPropertyChanged);
-            charFerocity.DataBindings.Add("Text", cData.Character.Stats, "Strength", false, DataSourceUpdateMode.OnPropertyChanged);
-            charToughness.DataBindings.Add("Text", cData.Character.Stats, "Constitution", false, DataSourceUpdateMode.OnPropertyChanged);
-            charAgility.DataBindings.Add("Text", cData.Character.Stats, "Agility", false, DataSourceUpdateMode.OnPropertyChanged);
-            charWillpower.DataBindings.Add("Text", cData.Character.Stats, "Power", false, DataSourceUpdateMode.OnPropertyChanged);
+            SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
+            SetIndexToValueOf(ref cboHaircut, cData.Character.CharacterCustomization.Haircut);
+            SetIndexToValueOf(ref cboHairColor, cData.Character.CharacterCustomization.HairColor);
+            SetIndexToValueOf(ref cboBeard, cData.Character.CharacterCustomization.Beard);
+            SetIndexToValueOf(ref cboBeardColor, cData.Character.CharacterCustomization.BeardColor);
+            SetIndexToValueOf(ref cboLEye, cData.Character.CharacterCustomization.LeftEye);
+            SetIndexToValueOf(ref cboREye, cData.Character.CharacterCustomization.RightEye);
+            SetIndexToValueOf(ref cboSkinColor, cData.Character.CharacterCustomization.SkinColor);
 
-            //normal combobox bindings
-            BindToComboBox(charGender, WolcenStaticData.Sexes, cData.Character.CharacterCustomization, "Sex");
-            //BindToComboBox(cboFace, WolcenStaticData.Face, cData.Character.CharacterCustomization, "Face");
+            BindToComboBox(cboGender, WolcenStaticData.Gender, cData.Character.CharacterCustomization, "Sex");
+            SetBinding(ref charName, cData.Character, "Name");
+            SetBinding(ref charLevel, cData.Character.Stats, "Level");
+            SetBinding(ref charExp, cData.Character.Stats, "CurrentXP");
+            SetBinding(ref charFerocity, cData.Character.Stats, "Strength");
+            SetBinding(ref charToughness, cData.Character.Stats, "Constitution");
+            SetBinding(ref charAgility, cData.Character.Stats, "Agility");
+            SetBinding(ref charWillpower, cData.Character.Stats, "Power");
+            SetBinding(ref charGold, cData.Character.Stats, "Gold");
+            SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
+            LoadCharacterInventory();
+        }
+
+        private void LoadCharacterInventory()
+        {
+            charHelm.Image = GetItemBitmap(3);
+            charChest.Image = GetItemBitmap(1);
+            charLPad.Image = GetItemBitmap(6, true);
+            charRPad.Image = GetItemBitmap(5);
+            charLHand.Image = GetItemBitmap(10, true);
+            charRHand.Image = GetItemBitmap(9);
+            charBelt.Image = GetItemBitmap(19);
+            charPants.Image = GetItemBitmap(11);
+            charNeck.Image = GetItemBitmap(14);
+            charBoots.Image = GetItemBitmap(17);
+            charLRing.Image = GetItemBitmap(22, true);
+            charRRing.Image = GetItemBitmap(21);
+            charLWeapon.Image = GetItemBitmap(15, true);
+            charRWeapon.Image = GetItemBitmap(16);
+        }
+
+        // Body Parts:
+        //  - Chest:             1
+        //  - Helmet:            3
+        //  - (right) Shoulder:  5
+        //  - (left) Shoulder:   6
+        //  - (right) Glove:     9
+        //  - (left) Glove:      10
+        //  - Pants:             11
+        //  - Necklace:          14
+        //  - Weapon 1:          15
+        //  - Weapon 2:          16
+        //  - Feet:              17
+        //  - Belt:              19
+        //  - (right) Ring:      21
+        //  - (left) Ring:       22
+
+        private Bitmap GetItemBitmap(int bodyPart, bool flip = false)
+        {
+            foreach (var i in cData.Character.InventoryEquipped)
+            {
+                string dirPath = @".\UIResources\Items\";
+                if (i.BodyPart == bodyPart)
+                {
+                    string itemName = bodyPart == 16 || bodyPart == 15 ? i.Weapon.Name : i.Armor.Name;
+                    if (File.Exists(dirPath + itemName + ".png"))
+                    {
+                        if (flip == true)
+                        {
+                            Bitmap bmp = new Bitmap(Image.FromFile(dirPath + itemName + ".png"));
+                            bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
+                            return bmp;
+                        }
+                        else
+                        {
+                            return new Bitmap(Image.FromFile(dirPath + itemName + ".png"));
+                        }
+                    }
+                    else
+                    {
+                        if (i.BodyPart == 15 || i.BodyPart == 16)
+                        {
+                            return new Bitmap(Image.FromFile(dirPath + "unknown_weapon.png"));
+                        }
+                        else
+                        {
+                            return new Bitmap(Image.FromFile(dirPath + "unknown_armor.png"));
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
+        {
+            obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        private void SetIndexToValueOf(ref ImageComboBox cbo, int Value)
+        {
+            for (int i = 0; i < cbo.Items.Count; i++)
+            {
+                if (cbo.Items[i].ToString() == Value.ToString())
+                {
+                    cbo.SelectedIndex = i;
+                }
+            }
         }
 
         private void BindToComboBox<T>(T comboBox, Dictionary<int, string> mapping, object dataSource, string dataMemeber) where T : ComboBox

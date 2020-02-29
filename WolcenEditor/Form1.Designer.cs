@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,14 +55,22 @@
             this.charName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label18 = new System.Windows.Forms.Label();
+            this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.cboBeardColor = new WolcenEditor.ImageComboBox();
+            this.cboREye = new WolcenEditor.ImageComboBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.cboHairColor = new WolcenEditor.ImageComboBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.cboLEye = new WolcenEditor.ImageComboBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.cboBeard = new WolcenEditor.ImageComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.cboHaircut = new WolcenEditor.ImageComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.charGender = new System.Windows.Forms.ComboBox();
+            this.cboFace = new WolcenEditor.ImageComboBox();
+            this.cboGender = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.charInv = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -87,14 +96,7 @@
             this.charBelt = new System.Windows.Forms.PictureBox();
             this.charChest = new System.Windows.Forms.PictureBox();
             this.charHelm = new System.Windows.Forms.PictureBox();
-            this.cboSkinColor = new WolcenEditor.ImageComboBox();
-            this.cboBeardColor = new WolcenEditor.ImageComboBox();
-            this.cboREye = new WolcenEditor.ImageComboBox();
-            this.cboHairColor = new WolcenEditor.ImageComboBox();
-            this.cboLEye = new WolcenEditor.ImageComboBox();
-            this.cboBeard = new WolcenEditor.ImageComboBox();
-            this.cboHaircut = new WolcenEditor.ImageComboBox();
-            this.cboFace = new WolcenEditor.ImageComboBox();
+            this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.charPage.SuspendLayout();
@@ -118,6 +120,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.charBelt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -371,7 +374,7 @@
             this.groupBox2.Controls.Add(this.cboHaircut);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.cboFace);
-            this.groupBox2.Controls.Add(this.charGender);
+            this.groupBox2.Controls.Add(this.cboGender);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(22, 270);
@@ -391,6 +394,19 @@
             this.label18.Size = new System.Drawing.Size(77, 15);
             this.label18.TabIndex = 25;
             this.label18.Text = "Skin Color:";
+            // 
+            // cboSkinColor
+            // 
+            this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboSkinColor.DropDownHeight = 100;
+            this.cboSkinColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSkinColor.FormattingEnabled = true;
+            this.cboSkinColor.IntegralHeight = false;
+            this.cboSkinColor.ItemHeight = 20;
+            this.cboSkinColor.Location = new System.Drawing.Point(215, 24);
+            this.cboSkinColor.Name = "cboSkinColor";
+            this.cboSkinColor.Size = new System.Drawing.Size(66, 26);
+            this.cboSkinColor.TabIndex = 24;
             // 
             // label17
             // 
@@ -414,6 +430,38 @@
             this.label16.TabIndex = 22;
             this.label16.Text = "LEFT";
             // 
+            // cboBeardColor
+            // 
+            this.cboBeardColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboBeardColor.DropDownHeight = 300;
+            this.cboBeardColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBeardColor.DropDownWidth = 50;
+            this.cboBeardColor.FormattingEnabled = true;
+            this.cboBeardColor.IntegralHeight = false;
+            this.cboBeardColor.ItemHeight = 50;
+            this.cboBeardColor.Location = new System.Drawing.Point(351, 138);
+            this.cboBeardColor.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboBeardColor.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboBeardColor.Name = "cboBeardColor";
+            this.cboBeardColor.Size = new System.Drawing.Size(70, 56);
+            this.cboBeardColor.TabIndex = 21;
+            // 
+            // cboREye
+            // 
+            this.cboREye.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboREye.DropDownHeight = 300;
+            this.cboREye.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboREye.DropDownWidth = 50;
+            this.cboREye.FormattingEnabled = true;
+            this.cboREye.IntegralHeight = false;
+            this.cboREye.ItemHeight = 50;
+            this.cboREye.Location = new System.Drawing.Point(136, 138);
+            this.cboREye.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboREye.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboREye.Name = "cboREye";
+            this.cboREye.Size = new System.Drawing.Size(70, 56);
+            this.cboREye.TabIndex = 20;
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -424,6 +472,20 @@
             this.label15.Size = new System.Drawing.Size(54, 15);
             this.label15.TabIndex = 19;
             this.label15.Text = "COLOR";
+            // 
+            // cboHairColor
+            // 
+            this.cboHairColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboHairColor.DropDownHeight = 300;
+            this.cboHairColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboHairColor.DropDownWidth = 50;
+            this.cboHairColor.FormattingEnabled = true;
+            this.cboHairColor.IntegralHeight = false;
+            this.cboHairColor.ItemHeight = 50;
+            this.cboHairColor.Location = new System.Drawing.Point(351, 76);
+            this.cboHairColor.Name = "cboHairColor";
+            this.cboHairColor.Size = new System.Drawing.Size(70, 56);
+            this.cboHairColor.TabIndex = 18;
             // 
             // label14
             // 
@@ -436,6 +498,22 @@
             this.label14.TabIndex = 17;
             this.label14.Text = "Eyes:";
             // 
+            // cboLEye
+            // 
+            this.cboLEye.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboLEye.DropDownHeight = 300;
+            this.cboLEye.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLEye.DropDownWidth = 70;
+            this.cboLEye.FormattingEnabled = true;
+            this.cboLEye.IntegralHeight = false;
+            this.cboLEye.ItemHeight = 50;
+            this.cboLEye.Location = new System.Drawing.Point(60, 138);
+            this.cboLEye.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboLEye.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboLEye.Name = "cboLEye";
+            this.cboLEye.Size = new System.Drawing.Size(70, 56);
+            this.cboLEye.TabIndex = 16;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -446,6 +524,22 @@
             this.label13.Size = new System.Drawing.Size(49, 15);
             this.label13.TabIndex = 15;
             this.label13.Text = "Beard:";
+            // 
+            // cboBeard
+            // 
+            this.cboBeard.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboBeard.DropDownHeight = 300;
+            this.cboBeard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBeard.DropDownWidth = 50;
+            this.cboBeard.FormattingEnabled = true;
+            this.cboBeard.IntegralHeight = false;
+            this.cboBeard.ItemHeight = 50;
+            this.cboBeard.Location = new System.Drawing.Point(275, 138);
+            this.cboBeard.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboBeard.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboBeard.Name = "cboBeard";
+            this.cboBeard.Size = new System.Drawing.Size(70, 56);
+            this.cboBeard.TabIndex = 14;
             // 
             // label3
             // 
@@ -458,6 +552,22 @@
             this.label3.TabIndex = 13;
             this.label3.Text = "Haircut:";
             // 
+            // cboHaircut
+            // 
+            this.cboHaircut.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboHaircut.DropDownHeight = 300;
+            this.cboHaircut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboHaircut.DropDownWidth = 50;
+            this.cboHaircut.FormattingEnabled = true;
+            this.cboHaircut.IntegralHeight = false;
+            this.cboHaircut.ItemHeight = 50;
+            this.cboHaircut.Location = new System.Drawing.Point(275, 76);
+            this.cboHaircut.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboHaircut.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboHaircut.Name = "cboHaircut";
+            this.cboHaircut.Size = new System.Drawing.Size(70, 56);
+            this.cboHaircut.TabIndex = 12;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -469,16 +579,32 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Face:";
             // 
-            // charGender
+            // cboFace
             // 
-            this.charGender.FormattingEnabled = true;
-            this.charGender.Items.AddRange(new object[] {
+            this.cboFace.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboFace.DropDownHeight = 300;
+            this.cboFace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboFace.DropDownWidth = 50;
+            this.cboFace.FormattingEnabled = true;
+            this.cboFace.IntegralHeight = false;
+            this.cboFace.ItemHeight = 50;
+            this.cboFace.Location = new System.Drawing.Point(60, 56);
+            this.cboFace.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboFace.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboFace.Name = "cboFace";
+            this.cboFace.Size = new System.Drawing.Size(70, 56);
+            this.cboFace.TabIndex = 10;
+            // 
+            // cboGender
+            // 
+            this.cboGender.FormattingEnabled = true;
+            this.cboGender.Items.AddRange(new object[] {
             "Male",
             "Female"});
-            this.charGender.Location = new System.Drawing.Point(60, 29);
-            this.charGender.Name = "charGender";
-            this.charGender.Size = new System.Drawing.Size(70, 21);
-            this.charGender.TabIndex = 8;
+            this.cboGender.Location = new System.Drawing.Point(60, 29);
+            this.cboGender.Name = "cboGender";
+            this.cboGender.Size = new System.Drawing.Size(70, 21);
+            this.cboGender.TabIndex = 8;
             // 
             // label4
             // 
@@ -529,7 +655,7 @@
             this.groupBox1.Controls.Add(this.charBelt2);
             this.groupBox1.Controls.Add(this.charBelt1);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(8, 402);
+            this.groupBox1.Location = new System.Drawing.Point(10, 429);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(185, 96);
             this.groupBox1.TabIndex = 14;
@@ -595,7 +721,7 @@
             // pictureBox16
             // 
             this.pictureBox16.Image = global::WolcenEditor.Properties.Resources.gold;
-            this.pictureBox16.Location = new System.Drawing.Point(14, 352);
+            this.pictureBox16.Location = new System.Drawing.Point(15, 373);
             this.pictureBox16.MaximumSize = new System.Drawing.Size(35, 20);
             this.pictureBox16.MinimumSize = new System.Drawing.Size(35, 20);
             this.pictureBox16.Name = "pictureBox16";
@@ -607,7 +733,7 @@
             // pictureBox15
             // 
             this.pictureBox15.Image = global::WolcenEditor.Properties.Resources.primordial;
-            this.pictureBox15.Location = new System.Drawing.Point(23, 374);
+            this.pictureBox15.Location = new System.Drawing.Point(24, 395);
             this.pictureBox15.MaximumSize = new System.Drawing.Size(25, 25);
             this.pictureBox15.MinimumSize = new System.Drawing.Size(25, 25);
             this.pictureBox15.Name = "pictureBox15";
@@ -618,7 +744,7 @@
             // 
             // charPrimordial
             // 
-            this.charPrimordial.Location = new System.Drawing.Point(55, 376);
+            this.charPrimordial.Location = new System.Drawing.Point(56, 397);
             this.charPrimordial.Name = "charPrimordial";
             this.charPrimordial.Size = new System.Drawing.Size(118, 20);
             this.charPrimordial.TabIndex = 18;
@@ -627,7 +753,7 @@
             // 
             // charGold
             // 
-            this.charGold.Location = new System.Drawing.Point(55, 352);
+            this.charGold.Location = new System.Drawing.Point(56, 373);
             this.charGold.Name = "charGold";
             this.charGold.Size = new System.Drawing.Size(118, 20);
             this.charGold.TabIndex = 16;
@@ -638,7 +764,7 @@
             // 
             this.charRWeapon.BackgroundImage = global::WolcenEditor.Properties.Resources.weapon;
             this.charRWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRWeapon.Location = new System.Drawing.Point(192, 221);
+            this.charRWeapon.Location = new System.Drawing.Point(186, 221);
             this.charRWeapon.MaximumSize = new System.Drawing.Size(62, 91);
             this.charRWeapon.MinimumSize = new System.Drawing.Size(62, 91);
             this.charRWeapon.Name = "charRWeapon";
@@ -651,7 +777,7 @@
             // 
             this.charLWeapon.BackgroundImage = global::WolcenEditor.Properties.Resources.weapon;
             this.charLWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLWeapon.Location = new System.Drawing.Point(45, 221);
+            this.charLWeapon.Location = new System.Drawing.Point(47, 221);
             this.charLWeapon.MaximumSize = new System.Drawing.Size(62, 91);
             this.charLWeapon.MinimumSize = new System.Drawing.Size(62, 91);
             this.charLWeapon.Name = "charLWeapon";
@@ -664,7 +790,7 @@
             // 
             this.charNeck.BackgroundImage = global::WolcenEditor.Properties.Resources.necklace;
             this.charNeck.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charNeck.Location = new System.Drawing.Point(200, 32);
+            this.charNeck.Location = new System.Drawing.Point(194, 32);
             this.charNeck.MaximumSize = new System.Drawing.Size(40, 40);
             this.charNeck.MinimumSize = new System.Drawing.Size(40, 40);
             this.charNeck.Name = "charNeck";
@@ -677,7 +803,7 @@
             // 
             this.charRRing.BackgroundImage = global::WolcenEditor.Properties.Resources.ring;
             this.charRRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRRing.Location = new System.Drawing.Point(251, 175);
+            this.charRRing.Location = new System.Drawing.Point(245, 175);
             this.charRRing.MaximumSize = new System.Drawing.Size(40, 40);
             this.charRRing.MinimumSize = new System.Drawing.Size(40, 40);
             this.charRRing.Name = "charRRing";
@@ -690,7 +816,7 @@
             // 
             this.charLRing.BackgroundImage = global::WolcenEditor.Properties.Resources.ring;
             this.charLRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLRing.Location = new System.Drawing.Point(8, 175);
+            this.charLRing.Location = new System.Drawing.Point(10, 175);
             this.charLRing.MaximumSize = new System.Drawing.Size(40, 40);
             this.charLRing.MinimumSize = new System.Drawing.Size(40, 40);
             this.charLRing.Name = "charLRing";
@@ -703,7 +829,7 @@
             // 
             this.charRHand.BackgroundImage = global::WolcenEditor.Properties.Resources.righthand;
             this.charRHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRHand.Location = new System.Drawing.Point(192, 132);
+            this.charRHand.Location = new System.Drawing.Point(186, 132);
             this.charRHand.MaximumSize = new System.Drawing.Size(53, 83);
             this.charRHand.MinimumSize = new System.Drawing.Size(53, 83);
             this.charRHand.Name = "charRHand";
@@ -716,7 +842,7 @@
             // 
             this.charRPad.BackgroundImage = global::WolcenEditor.Properties.Resources.rightpad;
             this.charRPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRPad.Location = new System.Drawing.Point(192, 78);
+            this.charRPad.Location = new System.Drawing.Point(186, 78);
             this.charRPad.MaximumSize = new System.Drawing.Size(48, 48);
             this.charRPad.MinimumSize = new System.Drawing.Size(48, 48);
             this.charRPad.Name = "charRPad";
@@ -729,7 +855,7 @@
             // 
             this.charLHand.BackgroundImage = global::WolcenEditor.Properties.Resources.lefthand;
             this.charLHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLHand.Location = new System.Drawing.Point(54, 132);
+            this.charLHand.Location = new System.Drawing.Point(56, 132);
             this.charLHand.MaximumSize = new System.Drawing.Size(53, 83);
             this.charLHand.MinimumSize = new System.Drawing.Size(53, 83);
             this.charLHand.Name = "charLHand";
@@ -742,7 +868,7 @@
             // 
             this.charLPad.BackgroundImage = global::WolcenEditor.Properties.Resources.leftpad;
             this.charLPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLPad.Location = new System.Drawing.Point(59, 78);
+            this.charLPad.Location = new System.Drawing.Point(61, 78);
             this.charLPad.MaximumSize = new System.Drawing.Size(48, 48);
             this.charLPad.MinimumSize = new System.Drawing.Size(48, 48);
             this.charLPad.Name = "charLPad";
@@ -755,7 +881,7 @@
             // 
             this.charBoots.BackgroundImage = global::WolcenEditor.Properties.Resources.boots;
             this.charBoots.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charBoots.Location = new System.Drawing.Point(124, 276);
+            this.charBoots.Location = new System.Drawing.Point(123, 294);
             this.charBoots.MaximumSize = new System.Drawing.Size(48, 65);
             this.charBoots.MinimumSize = new System.Drawing.Size(48, 65);
             this.charBoots.Name = "charBoots";
@@ -768,7 +894,7 @@
             // 
             this.charPants.BackgroundImage = global::WolcenEditor.Properties.Resources.pants;
             this.charPants.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charPants.Location = new System.Drawing.Point(124, 202);
+            this.charPants.Location = new System.Drawing.Point(122, 220);
             this.charPants.MaximumSize = new System.Drawing.Size(50, 68);
             this.charPants.MinimumSize = new System.Drawing.Size(50, 68);
             this.charPants.Name = "charPants";
@@ -781,7 +907,7 @@
             // 
             this.charBelt.BackgroundImage = global::WolcenEditor.Properties.Resources.belt;
             this.charBelt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charBelt.Location = new System.Drawing.Point(126, 168);
+            this.charBelt.Location = new System.Drawing.Point(123, 186);
             this.charBelt.MaximumSize = new System.Drawing.Size(48, 28);
             this.charBelt.MinimumSize = new System.Drawing.Size(48, 28);
             this.charBelt.Name = "charBelt";
@@ -794,11 +920,9 @@
             // 
             this.charChest.BackgroundImage = global::WolcenEditor.Properties.Resources.chest;
             this.charChest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charChest.Location = new System.Drawing.Point(113, 78);
-            this.charChest.MaximumSize = new System.Drawing.Size(73, 84);
-            this.charChest.MinimumSize = new System.Drawing.Size(73, 84);
+            this.charChest.Location = new System.Drawing.Point(115, 78);
             this.charChest.Name = "charChest";
-            this.charChest.Size = new System.Drawing.Size(73, 84);
+            this.charChest.Size = new System.Drawing.Size(65, 102);
             this.charChest.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charChest.TabIndex = 1;
             this.charChest.TabStop = false;
@@ -807,7 +931,7 @@
             // 
             this.charHelm.BackgroundImage = global::WolcenEditor.Properties.Resources.helm;
             this.charHelm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charHelm.Location = new System.Drawing.Point(125, 7);
+            this.charHelm.Location = new System.Drawing.Point(123, 7);
             this.charHelm.MaximumSize = new System.Drawing.Size(49, 65);
             this.charHelm.MinimumSize = new System.Drawing.Size(49, 65);
             this.charHelm.Name = "charHelm";
@@ -816,128 +940,9 @@
             this.charHelm.TabIndex = 0;
             this.charHelm.TabStop = false;
             // 
-            // cboSkinColor
+            // characterCustomizationBindingSource
             // 
-            this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboSkinColor.DropDownHeight = 100;
-            this.cboSkinColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSkinColor.FormattingEnabled = true;
-            this.cboSkinColor.IntegralHeight = false;
-            this.cboSkinColor.ItemHeight = 20;
-            this.cboSkinColor.Location = new System.Drawing.Point(215, 24);
-            this.cboSkinColor.Name = "cboSkinColor";
-            this.cboSkinColor.Size = new System.Drawing.Size(66, 26);
-            this.cboSkinColor.TabIndex = 24;
-            // 
-            // cboBeardColor
-            // 
-            this.cboBeardColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboBeardColor.DropDownHeight = 300;
-            this.cboBeardColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboBeardColor.DropDownWidth = 50;
-            this.cboBeardColor.FormattingEnabled = true;
-            this.cboBeardColor.IntegralHeight = false;
-            this.cboBeardColor.ItemHeight = 50;
-            this.cboBeardColor.Location = new System.Drawing.Point(351, 138);
-            this.cboBeardColor.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboBeardColor.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboBeardColor.Name = "cboBeardColor";
-            this.cboBeardColor.Size = new System.Drawing.Size(70, 56);
-            this.cboBeardColor.TabIndex = 21;
-            // 
-            // cboREye
-            // 
-            this.cboREye.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboREye.DropDownHeight = 300;
-            this.cboREye.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboREye.DropDownWidth = 50;
-            this.cboREye.FormattingEnabled = true;
-            this.cboREye.IntegralHeight = false;
-            this.cboREye.ItemHeight = 50;
-            this.cboREye.Location = new System.Drawing.Point(136, 138);
-            this.cboREye.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboREye.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboREye.Name = "cboREye";
-            this.cboREye.Size = new System.Drawing.Size(70, 56);
-            this.cboREye.TabIndex = 20;
-            // 
-            // cboHairColor
-            // 
-            this.cboHairColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboHairColor.DropDownHeight = 300;
-            this.cboHairColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboHairColor.DropDownWidth = 50;
-            this.cboHairColor.FormattingEnabled = true;
-            this.cboHairColor.IntegralHeight = false;
-            this.cboHairColor.ItemHeight = 50;
-            this.cboHairColor.Location = new System.Drawing.Point(351, 76);
-            this.cboHairColor.Name = "cboHairColor";
-            this.cboHairColor.Size = new System.Drawing.Size(70, 56);
-            this.cboHairColor.TabIndex = 18;
-            // 
-            // cboLEye
-            // 
-            this.cboLEye.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboLEye.DropDownHeight = 300;
-            this.cboLEye.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboLEye.DropDownWidth = 70;
-            this.cboLEye.FormattingEnabled = true;
-            this.cboLEye.IntegralHeight = false;
-            this.cboLEye.ItemHeight = 50;
-            this.cboLEye.Location = new System.Drawing.Point(60, 138);
-            this.cboLEye.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboLEye.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboLEye.Name = "cboLEye";
-            this.cboLEye.Size = new System.Drawing.Size(70, 56);
-            this.cboLEye.TabIndex = 16;
-            // 
-            // cboBeard
-            // 
-            this.cboBeard.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboBeard.DropDownHeight = 300;
-            this.cboBeard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboBeard.DropDownWidth = 50;
-            this.cboBeard.FormattingEnabled = true;
-            this.cboBeard.IntegralHeight = false;
-            this.cboBeard.ItemHeight = 50;
-            this.cboBeard.Location = new System.Drawing.Point(275, 138);
-            this.cboBeard.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboBeard.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboBeard.Name = "cboBeard";
-            this.cboBeard.Size = new System.Drawing.Size(70, 56);
-            this.cboBeard.TabIndex = 14;
-            // 
-            // cboHaircut
-            // 
-            this.cboHaircut.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboHaircut.DropDownHeight = 300;
-            this.cboHaircut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboHaircut.DropDownWidth = 50;
-            this.cboHaircut.FormattingEnabled = true;
-            this.cboHaircut.IntegralHeight = false;
-            this.cboHaircut.ItemHeight = 50;
-            this.cboHaircut.Location = new System.Drawing.Point(275, 76);
-            this.cboHaircut.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboHaircut.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboHaircut.Name = "cboHaircut";
-            this.cboHaircut.Size = new System.Drawing.Size(70, 56);
-            this.cboHaircut.TabIndex = 12;
-            // 
-            // cboFace
-            // 
-            this.cboFace.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboFace.DropDownHeight = 300;
-            this.cboFace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboFace.DropDownWidth = 50;
-            this.cboFace.FormattingEnabled = true;
-            this.cboFace.IntegralHeight = false;
-            this.cboFace.ItemHeight = 50;
-            this.cboFace.Location = new System.Drawing.Point(60, 56);
-            this.cboFace.MaximumSize = new System.Drawing.Size(70, 0);
-            this.cboFace.MinimumSize = new System.Drawing.Size(70, 0);
-            this.cboFace.Name = "cboFace";
-            this.cboFace.Size = new System.Drawing.Size(70, 56);
-            this.cboFace.TabIndex = 10;
+            this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
             // 
             // Form1
             // 
@@ -979,6 +984,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.charBelt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -994,7 +1000,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox charName;
-        private System.Windows.Forms.ComboBox charGender;
+        private System.Windows.Forms.ComboBox cboGender;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox charStats;
         private System.Windows.Forms.TextBox charWillpower;
@@ -1052,6 +1058,7 @@
         private ImageComboBox cboHaircut;
         private System.Windows.Forms.Label label18;
         private ImageComboBox cboSkinColor;
+        private System.Windows.Forms.BindingSource characterCustomizationBindingSource;
     }
 }
 
