@@ -146,6 +146,13 @@ namespace WolcenEditor
             {41, "#FF399F" },
         };
 
+        public static readonly Dictionary<int, string> Sexes = new Dictionary<int, string>
+        {
+            {0, "Male" },
+            {1, "Female" },
+
+        };
+
         public static readonly Dictionary<int, string> EyeColor = new Dictionary<int, string>
         {
             {1, "1.png" },
@@ -324,5 +331,6 @@ namespace WolcenEditor
             { 810, "#807461" },
             { 811, "#181412" }
         };
+
     }
 }

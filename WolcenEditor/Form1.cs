@@ -120,15 +120,27 @@ namespace WolcenEditor
 
         private void LoadCharacterData()
         {
-            charName.Text = cData.Character.Name;
-            charLevel.Text = Convert.ToString(cData.Character.Stats.Level);
-            charExp.Text = Convert.ToString(cData.Character.Stats.CurrentXP);
-            charFerocity.Text = Convert.ToString(cData.Character.Stats.Strength);
-            charToughness.Text = Convert.ToString(cData.Character.Stats.Constitution);
-            charAgility.Text = Convert.ToString(cData.Character.Stats.Agility);
-            charWillpower.Text = Convert.ToString(cData.Character.Stats.Power);
+            //text field bindings
+            charName.DataBindings.Add("Text", cData.Character, "Name", false, DataSourceUpdateMode.OnPropertyChanged);
+            charLevel.DataBindings.Add("Text", cData.Character.Stats, "Level", false, DataSourceUpdateMode.OnPropertyChanged);
+            charExp.DataBindings.Add("Text", cData.Character.Stats, "CurrentXP", false, DataSourceUpdateMode.OnPropertyChanged);
+            charFerocity.DataBindings.Add("Text", cData.Character.Stats, "Strength", false, DataSourceUpdateMode.OnPropertyChanged);
+            charToughness.DataBindings.Add("Text", cData.Character.Stats, "Constitution", false, DataSourceUpdateMode.OnPropertyChanged);
+            charAgility.DataBindings.Add("Text", cData.Character.Stats, "Agility", false, DataSourceUpdateMode.OnPropertyChanged);
+            charWillpower.DataBindings.Add("Text", cData.Character.Stats, "Power", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            charGender.SelectedIndex = cData.Character.CharacterCustomization.Sex;
+            //normal combobox bindings
+            BindToComboBox(charGender, WolcenStaticData.Sexes, cData.Character.CharacterCustomization, "Sex");
+            //BindToComboBox(cboFace, WolcenStaticData.Face, cData.Character.CharacterCustomization, "Face");
+
+        }
+
+        private void BindToComboBox<T>(T comboBox, Dictionary<int, string> mapping, object dataSource, string dataMemeber) where T : ComboBox
+        {
+            comboBox.DataSource = new BindingSource(mapping, null);
+            comboBox.DisplayMember = "Value";
+            comboBox.ValueMember = "Key";
+            comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void charBelt1_CheckedChanged(object sender, EventArgs e)

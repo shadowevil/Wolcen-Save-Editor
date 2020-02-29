@@ -23,9 +23,11 @@ namespace WolcenEditor
 
             if (e.Index >= 0 && e.Index < Items.Count)
             {
-                DropDownItem item = (DropDownItem)Items[e.Index];
-                e.Graphics.DrawImage(item.Image, e.Bounds.Left, e.Bounds.Top + 2);
-                e.Graphics.DrawString(item.Value, e.Font, new SolidBrush(e.ForeColor), e.Bounds.Left + item.Image.Width, e.Bounds.Top + 2);
+                var dict = new Dictionary<int, string>();
+                var temp = (Items[e.Index] as Dictionary<int, string>).Select(x => dict.Add(x.Key,x.Value));
+                //DropDownItem item = (DropDownItem);
+                //e.Graphics.DrawImage(item.Image, e.Bounds.Left, e.Bounds.Top + 2);
+               // e.Graphics.DrawString(item.Value, e.Font, new SolidBrush(e.ForeColor), e.Bounds.Left + item.Image.Width, e.Bounds.Top + 2);
             }
 
             base.OnDrawItem(e);
