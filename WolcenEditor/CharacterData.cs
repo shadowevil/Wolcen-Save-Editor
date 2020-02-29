@@ -102,6 +102,12 @@ namespace WolcenEditor
             { "ACT3_Quest4", new List<int> { 1,2,4,5,6,8 } },
         };
 
+        public static readonly Dictionary<int, string> Gender = new Dictionary<int, string>
+        {
+            {0, "Male" },
+            {1, "Female" }
+        };
+
         public static readonly Dictionary<int, string> HairColorBank = new Dictionary<int, string>
         {
             {1, "#3B2215" },
@@ -165,14 +171,14 @@ namespace WolcenEditor
 
         public static readonly Dictionary<int, string> Face = new Dictionary<int, string>
         {
-            {1, "1.png" },
-            {2, "2.png" },
-            {3, "3.png" },
-            {4, "4.png" },
-            {5, "5.png" },
-            {6, "6.png" },
-            {7, "7.png" },
-            {8, "8.png" }
+            {1, "Head_male_01.png" },
+            {2, "Head_male_02.png" },
+            {3, "Head_male_03.png" },
+            {4, "Head_male_04.png" },
+            {5, "Head_female_01.png" },
+            {6, "Head_female_02.png" },
+            {7, "Head_female_03.png" },
+            {8, "Head_female_04.png" }
         };
 
         public static readonly Dictionary<int, string> Beard = new Dictionary<int, string>
@@ -207,18 +213,6 @@ namespace WolcenEditor
             {108, "108.png" },
             {109, "109.png" },
             {110, "110.png" }
-        };
-
-        public static readonly Dictionary<int, string> HeadStyle = new Dictionary<int, string>
-        {
-            {1, "Head_male_01.png" },
-            {2, "Head_male_02.png" },
-            {3, "Head_male_03.png" },
-            {4, "Head_male_04.png" },
-            {5, "Head_female_01.png" },
-            {6, "Head_female_02.png" },
-            {7, "Head_female_03.png" },
-            {8, "Head_female_04.png" }
         };
 
         public static readonly Dictionary<int, string> SkinColor = new Dictionary<int, string>

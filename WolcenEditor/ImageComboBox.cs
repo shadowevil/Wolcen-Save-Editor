@@ -25,7 +25,7 @@ namespace WolcenEditor
             {
                 DropDownItem item = (DropDownItem)Items[e.Index];
                 e.Graphics.DrawImage(item.Image, e.Bounds.Left, e.Bounds.Top + 2);
-                e.Graphics.DrawString(item.Value, e.Font, new SolidBrush(e.ForeColor), e.Bounds.Left + item.Image.Width, e.Bounds.Top + 2);
+                //e.Graphics.DrawString(item.Value, e.Font, new SolidBrush(e.ForeColor), e.Bounds.Left + item.Image.Width, e.Bounds.Top + 2);
             }
 
             base.OnDrawItem(e);
@@ -34,12 +34,8 @@ namespace WolcenEditor
 
     public class DropDownItem
     {
-
         public string Value { get; set; }
         public Image Image { get; set; }
-
-        public DropDownItem() : this("", Color.White, 50, 50)
-        { }
 
         public DropDownItem(string val, Bitmap img)
         {
