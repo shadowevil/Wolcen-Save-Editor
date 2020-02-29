@@ -226,7 +226,16 @@ namespace WolcenEditor
                 string dirPath = @".\UIResources\Items\";
                 if (i.BodyPart == bodyPart)
                 {
-                    string itemName = bodyPart == 16 || bodyPart == 15 ? i.Weapon.Name : i.Armor.Name;
+                    string itemName ="";
+                    //string itemName = bodyPart == 16 || bodyPart == 15 ? i.Weapon.Name : i.Armor.Name;
+                    if (bodyPart == 16 || bodyPart == 15)
+                        itemName = i.Weapon.Name;
+                    else
+                    if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
+                        itemName = WolcenStaticData.ItemAccessories[i.Armor.Name];
+                    else
+                        itemName = i.Armor.Name;
+
                     if (File.Exists(dirPath + itemName + ".png"))
                     {
                         if (flip == true)
