@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Helpers;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace WolcenEditor
 {
@@ -280,13 +279,20 @@ namespace WolcenEditor
                     {
                         var statName = prop.Name;
                         var statValue = prop.GetValue(item, null);
-                        if (statName == "BodyPart" || statName == "Type" || statValue == null)
-                            continue;
-
                         if (statName == "Rarity")
                             statValue = rarityMap[statValue.ToString()];
 
-                        statList.Add($"{statName}: {statValue}");
+                        //skips the entire iteration if these appear
+                        if (statName == "BodyPart" || statName == "Type" || statValue == null)
+                            continue;
+
+
+                        //skips adding the name but still continues the iteration to get child elements and display those
+                        if (statName != "Armor" && statName != "Sockets")
+                        {
+                            statList.Add($"{statName}: {statValue}");
+                        }
+
                         if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
                         {
                             foreach (var inner in prop.PropertyType.GetProperties())
@@ -296,8 +302,43 @@ namespace WolcenEditor
                                     if (innerValue == "0")
                                         continue;
                                     statList.Add($"{innerName}: {innerValue}");
+
                             }
                         }
+
+                        if (prop.PropertyType == typeof(IList<Socket>) && item.Sockets != null)
+                        {
+                            foreach(var socket in item.Sockets)
+                            {
+                                statList.Add($"Socket: ");
+                                foreach (var sock in socket.GetType().GetProperties())
+                                {
+                                    var tempVal = sock.GetValue(socket, null);
+                                    if(tempVal== null)
+                                    {
+                                        tempVal = "[No Gem]";
+                                    } 
+                                    else
+                                    if(tempVal.ToString() != "WolcenEditor.Gem")
+                                    {
+                                        statList.Add($"\t{sock.Name}: {tempVal} ");
+                                    }
+
+                                    if (sock.PropertyType == typeof(Gem) && socket.Gem != null)
+                                    {
+                                        foreach(var gem in sock.PropertyType.GetProperties())
+                                        {
+                                            var t = gem.GetValue(sock.GetValue(socket, null));
+                                            statList.Add($"\t{gem.Name}: {t}");
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+
+
                     }
                 }
             }

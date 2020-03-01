@@ -481,8 +481,6 @@ namespace WolcenEditor
             {"Belt", 19 },
             {"Right Ring", 21 },
             {"Left Ring", 22 },
-
-
         };
 
     }
