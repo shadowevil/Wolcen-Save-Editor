@@ -36,8 +36,12 @@ namespace WolcenEditor
 
     public class Socket
     {
-        public int Type { get; set; }
+        public Gem Gem { get; set; }
         public int Effect { get; set; }
+    }
+    public class Gem
+    {
+        public string Name { get; set; }
     }
 
     public class ItemMagicEffects

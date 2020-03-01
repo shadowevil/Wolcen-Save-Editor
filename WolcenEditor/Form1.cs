@@ -230,6 +230,7 @@ namespace WolcenEditor
             charLWeapon.Click += LoadItemData;
             charRWeapon.Click += LoadItemData;
 
+            //this is for when above values use MouseEnter instead of Click
             //charInv.MouseEnter += UnLoadItemData;
         }
         private void UnLoadItemData(object sender, EventArgs e)
@@ -256,8 +257,18 @@ namespace WolcenEditor
                 {"charLWeapon" , 15},
                 {"charRWeapon" , 16},
             };
-            var picBoxName = ((PictureBox)sender).Name;
+            var rarityMap = new Dictionary<string, string>
+            {
+                {"0", "Basic"},
+                {"1", "Basic"},
+                {"2", "Magic"},
+                {"3", "Rare"},
+                {"5", "Set"},
+                {"6", "Unique"},
+                {"7", "Quest"}
+            };
 
+            var picBoxName = ((PictureBox)sender).Name;
             var statList = new List<string>();
 
             //WIP currently supports armor and weapons. Sockets and affixes are still needed
@@ -267,16 +278,30 @@ namespace WolcenEditor
                 {
                     foreach (var prop in item.GetType().GetProperties())
                     {
-                        statList.Add($"{prop.Name}: {prop.GetValue(item, null)?.ToString()}");
+                        var statName = prop.Name;
+                        var statValue = prop.GetValue(item, null);
+                        if (statName == "BodyPart" || statName == "Type" || statValue == null)
+                            continue;
+
+                        if (statName == "Rarity")
+                            statValue = rarityMap[statValue.ToString()];
+
+                        statList.Add($"{statName}: {statValue}");
                         if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
+                        {
                             foreach (var inner in prop.PropertyType.GetProperties())
-                                statList.Add($"\t{inner.Name}: {inner.GetValue(prop.GetValue(item, null), null).ToString()}");
+                            {
+                                    var innerName = inner.Name;
+                                    var innerValue = inner.GetValue(statValue, null).ToString();
+                                    if (innerValue == "0")
+                                        continue;
+                                    statList.Add($"{innerName}: {innerValue}");
+                            }
+                        }
                     }
                 }
             }
-
             listBoxEquipItems.DataSource = new BindingSource(statList, null);
-            //dataGridChar.
         }
 
         // Body Parts:
