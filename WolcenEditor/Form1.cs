@@ -148,6 +148,7 @@ namespace WolcenEditor
             d.InitialDirectory = userFolder + WolcenSavePath;
             if (d.ShowDialog() == DialogResult.OK)
             {
+                if (cData.Character != null) cData.Character = null;
                 cData.Character = CharacterIO.ReadCharacter(d.FileName);
                 saveFilePath = d.FileName;
             }
@@ -170,6 +171,7 @@ namespace WolcenEditor
 
         private void LoadCharacterData()
         {
+
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
             SetIndexToValueOf(ref cboHaircut, cData.Character.CharacterCustomization.Haircut);
             SetIndexToValueOf(ref cboHairColor, cData.Character.CharacterCustomization.HairColor);
@@ -317,21 +319,23 @@ namespace WolcenEditor
                                 foreach (var sock in socket.GetType().GetProperties())
                                 {
                                     var tempVal = sock.GetValue(socket, null);
-                                    if(tempVal== null)
+                                    if (tempVal == null)
                                     {
                                         tempVal = "[No Gem]";
-                                    } 
+                                    }
                                     else
-                                    if(tempVal.ToString() != "WolcenEditor.Gem")
                                     {
-                                        statList.Add($"\t{sock.Name}: {tempVal} ");
+                                        if (tempVal.ToString() != "WolcenEditor.Gem")
+                                        {
+                                            statList.Add($"\t{sock.Name}: {tempVal} ");
+                                        }
                                     }
 
                                     if (sock.PropertyType == typeof(Gem) && socket.Gem != null)
                                     {
                                         foreach(var gem in sock.PropertyType.GetProperties())
                                         {
-                                            var t = gem.GetValue(sock.GetValue(socket, null));
+                                            var t = WolcenStaticData.ItemLocalizedNames[gem.GetValue(sock.GetValue(socket, null)).ToString()];
                                             statList.Add($"\t{gem.Name}: {t}");
                                         }
                                     }
