@@ -155,7 +155,9 @@ namespace WolcenEditor
 
             panel1.Enabled = true;
 
+            
             LoadCharacterData();
+            
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -299,7 +301,7 @@ namespace WolcenEditor
                             {
                                     var innerName = inner.Name;
                                     var innerValue = inner.GetValue(statValue, null).ToString();
-                                    if(innerName == "Name") innervalue = WolcenStaticData.ItemLocalizedNames[value];
+                                    if(innerName == "Name") innerValue = WolcenStaticData.ItemLocalizedNames[innerValue];
                                     if (innerValue == "0")
                                         continue;
                                     statList.Add($"{innerName}: {innerValue}");
@@ -406,6 +408,7 @@ namespace WolcenEditor
 
         private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
         {
+            obj.ResetBindings();
             obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
@@ -422,6 +425,7 @@ namespace WolcenEditor
 
         private void BindToComboBox<T>(T comboBox, Dictionary<int, string> mapping, object dataSource, string dataMemeber) where T : ComboBox
         {
+            comboBox.ResetBindings();
             comboBox.DataSource = new BindingSource(mapping, null);
             comboBox.DisplayMember = "Value";
             comboBox.ValueMember = "Key";
