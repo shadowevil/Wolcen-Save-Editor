@@ -90,6 +90,7 @@
             this.charBelt = new System.Windows.Forms.PictureBox();
             this.charChest = new System.Windows.Forms.PictureBox();
             this.charHelm = new System.Windows.Forms.PictureBox();
+            this.charSkills = new System.Windows.Forms.TabPage();
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -99,7 +100,6 @@
             this.cboHaircut = new WolcenEditor.ImageComboBox();
             this.cboFace = new WolcenEditor.ImageComboBox();
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.charSkills = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.charPage.SuspendLayout();
@@ -501,7 +501,7 @@
             // 
             // charInv
             // 
-            this.charInv.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
+            this.charInv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charInv.BackgroundImage")));
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charInv.Controls.Add(this.ItemStatsBox);
             this.charInv.Controls.Add(this.groupBox1);
@@ -596,7 +596,7 @@
             // 
             this.charBelt2.Appearance = System.Windows.Forms.Appearance.Button;
             this.charBelt2.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt2.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt2.BackgroundImage")));
             this.charBelt2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.charBelt2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.charBelt2.FlatAppearance.BorderSize = 0;
@@ -613,7 +613,7 @@
             // 
             this.charBelt1.Appearance = System.Windows.Forms.Appearance.Button;
             this.charBelt1.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt1.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt1.BackgroundImage")));
             this.charBelt1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.charBelt1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.charBelt1.FlatAppearance.BorderSize = 0;
@@ -628,7 +628,7 @@
             // 
             // pictureBox16
             // 
-            this.pictureBox16.Image = global::WolcenEditor.Properties.Resources.gold;
+            this.pictureBox16.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox16.Image")));
             this.pictureBox16.Location = new System.Drawing.Point(15, 373);
             this.pictureBox16.MaximumSize = new System.Drawing.Size(35, 20);
             this.pictureBox16.MinimumSize = new System.Drawing.Size(35, 20);
@@ -640,7 +640,7 @@
             // 
             // pictureBox15
             // 
-            this.pictureBox15.Image = global::WolcenEditor.Properties.Resources.primordial;
+            this.pictureBox15.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox15.Image")));
             this.pictureBox15.Location = new System.Drawing.Point(24, 395);
             this.pictureBox15.MaximumSize = new System.Drawing.Size(25, 25);
             this.pictureBox15.MinimumSize = new System.Drawing.Size(25, 25);
@@ -670,7 +670,7 @@
             // 
             // charRWeapon
             // 
-            this.charRWeapon.BackgroundImage = global::WolcenEditor.Properties.Resources.weapon;
+            this.charRWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRWeapon.BackgroundImage")));
             this.charRWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charRWeapon.Location = new System.Drawing.Point(186, 221);
             this.charRWeapon.MaximumSize = new System.Drawing.Size(62, 91);
@@ -683,7 +683,7 @@
             // 
             // charLWeapon
             // 
-            this.charLWeapon.BackgroundImage = global::WolcenEditor.Properties.Resources.weapon;
+            this.charLWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLWeapon.BackgroundImage")));
             this.charLWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charLWeapon.Location = new System.Drawing.Point(47, 221);
             this.charLWeapon.MaximumSize = new System.Drawing.Size(62, 91);
@@ -696,7 +696,7 @@
             // 
             // charNeck
             // 
-            this.charNeck.BackgroundImage = global::WolcenEditor.Properties.Resources.necklace;
+            this.charNeck.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charNeck.BackgroundImage")));
             this.charNeck.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charNeck.Location = new System.Drawing.Point(194, 32);
             this.charNeck.MaximumSize = new System.Drawing.Size(40, 40);
@@ -709,7 +709,7 @@
             // 
             // charRRing
             // 
-            this.charRRing.BackgroundImage = global::WolcenEditor.Properties.Resources.ring;
+            this.charRRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRRing.BackgroundImage")));
             this.charRRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charRRing.Location = new System.Drawing.Point(245, 175);
             this.charRRing.MaximumSize = new System.Drawing.Size(40, 40);
@@ -722,7 +722,7 @@
             // 
             // charLRing
             // 
-            this.charLRing.BackgroundImage = global::WolcenEditor.Properties.Resources.ring;
+            this.charLRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLRing.BackgroundImage")));
             this.charLRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charLRing.Location = new System.Drawing.Point(10, 175);
             this.charLRing.MaximumSize = new System.Drawing.Size(40, 40);
@@ -735,7 +735,7 @@
             // 
             // charRHand
             // 
-            this.charRHand.BackgroundImage = global::WolcenEditor.Properties.Resources.righthand;
+            this.charRHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRHand.BackgroundImage")));
             this.charRHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charRHand.Location = new System.Drawing.Point(186, 132);
             this.charRHand.MaximumSize = new System.Drawing.Size(53, 83);
@@ -748,7 +748,7 @@
             // 
             // charRPad
             // 
-            this.charRPad.BackgroundImage = global::WolcenEditor.Properties.Resources.rightpad;
+            this.charRPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRPad.BackgroundImage")));
             this.charRPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charRPad.Location = new System.Drawing.Point(186, 78);
             this.charRPad.MaximumSize = new System.Drawing.Size(48, 48);
@@ -761,7 +761,7 @@
             // 
             // charLHand
             // 
-            this.charLHand.BackgroundImage = global::WolcenEditor.Properties.Resources.lefthand;
+            this.charLHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLHand.BackgroundImage")));
             this.charLHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charLHand.Location = new System.Drawing.Point(56, 132);
             this.charLHand.MaximumSize = new System.Drawing.Size(53, 83);
@@ -774,7 +774,7 @@
             // 
             // charLPad
             // 
-            this.charLPad.BackgroundImage = global::WolcenEditor.Properties.Resources.leftpad;
+            this.charLPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLPad.BackgroundImage")));
             this.charLPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charLPad.Location = new System.Drawing.Point(61, 78);
             this.charLPad.MaximumSize = new System.Drawing.Size(48, 48);
@@ -787,7 +787,7 @@
             // 
             // charBoots
             // 
-            this.charBoots.BackgroundImage = global::WolcenEditor.Properties.Resources.boots;
+            this.charBoots.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBoots.BackgroundImage")));
             this.charBoots.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charBoots.Location = new System.Drawing.Point(123, 294);
             this.charBoots.MaximumSize = new System.Drawing.Size(48, 65);
@@ -800,7 +800,7 @@
             // 
             // charPants
             // 
-            this.charPants.BackgroundImage = global::WolcenEditor.Properties.Resources.pants;
+            this.charPants.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPants.BackgroundImage")));
             this.charPants.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charPants.Location = new System.Drawing.Point(122, 220);
             this.charPants.MaximumSize = new System.Drawing.Size(50, 68);
@@ -813,7 +813,7 @@
             // 
             // charBelt
             // 
-            this.charBelt.BackgroundImage = global::WolcenEditor.Properties.Resources.belt;
+            this.charBelt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt.BackgroundImage")));
             this.charBelt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charBelt.Location = new System.Drawing.Point(123, 186);
             this.charBelt.MaximumSize = new System.Drawing.Size(48, 28);
@@ -826,7 +826,7 @@
             // 
             // charChest
             // 
-            this.charChest.BackgroundImage = global::WolcenEditor.Properties.Resources.chest;
+            this.charChest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charChest.BackgroundImage")));
             this.charChest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charChest.Location = new System.Drawing.Point(115, 78);
             this.charChest.Name = "charChest";
@@ -837,7 +837,7 @@
             // 
             // charHelm
             // 
-            this.charHelm.BackgroundImage = global::WolcenEditor.Properties.Resources.helm;
+            this.charHelm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charHelm.BackgroundImage")));
             this.charHelm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charHelm.Location = new System.Drawing.Point(123, 7);
             this.charHelm.MaximumSize = new System.Drawing.Size(49, 65);
@@ -847,6 +847,17 @@
             this.charHelm.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charHelm.TabIndex = 0;
             this.charHelm.TabStop = false;
+            // 
+            // charSkills
+            // 
+            this.charSkills.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charSkills.BackgroundImage")));
+            this.charSkills.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charSkills.Location = new System.Drawing.Point(4, 22);
+            this.charSkills.Name = "charSkills";
+            this.charSkills.Size = new System.Drawing.Size(827, 507);
+            this.charSkills.TabIndex = 2;
+            this.charSkills.Text = "Skills";
+            this.charSkills.UseVisualStyleBackColor = true;
             // 
             // cboSkinColor
             // 
@@ -974,17 +985,6 @@
             // characterCustomizationBindingSource
             // 
             this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
-            // 
-            // charSkills
-            // 
-            this.charSkills.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
-            this.charSkills.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charSkills.Location = new System.Drawing.Point(4, 22);
-            this.charSkills.Name = "charSkills";
-            this.charSkills.Size = new System.Drawing.Size(827, 507);
-            this.charSkills.TabIndex = 2;
-            this.charSkills.Text = "Skills";
-            this.charSkills.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

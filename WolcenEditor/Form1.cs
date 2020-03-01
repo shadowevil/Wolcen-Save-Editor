@@ -299,6 +299,7 @@ namespace WolcenEditor
                             {
                                     var innerName = inner.Name;
                                     var innerValue = inner.GetValue(statValue, null).ToString();
+                                    if(innerName == "Name") innervalue = WolcenStaticData.ItemLocalizedNames[value];
                                     if (innerValue == "0")
                                         continue;
                                     statList.Add($"{innerName}: {innerValue}");
@@ -337,8 +338,6 @@ namespace WolcenEditor
                             }
 
                         }
-
-
                     }
                 }
             }
