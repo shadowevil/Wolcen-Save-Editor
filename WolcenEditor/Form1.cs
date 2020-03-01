@@ -229,6 +229,7 @@ namespace WolcenEditor
             charLWeapon.Click += LoadItemData;
             charRWeapon.Click += LoadItemData;
 
+            //this is for when above values use MouseEnter instead of Click
             //charInv.MouseEnter += UnLoadItemData;
         }
         private void UnLoadItemData(object sender, EventArgs e)
@@ -255,8 +256,18 @@ namespace WolcenEditor
                 {"charLWeapon" , 15},
                 {"charRWeapon" , 16},
             };
-            var picBoxName = ((PictureBox)sender).Name;
+            var rarityMap = new Dictionary<string, string>
+            {
+                {"0", "Basic"},
+                {"1", "Basic"},
+                {"2", "Magic"},
+                {"3", "Rare"},
+                {"5", "Set"},
+                {"6", "Unique"},
+                {"7", "Quest"}
+            };
 
+            var picBoxName = ((PictureBox)sender).Name;
             var statList = new List<string>();
 
             //WIP currently supports armor and weapons. Sockets and affixes are still needed
@@ -266,20 +277,71 @@ namespace WolcenEditor
                 {
                     foreach (var prop in item.GetType().GetProperties())
                     {
-                        statList.Add($"{prop.Name}: {prop.GetValue(item, null)?.ToString()}");
+                        var statName = prop.Name;
+                        var statValue = prop.GetValue(item, null);
+                        if (statName == "Rarity")
+                            statValue = rarityMap[statValue.ToString()];
+
+                        //skips the entire iteration if these appear
+                        if (statName == "BodyPart" || statName == "Type" || statValue == null)
+                            continue;
+
+
+                        //skips adding the name but still continues the iteration to get child elements and display those
+                        if (statName != "Armor" && statName != "Sockets")
+                        {
+                            statList.Add($"{statName}: {statValue}");
+                        }
+
                         if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
+                        {
                             foreach (var inner in prop.PropertyType.GetProperties())
                             {
-                                string value = inner.GetValue(prop.GetValue(item, null), null).ToString();
-                                if (inner.Name == "Name") value = WolcenStaticData.ItemLocalizedNames[value];
-                                statList.Add($"\t{inner.Name}: {value}");
+                                    var innerName = inner.Name;
+                                    var innerValue = inner.GetValue(statValue, null).ToString();
+                                    if(innerName == "Name") innervalue = WolcenStaticData.ItemLocalizedNames[value];
+                                    if (innerValue == "0")
+                                        continue;
+                                    statList.Add($"{innerName}: {innerValue}");
+
                             }
+                        }
+
+                        if (prop.PropertyType == typeof(IList<Socket>) && item.Sockets != null)
+                        {
+                            foreach(var socket in item.Sockets)
+                            {
+                                statList.Add($"Socket: ");
+                                foreach (var sock in socket.GetType().GetProperties())
+                                {
+                                    var tempVal = sock.GetValue(socket, null);
+                                    if(tempVal== null)
+                                    {
+                                        tempVal = "[No Gem]";
+                                    } 
+                                    else
+                                    if(tempVal.ToString() != "WolcenEditor.Gem")
+                                    {
+                                        statList.Add($"\t{sock.Name}: {tempVal} ");
+                                    }
+
+                                    if (sock.PropertyType == typeof(Gem) && socket.Gem != null)
+                                    {
+                                        foreach(var gem in sock.PropertyType.GetProperties())
+                                        {
+                                            var t = gem.GetValue(sock.GetValue(socket, null));
+                                            statList.Add($"\t{gem.Name}: {t}");
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
                     }
                 }
             }
-
             listBoxEquipItems.DataSource = new BindingSource(statList, null);
-            //dataGridChar.
         }
 
         // Body Parts:

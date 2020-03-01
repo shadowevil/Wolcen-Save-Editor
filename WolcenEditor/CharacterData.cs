@@ -465,6 +465,25 @@ namespace WolcenEditor
             { "Ruby_Ring_Reward", "ring_attributes_red_tier1.png" }
         };
 
+
+        public static readonly Dictionary<string, int> BodyParts = new Dictionary<string, int>
+        {
+            {"Chest", 1 },
+            {"Helmet", 3 },
+            {"Right Shoulder", 5 },
+            {"Left Shoulder", 6 },
+            {"Right Glove", 9 },
+            {"Left Glove", 10 },
+            {"Pants", 11 },
+            {"Necklace", 14 },
+            {"Weapon 1", 15},
+            {"Weapon 2", 16 },
+            {"Feet", 17 },
+            {"Belt", 19 },
+            {"Right Ring", 21 },
+            {"Left Ring", 22 },
+        };
+
         public static readonly Dictionary<string, string> ItemWeapon = new Dictionary<string, string>
         {
             { "1h_shield_tier1", "h1_shield_tier1.png" },
