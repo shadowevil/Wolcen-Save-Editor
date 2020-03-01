@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Web.Helpers;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace WolcenEditor
 {
@@ -40,6 +45,8 @@ namespace WolcenEditor
 
             LoadComboBoxes();
         }
+
+
 
         private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -201,6 +208,75 @@ namespace WolcenEditor
             charRRing.Image = GetItemBitmap(21);
             charLWeapon.Image = GetItemBitmap(15, true);
             charRWeapon.Image = GetItemBitmap(16);
+
+            charHelm.Click += LoadItemData;
+            charChest.Click += LoadItemData;
+
+            charLPad.Click += LoadItemData;
+            charRPad.Click += LoadItemData;
+
+            charLHand.Click += LoadItemData;
+            charRHand.Click += LoadItemData;
+
+            charBelt.Click += LoadItemData;
+            charPants.Click += LoadItemData;
+
+            charNeck.Click += LoadItemData;
+            charBoots.Click += LoadItemData;
+
+            charLRing.Click += LoadItemData;
+            charRRing.Click += LoadItemData;
+
+            charLWeapon.Click += LoadItemData;
+            charRWeapon.Click += LoadItemData;
+
+            //charInv.MouseEnter += UnLoadItemData;
+        }
+        private void UnLoadItemData(object sender, EventArgs e)
+        {
+            listBoxEquipItems.DataSource = new List<string>();
+        }
+
+        private void LoadItemData(object sender, EventArgs e)
+        {
+            var charMap = new Dictionary<string,int>
+            {
+                {"charHelm", 3 },
+                {"charChest" , 1},
+                {"charLPad", 5 },
+                {"charRPad" , 6},
+                {"charLHand", 9 },
+                {"charRHand" , 10},
+                {"charBelt", 19 },
+                {"charPants", 11 },
+                {"charNeck" , 14},
+                {"charBoots", 17 },
+                {"charLRing" , 22},
+                {"charRRing", 21 },
+                {"charLWeapon" , 15},
+                {"charRWeapon" , 16},
+            };
+            var picBoxName = ((PictureBox)sender).Name;
+
+            var statList = new List<string>();
+
+            //WIP currently supports armor and weapons. Sockets and affixes are still needed
+            foreach (var item in cData.Character.InventoryEquipped)
+            {
+                if (item.BodyPart == charMap[picBoxName])
+                {
+                    foreach (var prop in item.GetType().GetProperties())
+                    {
+                        statList.Add($"{prop.Name}: {prop.GetValue(item, null)?.ToString()}");
+                        if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
+                            foreach (var inner in prop.PropertyType.GetProperties())
+                                statList.Add($"\t{inner.Name}: {inner.GetValue(prop.GetValue(item, null), null).ToString()}");
+                    }
+                }
+            }
+
+            listBoxEquipItems.DataSource = new BindingSource(statList, null);
+            //dataGridChar.
         }
 
         // Body Parts:

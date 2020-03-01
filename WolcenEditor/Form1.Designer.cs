@@ -65,6 +65,8 @@
             this.cboGender = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.charInv = new System.Windows.Forms.TabPage();
+            this.ItemStatsBox = new System.Windows.Forms.GroupBox();
+            this.listBoxEquipItems = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -104,6 +106,7 @@
             this.charStats.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.charInv.SuspendLayout();
+            this.ItemStatsBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
@@ -500,6 +503,7 @@
             // 
             this.charInv.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charInv.Controls.Add(this.ItemStatsBox);
             this.charInv.Controls.Add(this.groupBox1);
             this.charInv.Controls.Add(this.pictureBox16);
             this.charInv.Controls.Add(this.pictureBox15);
@@ -526,6 +530,31 @@
             this.charInv.TabIndex = 1;
             this.charInv.Text = "Inventory";
             this.charInv.UseVisualStyleBackColor = true;
+            // 
+            // ItemStatsBox
+            // 
+            this.ItemStatsBox.Controls.Add(this.listBoxEquipItems);
+            this.ItemStatsBox.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ItemStatsBox.Location = new System.Drawing.Point(343, 32);
+            this.ItemStatsBox.Name = "ItemStatsBox";
+            this.ItemStatsBox.Size = new System.Drawing.Size(425, 256);
+            this.ItemStatsBox.TabIndex = 21;
+            this.ItemStatsBox.TabStop = false;
+            this.ItemStatsBox.Text = "Item Stats";
+            // 
+            // listBoxEquipItems
+            // 
+            this.listBoxEquipItems.BackColor = System.Drawing.SystemColors.WindowText;
+            this.listBoxEquipItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxEquipItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxEquipItems.ForeColor = System.Drawing.Color.White;
+            this.listBoxEquipItems.FormattingEnabled = true;
+            this.listBoxEquipItems.ItemHeight = 16;
+            this.listBoxEquipItems.Location = new System.Drawing.Point(6, 16);
+            this.listBoxEquipItems.Name = "listBoxEquipItems";
+            this.listBoxEquipItems.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxEquipItems.Size = new System.Drawing.Size(413, 224);
+            this.listBoxEquipItems.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -981,6 +1010,7 @@
             this.groupBox2.PerformLayout();
             this.charInv.ResumeLayout(false);
             this.charInv.PerformLayout();
+            this.ItemStatsBox.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).EndInit();
@@ -1074,6 +1104,8 @@
         private ImageComboBox cboSkinColor;
         private System.Windows.Forms.BindingSource characterCustomizationBindingSource;
         private System.Windows.Forms.TabPage charSkills;
+        private System.Windows.Forms.GroupBox ItemStatsBox;
+        private System.Windows.Forms.ListBox listBoxEquipItems;
     }
 }
 
