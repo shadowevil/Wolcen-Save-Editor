@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Helpers;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace WolcenEditor
 {
@@ -270,7 +269,11 @@ namespace WolcenEditor
                         statList.Add($"{prop.Name}: {prop.GetValue(item, null)?.ToString()}");
                         if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
                             foreach (var inner in prop.PropertyType.GetProperties())
-                                statList.Add($"\t{inner.Name}: {inner.GetValue(prop.GetValue(item, null), null).ToString()}");
+                            {
+                                string value = inner.GetValue(prop.GetValue(item, null), null).ToString();
+                                if (inner.Name == "Name") value = WolcenStaticData.ItemLocalizedNames[value];
+                                statList.Add($"\t{inner.Name}: {value}");
+                            }
                     }
                 }
             }
