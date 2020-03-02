@@ -484,6 +484,42 @@ namespace WolcenEditor
             {"Left Ring", 22 },
         };
 
+        public static readonly Dictionary<int, string> Rarity = new Dictionary<int, string>
+        {
+            {0, "Basic"},
+            {1, "Basic"},
+            {2, "Magic"},
+            {3, "Rare"},
+            {5, "Set"},
+            {6, "Unique"},
+            {7, "Quest"}
+        };
+
+        public static readonly Dictionary<int, string> Quality = new Dictionary<int, string>
+        {
+            {1, "Normal"},
+            {2, "Reinforced"},
+            {3, "Superior"},
+            {4, "Exceptional"},
+            {5, "Epic"},
+
+        };
+        public static readonly Dictionary<int, string> SocketType = new Dictionary<int, string>
+        {
+            {0, "Offensive (I)"},
+            {1, "Defensive (I)"},
+            {2, "Support (I)"},
+
+            {3, "Offensive (II)"},
+            {4, "Defensive (II)"},
+            {5, "Support (II)"},
+
+            {6, "Offense (III)"},
+            {7, "Defensive (III)"},
+            {8, "Support (III)"},
+
+        };
+
         public static readonly Dictionary<string, string> ItemWeapon = new Dictionary<string, string>
         {
             { "1h_shield_tier1", "h1_shield_tier1.png" },
