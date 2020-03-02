@@ -43,9 +43,9 @@ namespace WolcenEditor
             panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
 
             LoadComboBoxes();
+
+            SkillTree.LoadTree(ref panel1);
         }
-
-
 
         private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -323,12 +323,10 @@ namespace WolcenEditor
                                     {
                                         tempVal = "[No Gem]";
                                     }
-                                    else
+
+                                    if (tempVal.ToString() != "WolcenEditor.Gem")
                                     {
-                                        if (tempVal.ToString() != "WolcenEditor.Gem")
-                                        {
-                                            statList.Add($"\t{sock.Name}: {tempVal} ");
-                                        }
+                                        statList.Add($"\t{sock.Name}: {tempVal} ");
                                     }
 
                                     if (sock.PropertyType == typeof(Gem) && socket.Gem != null)
