@@ -142,6 +142,7 @@
     <Compile Include="ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SkillTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -237,6 +238,45 @@
     <None Include="Resources\inventory_I72.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UIResources\Skills\player_aetherblade.png" />
+    <Content Include="UIResources\Skills\player_aetherblast.png" />
+    <Content Include="UIResources\Skills\player_arrowsrain.png" />
+    <Content Include="UIResources\Skills\player_bladeslinger.png" />
+    <Content Include="UIResources\Skills\player_bomb.png" />
+    <Content Include="UIResources\Skills\player_brutalstrike.png" />
+    <Content Include="UIResources\Skills\player_bulleye.png" />
+    <Content Include="UIResources\Skills\player_chainlightning.png" />
+    <Content Include="UIResources\Skills\player_charge.png" />
+    <Content Include="UIResources\Skills\player_corpseexplosion.png" />
+    <Content Include="UIResources\Skills\player_deathmark.png" />
+    <Content Include="UIResources\Skills\player_dualstrike.png" />
+    <Content Include="UIResources\Skills\player_fireball.png" />
+    <Content Include="UIResources\Skills\player_frostcomet.png" />
+    <Content Include="UIResources\Skills\player_frostlance.png" />
+    <Content Include="UIResources\Skills\player_frostnova.png" />
+    <Content Include="UIResources\Skills\player_hammer.png" />
+    <Content Include="UIResources\Skills\player_hook.png" />
+    <Content Include="UIResources\Skills\player_ironguard.png" />
+    <Content Include="UIResources\Skills\player_laceration.png" />
+    <Content Include="UIResources\Skills\player_laser.png" />
+    <Content Include="UIResources\Skills\player_leap.png" />
+    <Content Include="UIResources\Skills\player_reave.png" />
+    <Content Include="UIResources\Skills\player_ringofpain.png" />
+    <Content Include="UIResources\Skills\player_sacredground.png" />
+    <Content Include="UIResources\Skills\player_smokebomb.png" />
+    <Content Include="UIResources\Skills\player_sniper.png" />
+    <Content Include="UIResources\Skills\player_solarfall.png" />
+    <Content Include="UIResources\Skills\player_summon_melee.png" />
+    <Content Include="UIResources\Skills\player_summon_ranged.png" />
+    <Content Include="UIResources\Skills\player_teleport.png" />
+    <Content Include="UIResources\Skills\player_turret.png" />
+    <Content Include="UIResources\Skills\player_vault.png" />
+    <Content Include="UIResources\Skills\player_vortex.png" />
+    <Content Include="UIResources\Skills\player_warcry.png" />
+    <Content Include="UIResources\Skills\player_whirlwind.png" />
+    <Content Include="UIResources\Skills\Select.png" />
+    <Content Include="UIResources\Skills\spreadshot.png" />
+    <None Include="Resources\skillbg.png" />
     <Content Include="UIResources\Character\Beard\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
