@@ -41,17 +41,43 @@ namespace WolcenEditor
             cboSkinColor.SelectedIndexChanged += _SelectedIndexChanged;
 
             panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
+            this.KeyDown += Panel1_KeyDown;
+            this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
 
             SkillTree.LoadTree(ref panel1);
         }
 
+        private void Panel1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                SkillTree.isShiftDown = false;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                SkillTree.isCtrlDown = false;
+            }
+        }
+
+        private void Panel1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                SkillTree.isShiftDown = true;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                SkillTree.isCtrlDown = true;
+            }
+        }
+
         private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((sender as TabControl).SelectedTab.Text == "Inventory")
+            if ((sender as TabControl).SelectedTab.Text == "Inventory" || (sender as TabControl).SelectedTab.Text == "Skills")
             {
-                this.Height += 35;
+                this.Height = 595 + 35;
             }
             else
             {
@@ -171,7 +197,6 @@ namespace WolcenEditor
 
         private void LoadCharacterData()
         {
-
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
             SetIndexToValueOf(ref cboHaircut, cData.Character.CharacterCustomization.Haircut);
             SetIndexToValueOf(ref cboHairColor, cData.Character.CharacterCustomization.HairColor);
@@ -193,6 +218,7 @@ namespace WolcenEditor
             SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
             LoadCharacterInventory();
+            SkillTree.LoadSkillInformation(ref panel1);
         }
 
         private void LoadCharacterInventory()
