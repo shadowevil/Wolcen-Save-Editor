@@ -48,20 +48,23 @@ namespace WolcenEditor
     {
         public IList<Effect> Default { get; set; }
         public IList<Effect> RolledAffixes { get; set; }
+        public IList<Effect> FromGems { get; set; }
 
-        public class Effect
-        {
-            public string EffectId { get; set; }
-            public string EffectName { get; set; }
-            public int MaxStack { get; set; }
-            public int bDefault { get; set; }
-            public IList<EffectParams> Parameters { get; set; }
-        }
 
-        public class EffectParams
-        {
-            public string semantic { get; set; }
-            public double value { get; set; }
-        }
+    }
+
+    public class Effect
+    {
+        public string EffectId { get; set; }
+        public string EffectName { get; set; }
+        public int MaxStack { get; set; }
+        public int bDefault { get; set; }
+        public IList<EffectParams> Parameters { get; set; }
+    }
+
+    public class EffectParams
+    {
+        public string semantic { get; set; }
+        public double value { get; set; }
     }
 }

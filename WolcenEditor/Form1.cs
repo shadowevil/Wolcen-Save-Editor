@@ -260,12 +260,10 @@ namespace WolcenEditor
                 {"charLWeapon" , 15},
                 {"charRWeapon" , 16},
             };
-
-
             var picBoxName = ((PictureBox)sender).Name;
             var statList = new List<string>();
 
-            //WIP currently supports armor and weapons. Sockets and affixes are still needed
+            //WIP currently supports armor, weapons, sockets, and gems.  affixes are still needed
             foreach (var item in cData.Character.InventoryEquipped)
             {
                 if (item.BodyPart == charMap[picBoxName])
@@ -312,16 +310,41 @@ namespace WolcenEditor
                                 var gemName = "";
                                 foreach (var socketProp in socket.GetType().GetProperties())
                                 {
-                                    var SocketPropValue = socketProp.GetValue(socket, null);
-                                    if (SocketPropValue == null)
+                                    var socketPropValue = socketProp.GetValue(socket, null);
+                                    if (socketPropValue == null)
                                         continue;
 
                                     foreach (var gem in socketProp.PropertyType.GetProperties())
                                     {
-                                        gemName = WolcenStaticData.ItemLocalizedNames[gem.GetValue(socketProp.GetValue(socket, null),null).ToString()]; 
+                                        var gemValue = gem.GetValue(socketPropValue, null);
+                                        gemName = WolcenStaticData.ItemLocalizedNames[gemValue.ToString()]; 
                                     }
                                 }
                                 statList.Add($"{WolcenStaticData.SocketType[(int)socket.Effect]} : [ {gemName} ]");
+                            }
+                        }
+
+                        if(prop.PropertyType == typeof(ItemMagicEffects) && item.MagicEffects != null)
+                        {
+                            foreach (var effectType in item.MagicEffects.GetType().GetProperties())
+                            {
+                                IList effectList = effectType.GetValue(item.MagicEffects, null) as IList;
+                                if(effectList != null)
+                                {
+                                    statList.Add($"{effectType.Name}");
+                                    foreach (var listItem in effectList)
+                                    {
+                                        foreach (var effect in listItem.GetType().GetProperties())
+                                        {
+                                            if(effect.Name != "MaxStack" && effect.Name != "bDefault")
+                                            {
+                                                statList.Add($"{effect.Name} {effect.GetValue(listItem, null)}");
+
+                                            }
+                                        }
+
+                                    }
+                                }             
                             }
                         }
                     }
@@ -329,6 +352,22 @@ namespace WolcenEditor
             }
             listBoxEquipItems.DataSource = new BindingSource(statList, null);
         }
+
+        public static Object GetPropValue(this Object obj, String name)
+        {
+            foreach (String part in name.Split('.'))
+            {
+                if (obj == null) { return null; }
+
+                Type type = obj.GetType();
+                PropertyInfo info = type.GetProperty(part);
+                if (info == null) { return null; }
+
+                obj = info.GetValue(obj, null);
+            }
+            return obj;
+        }
+
 
         // Body Parts:
         //  - Chest:             1
