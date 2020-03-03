@@ -175,14 +175,8 @@ namespace WolcenEditor
                         {
                             if (isShiftDown)
                             {
-                                if (cData.Character.UnlockedSkills[i].Level + 10 >= 90)
-                                {
-                                    cData.Character.UnlockedSkills[i].Level = 90;
-                                }
-                                else
-                                {
-                                    cData.Character.UnlockedSkills[i].Level += 10;
-                                }
+                                if (cData.Character.UnlockedSkills[i].Level + 10 >= 90) cData.Character.UnlockedSkills[i].Level = 90;
+                                else cData.Character.UnlockedSkills[i].Level += 10;
                             }
                             else
                             {
@@ -198,13 +192,7 @@ namespace WolcenEditor
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if (isCtrlDown)
-                {
-                    if (pb.Image == null)
-                    {
-                        RemoveSkill(pb);
-                    }
-                }
+                if (isCtrlDown && pb.Image == null) RemoveSkill(pb);
                 
                 int i = 0;
                 foreach (UnlockedSkill skill in cData.Character.UnlockedSkills)
