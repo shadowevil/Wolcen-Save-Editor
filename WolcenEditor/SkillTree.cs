@@ -13,6 +13,7 @@ namespace WolcenEditor
     {
         public static bool isShiftDown { get; set; }
         public static bool isCtrlDown { get; set; }
+        public static TabPage skillPage { get; private set; }
 
         public static Dictionary<string, SkillImageBox> SkillTreeDict = new Dictionary<string, SkillImageBox>
         {
@@ -60,24 +61,15 @@ namespace WolcenEditor
             int x = 15;
             int y = 25;
             int lineCount = 1;
+            skillPage = tabControl.TabPages["charSkills"];
+
             foreach (var skill in SkillTreeDict)
             {
                 skill.Value.sImage = new Bitmap(Image.FromFile(@".\UIResources\Skills\" + skill.Key + ".png"), 50, 50);
 
-                PictureBox pb = new PictureBox();
-                pb.Name = "_" + skill.Key;
-                pb.Size = skill.Value.sImage.Size;
-                pb.MaximumSize = skill.Value.sImage.Size;
-                pb.BackgroundImage = skill.Value.sImage;
-                pb.BackgroundImageLayout = ImageLayout.Stretch;
-                pb.Image = WolcenEditor.Properties.Resources.c_beltSlot;
-                pb.MouseMove += Pb_MouseMove;
-                pb.MouseLeave += Pb_MouseLeave;
-                pb.MouseClick += Pb_MouseClick;
-                pb.Visible = true;
-                pb.Location = new Point(x, y);
-                pb.BorderStyle = BorderStyle.Fixed3D;
-                tabControl.TabPages["charSkills"].Controls.Add(pb);
+                string pbName = "_" + skill.Key;
+                skillPage.Controls.Add(createPictureBox(pbName, skill.Value.sImage.Size, skill.Value.sImage, new Point(x, y)));
+                PictureBox pb = (skillPage.Controls.Find(pbName, true)[0] as PictureBox);
 
                 ToolTip tp = new ToolTip();
                 tp.SetToolTip(pb, "Left click to activate or level up a skill.\n"
@@ -85,30 +77,11 @@ namespace WolcenEditor
                                 + "Shift (right/left) click to (add/remove) levels.\n"
                                 + "Ctrl right click to remove skill from player.");
 
-                Label lb = new Label();
-                lb.Text = skill.Value.Name;
-                lb.MaximumSize = new Size(74, 30);
-                lb.MinimumSize = lb.MaximumSize;
-                lb.AutoSize = true;
-                lb.TextAlign = ContentAlignment.TopCenter;
-                lb.Font = new Font(Form1.DefaultFont.FontFamily, 7, FontStyle.Regular);
-                lb.ForeColor = Color.White;
-                lb.Location = new Point(x - 12, y + pb.Height + 2);
-                //lb.BorderStyle = BorderStyle.FixedSingle;
-                tabControl.TabPages["charSkills"].Controls.Add(lb);
+                skillPage.Controls.Add(createLabel("_cap" + skill.Key, skill.Value.Name, new Size(74, 30),
+                    ContentAlignment.TopCenter, new Point(x - 12, y + pb.Height + 2), 7));
 
-                Label lb2 = new Label();
-                lb2.Name = "_lbl" + skill.Key;
-                lb2.MaximumSize = new Size(30, 20);
-                lb2.MinimumSize = lb2.MaximumSize;
-                lb2.AutoSize = true;
-                lb2.TextAlign = ContentAlignment.MiddleCenter;
-                lb2.Font = new Font(Form1.DefaultFont.FontFamily, 11, FontStyle.Regular);
-                lb2.ForeColor = Color.White;
-                lb2.Location = new Point(x + 20 - 10, y + pb.Height + 2 + lb.Height);
-                lb2.Text = "0";
-                lb2.BorderStyle = BorderStyle.FixedSingle;
-                tabControl.TabPages["charSkills"].Controls.Add(lb2);
+                skillPage.Controls.Add(createLabel("_lbl" + skill.Key, "0", new Size(30, 20),
+                    ContentAlignment.MiddleCenter, new Point(x + 20 - 10, y + pb.Height + 2 + 30), 11, true, true));
 
                 x += skill.Value.sImage.Width + 24;
                 lineCount++;
@@ -121,27 +94,84 @@ namespace WolcenEditor
             }
         }
 
+        private static PictureBox createPictureBox(string name, Size size, Image bgImage, Point location)
+        {
+            PictureBox pb = new PictureBox();
+            pb.Name = name;
+            pb.Size = size;
+            pb.MaximumSize = pb.Size;
+            pb.BackgroundImage = bgImage;
+            pb.BackgroundImageLayout = ImageLayout.Stretch;
+            pb.Image = WolcenEditor.Properties.Resources.c_beltSlot;
+            pb.MouseMove += Pb_MouseMove;
+            pb.MouseLeave += Pb_MouseLeave;
+            pb.MouseClick += Pb_MouseClick;
+            pb.Visible = true;
+            pb.Location = location;
+            pb.BorderStyle = BorderStyle.Fixed3D;
+            return pb;
+        }
+
+        private static Label createLabel(string name, string text, Size size, ContentAlignment align, Point location, int fontSize, bool AutoSize = true, bool border = false)
+        {
+            Label lb = new Label();
+            lb.Name = name;
+            lb.Text = text;
+            lb.MaximumSize = size;
+            lb.MinimumSize = lb.MaximumSize;
+            lb.AutoSize = AutoSize;
+            lb.TextAlign = align;
+            lb.Font = new Font(Form1.DefaultFont.FontFamily, fontSize, FontStyle.Regular);
+            lb.ForeColor = Color.White;
+            lb.Location = location;
+            if(border) lb.BorderStyle = BorderStyle.FixedSingle;
+            return lb;
+        }
+
+        private static UnlockedSkill ActivateSkill(string name)
+        {
+            UnlockedSkill uSkill = new UnlockedSkill();
+            uSkill.SkillName = name.Substring(1, name.Length - 1);
+            uSkill.Level = 0;
+            uSkill.CurrentXp = "0";
+            uSkill.Variants = "0000000000000000";
+            return uSkill;
+        }
+
+        public static void RemoveSkill(PictureBox pb)
+        {
+            int i = 0;
+            foreach (var uSkill in cData.Character.UnlockedSkills)
+            {
+                if (pb.Name.Substring(1, pb.Name.Length - 1) == uSkill.SkillName)
+                {
+                    cData.Character.UnlockedSkills.RemoveAt(i);
+                    TabControl tabControl = (skillPage.Parent as TabControl);
+                    LoadSkillInformation(ref tabControl);
+                    return;
+                }
+                i++;
+            }
+        }
+
         private static void Pb_MouseClick(object sender, MouseEventArgs e)
         {
             if (cData.Character == null) return;
+            PictureBox pb = (sender as PictureBox);
+
             if (e.Button == MouseButtons.Left)
             {
-                if ((sender as PictureBox).Image != null)
+                if (pb.Image != null)
                 {
-                    UnlockedSkill uSkill = new UnlockedSkill();
-                    uSkill.SkillName = (sender as PictureBox).Name.Substring(1, (sender as PictureBox).Name.Length - 1);
-                    uSkill.Level = 0;
-                    uSkill.CurrentXp = "0";
-                    uSkill.Variants = "0000000000000000";
-                    cData.Character.UnlockedSkills.Add(uSkill);
-                    (sender as PictureBox).Image = null;
+                    cData.Character.UnlockedSkills.Add(ActivateSkill(pb.Name));
+                    pb.Image = null;
                 }
                 else
                 {
                     int i = 0;
                     foreach (UnlockedSkill skill in cData.Character.UnlockedSkills)
                     {
-                        if ((sender as PictureBox).Name == ("_" + skill.SkillName))
+                        if (pb.Name == ("_" + skill.SkillName))
                         {
                             if (isShiftDown)
                             {
@@ -159,7 +189,7 @@ namespace WolcenEditor
                                 if (cData.Character.UnlockedSkills[i].Level >= 90) return;
                                 cData.Character.UnlockedSkills[i].Level++;
                             }
-                            (sender as PictureBox).Parent.Controls["_lbl" + skill.SkillName].Text = cData.Character.UnlockedSkills[i].Level.ToString();
+                            skillPage.Controls["_lbl" + skill.SkillName].Text = cData.Character.UnlockedSkills[i].Level.ToString();
                             return;
                         }
                         i++;
@@ -168,47 +198,30 @@ namespace WolcenEditor
             }
             else if (e.Button == MouseButtons.Right)
             {
-                int i = 0;
                 if (isCtrlDown)
                 {
-                    if ((sender as PictureBox).Image == null)
+                    if (pb.Image == null)
                     {
-                        foreach (var uSkill in cData.Character.UnlockedSkills)
-                        {
-                            if ((sender as PictureBox).Name.Substring(1, (sender as PictureBox).Name.Length - 1) == uSkill.SkillName)
-                            {
-                                cData.Character.UnlockedSkills.RemoveAt(i);
-                                TabControl tabControl = (TabControl)(sender as PictureBox).Parent.Parent;
-                                LoadSkillInformation(ref tabControl);
-                                return;
-                            }
-                            i++;
-                        }
+                        RemoveSkill(pb);
                     }
                 }
-
-                i = 0;
+                
+                int i = 0;
                 foreach (UnlockedSkill skill in cData.Character.UnlockedSkills)
                 {
-                    if ((sender as PictureBox).Name == ("_" + skill.SkillName))
+                    if (pb.Name == ("_" + skill.SkillName))
                     {
                         if (isShiftDown)
                         {
-                            if (cData.Character.UnlockedSkills[i].Level - 10 <= 0)
-                            {
-                                cData.Character.UnlockedSkills[i].Level = 0;
-                            }
-                            else
-                            {
-                                cData.Character.UnlockedSkills[i].Level -= 10;
-                            }
+                            if (cData.Character.UnlockedSkills[i].Level - 10 <= 0) cData.Character.UnlockedSkills[i].Level = 0;
+                            else cData.Character.UnlockedSkills[i].Level -= 10;
                         }
                         else
                         {
-                            if (cData.Character.UnlockedSkills[i].Level <= 0) return;
+                            if (cData.Character.UnlockedSkills[i].Level - 1 < 0) return;
                             cData.Character.UnlockedSkills[i].Level--;
                         }
-                        (sender as PictureBox).Parent.Controls["_lbl" + skill.SkillName].Text = cData.Character.UnlockedSkills[i].Level.ToString();
+                        skillPage.Controls["_lbl" + skill.SkillName].Text = cData.Character.UnlockedSkills[i].Level.ToString();
                         return;
                     }
                     i++;
@@ -220,17 +233,17 @@ namespace WolcenEditor
         {
             foreach (var skill in SkillTreeDict)
             {
-                tabControl.TabPages["charSkills"].Controls["_lbl" + skill.Key].Text = "0";
-                (tabControl.TabPages["charSkills"].Controls["_" + skill.Key] as PictureBox).Image = WolcenEditor.Properties.Resources.c_beltSlot;
+                skillPage.Controls["_lbl" + skill.Key].Text = "0";
+                (skillPage.Controls["_" + skill.Key] as PictureBox).Image = WolcenEditor.Properties.Resources.c_beltSlot;
                 if (cData.Character != null)
                 {
                     foreach (UnlockedSkill uSkill in cData.Character.UnlockedSkills)
                     {
                         if (uSkill.SkillName == skill.Key)
                         {
-                            PictureBox pb = (tabControl.TabPages["charSkills"].Controls["_" + skill.Key] as PictureBox);
+                            PictureBox pb = (skillPage.Controls["_" + skill.Key] as PictureBox);
                             pb.Image = null;
-                            Label lb2 = (tabControl.TabPages["charSkills"].Controls["_lbl" + uSkill.SkillName] as Label);
+                            Label lb2 = (skillPage.Controls["_lbl" + uSkill.SkillName] as Label);
                             lb2.Text = uSkill.Level.ToString();
                         }
                     }
