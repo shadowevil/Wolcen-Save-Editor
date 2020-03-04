@@ -142,10 +142,7 @@
     <Compile Include="ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-
-    <Compile Include="SerializableExpandableObjectConverter.cs" />
     <Compile Include="PlayerData.cs" />
-
     <Compile Include="SkillTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -241,44 +238,141 @@
     <None Include="Resources\inventory_I72.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UIResources\Skills\player_aetherblade.png" />
-    <Content Include="UIResources\Skills\player_aetherblast.png" />
-    <Content Include="UIResources\Skills\player_arrowsrain.png" />
-    <Content Include="UIResources\Skills\player_bladeslinger.png" />
-    <Content Include="UIResources\Skills\player_bomb.png" />
-    <Content Include="UIResources\Skills\player_brutalstrike.png" />
-    <Content Include="UIResources\Skills\player_bulleye.png" />
-    <Content Include="UIResources\Skills\player_chainlightning.png" />
-    <Content Include="UIResources\Skills\player_charge.png" />
-    <Content Include="UIResources\Skills\player_corpseexplosion.png" />
-    <Content Include="UIResources\Skills\player_deathmark.png" />
-    <Content Include="UIResources\Skills\player_dualstrike.png" />
-    <Content Include="UIResources\Skills\player_fireball.png" />
-    <Content Include="UIResources\Skills\player_frostcomet.png" />
-    <Content Include="UIResources\Skills\player_frostlance.png" />
-    <Content Include="UIResources\Skills\player_frostnova.png" />
-    <Content Include="UIResources\Skills\player_hammer.png" />
-    <Content Include="UIResources\Skills\player_hook.png" />
-    <Content Include="UIResources\Skills\player_ironguard.png" />
-    <Content Include="UIResources\Skills\player_laceration.png" />
-    <Content Include="UIResources\Skills\player_laser.png" />
-    <Content Include="UIResources\Skills\player_leap.png" />
-    <Content Include="UIResources\Skills\player_reave.png" />
-    <Content Include="UIResources\Skills\player_ringofpain.png" />
-    <Content Include="UIResources\Skills\player_sacredground.png" />
-    <Content Include="UIResources\Skills\player_smokebomb.png" />
-    <Content Include="UIResources\Skills\player_sniper.png" />
-    <Content Include="UIResources\Skills\player_solarfall.png" />
-    <Content Include="UIResources\Skills\player_summon_melee.png" />
-    <Content Include="UIResources\Skills\player_summon_ranged.png" />
-    <Content Include="UIResources\Skills\player_teleport.png" />
-    <Content Include="UIResources\Skills\player_turret.png" />
-    <Content Include="UIResources\Skills\player_vault.png" />
-    <Content Include="UIResources\Skills\player_vortex.png" />
-    <Content Include="UIResources\Skills\player_warcry.png" />
-    <Content Include="UIResources\Skills\player_whirlwind.png" />
-    <Content Include="UIResources\Skills\Select.png" />
-    <Content Include="UIResources\Skills\spreadshot.png" />
+    <Content Include="UIResources\ItemBorders\1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\ItemBorders\7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_aetherblade.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_aetherblast.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_arrowsrain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_bladeslinger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_bomb.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_brutalstrike.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_bulleye.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_chainlightning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_charge.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_corpseexplosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_deathmark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_dualstrike.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_fireball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_frostcomet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_frostlance.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_frostnova.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_hammer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_hook.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_ironguard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_laceration.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_laser.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_leap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_reave.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_ringofpain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_sacredground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_smokebomb.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_sniper.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_solarfall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_summon_melee.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_summon_ranged.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_teleport.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_turret.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_vault.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_vortex.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_warcry.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\player_whirlwind.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\Select.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Skills\spreadshot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\skillbg.png" />
     <Content Include="UIResources\Character\Beard\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1306,227 +1400,669 @@
     <Content Include="UIResources\Items\gun.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="UIResources\Items\h1_axe_orc.png" />
-    <Content Include="UIResources\Items\h1_axe_templar.png" />
-    <Content Include="UIResources\Items\h1_axe_tier1.png" />
-    <Content Include="UIResources\Items\h1_axe_tier10.png" />
-    <Content Include="UIResources\Items\h1_axe_tier11.png" />
-    <Content Include="UIResources\Items\h1_axe_tier12.png" />
-    <Content Include="UIResources\Items\h1_axe_tier13.png" />
-    <Content Include="UIResources\Items\h1_axe_tier14.png" />
-    <Content Include="UIResources\Items\h1_axe_tier15.png" />
-    <Content Include="UIResources\Items\h1_axe_tier16.png" />
-    <Content Include="UIResources\Items\h1_axe_tier2.png" />
-    <Content Include="UIResources\Items\h1_axe_tier3.png" />
-    <Content Include="UIResources\Items\h1_axe_tier4.png" />
-    <Content Include="UIResources\Items\h1_axe_tier5.png" />
-    <Content Include="UIResources\Items\h1_axe_tier6.png" />
-    <Content Include="UIResources\Items\h1_axe_tier7.png" />
-    <Content Include="UIResources\Items\h1_axe_tier8.png" />
-    <Content Include="UIResources\Items\h1_axe_tier9.png" />
-    <Content Include="UIResources\Items\h1_dagger_orc.png" />
-    <Content Include="UIResources\Items\h1_dagger_templar.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier1.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier10.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier11.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier12.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier13.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier14.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier15.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier16.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier2.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier3.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier4.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier5.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier6.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier7.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier8.png" />
-    <Content Include="UIResources\Items\h1_dagger_tier9.png" />
-    <Content Include="UIResources\Items\h1_hammer_glass.png" />
-    <Content Include="UIResources\Items\h1_hammer_orc.png" />
-    <Content Include="UIResources\Items\h1_hammer_templar.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier1.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier10.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier11.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier12.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier13.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier14.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier15.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier16.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier2.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier3.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier4.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier5.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier6.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier7.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier8.png" />
-    <Content Include="UIResources\Items\h1_hammer_tier9.png" />
-    <Content Include="UIResources\Items\h1_offhand_spellbladecatalyst.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier1.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier10.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier11.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier12.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier13.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier14.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier15.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier16.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier2.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier3.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier4.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier5.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier6.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier7.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier8.png" />
-    <Content Include="UIResources\Items\h1_offhand_tier9.png" />
-    <Content Include="UIResources\Items\h1_pistol_FlintLockPistol.png" />
-    <Content Include="UIResources\Items\h1_pistol_templar.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier1.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier10.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier11.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier12.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier13.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier14.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier15.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier16.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier2.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier3.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier4.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier5.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier6.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier7.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier8.png" />
-    <Content Include="UIResources\Items\h1_pistol_tier9.png" />
-    <Content Include="UIResources\Items\h1_shield_quintet_of_sundowns.png" />
-    <Content Include="UIResources\Items\h1_shield_templar.png" />
-    <Content Include="UIResources\Items\h1_shield_tier1.png" />
-    <Content Include="UIResources\Items\h1_shield_tier10.png" />
-    <Content Include="UIResources\Items\h1_shield_tier11.png" />
-    <Content Include="UIResources\Items\h1_shield_tier12.png" />
-    <Content Include="UIResources\Items\h1_shield_tier13.png" />
-    <Content Include="UIResources\Items\h1_shield_tier14.png" />
-    <Content Include="UIResources\Items\h1_shield_tier15.png" />
-    <Content Include="UIResources\Items\h1_shield_tier16.png" />
-    <Content Include="UIResources\Items\h1_shield_tier2.png" />
-    <Content Include="UIResources\Items\h1_shield_tier3.png" />
-    <Content Include="UIResources\Items\h1_shield_tier4.png" />
-    <Content Include="UIResources\Items\h1_shield_tier5.png" />
-    <Content Include="UIResources\Items\h1_shield_tier6.png" />
-    <Content Include="UIResources\Items\h1_shield_tier7.png" />
-    <Content Include="UIResources\Items\h1_shield_tier8.png" />
-    <Content Include="UIResources\Items\h1_shield_tier9.png" />
-    <Content Include="UIResources\Items\h1_sword_blade_of_envy.png" />
-    <Content Include="UIResources\Items\h1_sword_glass.png" />
-    <Content Include="UIResources\Items\h1_sword_orc.png" />
-    <Content Include="UIResources\Items\h1_sword_templar.png" />
-    <Content Include="UIResources\Items\h1_sword_tier1.png" />
-    <Content Include="UIResources\Items\h1_sword_tier10.png" />
-    <Content Include="UIResources\Items\h1_sword_tier11.png" />
-    <Content Include="UIResources\Items\h1_sword_tier12.png" />
-    <Content Include="UIResources\Items\h1_sword_tier13.png" />
-    <Content Include="UIResources\Items\h1_sword_tier14.png" />
-    <Content Include="UIResources\Items\h1_sword_tier15.png" />
-    <Content Include="UIResources\Items\h1_sword_tier16.png" />
-    <Content Include="UIResources\Items\h1_sword_tier2.png" />
-    <Content Include="UIResources\Items\h1_sword_tier3.png" />
-    <Content Include="UIResources\Items\h1_sword_tier4.png" />
-    <Content Include="UIResources\Items\h1_sword_tier5.png" />
-    <Content Include="UIResources\Items\h1_sword_tier6.png" />
-    <Content Include="UIResources\Items\h1_sword_tier7.png" />
-    <Content Include="UIResources\Items\h1_sword_tier8.png" />
-    <Content Include="UIResources\Items\h1_sword_tier9.png" />
-    <Content Include="UIResources\Items\h1_sword_vanitys_edge.png" />
-    <Content Include="UIResources\Items\h2_axe_orc.png" />
-    <Content Include="UIResources\Items\h2_axe_templar.png" />
-    <Content Include="UIResources\Items\h2_axe_tier1.png" />
-    <Content Include="UIResources\Items\h2_axe_tier10.png" />
-    <Content Include="UIResources\Items\h2_axe_tier11.png" />
-    <Content Include="UIResources\Items\h2_axe_tier12.png" />
-    <Content Include="UIResources\Items\h2_axe_tier13.png" />
-    <Content Include="UIResources\Items\h2_axe_tier14.png" />
-    <Content Include="UIResources\Items\h2_axe_tier15.png" />
-    <Content Include="UIResources\Items\h2_axe_tier16.png" />
-    <Content Include="UIResources\Items\h2_axe_tier2.png" />
-    <Content Include="UIResources\Items\h2_axe_tier3.png" />
-    <Content Include="UIResources\Items\h2_axe_tier4.png" />
-    <Content Include="UIResources\Items\h2_axe_tier5.png" />
-    <Content Include="UIResources\Items\h2_axe_tier6.png" />
-    <Content Include="UIResources\Items\h2_axe_tier7.png" />
-    <Content Include="UIResources\Items\h2_axe_tier8.png" />
-    <Content Include="UIResources\Items\h2_axe_tier9.png" />
-    <Content Include="UIResources\Items\h2_bow_templar.png" />
-    <Content Include="UIResources\Items\h2_bow_tier1.png" />
-    <Content Include="UIResources\Items\h2_bow_tier10.png" />
-    <Content Include="UIResources\Items\h2_bow_tier11.png" />
-    <Content Include="UIResources\Items\h2_bow_tier12.png" />
-    <Content Include="UIResources\Items\h2_bow_tier13.png" />
-    <Content Include="UIResources\Items\h2_bow_tier14.png" />
-    <Content Include="UIResources\Items\h2_bow_tier15.png" />
-    <Content Include="UIResources\Items\h2_bow_tier16.png" />
-    <Content Include="UIResources\Items\h2_bow_tier2.png" />
-    <Content Include="UIResources\Items\h2_bow_tier3.png" />
-    <Content Include="UIResources\Items\h2_bow_tier4.png" />
-    <Content Include="UIResources\Items\h2_bow_tier5.png" />
-    <Content Include="UIResources\Items\h2_bow_tier6.png" />
-    <Content Include="UIResources\Items\h2_bow_tier7.png" />
-    <Content Include="UIResources\Items\h2_bow_tier8.png" />
-    <Content Include="UIResources\Items\h2_bow_tier9.png" />
-    <Content Include="UIResources\Items\h2_dagger_tier3.png" />
-    <Content Include="UIResources\Items\h2_hammer_hand_of_the_sleeper.png" />
-    <Content Include="UIResources\Items\h2_hammer_templar.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier1.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier10.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier11.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier12.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier13.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier14.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier15.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier16.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier2.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier3.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier4.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier5.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier6.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier7.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier8.png" />
-    <Content Include="UIResources\Items\h2_hammer_tier9.png" />
-    <Content Include="UIResources\Items\h2_staff_orc.png" />
-    <Content Include="UIResources\Items\h2_staff_templar.png" />
-    <Content Include="UIResources\Items\h2_staff_tier1.png" />
-    <Content Include="UIResources\Items\h2_staff_tier10.png" />
-    <Content Include="UIResources\Items\h2_staff_tier11.png" />
-    <Content Include="UIResources\Items\h2_staff_tier12.png" />
-    <Content Include="UIResources\Items\h2_staff_tier13.png" />
-    <Content Include="UIResources\Items\h2_staff_tier14.png" />
-    <Content Include="UIResources\Items\h2_staff_tier15.png" />
-    <Content Include="UIResources\Items\h2_staff_tier16.png" />
-    <Content Include="UIResources\Items\h2_staff_tier2.png" />
-    <Content Include="UIResources\Items\h2_staff_tier3.png" />
-    <Content Include="UIResources\Items\h2_staff_tier4.png" />
-    <Content Include="UIResources\Items\h2_staff_tier5.png" />
-    <Content Include="UIResources\Items\h2_staff_tier6.png" />
-    <Content Include="UIResources\Items\h2_staff_tier7.png" />
-    <Content Include="UIResources\Items\h2_staff_tier8.png" />
-    <Content Include="UIResources\Items\h2_staff_tier9.png" />
-    <Content Include="UIResources\Items\h2_staff_zapstick.png" />
-    <Content Include="UIResources\Items\h2_sword_glass.png" />
-    <Content Include="UIResources\Items\h2_sword_orc.png" />
-    <Content Include="UIResources\Items\h2_sword_templar.png" />
-    <Content Include="UIResources\Items\h2_sword_tier1.png" />
-    <Content Include="UIResources\Items\h2_sword_tier10.png" />
-    <Content Include="UIResources\Items\h2_sword_tier11.png" />
-    <Content Include="UIResources\Items\h2_sword_tier12.png" />
-    <Content Include="UIResources\Items\h2_sword_tier13.png" />
-    <Content Include="UIResources\Items\h2_sword_tier14.png" />
-    <Content Include="UIResources\Items\h2_sword_tier15.png" />
-    <Content Include="UIResources\Items\h2_sword_tier16.png" />
-    <Content Include="UIResources\Items\h2_sword_tier2.png" />
-    <Content Include="UIResources\Items\h2_sword_tier3.png" />
-    <Content Include="UIResources\Items\h2_sword_tier4.png" />
-    <Content Include="UIResources\Items\h2_sword_tier5.png" />
-    <Content Include="UIResources\Items\h2_sword_tier6.png" />
-    <Content Include="UIResources\Items\h2_sword_tier7.png" />
-    <Content Include="UIResources\Items\h2_sword_tier8.png" />
-    <Content Include="UIResources\Items\h2_sword_tier9.png" />
+    <Content Include="UIResources\Items\h1_axe_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_axe_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_dagger_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_glass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_hammer_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_spellbladecatalyst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_offhand_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_FlintLockPistol.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_pistol_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_quintet_of_sundowns.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_shield_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_blade_of_envy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_glass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h1_sword_vanitys_edge.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_axe_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_bow_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_dagger_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_hand_of_the_sleeper.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_hammer_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_staff_zapstick.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_glass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_orc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_templar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\h2_sword_tier9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="UIResources\Items\harvester.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -4356,10 +4892,18 @@
     <Content Include="UIResources\Items\utility_20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="UIResources\Items\u_charger_h2_staff.png" />
-    <Content Include="UIResources\Items\u_primordial_h1_sword.png" />
-    <Content Include="UIResources\Items\u_primordial_h2_axe.png" />
-    <Content Include="UIResources\Items\u_sarisel_h1_sword.png" />
+    <Content Include="UIResources\Items\u_charger_h2_staff.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\u_primordial_h1_sword.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\u_primordial_h2_axe.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UIResources\Items\u_sarisel_h1_sword.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="UIResources\Items\warrior_boots_tier1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

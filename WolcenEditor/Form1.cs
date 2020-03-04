@@ -281,8 +281,6 @@ namespace WolcenEditor
 
         private void LoadItemData(object sender, EventArgs e)
         {
-
-
             var charMap = new Dictionary<string,int>
             {
                 {"charHelm", 3 },
@@ -301,22 +299,13 @@ namespace WolcenEditor
                 {"charRWeapon" , 16},
             };
             var picBoxName = ((PictureBox)sender).Name;
-            var statList = new List<string>();
-
-            //WIP currently supports armor, weapons, sockets, and gems.  affixes are still needed
-            //treeListItem.ResetText();
-
-
             foreach (var item in cData.Character.InventoryEquipped)
             {
                 if (item.BodyPart == charMap[picBoxName])
                 {
-
-                    propertyGridInv.SelectedObject = item;
-                    propertyGridInv.ExpandAllGridItems();
+                    break;
                 }
             }
-
         }
 
 
@@ -345,6 +334,7 @@ namespace WolcenEditor
                 if (i.BodyPart == bodyPart)
                 {
                     string itemName = "";
+                    int itemRarity = i.Rarity;
                     if(bodyPart == 16 || bodyPart == 15)
                         itemName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
                     else if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
@@ -356,13 +346,13 @@ namespace WolcenEditor
                     {
                         if (flip == true)
                         {
-                            Bitmap bmp = new Bitmap(Image.FromFile(dirPath + itemName));
+                            Bitmap bmp = ResizeAndCombine(dirPath, itemName, itemRarity);
                             bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
                             return bmp;
                         }
                         else
                         {
-                            return new Bitmap(Image.FromFile(dirPath + itemName));
+                            return ResizeAndCombine(dirPath, itemName, itemRarity );
                         }
                     }
                     else
@@ -379,6 +369,33 @@ namespace WolcenEditor
                 }
             }
             return null;
+        }
+
+        private Bitmap ResizeAndCombine(string dirPath, string itemName, int quality)
+        {
+            List<Bitmap> images = new List<Bitmap>();
+            var underImage = new Bitmap(Image.FromFile(@".\UIResources\ItemBorders\" + quality  + ".png"));
+
+            var finalImage = new Bitmap(underImage.Width, underImage.Height);
+
+            var itemImage = new Bitmap(Image.FromFile(dirPath + itemName));
+
+            Bitmap resized = new Bitmap(itemImage, new Size(underImage.Width, underImage.Height));
+
+            images.Add(underImage);
+            images.Add(resized);
+
+            using (Graphics g = Graphics.FromImage(finalImage))
+            {
+                g.Clear(Color.Black);
+                //go through each image and draw it on the final image (Notice the offset; since I want to overlay the images i won't have any offset between the images in the finalImage)
+                int offset = 0;
+                foreach (Bitmap image in images)
+                {
+                    g.DrawImage(image, new Rectangle(offset, 0, image.Width, image.Height));
+                }
+            }
+            return finalImage;
         }
 
         private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
