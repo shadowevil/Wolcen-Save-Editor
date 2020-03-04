@@ -142,6 +142,7 @@
     <Compile Include="ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PlayerData.cs" />
     <Compile Include="SkillTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

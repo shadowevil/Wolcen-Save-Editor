@@ -13,15 +13,22 @@ namespace WolcenEditor
 {
     public partial class Form1 : Form
     {
-        public static string saveFilePath;
+        public static string characterSavePath;
+        public static string playerDataSavePath;
+        public string WindowName = "Wolcen Save Editor";
+        public bool hasSaved = false;
 
         public Form1()
         {
             InitializeComponent();
+            InitForm();
+        }
 
-            panel1.Enabled = true;
-
+        public void InitForm()
+        {
             this.Resize += Form1_Resize;
+            panel1.Enabled = false;
+            
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
             charFerocity.KeyPress += numberOnly_KeyPress;
@@ -41,22 +48,15 @@ namespace WolcenEditor
             cboSkinColor.SelectedIndexChanged += _SelectedIndexChanged;
 
             panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
+            this.KeyDown += Panel1_KeyDown;
+            this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
-
-            SkillTree.LoadTree(ref panel1);
         }
 
-        private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Form1_Resize(object sender, EventArgs e)
         {
-            if ((sender as TabControl).SelectedTab.Text == "Inventory")
-            {
-                this.Height += 35;
-            }
-            else
-            {
-                this.Height = 595;
-            }
+            panel1.Size = new Size(panel1.Width, this.Height - 62);
         }
 
         private void _SelectedIndexChanged(object sender, EventArgs e)
@@ -67,18 +67,13 @@ namespace WolcenEditor
             {
                 case "cboSkinColor": cData.Character.CharacterCustomization.SkinColor = value; break;
                 case "cboBeard": cData.Character.CharacterCustomization.Beard = value; break;
-                case "cboBeadColor": cData.Character.CharacterCustomization.BeardColor = value; break;
+                case "cboBeardColor": cData.Character.CharacterCustomization.BeardColor = value; break;
                 case "cboREye": cData.Character.CharacterCustomization.RightEye = value; break;
                 case "cboLEye": cData.Character.CharacterCustomization.LeftEye = value; break;
                 case "cboHairColor": cData.Character.CharacterCustomization.HairColor = value; break;
                 case "cboHaircut": cData.Character.CharacterCustomization.Haircut = value; break;
                 case "cboFace": cData.Character.CharacterCustomization.Face = value; break;
             }
-        }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            panel1.Size = new Size(this.Width - 10, this.Height - 65);
         }
 
         private void LoadComboBoxes()
@@ -122,55 +117,61 @@ namespace WolcenEditor
             }
         }
 
-        private void numberOnly_KeyPress(object sender, KeyPressEventArgs e)
+        private bool onCloseCheck(object sender, EventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-                (e.KeyChar != '.'))
+            if ((sender as ToolStripMenuItem).Text != "Open")
             {
-                e.Handled = true;
+                if ((sender as ToolStripMenuItem).Text != "Exit" && cData.Character == null && cData.PlayerData == null)
+                {
+                    return false;
+                }
             }
+            if (!hasSaved && cData.Character != null && cData.PlayerData != null)
+            {
+                DialogResult dr = MessageBox.Show("You have not yet saved your changes, would you like to save your character?",
+                    "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-            // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
+                if (dr == DialogResult.Yes)
+                {
+                    saveToolStripMenuItem_Click(sender, e);
+                    return true;
+                }
+                else if (dr == DialogResult.No)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveProfile()
         {
-            string js = string.Empty;
-            var d = new OpenFileDialog();
-            d.Title = "Open Wolcen Save Game File";
-            d.Filter = "JSON files|*.json";
-            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
-            d.InitialDirectory = userFolder + WolcenSavePath;
-            if (d.ShowDialog() == DialogResult.OK)
+            if (cData.Character != null && cData.PlayerData != null)
             {
-                if (cData.Character != null) cData.Character = null;
-                cData.Character = CharacterIO.ReadCharacter(d.FileName);
-                saveFilePath = d.FileName;
-            }
-            else { return; }
-
-            panel1.Enabled = true;
-
-            
-            LoadCharacterData();
-            
-        }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (cData.Character != null)
-            {
-                CharacterIO.WriteCharacter(saveFilePath, cData.Character);
+                Count c = new Count();
+                c.Total = charGold.Text;
+                var buffer = new byte[sizeof(UInt64)];
+                new Random().NextBytes(buffer);
+                UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
+                c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                cData.Character.Telemetry.GoldDropped = c;
+                cData.Character.Telemetry.GoldGainedQuests = c;
+                cData.Character.Telemetry.GoldGainedMerchant = c;
+                cData.Character.Telemetry.GoldPicked = c;
+                CharacterIO.WriteCharacter(characterSavePath, cData.Character);
+                PlayerDataIO.WritePlayerData(playerDataSavePath, cData.PlayerData);
+                hasSaved = true;
             }
         }
 
         private void LoadCharacterData()
         {
+            LoadPlayerData();
+            this.Text = WindowName + " - " + cData.Character.Name;
 
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
             SetIndexToValueOf(ref cboHaircut, cData.Character.CharacterCustomization.Haircut);
@@ -189,10 +190,46 @@ namespace WolcenEditor
             SetBinding(ref charToughness, cData.Character.Stats, "Constitution");
             SetBinding(ref charAgility, cData.Character.Stats, "Agility");
             SetBinding(ref charWillpower, cData.Character.Stats, "Power");
+            charGold.Text = cData.Character.Stats.Gold.ToString();
             SetBinding(ref charGold, cData.Character.Stats, "Gold");
+            charPrimordial.Text = cData.Character.Stats.PrimordialAffinity;
             SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
             LoadCharacterInventory();
+            SkillTree.LoadSkillInformation(ref panel1);
+        }
+
+        private void LoadPlayerData()
+        {
+            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string WolcenPlayerData = userFolder + "\\Saved Games\\wolcen\\savegames\\playerdata.json";
+            if (File.Exists(WolcenPlayerData))
+            {
+                if (cData.PlayerData != null) cData.PlayerData = null;
+                cData.PlayerData = PlayerDataIO.ReadPlayerData(WolcenPlayerData);
+                playerDataSavePath = WolcenPlayerData;
+
+                CheckPlayerData();
+            }
+        }
+
+        private void CheckPlayerData()
+        {
+            if (cData.PlayerData.AccountCosmeticInventory.CosmeticColorsUnlocked.bitmask == PlayerDataIO.ColorsUnlockedBitmask)
+            {
+                if (cData.PlayerData.AccountCosmeticInventory.CosmeticWeaponsUnlocked.bitmask == PlayerDataIO.WeaponsUnlockedBitmask)
+                {
+                    if (cData.PlayerData.AccountCosmeticInventory.CosmeticArmorsUnlocked.bitmask == PlayerDataIO.ArmorsUnlockedBitmask)
+                    {
+                        chkAllCosmetics.Checked = true;
+                    } else chkAllCosmetics.Checked = false;
+                } else chkAllCosmetics.Checked = false;
+            } else chkAllCosmetics.Checked = false;
+
+            if (cData.PlayerData.SoftcoreNormal.CompletedStory)
+            {
+                chkChampion.Checked = true;
+            } else chkChampion.Checked = false;
         }
 
         private void LoadCharacterInventory()
@@ -457,11 +494,153 @@ namespace WolcenEditor
                 charBelt2.BackgroundImage = WolcenEditor.Properties.Resources.e_beltSlot;
             }
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cData.PlayerData == null) return;
+            if (chkAllCosmetics.Checked == false)
+            {
+                cData.PlayerData.AccountCosmeticInventory.CosmeticArmorsUnlocked.bitmask = PlayerDataIO.ArmorsUnlockedBitmask.Replace("f", "0");
+                cData.PlayerData.AccountCosmeticInventory.CosmeticColorsUnlocked.bitmask = PlayerDataIO.ColorsUnlockedBitmask.Replace("f", "0");
+                cData.PlayerData.AccountCosmeticInventory.CosmeticWeaponsUnlocked.bitmask = PlayerDataIO.WeaponsUnlockedBitmask.Replace("f", "0");
+            }
+            else if (chkAllCosmetics.Checked == true)
+            {
+                cData.PlayerData.AccountCosmeticInventory.CosmeticArmorsUnlocked.bitmask = PlayerDataIO.ArmorsUnlockedBitmask;
+                cData.PlayerData.AccountCosmeticInventory.CosmeticColorsUnlocked.bitmask = PlayerDataIO.ColorsUnlockedBitmask;
+                cData.PlayerData.AccountCosmeticInventory.CosmeticWeaponsUnlocked.bitmask = PlayerDataIO.WeaponsUnlockedBitmask;
+            }
+        }
+
+        private void chkChampion_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cData.PlayerData == null) return;
+            if (chkChampion.Checked)
+            {
+                cData.PlayerData.SoftcoreNormal.CompletedStory = true;
+            }
+            else
+            {
+                cData.PlayerData.SoftcoreNormal.CompletedStory = false;
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveProfile();
+        }
+
+        private void closeStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (onCloseCheck(sender, e) == false) return;
+            cData.Character = null;
+            cData.PlayerData = null;
+            this.Controls.Clear();
+            InitializeComponent();
+            InitForm();
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (onCloseCheck(sender, e) == false) return;
+            Environment.Exit(0);
+        }
+
+        private void numberOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (onCloseCheck(sender, e) == false) return;
+
+            string js = string.Empty;
+            using (OpenFileDialog d = new OpenFileDialog())
+            {
+                d.Title = "Open Wolcen Save Game File";
+                d.Filter = "JSON files|*.json";
+                string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
+                d.InitialDirectory = userFolder + WolcenSavePath;
+                if (d.ShowDialog() == DialogResult.OK)
+                {
+                    if (cData.Character != null) cData.Character = null;
+                    cData.Character = CharacterIO.ReadCharacter(d.FileName);
+                    characterSavePath = d.FileName;
+                }
+                else { return; }
+            }
+
+            panel1.Enabled = true;
+
+            SkillTree.LoadTree(ref panel1);
+            LoadCharacterData();
+        }
+
+        private void Panel1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                SkillTree.isShiftDown = false;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                SkillTree.isCtrlDown = false;
+            }
+        }
+
+        private void Panel1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                SkillTree.isShiftDown = true;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                SkillTree.isCtrlDown = true;
+            }
+        }
+
+        private void Panel1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((sender as TabControl).SelectedTab.Text == "Inventory" || (sender as TabControl).SelectedTab.Text == "Skills")
+            {
+                this.Height = 595 + 35;
+            }
+            else
+            {
+                this.Height = 595;
+            }
+        }
     }
 
     public static class cData
     {
+        private static PlayerData playerData;
         private static CharacterData character;
+
+        public static PlayerData PlayerData
+        {
+            get
+            {
+                return playerData;
+            }
+            set
+            {
+                playerData = value;
+            }
+        }
 
         public static CharacterData Character
         {

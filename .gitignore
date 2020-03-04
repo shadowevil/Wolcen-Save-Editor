@@ -6,7 +6,6 @@
 
 #Project Test
 WolcenData.Tests/
-WolcenEditor/UIResources/
 scripts/*
 !scripts/*.py
 
