@@ -493,6 +493,7 @@ namespace WolcenEditor
             {1, "Basic"},
             {2, "Magic"},
             {3, "Rare"},
+            {4, "Legendary"},
             {5, "Set"},
             {6, "Unique"},
             {7, "Quest"}
@@ -1330,7 +1331,9 @@ namespace WolcenEditor
             { "unique_expurgation_glove_max", "unique_exorcistbracer.png" },
             { "unique_expurgation_glove_max_max", "unique_exorcistbracer.png" },
             { "unique_republic_helmet_max", "unique_helmet_RepuSniper.png" },
-            { "unique_republic_helmet_max_max", "unique_helmet_RepuSniper.png" }
+            { "unique_republic_helmet_max_max", "unique_helmet_RepuSniper.png" },
+            { "OutfitVeteran_Armband", "unique_glove_republic_veteran.png" }
+           
         };
 
         public static readonly Dictionary<string, string> ItemLocalizedNames = new Dictionary<string, string>
