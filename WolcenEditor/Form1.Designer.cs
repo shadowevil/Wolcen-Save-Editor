@@ -33,11 +33,14 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
             this.charPage = new System.Windows.Forms.TabPage();
+            this.chkChampion = new System.Windows.Forms.CheckBox();
             this.charStats = new System.Windows.Forms.GroupBox();
             this.charExp = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -54,6 +57,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.charName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkAllCosmetics = new System.Windows.Forms.CheckBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -91,6 +95,7 @@
             this.charHelm = new System.Windows.Forms.PictureBox();
             this.charSkills = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -141,6 +146,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
+            this.closeStripMenuItem,
+            this.toolStripSeparator1,
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem,
             this.exitToolStripMenuItem1});
@@ -154,6 +161,18 @@
             this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // closeStripMenuItem
+            // 
+            this.closeStripMenuItem.Name = "closeStripMenuItem";
+            this.closeStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeStripMenuItem.Text = "Close";
+            this.closeStripMenuItem.Click += new System.EventHandler(this.closeStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(100, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -172,6 +191,7 @@
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // panel1
             // 
@@ -189,6 +209,7 @@
             // 
             this.charPage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPage.BackgroundImage")));
             this.charPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charPage.Controls.Add(this.chkChampion);
             this.charPage.Controls.Add(this.charStats);
             this.charPage.Controls.Add(this.label1);
             this.charPage.Controls.Add(this.charName);
@@ -201,6 +222,18 @@
             this.charPage.TabIndex = 0;
             this.charPage.Text = "Character";
             this.charPage.UseVisualStyleBackColor = true;
+            // 
+            // chkChampion
+            // 
+            this.chkChampion.Location = new System.Drawing.Point(264, 5);
+            this.chkChampion.Name = "chkChampion";
+            this.chkChampion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkChampion.Size = new System.Drawing.Size(117, 32);
+            this.chkChampion.TabIndex = 13;
+            this.chkChampion.Text = "Unlock Champion of Stormfall";
+            this.chkChampion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkChampion.UseVisualStyleBackColor = true;
+            this.chkChampion.CheckedChanged += new System.EventHandler(this.chkChampion_CheckedChanged);
             // 
             // charStats
             // 
@@ -362,6 +395,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chkAllCosmetics);
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.cboSkinColor);
             this.groupBox2.Controls.Add(this.label17);
@@ -387,6 +421,19 @@
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Character Customization";
+            // 
+            // chkAllCosmetics
+            // 
+            this.chkAllCosmetics.AutoSize = true;
+            this.chkAllCosmetics.Location = new System.Drawing.Point(296, 29);
+            this.chkAllCosmetics.Name = "chkAllCosmetics";
+            this.chkAllCosmetics.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkAllCosmetics.Size = new System.Drawing.Size(125, 17);
+            this.chkAllCosmetics.TabIndex = 26;
+            this.chkAllCosmetics.Text = "Unlock All Cosmetics";
+            this.chkAllCosmetics.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAllCosmetics.UseVisualStyleBackColor = true;
+            this.chkAllCosmetics.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label18
             // 
@@ -643,6 +690,7 @@
             // charPrimordial
             // 
             this.charPrimordial.Location = new System.Drawing.Point(56, 397);
+            this.charPrimordial.MaxLength = 10;
             this.charPrimordial.Name = "charPrimordial";
             this.charPrimordial.Size = new System.Drawing.Size(118, 20);
             this.charPrimordial.TabIndex = 18;
@@ -652,6 +700,7 @@
             // charGold
             // 
             this.charGold.Location = new System.Drawing.Point(56, 373);
+            this.charGold.MaxLength = 10;
             this.charGold.Name = "charGold";
             this.charGold.Size = new System.Drawing.Size(118, 20);
             this.charGold.TabIndex = 16;
@@ -849,12 +898,10 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
-            // imageList1
-            // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
+
             // cboSkinColor
             // 
             this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -989,7 +1036,9 @@
             this.ClientSize = new System.Drawing.Size(835, 556);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "Form1";
@@ -1099,8 +1148,17 @@
         private ImageComboBox cboSkinColor;
         private System.Windows.Forms.BindingSource characterCustomizationBindingSource;
         private System.Windows.Forms.TabPage charSkills;
+
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.PropertyGrid propertyGridInv;
+
+        private System.Windows.Forms.GroupBox ItemStatsBox;
+        private System.Windows.Forms.ListBox listBoxEquipItems;
+        private System.Windows.Forms.CheckBox chkAllCosmetics;
+        private System.Windows.Forms.CheckBox chkChampion;
+        private System.Windows.Forms.ToolStripMenuItem closeStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+
     }
 }
 
