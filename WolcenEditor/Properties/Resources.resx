@@ -121,31 +121,31 @@
   <data name="gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I72.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="boots" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charBoots" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I6B.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lefthand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charLHand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I50.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="belt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charBelt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I56.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="weapon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charWeapon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I62.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="leftpad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charLPad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I68.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="e_beltSlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\e_beltSlot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="righthand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charRHand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I53.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="c_beltSlot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\c_beltSlot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="helm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charHelm" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I4A.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="primordial" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -154,19 +154,19 @@
   <data name="bg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pants" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charPants" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I4D.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="necklace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charNeck" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I5C.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="chest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charChest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I47.dds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ring" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charRing" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I59.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rightpad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="charRPad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inventory_I65.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="skillbg" type="System.Resources.ResXFileRef, System.Windows.Forms">

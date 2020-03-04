@@ -107,14 +107,14 @@
             this.unlockAllButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 
-            this.cboSkinColor = new WolcenEditor.ImageComboBox();
-            this.cboBeardColor = new WolcenEditor.ImageComboBox();
-            this.cboREye = new WolcenEditor.ImageComboBox();
-            this.cboHairColor = new WolcenEditor.ImageComboBox();
-            this.cboLEye = new WolcenEditor.ImageComboBox();
-            this.cboBeard = new WolcenEditor.ImageComboBox();
-            this.cboHaircut = new WolcenEditor.ImageComboBox();
-            this.cboFace = new WolcenEditor.ImageComboBox();
+            //this.cboSkinColor = new WolcenEditor.ImageComboBox();
+            //this.cboBeardColor = new WolcenEditor.ImageComboBox();
+            //this.cboREye = new WolcenEditor.ImageComboBox();
+            //this.cboHairColor = new WolcenEditor.ImageComboBox();
+            //this.cboLEye = new WolcenEditor.ImageComboBox();
+            //this.cboBeard = new WolcenEditor.ImageComboBox();
+            //this.cboHaircut = new WolcenEditor.ImageComboBox();
+            //this.cboFace = new WolcenEditor.ImageComboBox();
 
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
@@ -1263,9 +1263,6 @@
         private System.Windows.Forms.TabPage charSkills;
 
         private System.Windows.Forms.ImageList imageList1;
-
-        private System.Windows.Forms.GroupBox ItemStatsBox;
-        private System.Windows.Forms.ListBox listBoxEquipItems;
 
         private System.Windows.Forms.CheckBox chkAllCosmetics;
         private System.Windows.Forms.CheckBox chkChampion;

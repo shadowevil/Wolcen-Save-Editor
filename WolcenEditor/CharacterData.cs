@@ -487,27 +487,6 @@ namespace WolcenEditor
             {"Left Ring", 22 },
         };
 
-        public static readonly Dictionary<int, string> Rarity = new Dictionary<int, string>
-        {
-            {0, "Basic"},
-            {1, "Basic"},
-            {2, "Magic"},
-            {3, "Rare"},
-            {4, "Legendary"},
-            {5, "Set"},
-            {6, "Unique"},
-            {7, "Quest"}
-        };
-
-        public static readonly Dictionary<int, string> Quality = new Dictionary<int, string>
-        {
-            {1, "Normal"},
-            {2, "Reinforced"},
-            {3, "Superior"},
-            {4, "Exceptional"},
-            {5, "Epic"}
-        };
-
         public static readonly Dictionary<int, string> SocketType = new Dictionary<int, string>
         {
             {0, "Offensive (I)"},
@@ -5071,6 +5050,39 @@ namespace WolcenEditor
                     { "sarisel_offensivespeed_score_perce", "13" },
                 }
             }
+        };
+
+        public static readonly Dictionary<int, string> Rarity = new Dictionary<int, string>
+        {
+            {0, "Basic"},
+            {1, "Basic"},
+            {2, "Magic"},
+            {3, "Rare"},
+            {4, "Legendary"},
+            {5, "Set"},
+            {6, "Unique"},
+            {7, "Quest"}
+        };
+
+        public static readonly Dictionary<int, string> Quality = new Dictionary<int, string>
+        {
+            {1, "Normal"},
+            {2, "Reinforced"},
+            {3, "Superior"},
+            {4, "Exceptional"},
+            {5, "Epic"}
+        };
+
+        public static readonly Dictionary<int, string> itemBordersByRarity = new Dictionary<int, string>
+        {
+            { 0, "1.png" },
+            { 1, "1.png" },
+            { 2, "2.png" },
+            { 3, "3.png" },
+            { 4, "4.png" },
+            { 5, "5.png" },
+            { 6, "6.png" },
+            { 7, "7.png" }
         };
     }
 }

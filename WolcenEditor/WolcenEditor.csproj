@@ -143,7 +143,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="InventoryManager.cs" />
-    <Compile Include="SerializableExpandableObjectConverter.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="SkillTree.cs" />
     <Compile Include="Program.cs" />
