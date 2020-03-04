@@ -95,7 +95,6 @@
             this.charHelm = new System.Windows.Forms.PictureBox();
             this.charSkills = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -579,7 +578,7 @@
             // 
             // propertyGridInv
             // 
-            this.propertyGridInv.BackColor = System.Drawing.Color.Gray;
+            this.propertyGridInv.BackColor = System.Drawing.Color.Black;
             this.propertyGridInv.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.propertyGridInv.HelpVisible = false;
             this.propertyGridInv.LineColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -590,7 +589,7 @@
             this.propertyGridInv.TabIndex = 21;
             this.propertyGridInv.ToolbarVisible = false;
             this.propertyGridInv.ViewBackColor = System.Drawing.Color.Black;
-            this.propertyGridInv.ViewBorderColor = System.Drawing.SystemColors.GrayText;
+            this.propertyGridInv.ViewBorderColor = System.Drawing.SystemColors.Desktop;
             this.propertyGridInv.ViewForeColor = System.Drawing.Color.Snow;
             // 
             // groupBox1
@@ -898,10 +897,12 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
+            // imageList1
+            // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-
+            // 
             // cboSkinColor
             // 
             this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
