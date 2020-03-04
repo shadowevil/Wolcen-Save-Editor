@@ -52,7 +52,7 @@ namespace WolcenEditor
             this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
-            //SkillTree.LoadTree(ref panel1);
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -200,6 +200,9 @@ namespace WolcenEditor
                 apocUnlockCheckBox.Checked = true;
 
             LoadCharacterInventory();
+
+            InventoryManager.LoadCharacterInventory(panel1.Controls["charInv"]);
+
             SkillTree.LoadSkillInformation(ref panel1);
         }
 
@@ -235,6 +238,7 @@ namespace WolcenEditor
                 chkChampion.Checked = true;
             } else chkChampion.Checked = false;
         }
+
 
         private void LoadCharacterInventory()
         {

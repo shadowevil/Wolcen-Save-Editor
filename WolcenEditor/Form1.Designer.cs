@@ -78,6 +78,7 @@
             this.cboGender = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.charInv = new System.Windows.Forms.TabPage();
+            this.itemStatDisplay = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -105,6 +106,16 @@
             this.lockAllButton = new System.Windows.Forms.Button();
             this.unlockAllButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+
+            this.cboSkinColor = new WolcenEditor.ImageComboBox();
+            this.cboBeardColor = new WolcenEditor.ImageComboBox();
+            this.cboREye = new WolcenEditor.ImageComboBox();
+            this.cboHairColor = new WolcenEditor.ImageComboBox();
+            this.cboLEye = new WolcenEditor.ImageComboBox();
+            this.cboBeard = new WolcenEditor.ImageComboBox();
+            this.cboHaircut = new WolcenEditor.ImageComboBox();
+            this.cboFace = new WolcenEditor.ImageComboBox();
+
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -687,6 +698,9 @@
             // 
             this.charInv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charInv.BackgroundImage")));
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+
+            this.charInv.Controls.Add(this.itemStatDisplay);
+
             this.charInv.Controls.Add(this.groupBox1);
             this.charInv.Controls.Add(this.pictureBox16);
             this.charInv.Controls.Add(this.pictureBox15);
@@ -713,6 +727,16 @@
             this.charInv.TabIndex = 1;
             this.charInv.Text = "Inventory";
             this.charInv.UseVisualStyleBackColor = true;
+            // 
+
+            // itemStatDisplay
+            // 
+            this.itemStatDisplay.AutoScroll = true;
+            this.itemStatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.itemStatDisplay.Location = new System.Drawing.Point(323, 7);
+            this.itemStatDisplay.Name = "itemStatDisplay";
+            this.itemStatDisplay.Size = new System.Drawing.Size(483, 208);
+            this.itemStatDisplay.TabIndex = 21;
             // 
             // groupBox1
             // 
@@ -1021,7 +1045,73 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
-            // lockAllButton
+
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // cboSkinColor
+            // 
+            this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboSkinColor.DropDownHeight = 100;
+            this.cboSkinColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSkinColor.FormattingEnabled = true;
+            this.cboSkinColor.IntegralHeight = false;
+            this.cboSkinColor.ItemHeight = 20;
+            this.cboSkinColor.Location = new System.Drawing.Point(215, 24);
+            this.cboSkinColor.Name = "cboSkinColor";
+            this.cboSkinColor.Size = new System.Drawing.Size(66, 26);
+            this.cboSkinColor.TabIndex = 24;
+            // 
+            // cboBeardColor
+            // 
+            this.cboBeardColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboBeardColor.DropDownHeight = 300;
+            this.cboBeardColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBeardColor.DropDownWidth = 50;
+            this.cboBeardColor.FormattingEnabled = true;
+            this.cboBeardColor.IntegralHeight = false;
+            this.cboBeardColor.ItemHeight = 50;
+            this.cboBeardColor.Location = new System.Drawing.Point(351, 138);
+            this.cboBeardColor.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboBeardColor.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboBeardColor.Name = "cboBeardColor";
+            this.cboBeardColor.Size = new System.Drawing.Size(70, 56);
+            this.cboBeardColor.TabIndex = 21;
+            // 
+            // cboREye
+            // 
+            this.cboREye.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboREye.DropDownHeight = 300;
+            this.cboREye.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboREye.DropDownWidth = 50;
+            this.cboREye.FormattingEnabled = true;
+            this.cboREye.IntegralHeight = false;
+            this.cboREye.ItemHeight = 50;
+            this.cboREye.Location = new System.Drawing.Point(136, 138);
+            this.cboREye.MaximumSize = new System.Drawing.Size(70, 0);
+            this.cboREye.MinimumSize = new System.Drawing.Size(70, 0);
+            this.cboREye.Name = "cboREye";
+            this.cboREye.Size = new System.Drawing.Size(70, 56);
+            this.cboREye.TabIndex = 20;
+            // 
+            // cboHairColor
+            // 
+            this.cboHairColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboHairColor.DropDownHeight = 300;
+            this.cboHairColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboHairColor.DropDownWidth = 50;
+            this.cboHairColor.FormattingEnabled = true;
+            this.cboHairColor.IntegralHeight = false;
+            this.cboHairColor.ItemHeight = 50;
+            this.cboHairColor.Location = new System.Drawing.Point(351, 76);
+            this.cboHairColor.Name = "cboHairColor";
+            this.cboHairColor.Size = new System.Drawing.Size(70, 56);
+            this.cboHairColor.TabIndex = 18;
+            // 
+            // cboLEye
             // 
             this.lockAllButton.Location = new System.Drawing.Point(545, 446);
             this.lockAllButton.Name = "lockAllButton";
@@ -1176,13 +1266,16 @@
 
         private System.Windows.Forms.GroupBox ItemStatsBox;
         private System.Windows.Forms.ListBox listBoxEquipItems;
+
         private System.Windows.Forms.CheckBox chkAllCosmetics;
         private System.Windows.Forms.CheckBox chkChampion;
         private System.Windows.Forms.ToolStripMenuItem closeStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+
         private System.Windows.Forms.CheckBox apocUnlockCheckBox;
         private System.Windows.Forms.Button unlockAllButton;
         private System.Windows.Forms.Button lockAllButton;
+        private System.Windows.Forms.Panel itemStatDisplay;
     }
 }
 
