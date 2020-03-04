@@ -55,6 +55,15 @@ namespace WolcenEditor
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
         }
 
+        private void UnloadRandomInventory()
+        {
+            cData.Character = null;
+            cData.PlayerData = null;
+            this.Controls.Clear();
+            InitializeComponent();
+            InitForm();
+        }
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             panel1.Size = new Size(panel1.Width, this.Height - 62);
@@ -198,7 +207,7 @@ namespace WolcenEditor
 
             if(cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
                 apocUnlockCheckBox.Checked = true;
-
+            
             InventoryManager.LoadCharacterInventory(panel1.Controls["charInv"]);
 
             SkillTree.LoadSkillInformation(ref panel1);
@@ -356,7 +365,7 @@ namespace WolcenEditor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (onCloseCheck(sender, e) == false) return;
-
+            UnloadRandomInventory();
             string js = string.Empty;
             using (OpenFileDialog d = new OpenFileDialog())
             {

@@ -69,6 +69,10 @@ namespace WolcenEditor
                     pb.Size = new Size(50, 50);
                     pb.SizeMode = PictureBoxSizeMode.AutoSize;
                     pb.BackgroundImageLayout = ImageLayout.Stretch;
+                    pb.AllowDrop = true;
+                    pb.MouseDown += Pb_MouseDown;
+                    pb.DragEnter += Pb_DragEnter;
+                    pb.DragDrop += Pb_DragDrop;
                     charRandomInv.Controls.Add(pb);
                 }
             }
@@ -103,6 +107,31 @@ namespace WolcenEditor
                         }
                     }
                 }
+            }
+        }
+
+        private static void Pb_DragDrop(object sender, DragEventArgs e)
+        {
+            Bitmap bmp = (e.Data.GetData(DataFormats.Bitmap) as Bitmap);
+            (sender as PictureBox).Image = bmp;
+        }
+
+        private static void Pb_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+        }
+
+        private static void Pb_MouseDown(object sender, MouseEventArgs e)
+        {
+            if ((sender as PictureBox).Image == null) return;
+            Bitmap bmp = new Bitmap((sender as PictureBox).Image);
+            if (bmp == null) return;
+            if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move)
+            {
+                (sender as PictureBox).Image = null;
             }
         }
 
