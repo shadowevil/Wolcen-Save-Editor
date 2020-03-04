@@ -27,7 +27,7 @@ namespace WolcenEditor
         public void InitForm()
         {
             this.Resize += Form1_Resize;
-            panel1.Enabled = false;
+            panel1.Enabled = true;
             
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
