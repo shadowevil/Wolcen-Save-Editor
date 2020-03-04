@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace WolcenEditor
 {
     public class InventoryEquipped
     {
+
         public int BodyPart { get; set; }
         public int Rarity { get; set; }
         public int Quality { get; set; }
@@ -12,11 +14,15 @@ namespace WolcenEditor
         public string Value { get; set; }
         public int Level { get; set; }
         public ItemArmor Armor { get; set; }
+
         public ItemWeapon Weapon { get; set; }
-        public IList<Socket> Sockets { get; set; }
+
+        public List<Socket> Sockets { get; set; }
+
         public ItemMagicEffects MagicEffects { get; set; } 
     }
 
+    [TypeConverter(typeof(SerializableExpandableObjectConverter))]
     public class ItemWeapon
     {
         public string Name { get; set; }
@@ -24,6 +30,8 @@ namespace WolcenEditor
         public double DamageMax { get; set; }
         public double ResourceGeneration { get; set; }
     }
+
+    [TypeConverter(typeof(SerializableExpandableObjectConverter))]
 
     public class ItemArmor
     {
@@ -33,10 +41,11 @@ namespace WolcenEditor
         public double Resistance { get; set; }
 
     }
-
     public class Socket
     {
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public Gem Gem { get; set; }
+
         public int Effect { get; set; }
     }
     public class Gem
@@ -44,13 +53,14 @@ namespace WolcenEditor
         public string Name { get; set; }
     }
 
+    [TypeConverter(typeof(SerializableExpandableObjectConverter))]
     public class ItemMagicEffects
     {
-        public IList<Effect> Default { get; set; }
-        public IList<Effect> RolledAffixes { get; set; }
-        public IList<Effect> FromGems { get; set; }
+        public List<Effect> Default { get; set; }
 
+        public List<Effect> RolledAffixes { get; set; }
 
+        public List<Effect> FromGems { get; set; }
     }
 
     public class Effect
@@ -59,7 +69,7 @@ namespace WolcenEditor
         public string EffectName { get; set; }
         public int MaxStack { get; set; }
         public int bDefault { get; set; }
-        public IList<EffectParams> Parameters { get; set; }
+        public List<EffectParams> Parameters { get; set; }
     }
 
     public class EffectParams

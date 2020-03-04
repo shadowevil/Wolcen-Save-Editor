@@ -158,6 +158,7 @@ namespace WolcenEditor
 
             
             LoadCharacterData();
+
             
         }
 
@@ -238,11 +239,13 @@ namespace WolcenEditor
         }
         private void UnLoadItemData(object sender, EventArgs e)
         {
-            listBoxEquipItems.DataSource = new List<string>();
+            //listBoxEquipItems.DataSource = new List<string>();
         }
 
         private void LoadItemData(object sender, EventArgs e)
         {
+
+
             var charMap = new Dictionary<string,int>
             {
                 {"charHelm", 3 },
@@ -264,109 +267,21 @@ namespace WolcenEditor
             var statList = new List<string>();
 
             //WIP currently supports armor, weapons, sockets, and gems.  affixes are still needed
+            //treeListItem.ResetText();
+
+
             foreach (var item in cData.Character.InventoryEquipped)
             {
                 if (item.BodyPart == charMap[picBoxName])
                 {
-                    foreach (var prop in item.GetType().GetProperties())
-                    {
-                        var statName = prop.Name;
-                        var statValue = prop.GetValue(item, null);
-                        if (statName == "Rarity")
-                            statValue = WolcenStaticData.Rarity[(int) statValue];
-                        if (statName == "Quality")
-                            statValue = WolcenStaticData.Quality[(int) statValue];
 
-                        //skips the entire iteration if these appear
-                        if (statName == "BodyPart" || statName == "Type" || statValue == null)
-                            continue;
-
-
-                        //skips adding the name but still continues the iteration to get child elements and display those
-                        if (statName != "Armor" && statName != "Sockets" && statName != "Weapon")
-                        {
-                            statList.Add($"{statName}: {statValue}");
-                        }
-
-                        //handles 'unwrapping' of armor and weapons.
-                        if (prop.PropertyType == typeof(ItemArmor) && item.Armor != null || prop.PropertyType == typeof(ItemWeapon) && item.Weapon != null)
-                        {
-                            foreach (var inner in prop.PropertyType.GetProperties())
-                            {
-                                    var innerName = inner.Name;
-                                    var innerValue = inner.GetValue(statValue, null).ToString();
-                                    if(innerName == "Name") innerValue = WolcenStaticData.ItemLocalizedNames[innerValue];
-                                    if (innerValue == "0")
-                                        continue;
-                                    statList.Add($"{innerName}: {innerValue}");
-                            }
-                        }
-
-                        //handles 'unwrapping' of sockets and gems.
-                        if (prop.PropertyType == typeof(IList<Socket>) && item.Sockets != null)
-                        {
-                            foreach(var socket in item.Sockets)
-                            {
-                                var gemName = "";
-                                foreach (var socketProp in socket.GetType().GetProperties())
-                                {
-                                    var socketPropValue = socketProp.GetValue(socket, null);
-                                    if (socketPropValue == null)
-                                        continue;
-
-                                    foreach (var gem in socketProp.PropertyType.GetProperties())
-                                    {
-                                        var gemValue = gem.GetValue(socketPropValue, null);
-                                        gemName = WolcenStaticData.ItemLocalizedNames[gemValue.ToString()]; 
-                                    }
-                                }
-                                statList.Add($"{WolcenStaticData.SocketType[(int)socket.Effect]} : [ {gemName} ]");
-                            }
-                        }
-
-                        if(prop.PropertyType == typeof(ItemMagicEffects) && item.MagicEffects != null)
-                        {
-                            foreach (var effectType in item.MagicEffects.GetType().GetProperties())
-                            {
-                                IList effectList = effectType.GetValue(item.MagicEffects, null) as IList;
-                                if(effectList != null)
-                                {
-                                    statList.Add($"{effectType.Name}");
-                                    foreach (var listItem in effectList)
-                                    {
-                                        foreach (var effect in listItem.GetType().GetProperties())
-                                        {
-                                            if(effect.Name != "MaxStack" && effect.Name != "bDefault")
-                                            {
-                                                statList.Add($"{effect.Name} {effect.GetValue(listItem, null)}");
-
-                                            }
-                                        }
-
-                                    }
-                                }             
-                            }
-                        }
-                    }
+                    propertyGridInv.SelectedObject = item;
+                    propertyGridInv.ExpandAllGridItems();
                 }
             }
-            listBoxEquipItems.DataSource = new BindingSource(statList, null);
+
         }
 
-        public static Object GetPropValue(this Object obj, String name)
-        {
-            foreach (String part in name.Split('.'))
-            {
-                if (obj == null) { return null; }
-
-                Type type = obj.GetType();
-                PropertyInfo info = type.GetProperty(part);
-                if (info == null) { return null; }
-
-                obj = info.GetValue(obj, null);
-            }
-            return obj;
-        }
 
 
         // Body Parts:
