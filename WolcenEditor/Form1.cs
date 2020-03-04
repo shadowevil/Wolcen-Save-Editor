@@ -196,6 +196,9 @@ namespace WolcenEditor
             charPrimordial.Text = cData.Character.Stats.PrimordialAffinity;
             SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
+            if(cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
+                apocUnlockCheckBox.Checked = true;
+
             LoadCharacterInventory();
             SkillTree.LoadSkillInformation(ref panel1);
         }
@@ -270,9 +273,6 @@ namespace WolcenEditor
 
             charLWeapon.Click += LoadItemData;
             charRWeapon.Click += LoadItemData;
-
-            //this is for when above values use MouseEnter instead of Click
-            //charInv.MouseEnter += UnLoadItemData;
         }
         private void UnLoadItemData(object sender, EventArgs e)
         {
@@ -575,6 +575,26 @@ namespace WolcenEditor
             {
                 this.Height = 595;
             }
+        }
+
+        private void apocUnlockCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cData.PlayerData == null) return;
+            if (apocUnlockCheckBox.Checked)
+            {
+                cData.Character.ApocalypticData.UnlockedTypes = new List<UnlockedTypes>
+                {
+                    new UnlockedTypes { Type = "rogue" },
+                    new UnlockedTypes { Type = "mage" },
+                    new UnlockedTypes { Type = "warrior" },
+                    new UnlockedTypes { Type = "tank" },
+                };
+            }
+            else
+            {
+                cData.Character.ApocalypticData.UnlockedTypes = new List<UnlockedTypes> { };
+            }
+
         }
     }
 
