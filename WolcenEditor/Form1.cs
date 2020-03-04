@@ -52,7 +52,7 @@ namespace WolcenEditor
             this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
-            //SkillTree.LoadTree(ref panel1);
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -196,7 +196,7 @@ namespace WolcenEditor
             charPrimordial.Text = cData.Character.Stats.PrimordialAffinity;
             SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
-            LoadCharacterInventory();
+            InventoryManager.LoadCharacterInventory(panel1.Controls["charInv"]);
             SkillTree.LoadSkillInformation(ref panel1);
         }
 
@@ -231,154 +231,6 @@ namespace WolcenEditor
             {
                 chkChampion.Checked = true;
             } else chkChampion.Checked = false;
-        }
-
-        private void LoadCharacterInventory()
-        {
-            charHelm.Image = GetItemBitmap(3);
-            charChest.Image = GetItemBitmap(1);
-            charLPad.Image = GetItemBitmap(6, true);
-            charRPad.Image = GetItemBitmap(5);
-            charLHand.Image = GetItemBitmap(10, true);
-            charRHand.Image = GetItemBitmap(9);
-            charBelt.Image = GetItemBitmap(19);
-            charPants.Image = GetItemBitmap(11);
-            charNeck.Image = GetItemBitmap(14);
-            charBoots.Image = GetItemBitmap(17);
-            charLRing.Image = GetItemBitmap(22, true);
-            charRRing.Image = GetItemBitmap(21);
-            charLWeapon.Image = GetItemBitmap(15, true);
-            charRWeapon.Image = GetItemBitmap(16);
-
-            charHelm.Click += LoadItemData;
-            charChest.Click += LoadItemData;
-
-            charLPad.Click += LoadItemData;
-            charRPad.Click += LoadItemData;
-
-            charLHand.Click += LoadItemData;
-            charRHand.Click += LoadItemData;
-
-            charBelt.Click += LoadItemData;
-            charPants.Click += LoadItemData;
-
-            charNeck.Click += LoadItemData;
-            charBoots.Click += LoadItemData;
-
-            charLRing.Click += LoadItemData;
-            charRRing.Click += LoadItemData;
-
-            charLWeapon.Click += LoadItemData;
-            charRWeapon.Click += LoadItemData;
-
-            //this is for when above values use MouseEnter instead of Click
-            //charInv.MouseEnter += UnLoadItemData;
-        }
-        private void UnLoadItemData(object sender, EventArgs e)
-        {
-            //listBoxEquipItems.DataSource = new List<string>();
-        }
-
-        private void LoadItemData(object sender, EventArgs e)
-        {
-
-
-            var charMap = new Dictionary<string,int>
-            {
-                {"charHelm", 3 },
-                {"charChest" , 1},
-                {"charLPad", 5 },
-                {"charRPad" , 6},
-                {"charLHand", 9 },
-                {"charRHand" , 10},
-                {"charBelt", 19 },
-                {"charPants", 11 },
-                {"charNeck" , 14},
-                {"charBoots", 17 },
-                {"charLRing" , 22},
-                {"charRRing", 21 },
-                {"charLWeapon" , 15},
-                {"charRWeapon" , 16},
-            };
-            var picBoxName = ((PictureBox)sender).Name;
-            var statList = new List<string>();
-
-            //WIP currently supports armor, weapons, sockets, and gems.  affixes are still needed
-            //treeListItem.ResetText();
-
-
-            foreach (var item in cData.Character.InventoryEquipped)
-            {
-                if (item.BodyPart == charMap[picBoxName])
-                {
-
-                    propertyGridInv.SelectedObject = item;
-                    propertyGridInv.ExpandAllGridItems();
-                }
-            }
-
-        }
-
-
-
-        // Body Parts:
-        //  - Chest:             1
-        //  - Helmet:            3
-        //  - (right) Shoulder:  5
-        //  - (left) Shoulder:   6
-        //  - (right) Glove:     9
-        //  - (left) Glove:      10
-        //  - Pants:             11
-        //  - Necklace:          14
-        //  - Weapon 1:          15
-        //  - Weapon 2:          16
-        //  - Feet:              17
-        //  - Belt:              19
-        //  - (right) Ring:      21
-        //  - (left) Ring:       22
-
-        private Bitmap GetItemBitmap(int bodyPart, bool flip = false)
-        {
-            foreach (var i in cData.Character.InventoryEquipped)
-            {
-                string dirPath = @".\UIResources\Items\";
-                if (i.BodyPart == bodyPart)
-                {
-                    string itemName = "";
-                    if(bodyPart == 16 || bodyPart == 15)
-                        itemName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
-                    else if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
-                        itemName = WolcenStaticData.ItemAccessories[i.Armor.Name];
-                    else
-                        itemName = WolcenStaticData.ItemArmor[i.Armor.Name];
-
-                    if (File.Exists(dirPath + itemName))
-                    {
-                        if (flip == true)
-                        {
-                            Bitmap bmp = new Bitmap(Image.FromFile(dirPath + itemName));
-                            bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
-                            return bmp;
-                        }
-                        else
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + itemName));
-                        }
-                    }
-                    else
-                    {
-                        if (i.BodyPart == 15 || i.BodyPart == 16)
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_weapon.png"));
-                        }
-                        else
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_armor.png"));
-                        }
-                    }
-                }
-            }
-            return null;
         }
 
         private void SetBinding(ref TextBox obj, object dataSource, string dataMember)

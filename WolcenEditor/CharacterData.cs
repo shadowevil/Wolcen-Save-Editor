@@ -504,9 +504,9 @@ namespace WolcenEditor
             {2, "Reinforced"},
             {3, "Superior"},
             {4, "Exceptional"},
-            {5, "Epic"},
-
+            {5, "Epic"}
         };
+
         public static readonly Dictionary<int, string> SocketType = new Dictionary<int, string>
         {
             {0, "Offensive (I)"},
@@ -519,8 +519,20 @@ namespace WolcenEditor
 
             {6, "Offense (III)"},
             {7, "Defensive (III)"},
-            {8, "Support (III)"},
+            {8, "Support (III)"}
+        };
 
+        public static readonly Dictionary<int, string> SocketColor = new Dictionary<int, string>
+        {
+            {0, "#d73838" },
+            {1, "#40d738" },
+            {2, "#3847d7" },
+            {3, "#d77038" },
+            {4, "#38d77f" },
+            {5, "#38a8d7" },
+            {6, "#e2951c" },
+            {7, "#009944" },
+            {8, "#00fcff" }
         };
 
         public static readonly Dictionary<string, string> ItemWeapon = new Dictionary<string, string>
@@ -2419,6 +2431,2643 @@ namespace WolcenEditor
             { "Utility_Gem_Tier_11", "Royal Alexandrite" },
             { "Utility_Gem_Tier_12", "Eternal Alexandrite" },
             { "Special_gem", "Genesis Stone" }
+        };
+
+        public static readonly Dictionary<int, string> qualityColorBank = new Dictionary<int, string>
+        {
+            { 1, "#FFFFFF" },
+            { 2, "#00C7FF" },
+            { 3, "#FFE100" },
+            { 4, "#BC0000" },
+            { 5, "#00FF6B" }
+        };
+
+        public static readonly Dictionary<string, string> MagicLocalized = new Dictionary<string, string>()
+        {
+            { "ailment_stacks_multiplier_chance", "%1 Chance to multiply the number of Ailment Stacks" },
+            { "additional_ailment_stacks", "%1 Ailment Stack(s) inflicted" },
+            { "additional_ailment_rolls", "Can now apply %1 Additional Ailment(s)" },
+            { "additional_projectile", "%1 Projectile(s) to all Projectile Skills (Attacks and Spells)" },
+            { "additional_stacks_chance_pts", "%1 Chance to double the number of Ailment Stacks inflicted" },
+            { "additional_stamina_pts", "%1 Stamina Point" },
+            { "agility_pts", "%1 Agility" },
+            { "ailment_damage_resistance_percent", "%1 Ailment Damage Resistance" },
+            { "ailment_stacks_multiplier", "%1 Chance to multiply the number of Ailment Stacks inflicted by %2" },
+            { "ailment_stacks_multiplier_increase", "%1 Chance to multiply the number of Ailment Stacks inflicted" },
+            { "anystack_duration_percent", "%1 Ailment Stack Duration" },
+            { "all_attribute_pts", "%1 to All Attributes" },
+            { "all_resistance", "%1 to All Resistances Score" },
+            { "all_resistance_final_percent", "%1 to All Resistances" },
+            { "all_resistance_percent", "%1 to All Resistances Score" },
+            { "all_resistance_score_percent", "%1 to All Resistances Score" },
+            { "anystack_duration_increase", "%1 Ailment Stack Duration" },
+            { "attack_damage_bonus_from_last_spell", "Attacks gain %1 Damage from the last Spell Cast. The Damage Type is the same as the last Spell Cast" },
+            { "attackspeed_final_percent", "%1 Attack Speed" },
+            { "attackspeed_score", "%1 Attack Speed Score" },
+            { "attackspeed_score_percent", "%1 Attack Speed Score" },
+            { "autodash_cdr_percent", "%1 Dash Attack Cooldown decrease" },
+            { "autodash_range_flat", "%1m Dash Attack Range" },
+            { "autopierce_radius", "%1m of All Projectiles Pierce Range" },
+            { "autopierce_radius_detail", "All Projectiles pierce every Target within a %1m radius" },
+            { "bleed_on_hit_percent", "%1 Bleed Chance Score when dealing all Damage Types" },
+            { "bleedchance_on_rend_damage_score_percent", "%1 Bleed Chance Score when dealing Rend Damage" },
+            { "blockchance_ifcanblock_flat", "%1 Block Chance" },
+            { "blockchance_unconditional_flat", "%1 Added Block Chance and allow any weapon to block" },
+            { "blockefficiency_percent", "%1 Block Efficiency" },
+            { "burn_on_hit_percent", "%1 Burn Chance Score when dealing all Damage Types" },
+            { "burnchance_on_fire_damage_score_flat", "%1 Burn Chance Score when dealing Fire Damage" },
+            { "burnchance_on_fire_damage_score_percent", "%1 Burn Chance Score when dealing Fire Damage" },
+            { "can_cast_arrowsrain", "Allows the Bearer to Cast Wailing Arrows" },
+            { "can_cast_bladeslinger", "Allows the Bearer to Cast Phantom Blades" },
+            { "can_cast_bomb", "Allows the Bearer to Cast Havoc Orb" },
+            { "can_cast_brutalstrike", "Allows the Bearer to Cast Anvil's Woe" },
+            { "can_cast_bullseye", "Allows the Bearer to Cast Gunslinger's Brand" },
+            { "can_cast_chainlightning", "Allows the Bearer to Cast Thunderstrike" },
+            { "can_cast_charge", "Allows the Bearer to Cast Warpath" },
+            { "can_cast_deathmark", "Allows the Bearer to Cast Mark of Impurity" },
+            { "can_cast_dualstrike", "Allows the Bearer to Cast Slayer's Flurry" },
+            { "can_cast_fireball", "Allows the Bearer to Cast Consuming Embers" },
+            { "can_cast_frostcomet", "Allows the Bearer to Cast Tear of Etheliel" },
+            { "can_cast_frostlance", "Allows the Bearer to Cast Arctic Spear" },
+            { "can_cast_frostnova", "Allows the Bearer to Cast Winter's Grasp" },
+            { "can_cast_hook", "Allows the Bearer to Cast Tracker's Reach" },
+            { "can_cast_laceration", "Allows the Bearer to Cast Bleeding Edge" },
+            { "can_cast_laser", "Allows the Bearer to Cast Annihilation" },
+            { "can_cast_leap", "Allows the Bearer to Cast Wings of Ishmir" },
+            { "can_cast_reave", "Allows the Bearer to Cast Wrath of Baäpheth" },
+            { "can_cast_sacredground", "Allows the Bearer to Cast Bulwark of Dawn" },
+            { "can_cast_spreadshot", "Allows the Bearer to Cast Stings of Krearion" },
+            { "can_cast_teleport", "Allows the Bearer to Cast Aether Jump" },
+            { "can_cast_turret", "Allows the Bearer to Cast 'Avenger' Autoturret" },
+            { "can_cast_warcry", "Allows the Bearer to Cast Sovereign Shout" },
+            { "can_cast_whirlwind", "Allows the Bearer to Cast Bladestorm" },
+            { "can_cast_aetherblade", "Allows the Bearer to Cast Infinity Blades" },
+            { "can_cast_aetherblast", "Allows the Bearer to Cast Eclipse" },
+            { "can_cast_corpse_explosion", "Allows the Bearer to Cast Plagueburst" },
+            { "can_cast_hammer", "Allows the Bearer to Cast Flight of Gaavanir" },
+            { "can_cast_holydive", "Allows the Bearer to Cast Light-bringer" },
+            { "can_cast_ironguard", "Allows the Bearer to Cast Juggernaut" },
+            { "can_cast_possession", "Allows the Bearer to Cast Parasite" },
+            { "can_cast_ringofpain", "Allows the Bearer to Cast Blood for Blood" },
+            { "can_cast_smokebomb", "Allows the Bearer to Cast Duskshroud" },
+            { "can_cast_sniper", "Allows the Bearer to Cast “Deathgazer” Railgun" },
+            { "can_cast_solarfall", "Allows the Bearer to Cast Solarfall" },
+            { "can_cast_summon_champion", "Allows the Bearer to Cast Livor Mortis" },
+            { "can_cast_summon_melee", "Allows the Bearer to Cast Feeding Swarm" },
+            { "can_cast_summon_ranged", "Allows the Bearer to Cast Hunting Swarm" },
+            { "can_cast_vault", "Allows the Bearer to Cast Evasion" },
+            { "can_cast_vortex", "Allows the Bearer to Cast Anomaly" },
+            { "can_not_dodge", "You are unable to Passive Dodge" },
+            { "canrollthroughennemies", "Active dodge can go through Enemies" },
+            { "cc_immunity", "Crowd Control Immunity" },
+            { "convert_fire_to_frost", "%1 Fire Damage converted into Frost Damage" },
+            { "convert_fire_to_lightning", "%1 Fire Damage converted into Lightning Damage" },
+            { "convert_fire_to_physical", "%1 Fire Damage converted into Physical Damage" },
+            { "convert_fire_to_rend", "%1 Fire Damage converted into Rend Damage" },
+            { "convert_fire_to_sacred", "%1 Fire Damage converted into Sacred Damage" },
+            { "convert_fire_to_shadow", "%1 Fire Damage converted into Shadow Damage" },
+            { "convert_fire_to_toxic", "%1 Fire Damage converted into Toxic Damage" },
+            { "convert_fire_to_umbra", "%1 Fire Damage converted into Aether Damage" },
+            { "convert_frost_to_fire", "%1 Frost Damage converted into Fire Damage" },
+            { "convert_frost_to_lightning", "%1 Frost Damage converted into Lightning Damage" },
+            { "convert_frost_to_physical", "%1 Frost Damage converted into Physical Damage" },
+            { "convert_frost_to_rend", "%1 Frost Damage converted into Rend Damage" },
+            { "convert_frost_to_sacred", "%1 Frost Damage converted into Sacred Damage" },
+            { "convert_frost_to_shadow", "%1 Frost Damage converted into Shadow Damage" },
+            { "convert_frost_to_toxic", "%1 Frost Damage converted into Toxic Damage" },
+            { "convert_frost_to_umbra", "%1 Frost Damage converted into Aether Damage" },
+            { "convert_lightning_to_fire", "%1 Lightning Damage converted into Fire Damage" },
+            { "convert_lightning_to_frost", "%1 Lightning Damage converted into Frost Damage" },
+            { "convert_lightning_to_physical", "%1 Lightning Damage converted into Physical Damage" },
+            { "convert_lightning_to_rebd", "%1 Lightning Damage converted into Rend Damage" },
+            { "convert_lightning_to_sacred", "%1 Lightning Damage converted into Sacred Damage" },
+            { "convert_lightning_to_shadow", "%1 Lightning Damage converted into Shadow Damage" },
+            { "convert_lightning_to_toxic", "%1 Lightning Damage converted into Toxic Damage" },
+            { "convert_lightning_to_umbra", "%1 Lightning Damage converted into Aether Damage" },
+            { "convert_physcial_to_frost", "%1 Physical Damage converted into Frost Damage" },
+            { "convert_physical_to_fire", "%1 Physical Damage converted into Fire Damage" },
+            { "convert_physical_to_lightning", "%1 Physical Damage converted into Lightning Damage" },
+            { "convert_physical_to_rend", "%1 Physical Damage converted into Rend Damage" },
+            { "convert_physical_to_sacred", "%1 Physical Damage converted into Sacred Damage" },
+            { "convert_physical_to_shadow", "%1 Physical Damage converted into Shadow Damage" },
+            { "convert_physical_to_toxic", "%1 Physical Damage converted into Toxic Damage" },
+            { "convert_physical_to_umbra", "%1 Physical Damage converted into Aether Damage" },
+            { "convert_rend_to_fire", "%1 Rend Damage converted into Fire Damage" },
+            { "convert_rend_to_frost", "%1 Rend Damage converted into Frost Damage" },
+            { "convert_rend_to_lightning", "%1 Rend Damage converted into Lightning Damage" },
+            { "convert_rend_to_physical", "%1 Rend Damage converted into Physical Damage" },
+            { "convert_rend_to_sacred", "%1 Rend Damage converted into Sacred Damage" },
+            { "convert_rend_to_shadow", "%1 Rend Damage converted into Shadow Damage" },
+            { "convert_rend_to_toxic", "%1 Rend Damage converted into Toxic Damage" },
+            { "convert_rend_to_umbra", "%1 Rend Damage converted into Aether Damage" },
+            { "convert_sacred_to_fire", "%1 Sacred Damage converted into Fire Damage" },
+            { "convert_sacred_to_frost", "%1 Sacred Damage converted into Frost Damage" },
+            { "convert_sacred_to_lightning", "%1 Sacred Damage converted into Lightning Damage" },
+            { "convert_sacred_to_physical", "%1 Sacred Damage converted into Physical Damage" },
+            { "convert_sacred_to_rend", "%1 Sacred Damage converted into Rend Damage" },
+            { "convert_sacred_to_shadow", "%1 Sacred Damage converted into Shadow Damage" },
+            { "convert_sacred_to_toxic", "%1 Sacred Damage converted into Toxic Damage" },
+            { "convert_sacred_to_umbra", "%1 Sacred Damage converted into Aether Damage" },
+            { "convert_shadow_to_fire", "%1 Shadow Damage converted into Fire Damage" },
+            { "convert_shadow_to_frost", "%1 Shadow Damage converted into Frost Damage" },
+            { "convert_shadow_to_lightning", "%1 Shadow Damage converted into Lightning Damage" },
+            { "convert_shadow_to_physical", "%1 Shadow Damage converted into Physical Damage" },
+            { "convert_shadow_to_rend", "%1 Shadow Damage converted into Rend Damage" },
+            { "convert_shadow_to_sacred", "%1 Shadow Damage converted into Sacred Damage" },
+            { "convert_shadow_to_toxic", "%1 Shadow Damage converted into Toxic Damage" },
+            { "convert_shadow_to_umbra", "%1 Shadow Damage converted into Aether Damage" },
+            { "convert_toxic_to_fire", "%1 Toxic Damage converted into Fire Damage" },
+            { "convert_toxic_to_frost", "%1 Toxic Damage converted into Frost Damage" },
+            { "convert_toxic_to_lightning", "%1 Toxic Damage converted into Lightning Damage" },
+            { "convert_toxic_to_physical", "%1 Toxic Damage converted into Physical Damage" },
+            { "convert_toxic_to_rend", "%1 Toxic Damage converted into Rend Damage" },
+            { "convert_toxic_to_sacred", "%1 Toxic Damage converted into Sacred Damage" },
+            { "convert_toxic_to_shadow", "%1 Toxic Damage converted into Shadow Damage" },
+            { "convert_toxic_to_umbra", "%1 Toxic Damage converted into Aether Damage" },
+            { "convert_umbra_to_fire", "%1 Aether Damage converted into Fire Damage" },
+            { "convert_umbra_to_frost", "%1 Aether Damage converted into Frost Damage" },
+            { "convert_umbra_to_lightning", "%1 Aether Damage converted into Lightning Damage" },
+            { "convert_umbra_to_physical", "%1 Aether Damage converted into Physical Damage" },
+            { "convert_umbra_to_poison", "%1 Aether Damage converted into Toxic Damage" },
+            { "convert_umbra_to_rend", "%1 Aether Damage converted into Rend Damage" },
+            { "convert_umbra_to_sacred", "%1 Aether Damage converted into Sacred Damage" },
+            { "convert_umbra_to_shadow", "%1 Aether Damage converted into Shadow Damage" },
+            { "critchance_doubled_on_dash", "The Critical Chance of a Dash Attack is doubled" },
+            { "critical_damage_resistance_percent", "%1 Critical Damage Resistance" },
+            { "criticalchance_attackskill_score_percent", "%1 Attack Critical Chance Score" },
+            { "criticalchance_attackskill_final_percent", "%1 Attack Critical Chance" },
+            { "criticalchance_attackskill_score", "%1 Attack Critical Chance Score" },
+            { "criticalchance_final_percent", "%1 Critical Chance" },
+            { "criticalchance_magicspell_final_percent", "%1 Spell Critical Chance" },
+            { "criticalchance_magicspell_score", "%1 Spell Critical Chance Score" },
+            { "criticalchance_magicspell_score_percent", "%1 Spell Critical Chance Score" },
+            { "criticalchance_on_ailment_final_percent", "%1 Ailment Critical Chance " },
+            { "criticalchance_on_ailment_score", "%1 Ailment Critical Chance Score" },
+            { "criticalchance_on_ailment_score_percent", "%1 Ailment Critical Chance Score" },
+            { "criticalchance_projectiles_final_percent", "%1 All Projectiles Critical Chance" },
+            { "criticalchance_projectiles_score", "%1 All Projectiles Critical Chance Score" },
+            { "criticalchance_projectiles_score_percent", "%1 All Projectiles Critical Chance Score" },
+            { "criticalchance_score", "%1 Critical Chance Score" },
+            { "criticalchance_score_percent", "%1 Critical Chance Score" },
+            { "criticaldamage_attackskill_pts", "%1 Attacks Critical Damage" },
+            { "criticaldamage_magicspell_pts", "%1 Spells Critical Damage" },
+            { "criticaldamage_on_ailment_pts", "%1 Critical Damage dealt to Enemies afflicted with Ailments" },
+            { "criticaldamage_on_dots", "Damage-Over-Time triggered with a Critical Hit deals Critical Damage" },
+            { "criticaldamage_projectiles_pts", "%1 All Projectiles Critical Damage" },
+            { "criticaldamage_pts", "%1 Critical Damage" },
+            { "criticaldamage_received_percent_increase", "%1 Critical Damage Received" },
+            { "criticalscore_percent_lightning_damage", "%1 Critical Chance Score when dealing Lightning Damage" },
+            { "criticalscore_percent_spell_when_above_ceil", "%1 Spells Critical Chance Score while willpower is above %2" },
+            { "crowd_control_duration_percent", "%1 Duration of Crowd Control effects received" },
+            { "curse_on_hit_percent", "%1 Curse Chance on Hit" },
+            { "curesechance_on_shadow_damage_score_percent", "%1 Curse Chance Score when dealing Shadow Damage" },
+            { "curse_on_dash", "Dash Attacks inflict the Curse Ailments" },
+            { "damage_from_physical_resistance", "%1 Damage per percent of Physical Resistance" },
+            { "damage_percent", "%1 Damage" },
+            { "damage_percent_against_burning", "%1 Additional Damage against Burning Targets" },
+            { "damage_percent_against_frozen", "%1 Additional Damage against Frozen Targets" },
+            { "damage_percent_any_weapon", "%1 Attack Damage" },
+            { "damage_percent_as_fire", "%1 additional Damage dealt as Fire Damage" },
+            { "damage_percent_as_frost", "%1 additional Damage dealt as Frost Damage" },
+            { "damage_percent_as_lightning", "%1 additional Damage dealt as Lightning Damage" },
+            { "damage_percent_as_physical", "%1 additional Damage dealt as Physical Damage" },
+            { "damage_percent_as_rend", "%1 additional Damage dealt as Rend Damage" },
+            { "damage_percent_as_sacred", "%1 additional Damage dealt as Sacred Damage" },
+            { "damage_percent_as_shadow", "%1 additional Damage dealt as Shadow Damage" },
+            { "damage_percent_as_toxic", "%1 additional Damage dealt as Toxic Damage" },
+            { "damage_percent_as_umbra", "%1 additional Damage dealt as Aether Damage" },
+            { "damage_percent_attack", "%1 Attack Damage" },
+            { "damage_percent_full_stamina", "%1 Damage when Stamina Points are full" },
+            { "damage_percent_melee_weapon", "%1 Melee Weapon Damage" },
+            { "damage_percent_if_only_one_nearby_enemy", "%1 Damage when only one Enemy is within a %2m Radius" },
+            { "damage_percent_if_only_one_nearby_enemy_damage", "%1 Damage when only one Enemy is considered Nearby" },
+            { "damage_percent_if_only_one_nearby_enemy_range", "%2m Radius for the increase in Damage when only one Enemy is considered Nearby" },
+            { "damage_percent_impaired", "%1 Damage to Enemies with Impaired Movement" },
+            { "damage_percent_per_enemy_ailment_stack_on_target_kill", "Killing an Enemy grants %1 Damage as corresponding Damage Type for each Ailment Stack on that Enemy (up to %2 Stacks per Damage Type)" },
+            { "damage_percent_per_enemy_in_range", "%1 Damage for each Nearby enemy within a %3m Radius" },
+            { "damage_percent_per_enemy_in_range_damage", "%1 Damage for each Nearby enemy" },
+            { "damage_percent_per_enemy_in_range_range", "%3m Radius for Enemies to be considered Nearby" },
+            { "damage_percent_per_missing_stamina", "%1 Damage per missing Stamina Point" },
+            { "damage_percent_per_rage_point", "%1 Damage per 100 unconsumed Rage Points" },
+            { "damage_percent_projectiles", "%1 All Projectiles Damage" },
+            { "damage_percent_ranged_weapon", "%1 Ranged Weapon Damage" },
+            { "damage_percent_spell", "%1 Spell Damage" },
+            { "damage_percent_twohanded", "%1 Two Handed Weapon Damage" },
+            { "damage_percent_while_nobody_close", "%1 Damage when Enemies are not within a %2m Radius" },
+            { "damage_percent_while_nobody_close_damage", "%1 Damage when Enemies are considered Far-Away" },
+            { "damage_percent_while_nobody_close_range", "%2m Radius for enemies to be considered Far-Away" },
+            { "damage_ranged_weapon", "%1 Ranged Weapon Damage" },
+            { "damage_reduction_on_full_force_shield", "%1 decrease to Damage received when Force Shield is full" },
+            { "dash_cooldown_on_kill", "%1 Dash Cooldown decrease" },
+            { "deathmark_on_hit", "%1 Chance to infilct Mark of Impurity to an Enemy when they are Hit" },
+            { "defense_up_on_block", "%1 All Resistances Score for you and your Allies after a Hit is Blocked" },
+            { "defense_up_on_globe_pickup", "%1 All Resistances Score for you and your Allies after a Health Globe is picked up" },
+            { "dodgechance_on_being_hit", "%1 Passive Dodge Chance Score after being Hit" },
+            { "dodgechance_score", "%1 Passive Dodge Chance Score" },
+            { "dodgechance_score_percent", "%1 Passive Dodge Chance Score" },
+            { "dodgechance_score_to_allres_score", "%1 of Passive Dodge Chance Score is converted to All Resistances Score" },
+            { "dodgechance_final_percent", "%1 Passive Dodge Chance" },
+            { "dotdamage_percent_bleed", "%1 Bleed Ailment Damage" },
+            { "dotdamage_percent_burn", "%1 Burn Ailment Damage" },
+            { "dotdamage_percent_global", "%1 Ailment Damage" },
+            { "dotdamage_percent_per_wisdom_point", "%1 Ailment Damage per Wisdom Point (up to %2)" },
+            { "dotdamage_percent_poison", "%1 Poison Ailment Damage" },
+            { "dotdamage_percent_received_increase", "%1 Ailment Damage Received" },
+            { "dotdamage_percent_shock", "%1 Shock Ailment Damage" },
+            { "dots_to_shield", "Damage-Over-Time is dealt to your Force Shield before your Health" },
+            { "elemental_cycling_percent", "%1 Elemental Damage on the next Elemental Spell you Cast if the preceding Elemental Spell Cast had a different base Element" },
+            { "elemental_damage_percent", "%1 Elemental Damage " },
+            { "elemental_resistance", "%1 Elemental Resistance Score" },
+            { "elemental_resistance_final_percent", "%1 Elemental Resistance" },
+            { "elemental_resistance_percent", "%1 Elemental Resistance Score" },
+            { "elemental_resistance_score_percent", "%1 Elemental Resistance Score" },
+            { "elemental_protection", "%1 Elemental Protection" },
+            { "elemental_stacks_to_shock", "Freeze and Burn Chance become Shock Chance" },
+            { "ferocity_pts", "%1 Ferocity" },
+            { "fire_damage_percent", "%1 Fire Damage" },
+            { "fire_damage_percent_spell", "%1 Fire Damage added to Spells" },
+            { "fire_damage_percent_weapon", "%1 Fire Damage added to Attacks" },
+            { "fire_damage_spell", "%1-%2 Fire Damage added to Spells" },
+            { "fire_damage_weapon", "%1-%2 Fire Damage added to Attacks" },
+            { "fire_protection", "%1 Fire Protection" },
+            { "fire_resistance", "%1 Fire Resistance Score" },
+            { "fire_resistance_final_percent", "%1 Fire Resistance" },
+            { "fire_resistance_percent", "%1 Fire Resistance Score" },
+            { "fire_resistance_score_percent", "%1 Fire Resistance Score" },
+            { "forceshield_lock_timer_percent", "%1 Force Shield Regeneration Delay decrease" },
+            { "forceshield_percent", "%1 Force Shield" },
+            { "forceshield_pts", "%1 Force Shield" },
+            { "forceshield_regeneration_flat", "%1 Force Shield Regeneration Rate" },
+            { "forceshield_regeneration_percent", "%1 Force Shield Regeneration Rate" },
+            { "forceshield_to_life", "Convert Force Shield into Health" },
+            { "freeze_on_hit_percent", "%1 Freeze Chance when dealing any Damage Type" },
+            { "freeze_received_duration_percent_bonus", "When you are Frozen, its Duration increases by %1s" },
+            { "freezechance_on_frost_damage_score_flat", "%1 Freeze Chance Score when dealing Frost Damage" },
+            { "freezechance_on_frost_damage_score_percent", "%1 Freeze Chance Score when dealing Frost Damage" },
+            { "frost_damage_percent", "%1 Frost Damage" },
+            { "frost_damage_percent_spell", "%1 Frost Damage added to Spells" },
+            { "frost_damage_percent_weapon", "%1 Frost Damage added to Attacks" },
+            { "frost_damage_spell", "%1-%2 Frost Damage added to Spells" },
+            { "frost_damage_weapon", "%1-%2 Frost Damage added to Attacks" },
+            { "frost_protection", "%1 Frost Protection" },
+            { "frost_resistance", "%1 Frost Resistance Score" },
+            { "frost_resistance_final_percent", "%1 Frost Resistance" },
+            { "frost_resistance_percent", "%1 Frost Resistance Score" },
+            { "frost_resistance_score_percent", "%1 Frost Resistance Score" },
+            { "globes_pickup_radius", "%1 Radius for picking up Health Globes" },
+            { "healing_from_globes_bonus_percent", "%1 Healing received from Health Globes" },
+            { "healing_from_spells_percent", "%1 Healing received from Spells" },
+            { "health_gain_on_spent_rage", "%1 Health regenerated per Rage Point consumed" },
+            { "health_percent", "%1 Maximum Health" },
+            { "health_pts", "%1 Maximum Health" },
+            { "health_regen_frequency", "%1 Health Regeneration Rate" },
+            { "health_regen_on_low_health", "When under %2 of Maximum Health, trigger a burst of Health Regeneration" },
+            { "health_regen_percent", "%1 Health Regeneration" },
+            { "health_regen_pts", "%1 Health Regeneration" },
+            { "health_regen_true_percent", "%1 Health Regeneration" },
+            { "healthglobe_drop_chance_on_hit", "%1 Health Globe Generation" },
+            { "item_quantity_find", "%1 Item Quantity" },
+            { "life_leech_percent_against_burning", "%1 Life Leech on Burning Target" },
+            { "life_leech_percent_against_frozen", "%1 Life Leech on Frozen Target" },
+            { "life_leech_percent_fire", "%1 Life Leech from Fire Damage" },
+            { "life_leech_percent_global", "%1 Global Life Leech" },
+            { "life_leech_percent_lightning", "%1 Life Leech from Lightning Damage" },
+            { "life_leech_percent_against_bleeding", "%1 Life Leech on Bleeding Target" },
+            { "life_leech_percent_physical", "%1 Life Leech from Physical Damage" },
+            { "life_leech_percent_rend", "%1 Life Leech from Rend Damage" },
+            { "life_leech_percent_sacred", "%1 Life Leech from Sacred Damage" },
+            { "life_leech_percent_shadow", "%1 Life Leech from Shadow Damage" },
+            { "life_leech_percent_spell", "%1 Life Leech from Spell Damage" },
+            { "life_leech_percent_toxic", "%1 Life Leech from Toxic Damage" },
+            { "life_leech_percent_umbra", "%1 Life Leech from Aether Damage" },
+            { "life_leech_percent_weapon", "%1 Life Leech from Weapon Damage" },
+            { "lifeleech_toshields", "Life Leech affects Force Shield instead of Health" },
+            { "lightning_damage_percent", "%1 Lightning Damage" },
+            { "lightning_damage_percent_spell", "%1 Lightning Damage added to Spells" },
+            { "lightning_damage_percent_weapon", "%1 Lightning Damage added to Attacks" },
+            { "lightning_damage_spell", "%1-%2 Lightning Damage added to Spells" },
+            { "lightning_damage_weapon", "%1-%2 Lightning Damage added to Attacks" },
+            { "lightning_protection", "%1 Lightning Protection" },
+            { "lightning_resistance", "%1 Lightning Resistance Score" },
+            { "lightning_resistance_final_percent", "%1 Lightning Resistance" },
+            { "lightning_resistance_percent", "%1 Lightning Resistance Score" },
+            { "lightning_resistance_score_percent", "%1 Lightning Resistance Score" },
+            { "lightning_strike_on_critical_hit", "When you deal a Critical Hit with this Weapon, there is a %1 Chance to unleash a bolt of lightning, dealing Damage to yourself and Enemies. This Effect has a %4s Cooldown." },
+            { "magic_find", "%1 Magic Find" },
+            { "material_damage_only", "Can only deal Material Damage Types" },
+            { "material_damage_percent", "%1 Material Damage" },
+            { "material_protection", "%1 Material Protection" },
+            { "material_resistance", "%1 Material Resistance Score" },
+            { "material_resistance_final_percent", "%1 Material Resistance" },
+            { "material_resistance_percent", "%1 Material Resistance Score" },
+            { "material_resistance_score_percent", "%1 Material Resistance Score" },
+            { "max_stacks_capacity", "%1 Maximum Ailment Stacks" },
+            { "melee_damage_benefits_from_projectiles_bonuses", "Melee Damage benefits from %1 of Buffs to Projectiles" },
+            { "move_speed", "%1 Movement Speed" },
+            { "movespeed", "%1 Movement Speed" },
+            { "non_dot_damage_percent", "%1 decrease to Damage that does not deal Damage-over-Time" },
+            { "occult_damage_percent", "%1 Occult Damage" },
+            { "occult_protection", "%1 Occult Protection" },
+            { "occult_resistance", "%1 Occult Resistance Score" },
+            { "occult_resistance_final_percent", "%1 Occult Resistance" },
+            { "occult_resistance_percent", "%1 Occult Resistance Score" },
+            { "occult_resistance_score_percent", "%1 Occult Resistance Score" },
+            { "offensivespeed_final_percent", "%1 Attack and Spell Casting Speed" },
+            { "offensivespeed_score", "%1 Attack and Spell Casting Speed Score" },
+            { "offensivespeed_score_percent", "%1 Attack and Spell Casting Speed Score" },
+            { "only_weakness", "Only able to inflict the Weakness Ailment" },
+            { "physical_damage_percent", "%1 Physical Damage" },
+            { "physical_damage_percent_spell", "%1 Physical Damage added to Spells" },
+            { "physical_damage_percent_weapon", "%1 Physical Damage Attacks" },
+            { "physical_damage_spell", "%1-%2 Physical Damage added to Spells" },
+            { "physical_damage_weapon", "%1-%2 Physical Damage added to Attacks" },
+            { "physical_protection", "%1 Physical Protection" },
+            { "physical_resistance", "%1 Physical Resistance Score" },
+            { "physical_resistance_final_percent", "%1 Physical Resistance" },
+            { "physical_resistance_percent", "%1 Physical Resistance Score" },
+            { "physical_resistance_score_percent", "%1 Physical Resistance Score" },
+            { "piercing", "%1 Pierce to All Projectiles" },
+            { "pinflicted_freeze_duration_percent", "%1 Duration to Freeze inflicted on Enemies" },
+            { "inflicted_freeze_duration_percent", "%1 Duration to Freeze inflicted on Enemies" },
+            { "poison_on_hit_percent", "%1 Poison Chance on dealing all Damage Types" },
+            { "poisonchance_on_toxic_damage_score_percent", "%1 Poison Chance Score on daling Toxic Damage" },
+            { "poisonstack_duration_increase", "%1 Poison Stack Duration" },
+            { "projectiles_damage_asdistance", "%1 All Projectiles Damage scaling with Distance at %3 m" },
+            { "projectiles_knockback", "%1 Chance to Knockback the Target" },
+            { "projectiles_speed_percent", "%1 Projectile Speed" },
+            { "rage_conservation_time", "%1 Rage Conservation Time" },
+            { "rage_on_blocked_attack_pts", "%1 Rage Generation on Blocking an Attack" },
+            { "rage_on_hit_pts", "%1 Rage per hit taken" },
+            { "rage_on_kill_pts", "%1 Rage Generation on Kill" },
+            { "rage_per_strike_percent", "%1 Rage Generation on Hit" },
+            { "rage_per_strike_pts", "%1 Rage Generation on Hit" },
+            { "rage_per_strike_when_empty", "%1 Rage Generation on Hit when your Rage is Empty" },
+            { "rage_to_umbra_transfer_percent", "%1 increase in Transfer Rate between Rage and Willpower" },
+            { "rage_to_umbra_transfer_pts", "%1-%2 decrease in Transfer Rate between Rage and Willpower" },
+            { "rageandumbra_cost_percent", "%1 Rage and Willpower Cost decrease" },
+            { "ragecosts_percent", "%1 Rage Cost decrease" },
+            { "refill_stamina_on_low_health", "Gain %1 Stamina Point(s) when at %2 of Max Health or lower" },
+            { "rend_damage_percent", "%1 Rend Damage" },
+            { "rend_damage_percent_spell", "%1 Rend Damage added to Spells" },
+            { "rend_damage_percent_weapon", "%1 Rend Damage added to Attacks" },
+            { "rend_damage_spell", "%1-%2 Rend Damage added to Spells" },
+            { "rend_damage_weapon", "%1-%2 Rend Damage added to Attacks" },
+            { "rend_protection", "%1 Rend Protection" },
+            { "rend_resistance", "%1 Rend Resistance Score" },
+            { "rend_resistance_final_percent", "%1 Rend Resistance" },
+            { "rend_resistance_percent", "%1 Rend Resistance Score" },
+            { "rend_resistance_score_percent", "%1 Rend Resistance Score" },
+            { "resource_points", "%1 Max Willpower and Rage" },
+            { "sacred_damage_percent", "%1 Sacred Damage" },
+            { "sacred_damage_percent_spell", "%1 Sacred Damage added to Spells" },
+            { "sacred_damage_percent_weapon", "%1 Sacred Damage added to Attacks" },
+            { "sacred_damage_spell", "%1-%2 Sacred Damage added to Spells" },
+            { "sacred_damage_weapon", "%1-%2 Sacred Damage added to Attacks" },
+            { "sacred_ground_on_cursed_stacks", "When an enemy is afflicted with 5 Stacks of Curse, Bulwark of Dawn is Cast on their location, provide Healing in an area-of-effect for you and your allies" },
+            { "sacred_protection", "%1 Sacred Protection" },
+            { "sacred_resistance_score_percent", "%1 Sacred Resistance Score" },
+            { "sacred_resistance_final_percent", "%1 Sacred Resistance" },
+            { "sacred_resistance_percent", "%1 Sacred Resistance Score" },
+            { "self_shock", "The Shock Stacks are on the target and user" },
+            { "shadow_damage_percent", "%1 Shadow Damage" },
+            { "shadow_damage_percent_spell", "%1 Shadow Damage added to Spells" },
+            { "shadow_damage_percent_weapon", "%1 Shadow Damage added to Attacks" },
+            { "shadow_damage_spell", "%1-%2 Shadow Damage added to Spells" },
+            { "shadow_damage_weapon", "%1-%2 Shadow Damage added to Attacks" },
+            { "shadow_nova_on_weakness_stacks", "When an Enemy is afflicted with 5 Stacks of Weakness, an area-of-effect that deals Shadow Damage is Cast on their location" },
+            { "shadow_protection", "%1 Shadow Protection" },
+            { "shadow_resistance_score_percent", "%1 Shadow Resistance Score" },
+            { "shadow_resistance_final_percent", "%1 Shadow Resistance" },
+            { "shadow_resistance_percent", "%1 Shadow Resistance Score" },
+            { "shadow_spells_cost_to_rage", "Shadow-based Spells use Rage instead of Willpower" },
+            { "shield_regeneration_from_health_globes", "%1 Force Shield Recharge from Health Globes" },
+            { "shock_on_hit_percent", "%1 Shock Chance on Hit" },
+            { "shockchance_on_lightning_damage_score_flat", "%1 Shock Chance Score on Lightning Damage" },
+            { "shockchance_on_lightning_damage_score_percent", "%1 Shock Chance Score on Lightning Damage" },
+            { "skill_cooldownreduction_percent", "%1 Cooldown decrease for all Skills" },
+            { "skillrequirement_keyword_fire", "Allows the Bearer to Cast Fire Spells" },
+            { "skillrequirement_keyword_frost", "Allows the Bearer to Cast Frost Spells" },
+            { "skillrequirement_keyword_lightning", "Allows the Bearer to Cast Lightning Spells" },
+            { "skillrequirement_keyword_physical", "Allows the Bearer to Cast Physical Spells" },
+            { "skillrequirement_keyword_rend", "Allows the Bearer to Cast Rend Spells" },
+            { "skillrequirement_keyword_sacred", "Allows the Bearer to Cast Sacred Spells" },
+            { "skillrequirement_keyword_shadow", "Allows the Bearer to Cast Shadow Spells" },
+            { "skillrequirement_keyword_toxic", "Allows the Bearer to Cast Toxic Spells" },
+            { "skillrequirement_keyword_umbra", "Allows the Bearer to Cast Aether Spells" },
+            { "skills_buffs_intensity", "Buffs given by your Skills are %1 more effective" },
+            { "slow_aoe_on_active_dodge", "Whenever you Active Dodge, Enemies within a Radius around you are Slowed. This has a Cooldown." },
+            { "spellcastingspeed_final_percent", "%1 Spell Casting Speed" },
+            { "spellcastingspeed_score", "%1 Spell Casting Speed Score" },
+            { "spellcastingspeed_score_percent", "%1 Spell Casting Speed Score" },
+            { "stamina_regeneration_percent", "%1 Stamina Regeneration Rate decrease" },
+            { "stasis_on_attack_skill", "%2 Stasis Stacks per Attacks" },
+            { "stasis_on_hit_percent", "%1 Stasis Chance on Hit" },
+            { "stasischance_on_umbra_damage_score_flat", "%1 Stasis Chance Score on Aether Damage" },
+            { "stasischance_on_umbra_damage_score_percent", "%1 Stasis Chance Score on Aether Damage" },
+            { "statusailment_inflict_chance_final_percent", "%1 Ailment Chance" },
+            { "statusailment_inflict_score_flat_elemental", "%1 Elemental Ailment Chance Score" },
+            { "statusailment_inflict_score_flat_material", "%1 Material Ailment Chance Score" },
+            { "statusailment_inflict_score_flat_occult", "%1 Occult Ailment Chance Score" },
+            { "statusailment_inflict_score_percent", "%1 Ailment Chance Score" },
+            { "statusailment_inflict_chance_score", "%1 Ailment Chance Score" },
+            { "statusailment_inflict_score_percent_elemental", "%1 Elemental Ailment Chance Score" },
+            { "statusailment_inflict_score_percent_material", "%1 Material Ailment Chance Score" },
+            { "statusailment_inflict_score_percent_occult", "%1 Occult Ailment Chance Score" },
+            { "statusailment_resist_score", "%1 Ailment Resistance Score" },
+            { "statusailment_resist_score_percent", "%1 Ailment Resistance Score" },
+            { "stavesattacks_consideredspells", "Basic Attacks with Staves are considered as Spells" },
+            { "stun_on_hit_percent", "%1 Stun Chance on Hit" },
+            { "stunchance_on_dash", "Your Dash Attack Stuns enemies" },
+            { "stunchance_on_physical_damage_score_flat", "%1 Stun Chance Score on Physical Damage" },
+            { "stunchance_on_physical_damage_score_percent", "%1 Stun Chance Score on Physical Damage" },
+            { "toughness_pts", "%1 Toughness" },
+            { "toxic_damage_percent", "%1 Toxic Damage" },
+            { "toxic_damage_percent_spell", "%1 Toxic Damage added to Spells" },
+            { "toxic_damage_percent_weapon", "%1 Toxic Damage added to Attacks" },
+            { "toxic_damage_spell", "%1-%2 Toxic Damage added to Spells" },
+            { "toxic_damage_weapon", "%1-%2 Toxic Damage added to Attacks" },
+            { "toxic_protection", "%1 Toxic Protection" },
+            { "toxic_resistance_score_percent", "%1 Toxic Resistance Score" },
+            { "toxic_resistance_final_percent", "%1 Toxic Resistance" },
+            { "toxic_resistance_percent", "%1 Toxic Resistance Score" },
+            { "transfer_time_percent", "%1 Transfer Time decrease between Willpower and Rage" },
+            { "twohanded_blockchance_flat", "%1 Block Chance" },
+            { "umbra_damage_percent", "%1 Aether Damage" },
+            { "umbra_damage_percent_spell", "%1 Aether Damage added to Spells" },
+            { "umbra_damage_percent_weapon", "%1 Aether Damage added to Attacks" },
+            { "umbra_damage_spell", "%1-%2 Aether Damage added to Spells" },
+            { "umbra_damage_weapon", "%1-%2 Aether Damage added to Attacks" },
+            { "umbra_on_hit_pts", "%1 Willpower on Hit" },
+            { "umbra_protection", "%1 Aether Protection" },
+            { "umbra_regen_percent", "%1 Willpower Regeneration" },
+            { "umbra_regen_pts", "%1 Willpower Regeneration" },
+            { "umbra_resistance_score_percent", "%1 Aether Resistance Score" },
+            { "umbra_resistance_final_percent", "%1 Aether Resistance" },
+            { "umbra_resistance_percent", "%1 Aether Resistance Score" },
+            { "umbra_to_rage_transfer_percent", "%1 increase in Transfer Rate between Willpower and Rage" },
+            { "umbra_to_rage_transfer_pts", "%1-%2 Decrease in Transfer Rate between Willpower and Rage" },
+            { "umbracost_percent", "%1 Spell Cost decrease" },
+            { "umbracosts_percent", "%1 Willpower Cost decrease" },
+            { "umbracost_percent_elemental", "%1 Elemental Spell Cost decrease" },
+            { "vulnerability", "%1 Damage received" },
+            { "weaknes_on_hit_percent", "%1 Weakness Chance on Hit" },
+            { "weakness_aoe_onblock", "%2 Weakness Stack inflicted on Block" },
+            { "weakness_aoe_onblock_detail", "Apply %2 Weakness Stacks upon Blocking an Attack to the Targets in %1m Radius" },
+            { "weaknesschance_on_sacred_damage_score_flat", "%1 Weakness Chance Score on Sacred Damage" },
+            { "weaknesschance_on_sacred_damage_score_percent", "%1 Weakness Chance Score on Sacred Damage" },
+            { "force_weakness_roll_on_attack_skills", "Your Attacks apply Weakness" },
+            { "willpower_pts", "%1 Wisdom" },
+            { "ghost_damage", "%1 Chance to Summon Ghost on Hit with Basic Attacks. Ghost deals %2 of your Weapon Damage to the Enemy Hit" },
+            { "aggression_percent", "%1 Threat generated" },
+            { "local_allresistances_score_flat", "%1 All Resistances Score on this item" },
+            { "local_allresistances_score_percent", "%1 All Resistances Score on this item" },
+            { "local_blockchance_flat", "%1 Block Chance on this item" },
+            { "local_blockchance_percent", "%1 Block Chance on this item" },
+            { "local_blockefficiency_flat", "%1 Block Efficiency on this item" },
+            { "local_blockefficiency_percent", "%1 Block Efficiency on this item" },
+            { "local_damage_flat_fire", "%1-%2 Fire Damage on Attacks with this weapon" },
+            { "local_damage_flat_frost", "%1-%2 Frost Damage on Attacks with this weapon" },
+            { "local_damage_flat_lightning", "%1-%2 Lightning Damage on Attacks with this weapon" },
+            { "local_damage_flat_physical", "%1-%2 Physical Damage on Attacks with this weapon" },
+            { "local_damage_flat_rend", "%1-%2 Rend Damage on Attacks with this weapon" },
+            { "local_damage_flat_sacred", "%1-%2 Sacred Damage on Attacks with this weapon" },
+            { "local_damage_flat_shadow", "%1-%2 Shadow Damage on Attacks with this weapon" },
+            { "local_damage_flat_toxic", "%1-%2 Toxic Damage on Attacks with this weapon" },
+            { "local_damage_flat_umbra", "%1-%2 Aether Damage on Attacks with this weapon" },
+            { "local_damage_percent_elemental", "%1 Elemental Damage on Attacks with this weapon" },
+            { "local_damage_percent_material", "%1 Material Damage on Attacks with this weapon" },
+            { "local_damage_percent_primeval", "%1 Occult Damage on Attacks with this weapon" },
+            { "local_damage_percent_all", "%1 All Damage on Attacks with this weapon" },
+            { "local_forceshield_flat", "%1 Force Shield on this item" },
+            { "local_forceshield_percent", "%1 Force Shield on this item" },
+            { "local_health_flat", "%1 Health on this item" },
+            { "local_health_percent", "%1 Health on this item" },
+            { "local_resourcegeneration_flat", "%1 Resource Generation on this item" },
+            { "local_resourcegeneration_percent", "%1 Resource Generation on this item" },
+            { "willpower_regeneration_becomes_rage_regeneration", "Passively generate Rage instead of Willpower" },
+            { "minion_health_percent", "%1 to Summons Health" },
+            { "minion_regeneration_percent", "%1 to Summons' Health Regeneration" },
+            { "minion_damage_percent", "%1 to Damage dealt by Summons" },
+            { "minion_offensive_speed_percent", "Each time you Hit an Enemy, you receive an \"Unleashed Fury\" point. Each \"Unleashed Fury\" point increases your Attack Speed, your life leech, and reduces your all resistance score." },
+            { "increased_rage_costs_double_skill_damage_on_high_rage", "Skills have %2 Rage Cost when Rage is over %1, but Skills cast at this increased Cost deal double Damage." },
+            { "burn_stacks_consumption_chance_for_instant_damage", "When Hitting an Enemy with an Attack, %1 Chance to consume the Burn Stacks you inflicted when their Burn Stacks exceed %2, increasing Damage of the Hit by %3 per consumed stack" },
+            { "burn_stacks_consumption_propagate_stacks_on_kill", "Enemies killed by an attack that consumed Burn Stacks transfers %1 Burn Stacks to Enemies considered Nearby" },
+            { "stack_anger_uses_mechanic", "Your Attacks generate \"Unleashed Fury\" Points up to a Maximum of %1. Points reset after %2s out of combat " },
+            { "stack_anger_attack_speed", "%1 Attack Speed Score per \"Unleashed Fury\" Point" },
+            { "stack_anger_life_leech", "%1 Life Leech per \"Unleashed Fury\" Point" },
+            { "stack_anger_all_resistances", "%1 All Resistances Score per \"Unleashed Fury\" Point" },
+            { "can_change_stances_with_dodgeroll", "Gain access to two \"Stances\": \"Probing Weakness\" and \"Stalwart Resolve\". A \"Stance\" is changed when an Active Dodge is used." },
+            { "stance_offensive_stats", "While \"Probing Weakness\" is active, you have a %1 Chance to double Basic Attack Damage at the cost of %2 of your All Resistances Score" },
+            { "stance_defensive_stats", "While \"Stalwart Resolve\" is active, you have %1 Block Chance and %2 Block Efficiency at the cost of %3 of your Attack and Spell Damage" },
+            { "stance_offensive_stats_bonus", "Increases Chance to double Attack Damage while \"Probing Weakness\" is active by %1" },
+            { "stance_defensive_stats_bonus", "Increases Block Chance while \"Stalwart Resolve\" is active by %1" },
+            { "damage_on_block", "%1 of Weapon Damage dealt to Attacking Enemy when their Attack is Blocked" },
+            { "damage_on_block_rend", "Damage dealt to Attacking Enemy when their Attack is Blocked is dealt as Rend Damage" },
+            { "final_weapon_combos", "Provides alternative fourth Attack to each Basic Attack Combo" },
+            { "final_weapon_combos_bows", "Fourth Attack of a Bow Basic Attack Combo shoots multiple Projectiles in all directions" },
+            { "final_weapon_combos_staves", "Fourth Attack of a Staff Basic Attack Combo fires additional Projectiles in Target's direction" },
+            { "final_weapon_combos_two_handed", "Fourth Attack of a Two-Handed Basic Attack Combo Stuns all Enemies that are Hit." },
+            { "final_weapon_combos_other", "Fourth Attack of a One-Handed Basic Attack Combo is a Critical Hit" },
+            { "final_weapon_combos_damage", "Fourth Attack of each Basic Attack Combo deals %1 additional Damage" },
+            { "uses_fortress_mechanic", "While stationary, gain 1 \"Inexorable\" Point every %1s, up to a Maximum of %2" },
+            { "fortress_movement_speed", "%1 Movement Speed per \"Inexorable\" Point" },
+            { "fortress_damage_percent", "%1 Damage per \"Inexorable\" Point" },
+            { "fortress_health_regeneration", "%1 Health Regeneration per \"Inexorable\" Point" },
+            { "fortress_all_resistances", "%1 All Resistances Score per \"Inexorable\" Point" },
+            { "uses_fortress_mechanic_tickrate", "\"Inexorable\" Points are gained every %1s" },
+            { "stat_bonus_from_chest_armor", "Allows you to receive Buffs based on on the Chest-piece equipped" },
+            { "stat_bonus_from_chest_armor_warrior", "%1 Health Regeneration for every Health point on equipped Bruiser Chest-piece" },
+            { "stat_bonus_from_chest_armor_tank", "Gain All Resistances Score equal to All Resistances Score on equipped Heavy Chest-piece " },
+            { "stat_bonus_from_chest_armor_rogue", "You regenerate Health and Force Shield equivalent to %1 times the Health given by your equipped Rogue Chest-piece each time you complete a successful Passive Dodge. " },
+            { "stat_bonus_from_chest_armor_mage", "%1 Force Shield Regeneration for every Force Shield point on equipped Sorcerer Chest-piece" },
+            { "stat_bonus_from_helmet", "Allows Bonuses to be applied depending on Helmet equipped" },
+            { "stat_bonus_from_helmet_warrior", "%1 Health Regeneration for every Health point on equipped Bruiser Helmet" },
+            { "stat_bonus_from_helmet_tank", "Gain All Resistance Score equal to %1 multiplied by the All Resistance score on equipped Heavy Helmet " },
+            { "stat_bonus_from_helmet_rogue", "You regenerate Health and Force Shield equivalent to %1 times the Health given by your equipped Rogue Helmet each time you complete a successful Passive Dodge. " },
+            { "stat_bonus_from_helmet_mage", "%1 Force Shield Regeneration for every Force Shield point on equipped Sorcerer Helmet" },
+            { "stack_block_uses_mechanic", "%2 \"Fortress\" Point(s) gained every %1s, up to a Maximum of %3" },
+            { "block_chance_per_block_stack", "%1 Block Chance per \"Fortress\" Point." },
+            { "block_chance_increase_with_time", "%1 \"Fortress Point\" gained every second. When an Attack is Blocked, the bonus is rest to 0" },
+            { "smite_wounded_on_sacred_damage", "Dealing Sacred Damage instantly kills Enemies below %1 of their Max Health (Underlings and Specialists only)" },
+            { "smite_elites", "Dealing Sacred Damage now instantly kills Champion Enemies below a percentage of their Health in addition to Underlings and Specialists" },
+            { "pray_on_low_health", "All Nearby Allies are Resurrected when your Health drops below %2 of Maximum" },
+            { "pray_on_low_health_all_resistances", "All Nearby Allies gain %1 boost to All Resistances Score when Allies are resurrected" },
+            { "pray_on_low_health_all_resistances_added", "%1 to All Resistances Score upon Ally resurrection" },
+            { "dawn_stat_bonus_from_force_shield_state", "%1 Spell Damage when Force Shield is above %2 and %1 Attack Damage when Force Shield is below %2" },
+            { "dawn_stat_bonus_from_force_shield_state_bonus", "%1 increase to Spell Damage when above Force Shield threshold and %1 increase to Attack Damage when below Force Shield threshold " },
+            { "can_proc_attunements", "Spells that inflict Fire, Frost, or Lightning Ailments grant passive Bonuses called \"Accords\". Up to %1 \"Accord(s)\" can be active concurrently. Triggered \"Accords\" remain locked for %2s.  " },
+            { "attunements_simulaneous", "%1 \"Accords\" can be active concurrently" },
+            { "attunement_frost", "\"Etheliel's Accord\" is active for %3s unless it is triggered again. You have %1 Ailment Chance Score when \"Etheliel's Accord\" is active." },
+            { "attunement_fire", "'\"Abanazaar's Accord\" is active for %3s unless it is triggered again. You have %1 Damage when \"Abanazaar's Accord\" is active" },
+            { "attunement_lightning", "'\"Beelmalik's Accord\" is active for %3s unless it is triggered again. You have %1 Critical Chance Score when \"Beelmalik's Accord\" is active." },
+            { "meteor_on_casting_fire_skill", "%1 Chance to Cast a Meteor at cursor location when Fire Skill is Cast. Has a Cooldown of %4s" },
+            { "frost_lance_on_casting_frost_skill", "%1 Chance to Cast a Frost Lance at cursor location when Frost Skill is Cast. Has a Cooldown of %4s" },
+            { "thunderstrike_on_casting_lightning_skill", "%1 Chance to Cast Chain Lightning at cursor location when Lightning Skill is Cast. Has a Cooldown of %4s" },
+            { "explosion_on_low_willpower", "When Willpower is below %2 of its Maximum, you have a chance to cause an Explosion, dealing Damage based on your Maximum Force Shield or Health. This Explosion regenerates %1 of your Willpower, and has a Cooldown of %4s. " },
+            { "explosion_on_low_willpower_damage", "Explosion caused by Willpower being below the percentage of its Maximum (stated in Elementary Destabilization) deals increased damage based on your Maximum Health or Force Shield." },
+            { "stasis_afflicted_enemies_take_damage_twice", "When you hit Enemies afflicted with Stasis, they take %1 of the Hit Damage again after a %2s delay" },
+            { "stasis_afflicted_enemies_take_damage_twice_increase", "Damage dealt after the delay is increased by %3" },
+            { "stack_hybrid_uses_mechanic", "You gain Supernatural Paradox Points when you Hit an enemy in Stasis with an Attack, and Earthly Paradox Points when you Hit them with a Spell. Points reset after %1s. Maximum of %2 Point(s)" },
+            { "stack_hybrid_attack_speed", "%1 Attack Speed Score per Earthly Paradox Point" },
+            { "stack_hybrid_cast_speed", "%1 Spell Casting Speed Score per Supernatural Paradox Point" },
+            { "take_delayed_damage", "You only take %1 Damage from an Enemy's attack when they Hit you, the rest is dealt %2s after the Hit" },
+            { "cap_max_health_and_force_shield", "Your Health is set to %1 of Maximum, and Force Shield to %2 of Maximum" },
+            { "cap_max_health_and_force_shield_increase", "Your Maximum Health and Force Shield are increased by %1 and %2 respectively from the Maximums set in Dire Juncture" },
+            { "dead_enemies_may_spawn_green_globes", "Enemies that die in %1m radius around you have %2 chance to drop green globes. Picking up green globes grants you an additional %3 Damage as Poison Damage for %4s" },
+            { "dead_summons_may_spawn_green_globes", "Summons that die in a %1m radius around you have %2 chance to drop green globes. Picking up green globes grants you an additional %3 Damage as Poison Damage for %4s" },
+            { "soul_sharing", "You lose %1 of your Health and %2 of your Force Shield, but all Summons take %3 less Damage" },
+            { "soul_sharing_add", "You lose an additional %1 of your Health and %2 of your Force Shield, but summons take %3 less Damage" },
+            { "poisonous_aura", "Every %1s, Enemies in a %2m radius gain a Poison Stack" },
+            { "poisonous_aura_slow", "Enemies are Slowed by %1 for %2s when they are within the radius" },
+            { "cursed_enemies_take_additional_occult_damage", "Occult Damage increased by %1 for every Curse Stack an Enemy has " },
+            { "double_force_shield_capacity", "Doubles Max Force Shield." },
+            { "life_ceil_from_force_shield", "Health cannot exceed %1 of Maximum Force Shield" },
+            { "purge_ailment_stacks", "When you have over %1 of the same Ailment Stack, you cleanse them, granting Buffs to yourself and Allies within a given Radius" },
+            { "suffers_inflicted_ailment_stacks", "Ailment Stacks inflicted on Enemies are also inflicted on you. When you have %1 of the same Ailment Stack, they are removed and you gain Buffs" },
+            { "movement_speed_on_purged_stasis_stacks", "%1 Movement Speed to yourself and allies in a %2m radius for %3s when Stasis Stacks are removed" },
+            { "all_resistances_score_on_purged_curse_stacks", "%1 All Resistance Score to yourself and allies in a %2m radius for %3s when Curse Stacks are removed" },
+            { "damage_on_purged_weakness_stacks", "%1 Damage increases for yourself and allies in a %2m radius for %3s when Weakness Stacks are removed." },
+            { "heal_on_purged_dot_stacks", "Removing Ailment stacks that deal Damage-Over-Time restores %1 of Max Health and %1 of Max Force Shield to yourself and allies in a %2m radius" },
+            { "self_ailment_stacks_added_chance", "When inflicting an Ailment on yourself, %1 Chance to increase number of Ailment stacks inflicted by %2" },
+            { "stack_tatoo_damage_reduction", "%1 Damage decrease per \"Tenet\" Point" },
+            { "stack_tatoo_use_mechanic", "You gain 1 \"Tenet\" Point every %1s up to a Maximum of %2 \"Tenet Points\", and 1 \"Tenet Point\" is consumed whenever you are Hit." },
+            { "material_damage_on_elites", "Gain 1 \"Headhunter\" Points (Max %3) every  time an enemy that is Champion or above is killed, with Points resetting after %2s. \"Headhunter\" Points grant %1 Material Damage" },
+            { "material_damage_on_elites_timer", "Duration of \"Headhunter\" Points before resetting is increased to %2s" },
+            { "stack_bullet_uses_mechanic", "You have %2 \"Annointed Ammunition\" Point(s) that are used each time a Projectile Skill is used. A Point of \"Annointed Ammunition\" is refilled every %1s" },
+            { "stack_bullet_charges_on_dodge_roll", "%1 \"Annointed Ammunition\" Point(s) refilled whenever you complete an Active Dodge" },
+            { "stack_bullet_charges_on_critical", "%1 \"Annointed Ammunition\" Point(s) refilled whenever you deal a Critical Hit" },
+            { "stack_bullet_proj_damage", "%1 Projectile Damage for each Point of \"Annointed Ammunition\" you have" },
+            { "stack_bullet_melee_damage", "%1 Melee Damage for each empty \"Annointed Ammunition\" Point" },
+            { "remaining_pierce_as_damage", "Enemies are dealt %1 Damage per the amount of Pierce remaining on a Projectile after it Hits an Enemy" },
+            { "default_attacks_chain", "Basic Attack Projectiles bounce up to %1 times to Nearby Enemies in %2m radius" },
+            { "default_attacks_chain_increase", "Projectiles bounce to Nearby Enemies an additional %1 time(s)" },
+            { "frost_damage_bonus_on_chained_projectiles", "%1 Frost Damage to Projectiles that have bounced." },
+            { "stacks_hunter_uses_mechanic", "While in Combat, gain \"Cold Blooded\" Points every %1s, up to a Maximum of %2" },
+            { "stacks_hunter_tickrate", "Gain \"Cold Blooded\" Points every %1s" },
+            { "stacks_hunter_damage", "%1 Damage per \"Cold Blooded\" Point" },
+            { "attack_speed_on_critical_hit", "%1 Attack Speed Score for %3s on Critical Hit" },
+            { "stack_gadget_uses_mechanic", "Basic Attacks refill \"Power Charge\" Points by %1. %2 \"Power Charge\" Points are generated per second, capped between -%3 and +%3" },
+            { "stack_gadget_costs", "%1 decrease in \"Power Charge\" Points Cost for all Device Skills" },
+            { "stack_gadget_damage", "Device Skills and Skills with base Lightning Damage have their Damage increased by %1 multiplied by your current number of \"Power Charge\" Points" },
+            { "stack_focus_damage", "%2 Damage per \"Overload\" Point. Basic Attacks generate 1 \"Overload\" Point up to a Maximum of %1. Using a Skill consumes all \"Overload\" Points but doubles Damage of the Skill " },
+            { "stack_focus_half", "\"Overload\" Points are halved instead of set to 0 when consumed." },
+            { "stack_balance_uses_mechanic", "You have %1 Points shared between \"Lure of Light\" and \"Lure of Darkness\" Points. Casting a Spell converts \"Lure of Light\" into \"Lure of Darkness\", and Attacking converts \"Lure of Darkness\" into \"Lure of Light\". When \"Lure of Light\" and \"Lure of Darkness\" Points have a weighting between 6/4, they are considered to be in Equilibrium." },
+            { "stack_balance_mixed_bonus", "While \"Lure of Light\" and \"Lure of Darkness\" are in \"Equilibrium\", your Attacks benefit from %1 of Spell Damage bonuses and your Spells %1 of Attack Damage bonuses" },
+            { "stack_balance_mixed_malus", "While \"Lure of Light\" and \"Lure of Darkness\" are not in \"Equilibrium\", your Attacks lose %1 of Spell Damage bonuses and your Spells %1 of Attack Damage bonuses" },
+            { "stack_balance_margin", "\"Lure of Light\" and \"Lure of Darkness\" Points are now considered to be in \"Equilibrium\" when they have a weighting between 7/3" },
+            { "leave_decoy_on_dodgeroll", "Actives Dodges Damage Enemies and leave a Decoy for %1s" },
+            { "leave_decoy_on_dodgeroll_explosion", "Decoy left by an Active Dodge explodes when it is destroyed, dealing Damage in a %2m Radius" },
+            { "active_dodge_makes_invisible", "Completing an Active Dodge turns you Invisible for %1s. While Invisible, the Damage of your next Skill Cast is increased by %2. Using a Skill breaks Invisibility. This has a Cooldown of %3s.  " },
+            { "active_dodge_makes_invisible_duration", "Duration of the Invisibility triggered by an Active Dodge is increased by %1s" },
+            { "damage_percent_onehanded", "%1 Damage with One-Handed Weapons" },
+            { "onehanded_blockchance_flat", "%1 Block Chance while One-Handed Weapon equipped" },
+            { "damage_from_shield_block_chance", "Damage is increased by %1 multiplied by your equipped Shield's Block Chance" },
+            { "self_ailments", "You receive 1 Ailment Stack when inflicting an Ailment on an Enemy" },
+            { "health_gain_percent", "%1 Healing received from all sources" },
+            { "freeze_chance_to_crit", "If your Hits have Freeze Chance, %1 of your Freeze Chance is added to your Critical Chance. These Hits do not inflcit Freeze anymore." },
+            { "damage_taken_percent_from_burning_enemies", "%1 Damage from Burning Enemies" },
+            { "all_resistance_score_percent_on_full_stamina", "%1 to All Resistances Score while at full Stamina" },
+            { "ui_summon_life", "%1 to Summon's Health" },
+            { "ui_summon_damage", "%1 to Summon's Damage" },
+            { "criticaldamage_on_bleeding_pts", "%1 Critical Hit Damage when Hitting a Bleeding target" },
+            { "criticalchance_on_poisoned_score", "%1 Critical Chance Score when Hitting a Poisoned target" },
+            { "dodge_roll_breaks_cc", "Using a Movement Skill cleanses you of Crowd Control effects. Has a Cooldown of %1s" },
+            { "forceshield_leech_percent_lightning", "%1 Lightning Damage Leeched as Force Shield" },
+            { "ui_elemental_rotation_buff", "Using an Elemental Spell applies a Buff to the other two Elemental Damage Types" },
+            { "ailment_spread", "%1 Chance to spread Ailments to Enemies around the Target Hit" },
+            { "life_leech_percent_frost", "%1 Frost Damage into Life Leech" },
+            { "resourcegeneration_percent", "%1 Resource Generation" },
+            { "inflicted_curse_duration_percent", "%1 Duration to Curse inflicted on Enemies" },
+            { "inflicted_stasis_duration_percent", "%1 Duration to Stasis inflicted on Enemies" },
+            { "inflicted_weakness_duration_percent", "%1 Duration to Weakness inflicted on Enemies" },
+            { "inflicted_stun_duration_percent", "%1 Duration to Stun inflicted on Enemies" }
+        };
+
+        public static readonly Dictionary<string, Dictionary<string, string>> GemAffixesWithValues = new Dictionary<string, Dictionary<string, string>>
+        {
+            {
+                "Fire_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "3" },
+                    { "fire_resistance_score_percent", "9" },
+                    { "life_leech_percent_fire", "0.8" },
+                    { "fire_damage_spell", "3" },
+                    { "elemental_resistance_score_percent", "4" },
+                    { "fire_damage_percent", "9" },
+                    { "dotdamage_percent_burn", "4" },
+                    { "health_pts", "50" },
+                    { "burnchance_on_fire_damage_score_percent", "10" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "6" },
+                    { "fire_resistance_score_percent", "10" },
+                    { "life_leech_percent_fire", "1" },
+                    { "fire_damage_spell", "6" },
+                    { "elemental_resistance_score_percent", "5" },
+                    { "fire_damage_percent", "10" },
+                    { "dotdamage_percent_burn", "5" },
+                    { "health_pts", "100" },
+                    { "burnchance_on_fire_damage_score_percent", "12" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "9" },
+                    { "fire_resistance_score_percent", "11" },
+                    { "life_leech_percent_fire", "1.2" },
+                    { "fire_damage_spell", "9" },
+                    { "elemental_resistance_score_percent", "6" },
+                    { "fire_damage_percent", "11" },
+                    { "dotdamage_percent_burn", "6" },
+                    { "health_pts", "150" },
+                    { "burnchance_on_fire_damage_score_percent", "14" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "12" },
+                    { "fire_resistance_score_percent", "12" },
+                    { "life_leech_percent_fire", "1.4" },
+                    { "fire_damage_spell", "12" },
+                    { "elemental_resistance_score_percent", "7" },
+                    { "fire_damage_percent", "12" },
+                    { "dotdamage_percent_burn", "7" },
+                    { "health_pts", "200" },
+                    { "burnchance_on_fire_damage_score_percent", "16" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "14" },
+                    { "fire_resistance_score_percent", "13" },
+                    { "life_leech_percent_fire", "1.6" },
+                    { "fire_damage_spell", "14" },
+                    { "elemental_resistance_score_percent", "8" },
+                    { "fire_damage_percent", "13" },
+                    { "dotdamage_percent_burn", "8" },
+                    { "health_pts", "250" },
+                    { "burnchance_on_fire_damage_score_percent", "18" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "17" },
+                    { "fire_resistance_score_percent", "14" },
+                    { "life_leech_percent_fire", "1.8" },
+                    { "fire_damage_spell", "17" },
+                    { "elemental_resistance_score_percent", "9" },
+                    { "fire_damage_percent", "14" },
+                    { "dotdamage_percent_burn", "9" },
+                    { "health_pts", "300" },
+                    { "burnchance_on_fire_damage_score_percent", "20" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "20" },
+                    { "fire_resistance_score_percent", "15" },
+                    { "life_leech_percent_fire", "2" },
+                    { "fire_damage_spell", "20" },
+                    { "elemental_resistance_score_percent", "10" },
+                    { "fire_damage_percent", "15" },
+                    { "dotdamage_percent_burn", "10" },
+                    { "health_pts", "400" },
+                    { "burnchance_on_fire_damage_score_percent", "22" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "22" },
+                    { "fire_resistance_score_percent", "16" },
+                    { "life_leech_percent_fire", "2.2" },
+                    { "fire_damage_spell", "22" },
+                    { "elemental_resistance_score_percent", "11" },
+                    { "fire_damage_percent", "16" },
+                    { "dotdamage_percent_burn", "11" },
+                    { "health_pts", "500" },
+                    { "burnchance_on_fire_damage_score_percent", "24" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire", "24" },
+                    { "fire_resistance_score_percent", "17" },
+                    { "life_leech_percent_fire", "2.4" },
+                    { "fire_damage_spell", "24" },
+                    { "elemental_resistance_score_percent", "12" },
+                    { "fire_damage_percent", "17" },
+                    { "dotdamage_percent_burn", "12" },
+                    { "health_pts", "600" },
+                    { "burnchance_on_fire_damage_score_percent", "26" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire_", "26" },
+                    { "fire_resistance_score_percent_", "18" },
+                    { "life_leech_percent_fire_", "2.6" },
+                    { "fire_damage_spell_", "26" },
+                    { "elemental_resistance_score_percent_", "13" },
+                    { "fire_damage_percent_", "18" },
+                    { "dotdamage_percent_burn_", "13" },
+                    { "health_pts_", "700" },
+                    { "burnchance_on_fire_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire_", "29" },
+                    { "fire_resistance_score_percent_", "19" },
+                    { "life_leech_percent_fire_", "2.8" },
+                    { "fire_damage_spell_", "29" },
+                    { "elemental_resistance_score_percent_", "14" },
+                    { "fire_damage_percent_", "19" },
+                    { "dotdamage_percent_burn_", "14" },
+                    { "health_pts_", "800" },
+                    { "burnchance_on_fire_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "Fire_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_fire_", "32" },
+                    { "fire_resistance_score_percent_", "20" },
+                    { "life_leech_percent_fire_", "3" },
+                    { "fire_damage_spell_", "32" },
+                    { "elemental_resistance_score_percent_", "15" },
+                    { "fire_damage_percent_", "20" },
+                    { "dotdamage_percent_burn_", "15" },
+                    { "health_pts_", "1000" },
+                    { "burnchance_on_fire_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "3" },
+                    { "lightning_resistance_score_percent", "9" },
+                    { "life_leech_percent_lightning", "0.8" },
+                    { "lightning_damage_spell", "3" },
+                    { "elemental_resistance_score_percent", "4" },
+                    { "lightning_damage_percent", "9" },
+                    { "dotdamage_percent_shock", "4" },
+                    { "forceshield_pts", "50" },
+                    { "shockchance_on_lightning_damage_score_percent", "10" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "6" },
+                    { "lightning_resistance_score_percent", "10" },
+                    { "life_leech_percent_lightning", "1" },
+                    { "lightning_damage_spell", "6" },
+                    { "elemental_resistance_score_percent", "5" },
+                    { "lightning_damage_percent", "10" },
+                    { "dotdamage_percent_shock", "5" },
+                    { "forceshield_pts", "100" },
+                    { "shockchance_on_lightning_damage_score_percent", "12" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "9" },
+                    { "lightning_resistance_score_percent", "11" },
+                    { "life_leech_percent_lightning", "1.2" },
+                    { "lightning_damage_spell", "9" },
+                    { "elemental_resistance_score_percent", "6" },
+                    { "lightning_damage_percent", "11" },
+                    { "dotdamage_percent_shock", "6" },
+                    { "forceshield_pts", "150" },
+                    { "shockchance_on_lightning_damage_score_percent", "14" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "12" },
+                    { "lightning_resistance_score_percent", "12" },
+                    { "life_leech_percent_lightning", "1.4" },
+                    { "lightning_damage_spell", "12" },
+                    { "elemental_resistance_score_percent", "7" },
+                    { "lightning_damage_percent", "12" },
+                    { "dotdamage_percent_shock", "7" },
+                    { "forceshield_pts", "200" },
+                    { "shockchance_on_lightning_damage_score_percent", "16" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "14" },
+                    { "lightning_resistance_score_percent", "13" },
+                    { "life_leech_percent_lightning", "1.6" },
+                    { "lightning_damage_spell", "14" },
+                    { "elemental_resistance_score_percent", "8" },
+                    { "lightning_damage_percent", "13" },
+                    { "dotdamage_percent_shock", "8" },
+                    { "forceshield_pts", "250" },
+                    { "shockchance_on_lightning_damage_score_percent", "18" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "17" },
+                    { "lightning_resistance_score_percent", "14" },
+                    { "life_leech_percent_lightning", "1.8" },
+                    { "lightning_damage_spell", "17" },
+                    { "elemental_resistance_score_percent", "9" },
+                    { "lightning_damage_percent", "14" },
+                    { "dotdamage_percent_shock", "9" },
+                    { "forceshield_pts", "300" },
+                    { "shockchance_on_lightning_damage_score_percent", "20" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "20" },
+                    { "lightning_resistance_score_percent", "15" },
+                    { "life_leech_percent_lightning", "2" },
+                    { "lightning_damage_spell", "20" },
+                    { "elemental_resistance_score_percent", "10" },
+                    { "lightning_damage_percent", "15" },
+                    { "dotdamage_percent_shock", "10" },
+                    { "forceshield_pts", "400" },
+                    { "shockchance_on_lightning_damage_score_percent", "22" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "22" },
+                    { "lightning_resistance_score_percent", "16" },
+                    { "life_leech_percent_lightning", "2.2" },
+                    { "lightning_damage_spell", "22" },
+                    { "elemental_resistance_score_percent", "11" },
+                    { "lightning_damage_percent", "16" },
+                    { "dotdamage_percent_shock", "11" },
+                    { "forceshield_pts", "500" },
+                    { "shockchance_on_lightning_damage_score_percent", "24" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning", "24" },
+                    { "lightning_resistance_score_percent", "17" },
+                    { "life_leech_percent_lightning", "2.4" },
+                    { "lightning_damage_spell", "24" },
+                    { "elemental_resistance_score_percent", "12" },
+                    { "lightning_damage_percent", "17" },
+                    { "dotdamage_percent_shock", "12" },
+                    { "forceshield_pts", "600" },
+                    { "shockchance_on_lightning_damage_score_percent", "26" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning_", "26" },
+                    { "lightning_resistance_score_percent_", "18" },
+                    { "life_leech_percent_lightning_", "2.6" },
+                    { "lightning_damage_spell_", "26" },
+                    { "elemental_resistance_score_percent_", "13" },
+                    { "lightning_damage_percent_", "18" },
+                    { "dotdamage_percent_shock_", "13" },
+                    { "forceshield_pts_", "700" },
+                    { "shockchance_on_lightning_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning_", "29" },
+                    { "lightning_resistance_score_percent_", "19" },
+                    { "life_leech_percent_lightning_", "2.8" },
+                    { "lightning_damage_spell_", "29" },
+                    { "elemental_resistance_score_percent_", "14" },
+                    { "lightning_damage_percent_", "19" },
+                    { "dotdamage_percent_shock_", "14" },
+                    { "forceshield_pts_", "800" },
+                    { "shockchance_on_lightning_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "Lightning_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_lightning_", "32" },
+                    { "lightning_resistance_score_percent_", "20" },
+                    { "life_leech_percent_lightning_", "3" },
+                    { "lightning_damage_spell_", "32" },
+                    { "elemental_resistance_score_percent_", "15" },
+                    { "lightning_damage_percent_", "20" },
+                    { "dotdamage_percent_shock_", "15" },
+                    { "forceshield_pts_", "1000" },
+                    { "shockchance_on_lightning_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "3" },
+                    { "frost_resistance_score_percent", "9" },
+                    { "life_leech_percent_frost", "0.8" },
+                    { "frost_damage_spell", "3" },
+                    { "elemental_resistance_score_percent", "4" },
+                    { "frost_damage_percent", "9" },
+                    { "inflicted_freeze_duration_percent", "10" },
+                    { "dodgechance_score_percent", "10" },
+                    { "freezechance_on_frost_damage_score_percent", "10" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "6" },
+                    { "frost_resistance_score_percent", "10" },
+                    { "life_leech_percent_frost", "1" },
+                    { "frost_damage_spell", "6" },
+                    { "elemental_resistance_score_percent", "5" },
+                    { "frost_damage_percent", "10" },
+                    { "inflicted_freeze_duration_percent", "12" },
+                    { "dodgechance_score_percent", "12" },
+                    { "freezechance_on_frost_damage_score_percent", "12" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "9" },
+                    { "frost_resistance_score_percent", "11" },
+                    { "life_leech_percent_frost", "1.2" },
+                    { "frost_damage_spell", "9" },
+                    { "elemental_resistance_score_percent", "6" },
+                    { "frost_damage_percent", "11" },
+                    { "inflicted_freeze_duration_percent", "14" },
+                    { "dodgechance_score_percent", "14" },
+                    { "freezechance_on_frost_damage_score_percent", "14" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "12" },
+                    { "frost_resistance_score_percent", "12" },
+                    { "life_leech_percent_frost", "1.4" },
+                    { "frost_damage_spell", "12" },
+                    { "elemental_resistance_score_percent", "7" },
+                    { "frost_damage_percent", "12" },
+                    { "inflicted_freeze_duration_percent", "16" },
+                    { "dodgechance_score_percent", "16" },
+                    { "freezechance_on_frost_damage_score_percent", "16" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "14" },
+                    { "frost_resistance_score_percent", "13" },
+                    { "life_leech_percent_frost", "1.6" },
+                    { "frost_damage_spell", "14" },
+                    { "elemental_resistance_score_percent", "8" },
+                    { "frost_damage_percent", "13" },
+                    { "inflicted_freeze_duration_percent", "18" },
+                    { "dodgechance_score_percent", "18" },
+                    { "freezechance_on_frost_damage_score_percent", "18" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "17" },
+                    { "frost_resistance_score_percent", "14" },
+                    { "life_leech_percent_frost", "1.8" },
+                    { "frost_damage_spell", "17" },
+                    { "elemental_resistance_score_percent", "9" },
+                    { "frost_damage_percent", "14" },
+                    { "inflicted_freeze_duration_percent", "19" },
+                    { "dodgechance_score_percent", "20" },
+                    { "freezechance_on_frost_damage_score_percent", "20" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "20" },
+                    { "frost_resistance_score_percent", "15" },
+                    { "life_leech_percent_frost", "2" },
+                    { "frost_damage_spell", "20" },
+                    { "elemental_resistance_score_percent", "10" },
+                    { "frost_damage_percent", "15" },
+                    { "inflicted_freeze_duration_percent", "20" },
+                    { "dodgechance_score_percent", "22" },
+                    { "freezechance_on_frost_damage_score_percent", "22" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "22" },
+                    { "frost_resistance_score_percent", "16" },
+                    { "life_leech_percent_frost", "2.2" },
+                    { "frost_damage_spell", "22" },
+                    { "elemental_resistance_score_percent", "11" },
+                    { "frost_damage_percent", "16" },
+                    { "inflicted_freeze_duration_percent", "21" },
+                    { "dodgechance_score_percent", "24" },
+                    { "freezechance_on_frost_damage_score_percent", "24" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost", "24" },
+                    { "frost_resistance_score_percent", "17" },
+                    { "life_leech_percent_frost", "2.4" },
+                    { "frost_damage_spell", "24" },
+                    { "elemental_resistance_score_percent", "12" },
+                    { "frost_damage_percent", "17" },
+                    { "inflicted_freeze_duration_percent", "22" },
+                    { "dodgechance_score_percent", "26" },
+                    { "freezechance_on_frost_damage_score_percent", "26" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost_", "26" },
+                    { "frost_resistance_score_percent_", "18" },
+                    { "life_leech_percent_frost_", "2.6" },
+                    { "frost_damage_spell_", "26" },
+                    { "elemental_resistance_score_percent_", "13" },
+                    { "frost_damage_percent_", "18" },
+                    { "inflicted_freeze_duration_percent_", "23" },
+                    { "dodgechance_score_percent_", "28" },
+                    { "freezechance_on_frost_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost_", "29" },
+                    { "frost_resistance_score_percent_", "19" },
+                    { "life_leech_percent_frost_", "2.8" },
+                    { "frost_damage_spell_", "29" },
+                    { "elemental_resistance_score_percent_", "14" },
+                    { "frost_damage_percent_", "19" },
+                    { "inflicted_freeze_duration_percent_", "24" },
+                    { "dodgechance_score_percent_", "30" },
+                    { "freezechance_on_frost_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "Frost_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_frost_", "32" },
+                    { "frost_resistance_score_percent_", "20" },
+                    { "life_leech_percent_frost_", "3" },
+                    { "frost_damage_spell_", "32" },
+                    { "elemental_resistance_score_percent_", "15" },
+                    { "frost_damage_percent_", "20" },
+                    { "inflicted_freeze_duration_percent_", "25" },
+                    { "dodgechance_score_percent_", "35" },
+                    { "freezechance_on_frost_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "3" },
+                    { "umbra_resistance_score_percent", "9" },
+                    { "life_leech_percent_umbra", "0.8" },
+                    { "umbra_damage_spell", "3" },
+                    { "occult_resistance_score_percent", "4" },
+                    { "umbra_damage_percent", "9" },
+                    { "inflicted_stasis_duration_percent", "10" },
+                    { "forceshield_pts", "50" },
+                    { "stasischance_on_umbra_damage_score_percent", "10" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "6" },
+                    { "umbra_resistance_score_percent", "10" },
+                    { "life_leech_percent_umbra", "1" },
+                    { "umbra_damage_spell", "6" },
+                    { "occult_resistance_score_percent", "5" },
+                    { "umbra_damage_percent", "10" },
+                    { "inflicted_stasis_duration_percent", "12" },
+                    { "forceshield_pts", "100" },
+                    { "stasischance_on_umbra_damage_score_percent", "12" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "9" },
+                    { "umbra_resistance_score_percent", "11" },
+                    { "life_leech_percent_umbra", "1.2" },
+                    { "umbra_damage_spell", "9" },
+                    { "occult_resistance_score_percent", "6" },
+                    { "umbra_damage_percent", "11" },
+                    { "inflicted_stasis_duration_percent", "14" },
+                    { "forceshield_pts", "150" },
+                    { "stasischance_on_umbra_damage_score_percent", "14" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "12" },
+                    { "umbra_resistance_score_percent", "12" },
+                    { "life_leech_percent_umbra", "1.4" },
+                    { "umbra_damage_spell", "12" },
+                    { "occult_resistance_score_percent", "7" },
+                    { "umbra_damage_percent", "12" },
+                    { "inflicted_stasis_duration_percent", "16" },
+                    { "forceshield_pts", "200" },
+                    { "stasischance_on_umbra_damage_score_percent", "16" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "14" },
+                    { "umbra_resistance_score_percent", "13" },
+                    { "life_leech_percent_umbra", "1.6" },
+                    { "umbra_damage_spell", "14" },
+                    { "occult_resistance_score_percent", "8" },
+                    { "umbra_damage_percent", "13" },
+                    { "inflicted_stasis_duration_percent", "18" },
+                    { "forceshield_pts", "250" },
+                    { "stasischance_on_umbra_damage_score_percent", "18" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "17" },
+                    { "umbra_resistance_score_percent", "14" },
+                    { "life_leech_percent_umbra", "1.8" },
+                    { "umbra_damage_spell", "17" },
+                    { "occult_resistance_score_percent", "9" },
+                    { "umbra_damage_percent", "14" },
+                    { "inflicted_stasis_duration_percent", "19" },
+                    { "forceshield_pts", "300" },
+                    { "stasischance_on_umbra_damage_score_percent", "20" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "20" },
+                    { "umbra_resistance_score_percent", "15" },
+                    { "life_leech_percent_umbra", "2" },
+                    { "umbra_damage_spell", "20" },
+                    { "occult_resistance_score_percent", "10" },
+                    { "umbra_damage_percent", "15" },
+                    { "inflicted_stasis_duration_percent", "20" },
+                    { "forceshield_pts", "400" },
+                    { "stasischance_on_umbra_damage_score_percent", "22" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "22" },
+                    { "umbra_resistance_score_percent", "16" },
+                    { "life_leech_percent_umbra", "2.2" },
+                    { "umbra_damage_spell", "22" },
+                    { "occult_resistance_score_percent", "11" },
+                    { "umbra_damage_percent", "16" },
+                    { "inflicted_stasis_duration_percent", "21" },
+                    { "forceshield_pts", "500" },
+                    { "stasischance_on_umbra_damage_score_percent", "24" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra", "24" },
+                    { "umbra_resistance_score_percent", "17" },
+                    { "life_leech_percent_umbra", "2.4" },
+                    { "umbra_damage_spell", "24" },
+                    { "occult_resistance_score_percent", "12" },
+                    { "umbra_damage_percent", "17" },
+                    { "inflicted_stasis_duration_percent", "22" },
+                    { "forceshield_pts", "600" },
+                    { "stasischance_on_umbra_damage_score_percent", "26" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra_", "26" },
+                    { "umbra_resistance_score_percent_", "18" },
+                    { "life_leech_percent_umbra_", "2.6" },
+                    { "umbra_damage_spell_", "26" },
+                    { "occult_resistance_score_percent_", "13" },
+                    { "umbra_damage_percent_", "18" },
+                    { "inflicted_stasis_duration_percent_", "23" },
+                    { "forceshield_pts_", "700" },
+                    { "stasischance_on_umbra_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra_", "29" },
+                    { "umbra_resistance_score_percent_", "19" },
+                    { "life_leech_percent_umbra_", "2.8" },
+                    { "umbra_damage_spell_", "29" },
+                    { "occult_resistance_score_percent_", "14" },
+                    { "umbra_damage_percent_", "19" },
+                    { "inflicted_stasis_duration_percent_", "24" },
+                    { "forceshield_pts_", "800" },
+                    { "stasischance_on_umbra_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "Umbra_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_umbra_", "32" },
+                    { "umbra_resistance_score_percent_", "20" },
+                    { "life_leech_percent_umbra_", "3" },
+                    { "umbra_damage_spell_", "32" },
+                    { "occult_resistance_score_percent_", "15" },
+                    { "umbra_damage_percent_", "20" },
+                    { "inflicted_stasis_duration_percent_", "25" },
+                    { "forceshield_pts_", "1000" },
+                    { "stasischance_on_umbra_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "3" },
+                    { "sacred_resistance_score_percent", "9" },
+                    { "life_leech_percent_sacred", "0.8" },
+                    { "sacred_damage_spell", "3" },
+                    { "occult_resistance_score_percent", "4" },
+                    { "sacred_damage_percent", "9" },
+                    { "inflicted_weakness_duration_percent", "10" },
+                    { "health_pts", "50" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "10" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "6" },
+                    { "sacred_resistance_score_percent", "10" },
+                    { "life_leech_percent_sacred", "1" },
+                    { "sacred_damage_spell", "6" },
+                    { "occult_resistance_score_percent", "5" },
+                    { "sacred_damage_percent", "10" },
+                    { "inflicted_weakness_duration_percent", "12" },
+                    { "health_pts", "100" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "12" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "9" },
+                    { "sacred_resistance_score_percent", "11" },
+                    { "life_leech_percent_sacred", "1.2" },
+                    { "sacred_damage_spell", "9" },
+                    { "occult_resistance_score_percent", "6" },
+                    { "sacred_damage_percent", "11" },
+                    { "inflicted_weakness_duration_percent", "14" },
+                    { "health_pts", "150" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "14" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "12" },
+                    { "sacred_resistance_score_percent", "12" },
+                    { "life_leech_percent_sacred", "1.4" },
+                    { "sacred_damage_spell", "12" },
+                    { "occult_resistance_score_percent", "7" },
+                    { "sacred_damage_percent", "12" },
+                    { "inflicted_weakness_duration_percent", "16" },
+                    { "health_pts", "200" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "16" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "14" },
+                    { "sacred_resistance_score_percent", "13" },
+                    { "life_leech_percent_sacred", "1.6" },
+                    { "sacred_damage_spell", "14" },
+                    { "occult_resistance_score_percent", "8" },
+                    { "sacred_damage_percent", "13" },
+                    { "inflicted_weakness_duration_percent", "18" },
+                    { "health_pts", "250" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "18" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "17" },
+                    { "sacred_resistance_score_percent", "14" },
+                    { "life_leech_percent_sacred", "1.8" },
+                    { "sacred_damage_spell", "17" },
+                    { "occult_resistance_score_percent", "9" },
+                    { "sacred_damage_percent", "14" },
+                    { "inflicted_weakness_duration_percent", "19" },
+                    { "health_pts", "300" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "20" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "20" },
+                    { "sacred_resistance_score_percent", "15" },
+                    { "life_leech_percent_sacred", "2" },
+                    { "sacred_damage_spell", "20" },
+                    { "occult_resistance_score_percent", "10" },
+                    { "sacred_damage_percent", "15" },
+                    { "inflicted_weakness_duration_percent", "20" },
+                    { "health_pts", "400" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "22" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "22" },
+                    { "sacred_resistance_score_percent", "16" },
+                    { "life_leech_percent_sacred", "2.2" },
+                    { "sacred_damage_spell", "22" },
+                    { "occult_resistance_score_percent", "11" },
+                    { "sacred_damage_percent", "16" },
+                    { "inflicted_weakness_duration_percent", "21" },
+                    { "health_pts", "500" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "24" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred", "24" },
+                    { "sacred_resistance_score_percent", "17" },
+                    { "life_leech_percent_sacred", "2.4" },
+                    { "sacred_damage_spell", "24" },
+                    { "occult_resistance_score_percent", "12" },
+                    { "sacred_damage_percent", "17" },
+                    { "inflicted_weakness_duration_percent", "22" },
+                    { "health_pts", "600" },
+                    { "weaknesschance_on_sacred_damage_score_percent", "26" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred_", "26" },
+                    { "sacred_resistance_score_percent_", "18" },
+                    { "life_leech_percent_sacred_", "2.6" },
+                    { "sacred_damage_spell_", "26" },
+                    { "occult_resistance_score_percent_", "13" },
+                    { "sacred_damage_percent_", "18" },
+                    { "inflicted_weakness_duration_percent_", "23" },
+                    { "health_pts_", "700" },
+                    { "weaknesschance_on_sacred_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred_", "29" },
+                    { "sacred_resistance_score_percent_", "19" },
+                    { "life_leech_percent_sacred_", "2.8" },
+                    { "sacred_damage_spell_", "29" },
+                    { "occult_resistance_score_percent_", "14" },
+                    { "sacred_damage_percent_", "19" },
+                    { "inflicted_weakness_duration_percent_", "24" },
+                    { "health_pts_", "800" },
+                    { "weaknesschance_on_sacred_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "sacred_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_sacred_", "32" },
+                    { "sacred_resistance_score_percent_", "20" },
+                    { "life_leech_percent_sacred_", "3" },
+                    { "sacred_damage_spell_", "32" },
+                    { "occult_resistance_score_percent_", "15" },
+                    { "sacred_damage_percent_", "20" },
+                    { "inflicted_weakness_duration_percent_", "25" },
+                    { "health_pts_", "1000" },
+                    { "weaknesschance_on_sacred_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "3" },
+                    { "shadow_resistance_score_percent", "9" },
+                    { "life_leech_percent_shadow", "0.8" },
+                    { "shadow_damage_spell", "3" },
+                    { "occult_resistance_score_percent", "4" },
+                    { "shadow_damage_percent", "9" },
+                    { "inflicted_curse_duration_percent", "10" },
+                    { "dodgechance_score_percent", "10" },
+                    { "curesechance_on_shadow_damage_score_percent", "10" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "6" },
+                    { "shadow_resistance_score_percent", "10" },
+                    { "life_leech_percent_shadow", "1" },
+                    { "shadow_damage_spell", "6" },
+                    { "occult_resistance_score_percent", "5" },
+                    { "shadow_damage_percent", "10" },
+                    { "inflicted_curse_duration_percent", "12" },
+                    { "dodgechance_score_percent", "12" },
+                    { "curesechance_on_shadow_damage_score_percent", "12" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "9" },
+                    { "shadow_resistance_score_percent", "11" },
+                    { "life_leech_percent_shadow", "1.2" },
+                    { "shadow_damage_spell", "9" },
+                    { "occult_resistance_score_percent", "6" },
+                    { "shadow_damage_percent", "11" },
+                    { "inflicted_curse_duration_percent", "14" },
+                    { "dodgechance_score_percent", "14" },
+                    { "curesechance_on_shadow_damage_score_percent", "14" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "12" },
+                    { "shadow_resistance_score_percent", "12" },
+                    { "life_leech_percent_shadow", "1.4" },
+                    { "shadow_damage_spell", "12" },
+                    { "occult_resistance_score_percent", "7" },
+                    { "shadow_damage_percent", "12" },
+                    { "inflicted_curse_duration_percent", "16" },
+                    { "dodgechance_score_percent", "16" },
+                    { "curesechance_on_shadow_damage_score_percent", "16" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "14" },
+                    { "shadow_resistance_score_percent", "13" },
+                    { "life_leech_percent_shadow", "1.6" },
+                    { "shadow_damage_spell", "14" },
+                    { "occult_resistance_score_percent", "8" },
+                    { "shadow_damage_percent", "13" },
+                    { "inflicted_curse_duration_percent", "18" },
+                    { "dodgechance_score_percent", "18" },
+                    { "curesechance_on_shadow_damage_score_percent", "18" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "17" },
+                    { "shadow_resistance_score_percent", "14" },
+                    { "life_leech_percent_shadow", "1.8" },
+                    { "shadow_damage_spell", "17" },
+                    { "occult_resistance_score_percent", "9" },
+                    { "shadow_damage_percent", "14" },
+                    { "inflicted_curse_duration_percent", "19" },
+                    { "dodgechance_score_percent", "20" },
+                    { "curesechance_on_shadow_damage_score_percent", "20" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "20" },
+                    { "shadow_resistance_score_percent", "15" },
+                    { "life_leech_percent_shadow", "2" },
+                    { "shadow_damage_spell", "20" },
+                    { "occult_resistance_score_percent", "10" },
+                    { "shadow_damage_percent", "15" },
+                    { "inflicted_curse_duration_percent", "20" },
+                    { "dodgechance_score_percent", "22" },
+                    { "curesechance_on_shadow_damage_score_percent", "22" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "22" },
+                    { "shadow_resistance_score_percent", "16" },
+                    { "life_leech_percent_shadow", "2.2" },
+                    { "shadow_damage_spell", "22" },
+                    { "occult_resistance_score_percent", "11" },
+                    { "shadow_damage_percent", "16" },
+                    { "inflicted_curse_duration_percent", "21" },
+                    { "dodgechance_score_percent", "24" },
+                    { "curesechance_on_shadow_damage_score_percent", "24" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow", "24" },
+                    { "shadow_resistance_score_percent", "17" },
+                    { "life_leech_percent_shadow", "2.4" },
+                    { "shadow_damage_spell", "24" },
+                    { "occult_resistance_score_percent", "12" },
+                    { "shadow_damage_percent", "17" },
+                    { "inflicted_curse_duration_percent", "22" },
+                    { "dodgechance_score_percent", "26" },
+                    { "curesechance_on_shadow_damage_score_percent", "26" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow_", "26" },
+                    { "shadow_resistance_score_percent_", "18" },
+                    { "life_leech_percent_shadow_", "2.6" },
+                    { "shadow_damage_spell_", "26" },
+                    { "occult_resistance_score_percent_", "13" },
+                    { "shadow_damage_percent_", "18" },
+                    { "inflicted_curse_duration_percent_", "23" },
+                    { "dodgechance_score_percent_", "28" },
+                    { "curesechance_on_shadow_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow_", "29" },
+                    { "shadow_resistance_score_percent_", "19" },
+                    { "life_leech_percent_shadow_", "2.8" },
+                    { "shadow_damage_spell_", "29" },
+                    { "occult_resistance_score_percent_", "14" },
+                    { "shadow_damage_percent_", "19" },
+                    { "inflicted_curse_duration_percent_", "24" },
+                    { "dodgechance_score_percent_", "30" },
+                    { "curesechance_on_shadow_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "shadow_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_shadow_", "32" },
+                    { "shadow_resistance_score_percent_", "20" },
+                    { "life_leech_percent_shadow_", "3" },
+                    { "shadow_damage_spell_", "32" },
+                    { "occult_resistance_score_percent_", "15" },
+                    { "shadow_damage_percent_", "20" },
+                    { "inflicted_curse_duration_percent_", "25" },
+                    { "dodgechance_score_percent_", "35" },
+                    { "curesechance_on_shadow_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "physical_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "3" },
+                    { "physical_resistance_score_percent", "9" },
+                    { "life_leech_percent_physical", "0.8" },
+                    { "physical_damage_spell", "3" },
+                    { "material_resistance_score_percent", "4" },
+                    { "physical_damage_percent", "9" },
+                    { "inflicted_stun_duration_percent", "10" },
+                    { "health_pts", "50" },
+                }
+            },
+            {
+                "physical_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "6" },
+                    { "physical_resistance_score_percent", "10" },
+                    { "life_leech_percent_physical", "1" },
+                    { "physical_damage_spell", "6" },
+                    { "material_resistance_score_percent", "5" },
+                    { "physical_damage_percent", "10" },
+                    { "inflicted_stun_duration_percent", "12" },
+                    { "health_pts", "100" },
+                }
+            },
+            {
+                "physical_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "9" },
+                    { "physical_resistance_score_percent", "11" },
+                    { "life_leech_percent_physical", "1.2" },
+                    { "physical_damage_spell", "9" },
+                    { "material_resistance_score_percent", "6" },
+                    { "physical_damage_percent", "11" },
+                    { "inflicted_stun_duration_percent", "14" },
+                    { "health_pts", "150" },
+                }
+            },
+            {
+                "physical_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "12" },
+                    { "physical_resistance_score_percent", "12" },
+                    { "life_leech_percent_physical", "1.4" },
+                    { "physical_damage_spell", "12" },
+                    { "material_resistance_score_percent", "7" },
+                    { "physical_damage_percent", "12" },
+                    { "inflicted_stun_duration_percent", "16" },
+                    { "health_pts", "200" },
+                }
+            },
+            {
+                "physical_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "14" },
+                    { "physical_resistance_score_percent", "13" },
+                    { "life_leech_percent_physical", "1.6" },
+                    { "physical_damage_spell", "14" },
+                    { "material_resistance_score_percent", "8" },
+                    { "physical_damage_percent", "13" },
+                    { "inflicted_stun_duration_percent", "18" },
+                    { "health_pts", "250" },
+                }
+            },
+            {
+                "physical_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "17" },
+                    { "physical_resistance_score_percent", "14" },
+                    { "life_leech_percent_physical", "1.8" },
+                    { "physical_damage_spell", "17" },
+                    { "material_resistance_score_percent", "9" },
+                    { "physical_damage_percent", "14" },
+                    { "inflicted_stun_duration_percent", "19" },
+                    { "health_pts", "300" },
+                }
+            },
+            {
+                "physical_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "20" },
+                    { "physical_resistance_score_percent", "15" },
+                    { "life_leech_percent_physical", "2" },
+                    { "physical_damage_spell", "20" },
+                    { "material_resistance_score_percent", "10" },
+                    { "physical_damage_percent", "15" },
+                    { "inflicted_stun_duration_percent", "20" },
+                    { "health_pts", "400" },
+                }
+            },
+            {
+                "physical_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "22" },
+                    { "physical_resistance_score_percent", "16" },
+                    { "life_leech_percent_physical", "2.2" },
+                    { "physical_damage_spell", "22" },
+                    { "material_resistance_score_percent", "11" },
+                    { "physical_damage_percent", "16" },
+                    { "inflicted_stun_duration_percent", "21" },
+                    { "health_pts", "500" },
+                }
+            },
+            {
+                "physical_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical", "24" },
+                    { "physical_resistance_score_percent", "17" },
+                    { "life_leech_percent_physical", "2.4" },
+                    { "physical_damage_spell", "24" },
+                    { "material_resistance_score_percent", "12" },
+                    { "physical_damage_percent", "17" },
+                    { "inflicted_stun_duration_percent", "22" },
+                    { "health_pts", "600" },
+                }
+            },
+            {
+                "physical_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical_", "26" },
+                    { "physical_resistance_score_percent_", "18" },
+                    { "life_leech_percent_physical_", "2.6" },
+                    { "physical_damage_spell_", "26" },
+                    { "material_resistance_score_percent_", "13" },
+                    { "physical_damage_percent_", "18" },
+                    { "inflicted_stun_duration_percent_", "23" },
+                    { "health_pts_", "700" },
+                }
+            },
+            {
+                "physical_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical_", "29" },
+                    { "physical_resistance_score_percent_", "19" },
+                    { "life_leech_percent_physical_", "2.8" },
+                    { "physical_damage_spell_", "29" },
+                    { "material_resistance_score_percent_", "14" },
+                    { "physical_damage_percent_", "19" },
+                    { "inflicted_stun_duration_percent_", "24" },
+                    { "health_pts_", "800" },
+                }
+            },
+            {
+                "physical_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_physical_", "32" },
+                    { "physical_resistance_score_percent_", "20" },
+                    { "life_leech_percent_physical_", "3" },
+                    { "physical_damage_spell_", "32" },
+                    { "material_resistance_score_percent_", "15" },
+                    { "physical_damage_percent_", "20" },
+                    { "inflicted_stun_duration_percent_", "25" },
+                    { "health_pts_", "1000" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "3" },
+                    { "toxic_resistance_score_percent", "9" },
+                    { "life_leech_percent_toxic", "0.8" },
+                    { "toxic_damage_spell", "3" },
+                    { "material_resistance_score_percent", "4" },
+                    { "toxic_damage_percent", "9" },
+                    { "dotdamage_percent_poison", "4" },
+                    { "forceshield_pts", "50" },
+                    { "poisonchance_on_toxic_damage_score_percent", "10" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "6" },
+                    { "toxic_resistance_score_percent", "10" },
+                    { "life_leech_percent_toxic", "1" },
+                    { "toxic_damage_spell", "6" },
+                    { "material_resistance_score_percent", "5" },
+                    { "toxic_damage_percent", "10" },
+                    { "dotdamage_percent_poison", "5" },
+                    { "forceshield_pts", "100" },
+                    { "poisonchance_on_toxic_damage_score_percent", "12" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "9" },
+                    { "toxic_resistance_score_percent", "11" },
+                    { "life_leech_percent_toxic", "1.2" },
+                    { "toxic_damage_spell", "9" },
+                    { "material_resistance_score_percent", "6" },
+                    { "toxic_damage_percent", "11" },
+                    { "dotdamage_percent_poison", "6" },
+                    { "forceshield_pts", "150" },
+                    { "poisonchance_on_toxic_damage_score_percent", "14" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "12" },
+                    { "toxic_resistance_score_percent", "12" },
+                    { "life_leech_percent_toxic", "1.4" },
+                    { "toxic_damage_spell", "12" },
+                    { "material_resistance_score_percent", "7" },
+                    { "toxic_damage_percent", "12" },
+                    { "dotdamage_percent_poison", "7" },
+                    { "forceshield_pts", "200" },
+                    { "poisonchance_on_toxic_damage_score_percent", "16" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "14" },
+                    { "toxic_resistance_score_percent", "13" },
+                    { "life_leech_percent_toxic", "1.6" },
+                    { "toxic_damage_spell", "14" },
+                    { "material_resistance_score_percent", "8" },
+                    { "toxic_damage_percent", "13" },
+                    { "dotdamage_percent_poison", "8" },
+                    { "forceshield_pts", "250" },
+                    { "poisonchance_on_toxic_damage_score_percent", "18" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "17" },
+                    { "toxic_resistance_score_percent", "14" },
+                    { "life_leech_percent_toxic", "1.8" },
+                    { "toxic_damage_spell", "17" },
+                    { "material_resistance_score_percent", "9" },
+                    { "toxic_damage_percent", "14" },
+                    { "dotdamage_percent_poison", "9" },
+                    { "forceshield_pts", "300" },
+                    { "poisonchance_on_toxic_damage_score_percent", "20" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "20" },
+                    { "toxic_resistance_score_percent", "15" },
+                    { "life_leech_percent_toxic", "2" },
+                    { "toxic_damage_spell", "20" },
+                    { "material_resistance_score_percent", "10" },
+                    { "toxic_damage_percent", "15" },
+                    { "dotdamage_percent_poison", "10" },
+                    { "forceshield_pts", "400" },
+                    { "poisonchance_on_toxic_damage_score_percent", "22" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "22" },
+                    { "toxic_resistance_score_percent", "16" },
+                    { "life_leech_percent_toxic", "2.2" },
+                    { "toxic_damage_spell", "22" },
+                    { "material_resistance_score_percent", "11" },
+                    { "toxic_damage_percent", "16" },
+                    { "dotdamage_percent_poison", "11" },
+                    { "forceshield_pts", "500" },
+                    { "poisonchance_on_toxic_damage_score_percent", "24" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic", "24" },
+                    { "toxic_resistance_score_percent", "17" },
+                    { "life_leech_percent_toxic", "2.4" },
+                    { "toxic_damage_spell", "24" },
+                    { "material_resistance_score_percent", "12" },
+                    { "toxic_damage_percent", "17" },
+                    { "dotdamage_percent_poison", "12" },
+                    { "forceshield_pts", "600" },
+                    { "poisonchance_on_toxic_damage_score_percent", "26" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic_", "26" },
+                    { "toxic_resistance_score_percent_", "18" },
+                    { "life_leech_percent_toxic_", "2.6" },
+                    { "toxic_damage_spell_", "26" },
+                    { "material_resistance_score_percent_", "13" },
+                    { "toxic_damage_percent_", "18" },
+                    { "dotdamage_percent_poison_", "13" },
+                    { "forceshield_pts_", "700" },
+                    { "poisonchance_on_toxic_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic_", "29" },
+                    { "toxic_resistance_score_percent_", "19" },
+                    { "life_leech_percent_toxic_", "2.8" },
+                    { "toxic_damage_spell_", "29" },
+                    { "material_resistance_score_percent_", "14" },
+                    { "toxic_damage_percent_", "19" },
+                    { "dotdamage_percent_poison_", "14" },
+                    { "forceshield_pts_", "800" },
+                    { "poisonchance_on_toxic_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "Poison_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_toxic_", "32" },
+                    { "toxic_resistance_score_percent_", "20" },
+                    { "life_leech_percent_toxic_", "3" },
+                    { "toxic_damage_spell_", "32" },
+                    { "material_resistance_score_percent_", "15" },
+                    { "toxic_damage_percent_", "20" },
+                    { "dotdamage_percent_poison_", "15" },
+                    { "forceshield_pts_", "1000" },
+                    { "poisonchance_on_toxic_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "rend_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "3" },
+                    { "rend_resistance_score_percent", "9" },
+                    { "life_leech_percent_rend", "0.8" },
+                    { "rend_damage_spell", "3" },
+                    { "material_resistance_score_percent", "4" },
+                    { "rend_damage_percent", "9" },
+                    { "dotdamage_percent_bleed", "4" },
+                    { "dodgechance_score_percent", "10" },
+                    { "bleedchance_on_rend_damage_score_percent", "10" },
+                }
+            },
+            {
+                "rend_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "6" },
+                    { "rend_resistance_score_percent", "10" },
+                    { "life_leech_percent_rend", "1" },
+                    { "rend_damage_spell", "6" },
+                    { "material_resistance_score_percent", "5" },
+                    { "rend_damage_percent", "10" },
+                    { "dotdamage_percent_bleed", "5" },
+                    { "dodgechance_score_percent", "12" },
+                    { "bleedchance_on_rend_damage_score_percent", "12" },
+                }
+            },
+            {
+                "rend_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "9" },
+                    { "rend_resistance_score_percent", "11" },
+                    { "life_leech_percent_rend", "1.2" },
+                    { "rend_damage_spell", "9" },
+                    { "material_resistance_score_percent", "6" },
+                    { "rend_damage_percent", "11" },
+                    { "dotdamage_percent_bleed", "6" },
+                    { "dodgechance_score_percent", "14" },
+                    { "bleedchance_on_rend_damage_score_percent", "14" },
+                }
+            },
+            {
+                "rend_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "12" },
+                    { "rend_resistance_score_percent", "12" },
+                    { "life_leech_percent_rend", "1.4" },
+                    { "rend_damage_spell", "12" },
+                    { "material_resistance_score_percent", "7" },
+                    { "rend_damage_percent", "12" },
+                    { "dotdamage_percent_bleed", "7" },
+                    { "dodgechance_score_percent", "16" },
+                    { "bleedchance_on_rend_damage_score_percent", "16" },
+                }
+            },
+            {
+                "rend_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "14" },
+                    { "rend_resistance_score_percent", "13" },
+                    { "life_leech_percent_rend", "1.6" },
+                    { "rend_damage_spell", "14" },
+                    { "material_resistance_score_percent", "8" },
+                    { "rend_damage_percent", "13" },
+                    { "dotdamage_percent_bleed", "8" },
+                    { "dodgechance_score_percent", "18" },
+                    { "bleedchance_on_rend_damage_score_percent", "18" },
+                }
+            },
+            {
+                "rend_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "17" },
+                    { "rend_resistance_score_percent", "14" },
+                    { "life_leech_percent_rend", "1.8" },
+                    { "rend_damage_spell", "17" },
+                    { "material_resistance_score_percent", "9" },
+                    { "rend_damage_percent", "14" },
+                    { "dotdamage_percent_bleed", "9" },
+                    { "dodgechance_score_percent", "20" },
+                    { "bleedchance_on_rend_damage_score_percent", "20" },
+                }
+            },
+            {
+                "rend_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "20" },
+                    { "rend_resistance_score_percent", "15" },
+                    { "life_leech_percent_rend", "2" },
+                    { "rend_damage_spell", "20" },
+                    { "material_resistance_score_percent", "10" },
+                    { "rend_damage_percent", "15" },
+                    { "dotdamage_percent_bleed", "10" },
+                    { "dodgechance_score_percent", "22" },
+                    { "bleedchance_on_rend_damage_score_percent", "22" },
+                }
+            },
+            {
+                "rend_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "22" },
+                    { "rend_resistance_score_percent", "16" },
+                    { "life_leech_percent_rend", "2.2" },
+                    { "rend_damage_spell", "22" },
+                    { "material_resistance_score_percent", "11" },
+                    { "rend_damage_percent", "16" },
+                    { "dotdamage_percent_bleed", "11" },
+                    { "dodgechance_score_percent", "24" },
+                    { "bleedchance_on_rend_damage_score_percent", "24" },
+                }
+            },
+            {
+                "rend_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend", "24" },
+                    { "rend_resistance_score_percent", "17" },
+                    { "life_leech_percent_rend", "2.4" },
+                    { "rend_damage_spell", "24" },
+                    { "material_resistance_score_percent", "12" },
+                    { "rend_damage_percent", "17" },
+                    { "dotdamage_percent_bleed", "12" },
+                    { "dodgechance_score_percent", "26" },
+                    { "bleedchance_on_rend_damage_score_percent", "26" },
+                }
+            },
+            {
+                "rend_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend_", "26" },
+                    { "rend_resistance_score_percent_", "18" },
+                    { "life_leech_percent_rend_", "2.6" },
+                    { "rend_damage_spell_", "26" },
+                    { "material_resistance_score_percent_", "13" },
+                    { "rend_damage_percent_", "18" },
+                    { "dotdamage_percent_bleed_", "13" },
+                    { "dodgechance_score_percent_", "28" },
+                    { "bleedchance_on_rend_damage_score_percent_", "28" },
+                }
+            },
+            {
+                "rend_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend_", "29" },
+                    { "rend_resistance_score_percent_", "19" },
+                    { "life_leech_percent_rend_", "2.8" },
+                    { "rend_damage_spell_", "29" },
+                    { "material_resistance_score_percent_", "14" },
+                    { "rend_damage_percent_", "19" },
+                    { "dotdamage_percent_bleed_", "14" },
+                    { "dodgechance_score_percent_", "30" },
+                    { "bleedchance_on_rend_damage_score_percent_", "30" },
+                }
+            },
+            {
+                "rend_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "local_damage_flat_rend_", "32" },
+                    { "rend_resistance_score_percent_", "20" },
+                    { "life_leech_percent_rend_", "3" },
+                    { "rend_damage_spell_", "32" },
+                    { "material_resistance_score_percent_", "15" },
+                    { "rend_damage_percent_", "20" },
+                    { "dotdamage_percent_bleed_", "15" },
+                    { "dodgechance_score_percent_", "35" },
+                    { "bleedchance_on_rend_damage_score_percent_", "35" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "9" },
+                    { "blockchance_ifcanblock_flat", "4.5" },
+                    { "criticalchance_attackskill_score_percent", "10" },
+                    { "criticaldamage_magicspell_pts", "9" },
+                    { "blockefficiency_percent", "4.5" },
+                    { "criticalchance_magicspell_score_percent", "10" },
+                    { "criticaldamage_pts", "4" },
+                    { "all_resistance_score_percent", "5" },
+                    { "criticalchance_score_percent", "7" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "10" },
+                    { "blockchance_ifcanblock_flat", "5" },
+                    { "criticalchance_attackskill_score_percent", "12" },
+                    { "criticaldamage_magicspell_pts", "10" },
+                    { "blockefficiency_percent", "5" },
+                    { "criticalchance_magicspell_score_percent", "12" },
+                    { "criticaldamage_pts", "5" },
+                    { "all_resistance_score_percent", "6" },
+                    { "criticalchance_score_percent", "8" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "11" },
+                    { "blockchance_ifcanblock_flat", "5.5" },
+                    { "criticalchance_attackskill_score_percent", "14" },
+                    { "criticaldamage_magicspell_pts", "11" },
+                    { "blockefficiency_percent", "5.5" },
+                    { "criticalchance_magicspell_score_percent", "14" },
+                    { "criticaldamage_pts", "6" },
+                    { "all_resistance_score_percent", "7" },
+                    { "criticalchance_score_percent", "9" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "12" },
+                    { "blockchance_ifcanblock_flat", "6" },
+                    { "criticalchance_attackskill_score_percent", "16" },
+                    { "criticaldamage_magicspell_pts", "12" },
+                    { "blockefficiency_percent", "6" },
+                    { "criticalchance_magicspell_score_percent", "16" },
+                    { "criticaldamage_pts", "7" },
+                    { "all_resistance_score_percent", "8" },
+                    { "criticalchance_score_percent", "10" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "13" },
+                    { "blockchance_ifcanblock_flat", "6.5" },
+                    { "criticalchance_attackskill_score_percent", "18" },
+                    { "criticaldamage_magicspell_pts", "13" },
+                    { "blockefficiency_percent", "6.5" },
+                    { "criticalchance_magicspell_score_percent", "18" },
+                    { "criticaldamage_pts", "8" },
+                    { "all_resistance_score_percent", "9" },
+                    { "criticalchance_score_percent", "11" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "14" },
+                    { "blockchance_ifcanblock_flat", "7" },
+                    { "criticalchance_attackskill_score_percent", "20" },
+                    { "criticaldamage_magicspell_pts", "14" },
+                    { "blockefficiency_percent", "7" },
+                    { "criticalchance_magicspell_score_percent", "20" },
+                    { "criticaldamage_pts", "9" },
+                    { "all_resistance_score_percent", "10" },
+                    { "criticalchance_score_percent", "12" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "15" },
+                    { "blockchance_ifcanblock_flat", "7.5" },
+                    { "criticalchance_attackskill_score_percent", "22" },
+                    { "criticaldamage_magicspell_pts", "15" },
+                    { "blockefficiency_percent", "7.5" },
+                    { "criticalchance_magicspell_score_percent", "22" },
+                    { "criticaldamage_pts", "10" },
+                    { "all_resistance_score_percent", "11" },
+                    { "criticalchance_score_percent", "13" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "16" },
+                    { "blockchance_ifcanblock_flat", "8" },
+                    { "criticalchance_attackskill_score_percent", "24" },
+                    { "criticaldamage_magicspell_pts", "16" },
+                    { "blockefficiency_percent", "8" },
+                    { "criticalchance_magicspell_score_percent", "24" },
+                    { "criticaldamage_pts", "11" },
+                    { "all_resistance_score_percent", "12" },
+                    { "criticalchance_score_percent", "14" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts", "17" },
+                    { "blockchance_ifcanblock_flat", "8.5" },
+                    { "criticalchance_attackskill_score_percent", "26" },
+                    { "criticaldamage_magicspell_pts", "17" },
+                    { "blockefficiency_percent", "8.5" },
+                    { "criticalchance_magicspell_score_percent", "26" },
+                    { "criticaldamage_pts", "12" },
+                    { "all_resistance_score_percent", "13" },
+                    { "criticalchance_score_percent", "15" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts_", "18" },
+                    { "blockchance_ifcanblock_flat_", "9" },
+                    { "criticalchance_attackskill_score_percent_", "28" },
+                    { "criticaldamage_magicspell_pts_", "18" },
+                    { "blockefficiency_percent_", "9" },
+                    { "criticalchance_magicspell_score_percent_", "28" },
+                    { "criticaldamage_pts_", "13" },
+                    { "all_resistance_score_percent_", "14" },
+                    { "criticalchance_score_percent_", "16" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts_", "19" },
+                    { "blockchance_ifcanblock_flat_", "9.5" },
+                    { "criticalchance_attackskill_score_percent_", "30" },
+                    { "criticaldamage_magicspell_pts_", "19" },
+                    { "blockefficiency_percent_", "9.5" },
+                    { "criticalchance_magicspell_score_percent_", "30" },
+                    { "criticaldamage_pts_", "14" },
+                    { "all_resistance_score_percent_", "15" },
+                    { "criticalchance_score_percent_", "17" },
+                }
+            },
+            {
+                "Utility_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "criticaldamage_attackskill_pts_", "20" },
+                    { "blockchance_ifcanblock_flat_", "10" },
+                    { "criticalchance_attackskill_score_percent_", "35" },
+                    { "criticaldamage_magicspell_pts_", "20" },
+                    { "blockefficiency_percent_", "10" },
+                    { "criticalchance_magicspell_score_percent_", "35" },
+                    { "criticaldamage_pts_", "15" },
+                    { "all_resistance_score_percent_", "16" },
+                    { "criticalchance_score_percent_", "18" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_01",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "10" },
+                    { "health_regen_pts", "5" },
+                    { "resourcegeneration_percent", "10" },
+                    { "spellcastingspeed_score_percent", "10" },
+                    { "forceshield_regeneration_percent", "100" },
+                    { "umbra_regen_pts", "3" },
+                    { "offensivespeed_score_percent", "7" },
+                    { "life_leech_percent_global", "0.4" },
+                    { "transfer_time_percent", "10" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_02",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "12" },
+                    { "health_regen_pts", "10" },
+                    { "resourcegeneration_percent", "12" },
+                    { "spellcastingspeed_score_percent", "12" },
+                    { "forceshield_regeneration_percent", "200" },
+                    { "umbra_regen_pts", "5" },
+                    { "offensivespeed_score_percent", "8" },
+                    { "life_leech_percent_global", "0.5" },
+                    { "transfer_time_percent", "12" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_03",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "14" },
+                    { "health_regen_pts", "15" },
+                    { "resourcegeneration_percent", "14" },
+                    { "spellcastingspeed_score_percent", "14" },
+                    { "forceshield_regeneration_percent", "300" },
+                    { "umbra_regen_pts", "7" },
+                    { "offensivespeed_score_percent", "9" },
+                    { "life_leech_percent_global", "0.6" },
+                    { "transfer_time_percent", "14" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_04",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "16" },
+                    { "health_regen_pts", "30" },
+                    { "resourcegeneration_percent", "16" },
+                    { "spellcastingspeed_score_percent", "16" },
+                    { "forceshield_regeneration_percent", "400" },
+                    { "umbra_regen_pts", "9" },
+                    { "offensivespeed_score_percent", "10" },
+                    { "life_leech_percent_global", "0.7" },
+                    { "transfer_time_percent", "16" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_05",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "18" },
+                    { "health_regen_pts", "45" },
+                    { "resourcegeneration_percent", "18" },
+                    { "spellcastingspeed_score_percent", "18" },
+                    { "forceshield_regeneration_percent", "500" },
+                    { "umbra_regen_pts", "11" },
+                    { "offensivespeed_score_percent", "11" },
+                    { "life_leech_percent_global", "0.8" },
+                    { "transfer_time_percent", "18" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_06",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "20" },
+                    { "health_regen_pts", "65" },
+                    { "resourcegeneration_percent", "20" },
+                    { "spellcastingspeed_score_percent", "20" },
+                    { "forceshield_regeneration_percent", "600" },
+                    { "umbra_regen_pts", "13" },
+                    { "offensivespeed_score_percent", "12" },
+                    { "life_leech_percent_global", "0.9" },
+                    { "transfer_time_percent", "19" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_07",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "22" },
+                    { "health_regen_pts", "100" },
+                    { "resourcegeneration_percent", "22" },
+                    { "spellcastingspeed_score_percent", "22" },
+                    { "forceshield_regeneration_percent", "700" },
+                    { "umbra_regen_pts", "15" },
+                    { "offensivespeed_score_percent", "13" },
+                    { "life_leech_percent_global", "1" },
+                    { "transfer_time_percent", "20" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_08",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "24" },
+                    { "health_regen_pts", "125" },
+                    { "resourcegeneration_percent", "24" },
+                    { "spellcastingspeed_score_percent", "24" },
+                    { "forceshield_regeneration_percent", "800" },
+                    { "umbra_regen_pts", "17" },
+                    { "offensivespeed_score_percent", "14" },
+                    { "life_leech_percent_global", "1.1" },
+                    { "transfer_time_percent", "21" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_09",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent", "26" },
+                    { "health_regen_pts", "150" },
+                    { "resourcegeneration_percent", "26" },
+                    { "spellcastingspeed_score_percent", "26" },
+                    { "forceshield_regeneration_percent", "1000" },
+                    { "umbra_regen_pts", "19" },
+                    { "offensivespeed_score_percent", "15" },
+                    { "life_leech_percent_global", "1.2" },
+                    { "transfer_time_percent", "22" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_10",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent_", "28" },
+                    { "health_regen_pts_", "165" },
+                    { "resourcegeneration_percent_", "28" },
+                    { "spellcastingspeed_score_percent_", "28" },
+                    { "forceshield_regeneration_percent_", "1200" },
+                    { "umbra_regen_pts_", "21" },
+                    { "offensivespeed_score_percent_", "16" },
+                    { "life_leech_percent_global_", "1.3" },
+                    { "transfer_time_percent_", "23" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_11",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent_", "30" },
+                    { "health_regen_pts_", "180" },
+                    { "resourcegeneration_percent_", "30" },
+                    { "spellcastingspeed_score_percent_", "30" },
+                    { "forceshield_regeneration_percent_", "1500" },
+                    { "umbra_regen_pts_", "23" },
+                    { "offensivespeed_score_percent_", "17" },
+                    { "life_leech_percent_global_", "1.4" },
+                    { "transfer_time_percent_", "24" },
+                }
+            },
+            {
+                "toughness_Gem_Tier_12",
+                new Dictionary<string, string>
+                {
+                    { "attackspeed_score_percent_", "35" },
+                    { "health_regen_pts_", "200" },
+                    { "resourcegeneration_percent_", "35" },
+                    { "spellcastingspeed_score_percent_", "35" },
+                    { "forceshield_regeneration_percent_", "2000" },
+                    { "umbra_regen_pts_", "25" },
+                    { "offensivespeed_score_percent_", "18" },
+                    { "life_leech_percent_global_", "1.5" },
+                    { "transfer_time_percent_", "25" },
+                }
+            },
+            {
+                "Special_gem",
+                new Dictionary<string, string>
+                {
+                    { "sarisel_damage_percent_atta", "15" },
+                    { "sarisel_material_resistance_score_perce", "10" },
+                    { "sarisel_criticalchance_score_perce", "10" },
+                    { "sarisel_damage_percent_spe", "15" },
+                    { "sarisel_elemental_resistance_score_perce", "10" },
+                    { "sarisel_statusailment_inflict_score_perce", "22" },
+                    { "sarisel_damage_perce", "10" },
+                    { "sarisel_occult_resistance_score_perce", "10" },
+                    { "sarisel_offensivespeed_score_perce", "13" },
+                }
+            }
         };
     }
 }

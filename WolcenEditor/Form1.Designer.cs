@@ -69,7 +69,7 @@
             this.cboGender = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.charInv = new System.Windows.Forms.TabPage();
-            this.propertyGridInv = new System.Windows.Forms.PropertyGrid();
+            this.itemStatDisplay = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -95,7 +95,6 @@
             this.charHelm = new System.Windows.Forms.PictureBox();
             this.charSkills = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -549,7 +548,7 @@
             // 
             this.charInv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charInv.BackgroundImage")));
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charInv.Controls.Add(this.propertyGridInv);
+            this.charInv.Controls.Add(this.itemStatDisplay);
             this.charInv.Controls.Add(this.groupBox1);
             this.charInv.Controls.Add(this.pictureBox16);
             this.charInv.Controls.Add(this.pictureBox15);
@@ -577,21 +576,14 @@
             this.charInv.Text = "Inventory";
             this.charInv.UseVisualStyleBackColor = true;
             // 
-            // propertyGridInv
+            // itemStatDisplay
             // 
-            this.propertyGridInv.BackColor = System.Drawing.Color.Gray;
-            this.propertyGridInv.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.propertyGridInv.HelpVisible = false;
-            this.propertyGridInv.LineColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.propertyGridInv.Location = new System.Drawing.Point(310, 32);
-            this.propertyGridInv.Name = "propertyGridInv";
-            this.propertyGridInv.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGridInv.Size = new System.Drawing.Size(478, 256);
-            this.propertyGridInv.TabIndex = 21;
-            this.propertyGridInv.ToolbarVisible = false;
-            this.propertyGridInv.ViewBackColor = System.Drawing.Color.Black;
-            this.propertyGridInv.ViewBorderColor = System.Drawing.SystemColors.GrayText;
-            this.propertyGridInv.ViewForeColor = System.Drawing.Color.Snow;
+            this.itemStatDisplay.AutoScroll = true;
+            this.itemStatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.itemStatDisplay.Location = new System.Drawing.Point(323, 7);
+            this.itemStatDisplay.Name = "itemStatDisplay";
+            this.itemStatDisplay.Size = new System.Drawing.Size(483, 208);
+            this.itemStatDisplay.TabIndex = 21;
             // 
             // groupBox1
             // 
@@ -898,10 +890,12 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
+            // imageList1
+            // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-
+            // 
             // cboSkinColor
             // 
             this.cboSkinColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -1150,15 +1144,12 @@
         private System.Windows.Forms.TabPage charSkills;
 
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.PropertyGrid propertyGridInv;
-
-        private System.Windows.Forms.GroupBox ItemStatsBox;
-        private System.Windows.Forms.ListBox listBoxEquipItems;
+        
         private System.Windows.Forms.CheckBox chkAllCosmetics;
         private System.Windows.Forms.CheckBox chkChampion;
         private System.Windows.Forms.ToolStripMenuItem closeStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-
+        private System.Windows.Forms.Panel itemStatDisplay;
     }
 }
 
