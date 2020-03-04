@@ -596,6 +596,32 @@ namespace WolcenEditor
             }
 
         }
+
+        private void unlockAllButton_Click(object sender, EventArgs e)
+        {
+            var skillList = new List<UnlockedSkill>();
+            foreach (var skill in SkillTree.SkillTreeDict.Keys)
+            {
+                var skillObj = SkillTree.ActivateSkill("_" + skill);
+                skillObj.Level = 90;
+                skillList.Add(skillObj);
+            }
+            cData.Character.UnlockedSkills = skillList;
+            TabControl tabControl = (SkillTree.skillPage.Parent as TabControl);
+            SkillTree.LoadSkillInformation(ref tabControl);
+
+        }
+
+        private void lockAllButton_Click(object sender, EventArgs e)
+        {
+            foreach (var skill in cData.Character.UnlockedSkills.ToList())
+            {
+                var pic = new PictureBox();
+                pic.Name = "_" + skill.SkillName;
+                SkillTree.RemoveSkill(pic);
+            }
+        }
+
     }
 
     public static class cData

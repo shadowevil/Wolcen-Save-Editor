@@ -34,14 +34,18 @@ namespace WolcenEditor
             { "player_frostcomet", new SkillImageBox("Tear of Etheliel") },
             { "player_frostlance", new SkillImageBox("Arctic Spear") },
             { "player_hammer", new SkillImageBox("Flight of Gaavanir") },
+            { "player_holydive", new SkillImageBox("Light-bringer") },
             { "player_hook", new SkillImageBox("Tracker's Reach") },
             { "player_ironguard", new SkillImageBox("Juggernaut") },
             { "player_laceration", new SkillImageBox("Bleeding Edge") },
             { "player_laser", new SkillImageBox("Annihilation") },
             { "player_leap", new SkillImageBox("Wings of Ishmir") },
+            { "player_possession", new SkillImageBox("Parasite") },
             { "player_sacredground", new SkillImageBox("Bulwark of Dawn") },
             { "player_smokebomb", new SkillImageBox("Duskshroud") },
             { "player_sniper", new SkillImageBox("\"Deathgazer\" Railgun") },
+            { "player_spreadshot", new SkillImageBox("Stings of Krearion") },
+            { "player_summon_champion", new SkillImageBox("Livor Mortis") },
             { "player_summon_melee", new SkillImageBox("Feeding Swarm") },
             { "player_summon_ranged", new SkillImageBox("Hunting Swarm") },
             { "player_teleport", new SkillImageBox("Aether Jump") },
@@ -128,7 +132,7 @@ namespace WolcenEditor
             return lb;
         }
 
-        private static UnlockedSkill ActivateSkill(string name)
+        public static UnlockedSkill ActivateSkill(string name)
         {
             UnlockedSkill uSkill = new UnlockedSkill();
             uSkill.SkillName = name.Substring(1, name.Length - 1);
@@ -250,6 +254,9 @@ namespace WolcenEditor
             PictureBox pb = (PictureBox)sender;
             pb.BorderStyle = BorderStyle.FixedSingle;
         }
+
+
+
     }
 
     public class SkillImageBox
