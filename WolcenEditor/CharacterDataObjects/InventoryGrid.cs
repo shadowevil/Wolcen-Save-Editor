@@ -15,6 +15,7 @@ namespace WolcenEditor
         public ItemArmor Armor { get; set; }
         public ItemWeapon Weapon { get; set; }
         public IList<Socket> Sockets { get; set; }
+        public Gem Gem { get; set; }
         public ItemMagicEffects MagicEffects { get; set; }
     }
 }

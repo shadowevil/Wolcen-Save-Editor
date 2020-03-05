@@ -27,7 +27,7 @@ namespace WolcenEditor
         public void InitForm()
         {
             this.Resize += Form1_Resize;
-            panel1.Enabled = false;
+            panel1.Enabled = true;
             
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
@@ -53,6 +53,15 @@ namespace WolcenEditor
 
             LoadComboBoxes();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
+        }
+
+        private void UnloadRandomInventory()
+        {
+            cData.Character = null;
+            cData.PlayerData = null;
+            this.Controls.Clear();
+            InitializeComponent();
+            InitForm();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -198,9 +207,7 @@ namespace WolcenEditor
 
             if(cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
                 apocUnlockCheckBox.Checked = true;
-
-            LoadCharacterInventory();
-
+            
             InventoryManager.LoadCharacterInventory(panel1.Controls["charInv"]);
 
             SkillTree.LoadSkillInformation(ref panel1);
@@ -237,169 +244,6 @@ namespace WolcenEditor
             {
                 chkChampion.Checked = true;
             } else chkChampion.Checked = false;
-        }
-
-
-        private void LoadCharacterInventory()
-        {
-            charHelm.Image = GetItemBitmap(3);
-            charChest.Image = GetItemBitmap(1);
-            charLPad.Image = GetItemBitmap(6, true);
-            charRPad.Image = GetItemBitmap(5);
-            charLHand.Image = GetItemBitmap(10, true);
-            charRHand.Image = GetItemBitmap(9);
-            charBelt.Image = GetItemBitmap(19);
-            charPants.Image = GetItemBitmap(11);
-            charNeck.Image = GetItemBitmap(14);
-            charBoots.Image = GetItemBitmap(17);
-            charLRing.Image = GetItemBitmap(22, true);
-            charRRing.Image = GetItemBitmap(21);
-            charLWeapon.Image = GetItemBitmap(15, true);
-            charRWeapon.Image = GetItemBitmap(16);
-
-            charHelm.Click += LoadItemData;
-            charChest.Click += LoadItemData;
-
-            charLPad.Click += LoadItemData;
-            charRPad.Click += LoadItemData;
-
-            charLHand.Click += LoadItemData;
-            charRHand.Click += LoadItemData;
-
-            charBelt.Click += LoadItemData;
-            charPants.Click += LoadItemData;
-
-            charNeck.Click += LoadItemData;
-            charBoots.Click += LoadItemData;
-
-            charLRing.Click += LoadItemData;
-            charRRing.Click += LoadItemData;
-
-            charLWeapon.Click += LoadItemData;
-            charRWeapon.Click += LoadItemData;
-        }
-        private void UnLoadItemData(object sender, EventArgs e)
-        {
-            //listBoxEquipItems.DataSource = new List<string>();
-        }
-
-        private void LoadItemData(object sender, EventArgs e)
-        {
-            var charMap = new Dictionary<string,int>
-            {
-                {"charHelm", 3 },
-                {"charChest" , 1},
-                {"charLPad", 5 },
-                {"charRPad" , 6},
-                {"charLHand", 9 },
-                {"charRHand" , 10},
-                {"charBelt", 19 },
-                {"charPants", 11 },
-                {"charNeck" , 14},
-                {"charBoots", 17 },
-                {"charLRing" , 22},
-                {"charRRing", 21 },
-                {"charLWeapon" , 15},
-                {"charRWeapon" , 16},
-            };
-            var picBoxName = ((PictureBox)sender).Name;
-            foreach (var item in cData.Character.InventoryEquipped)
-            {
-                if (item.BodyPart == charMap[picBoxName])
-                {
-                    break;
-                }
-            }
-        }
-
-
-
-        // Body Parts:
-        //  - Chest:             1
-        //  - Helmet:            3
-        //  - (right) Shoulder:  5
-        //  - (left) Shoulder:   6
-        //  - (right) Glove:     9
-        //  - (left) Glove:      10
-        //  - Pants:             11
-        //  - Necklace:          14
-        //  - Weapon 1:          15
-        //  - Weapon 2:          16
-        //  - Feet:              17
-        //  - Belt:              19
-        //  - (right) Ring:      21
-        //  - (left) Ring:       22
-
-        private Bitmap GetItemBitmap(int bodyPart, bool flip = false)
-        {
-            foreach (var i in cData.Character.InventoryEquipped)
-            {
-                string dirPath = @".\UIResources\Items\";
-                if (i.BodyPart == bodyPart)
-                {
-                    string itemName = "";
-                    int itemRarity = i.Rarity;
-                    if(bodyPart == 16 || bodyPart == 15)
-                        itemName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
-                    else if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
-                        itemName = WolcenStaticData.ItemAccessories[i.Armor.Name];
-                    else
-                        itemName = WolcenStaticData.ItemArmor[i.Armor.Name];
-
-                    if (File.Exists(dirPath + itemName))
-                    {
-                        if (flip == true)
-                        {
-                            Bitmap bmp = ResizeAndCombine(dirPath, itemName, itemRarity);
-                            bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
-                            return bmp;
-                        }
-                        else
-                        {
-                            return ResizeAndCombine(dirPath, itemName, itemRarity );
-                        }
-                    }
-                    else
-                    {
-                        if (i.BodyPart == 15 || i.BodyPart == 16)
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_weapon.png"));
-                        }
-                        else
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_armor.png"));
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        private Bitmap ResizeAndCombine(string dirPath, string itemName, int quality)
-        {
-            List<Bitmap> images = new List<Bitmap>();
-            var underImage = new Bitmap(Image.FromFile(@".\UIResources\ItemBorders\" + quality  + ".png"));
-
-            var finalImage = new Bitmap(underImage.Width, underImage.Height);
-
-            var itemImage = new Bitmap(Image.FromFile(dirPath + itemName));
-
-            Bitmap resized = new Bitmap(itemImage, new Size(underImage.Width, underImage.Height));
-
-            images.Add(underImage);
-            images.Add(resized);
-
-            using (Graphics g = Graphics.FromImage(finalImage))
-            {
-                g.Clear(Color.Black);
-                //go through each image and draw it on the final image (Notice the offset; since I want to overlay the images i won't have any offset between the images in the finalImage)
-                int offset = 0;
-                foreach (Bitmap image in images)
-                {
-                    g.DrawImage(image, new Rectangle(offset, 0, image.Width, image.Height));
-                }
-            }
-            return finalImage;
         }
 
         private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
@@ -521,7 +365,7 @@ namespace WolcenEditor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (onCloseCheck(sender, e) == false) return;
-
+            UnloadRandomInventory();
             string js = string.Empty;
             using (OpenFileDialog d = new OpenFileDialog())
             {

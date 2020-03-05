@@ -15,10 +15,10 @@ namespace WolcenEditor
         {
             {"charHelm", 3 },
             {"charChest" , 1},
-            {"charLPad", 5 },
-            {"charRPad" , 6},
-            {"charLHand", 9 },
-            {"charRHand" , 10},
+            {"charLPad", 6 },
+            {"charRPad" , 5},
+            {"charLHand", 10 },
+            {"charRHand" , 9},
             {"charBelt", 19 },
             {"charPants", 11 },
             {"charNeck" , 14},
@@ -41,15 +41,97 @@ namespace WolcenEditor
                     PictureBox pictureBox = (control as PictureBox);
                     if(charMap[pictureBox.Name] >= 0)
                     {
-                        if (pictureBox.Name == "charLPad" || pictureBox.Name == "charLHand"
-                            || pictureBox.Name == "charLRing" || pictureBox.Name == "charLWeapon")
-                            flip = true;
-
-                        pictureBox.Image = GetItemBitmap(charMap[pictureBox.Name], flip);
+                        if (pictureBox.Name == "charLPad" || pictureBox.Name == "charLHand") flip = true;
+                        pictureBox.Image = GetInventoryEquippedBitmap(charMap[pictureBox.Name], flip);
                         pictureBox.Click += LoadItemData;
+                        //pictureBox.BackgroundImage = setRarityBackground(pictureBox);
                     }
                 }
                 catch (Exception) { }
+            }
+
+            LoadRandomInventory(sender);
+        }
+
+        private static void LoadRandomInventory(object sender)
+        {
+            Panel charRandomInv = ((sender as TabPage).Controls["charRandomInv"] as Panel);
+            IList<InventoryGrid> invGrid = cData.Character.InventoryGrid;
+
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 6; y++)
+                {
+                    PictureBox pb = new PictureBox();
+                    pb.Name = x.ToString() + "|" + y.ToString();
+                    pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
+                    pb.Location = new Point(x * 50 + 5, y * 50 + 5);
+                    pb.Size = new Size(50, 50);
+                    pb.SizeMode = PictureBoxSizeMode.AutoSize;
+                    pb.BackgroundImageLayout = ImageLayout.Stretch;
+                    pb.AllowDrop = true;
+                    pb.MouseDown += Pb_MouseDown;
+                    pb.DragEnter += Pb_DragEnter;
+                    pb.DragDrop += Pb_DragDrop;
+                    charRandomInv.Controls.Add(pb);
+                }
+            }
+
+            foreach (InventoryGrid inv in invGrid)
+            {
+                foreach (PictureBox pb in (charRandomInv.Controls))
+                {
+                    int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                    int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+
+                    if (inv.InventoryX == x && inv.InventoryY == y)
+                    {
+                        if (inv.Armor != null)
+                        {
+                            if (inv.ItemType == "Belt" || inv.ItemType == "Ring" || inv.ItemType == "Amulet") pb.Image = GetInventoryGridBitmap(inv.Armor.Name, pb);
+                            else
+                            {
+                                pb.Size = new Size(pb.Size.Width, pb.Size.Height + 50);
+                                pb.Image = GetInventoryGridBitmap(inv.Armor.Name, pb);
+                            }
+                            
+                        }
+                        if (inv.Weapon != null)
+                        {
+                            pb.Size = new Size(pb.Size.Width, pb.Size.Height + 50);
+                            pb.Image = GetInventoryGridBitmap(inv.Weapon.Name, pb);
+                        }
+                        if (inv.Gem != null)
+                        {
+                            pb.Image = GetInventoryGridBitmap(inv.Gem.Name, pb);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void Pb_DragDrop(object sender, DragEventArgs e)
+        {
+            Bitmap bmp = (e.Data.GetData(DataFormats.Bitmap) as Bitmap);
+            (sender as PictureBox).Image = bmp;
+        }
+
+        private static void Pb_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+        }
+
+        private static void Pb_MouseDown(object sender, MouseEventArgs e)
+        {
+            if ((sender as PictureBox).Image == null) return;
+            Bitmap bmp = new Bitmap((sender as PictureBox).Image);
+            if (bmp == null) return;
+            if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move)
+            {
+                (sender as PictureBox).Image = null;
             }
         }
 
@@ -63,6 +145,7 @@ namespace WolcenEditor
             PictureBox pictureBox = (sender as PictureBox);
             int bodyPart = charMap[pictureBox.Name];
             string itemName = getItemName_Color(bodyPart);
+            if (itemName == "Item not found!") return;
             Color nameColor = ColorTranslator.FromHtml("#" + itemName.Split('#')[1]);
             itemName = itemName.Split('#')[0];
             itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, WolcenStaticData.ItemLocalizedNames[itemName], itemStatDisplay, 13, nameColor));
@@ -71,11 +154,13 @@ namespace WolcenEditor
                 string itemStat = getItemStat(bodyPart, "Health");
                 if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health: " + itemStat, itemStatDisplay, 9, Color.White));
                 itemStat = getItemStat(bodyPart, "Armor");
-                if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Armor: " + itemStat, itemStatDisplay, 9, Color.White));
+                if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Force Shield: " + itemStat, itemStatDisplay, 9, Color.White));
                 itemStat = getItemStat(bodyPart, "Resistance");
-                if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
+                if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
 
-                List<Socket> Sockets = getSockets(bodyPart);
+                itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+                List <Socket> Sockets = getSockets(bodyPart);
                 if (Sockets != null)
                 {
                     foreach (Socket socket in Sockets)
@@ -88,12 +173,27 @@ namespace WolcenEditor
                     }
                 }
 
-                List<Effect> magicEffects = getItemMagicEffect(bodyPart, "RolledAffixes");
-                foreach (Effect effect in magicEffects)
+                List<Effect> defaultEffects = getItemMagicEffect(bodyPart, "Default");
+                foreach (Effect effect in defaultEffects)
                 {
                     string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
                     if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
+                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                }
+
+                itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+                List<Effect> magicEffects = getItemMagicEffect(bodyPart, "RolledAffixes");
+                if (magicEffects != null)
+                {
+                    foreach (Effect effect in magicEffects)
+                    {
+                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
+                        if (effect.EffectId.Contains("percent")) s_Effect = s_Effect.Replace("%1", "%1%");
+                        s_Effect = s_Effect.Replace("%1", effect.Parameters[0].value.ToString());
+                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    }
                 }
             }
             else   // Weapons
@@ -103,6 +203,8 @@ namespace WolcenEditor
                 if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
                 itemStat = getItemStat(bodyPart, "ResourceGeneration");
                 if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+
+                itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
 
                 List<Socket> Sockets = getSockets(bodyPart);
                 if (Sockets != null)
@@ -117,14 +219,38 @@ namespace WolcenEditor
                     }
                 }
 
+                itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
                 List<Effect> magicEffects = getItemMagicEffect(bodyPart, "RolledAffixes");
-                foreach (Effect effect in magicEffects)
+                if (magicEffects != null)
                 {
-                    string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
-                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
+                    foreach (Effect effect in magicEffects)
+                    {
+                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
+                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    }
                 }
             }
+        }
+
+        private static Image setRarityBackground(PictureBox pictureBox)
+        {
+            int bodyPart = charMap[pictureBox.Name];
+            Image returnImage = null;
+            if (pictureBox.Name == "charLRing" || pictureBox.Name == "charRRing") returnImage = WolcenEditor.Properties.Resources.charRing;
+            else if (pictureBox.Name == "charLWeapon" || pictureBox.Name == "charRWeapon") returnImage = WolcenEditor.Properties.Resources.charWeapon;
+            else returnImage = (Properties.Resources.ResourceManager.GetObject(pictureBox.Name) as Image);
+
+            string dirPath = @".\UIResources\ItemBorders\";
+            foreach (var equip in cData.Character.InventoryEquipped)
+            {
+                if (equip.BodyPart == bodyPart)
+                {
+                    return new Bitmap(dirPath + WolcenStaticData.itemBordersByRarity[equip.Rarity]);
+                }
+            }
+            return returnImage;
         }
 
         private static void UnloadItemData(Panel itemStatDisplay)
@@ -194,6 +320,20 @@ namespace WolcenEditor
             return "Item stat not found!";
         }
 
+        private static Label createLabelLineBreak(Panel panel)
+        {
+            Label lb = new Label();
+            lb.Name = "s_lbl_LineBreak";
+            lb.Text = "__________________________________________________";
+            lb.Font = new Font(Form1.DefaultFont.FontFamily, 5, FontStyle.Regular);
+            lb.ForeColor = Color.LightGray;
+            lb.TextAlign = ContentAlignment.MiddleCenter;
+            lb.Size = new Size(panel.Width - 20, 5 + 5);
+            lb.Location = new Point(0, posY - 5);
+            posY += 5;
+            return lb;
+        }
+
         private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor)
         {
             Label lb = new Label();
@@ -222,15 +362,68 @@ namespace WolcenEditor
                     else
                         itemName = equip.Armor.Name;
 
-                    itemName += WolcenStaticData.qualityColorBank[equip.Quality];
+                    itemName += WolcenStaticData.qualityColorBank[equip.Rarity];
 
                     return itemName;
                 }
             }
             return "Item not found!";
         }
-        
-        private static Bitmap GetItemBitmap(int bodyPart, bool flip)
+
+        private static Bitmap GetInventoryGridBitmap(string itemName, PictureBox pb)
+        {
+            string dirPath = @".\UIResources\";
+            foreach (var i in cData.Character.InventoryGrid)
+            {
+                string imagePathName = "";
+                if (i.Armor != null)
+                {
+                    if (i.Armor.Name == itemName)
+                    {
+                        if (WolcenStaticData.ItemArmor.ContainsKey(i.Armor.Name)) imagePathName = WolcenStaticData.ItemArmor[i.Armor.Name];
+                        if (WolcenStaticData.ItemAccessories.ContainsKey(i.Armor.Name)) imagePathName = WolcenStaticData.ItemAccessories[i.Armor.Name];
+
+                        return CombineGridBitmaps(dirPath, imagePathName, i.Rarity, pb);
+                    }
+                }
+                else if (i.Weapon != null)
+                {
+                    if (i.Weapon.Name == itemName)
+                    {
+                        if (WolcenStaticData.ItemWeapon.ContainsKey(i.Weapon.Name)) imagePathName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
+                        if (WolcenStaticData.ItemAccessories.ContainsKey(i.Weapon.Name)) imagePathName = WolcenStaticData.ItemAccessories[i.Weapon.Name];
+
+                        return CombineGridBitmaps(dirPath, imagePathName, i.Rarity, pb);
+                    }
+                }
+                else if (i.Gem != null)
+                {
+                    if (i.Gem.Name == itemName)
+                    {
+                        return CombineGridBitmaps(dirPath, i.Gem.Name + ".png", i.Rarity, pb);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, PictureBox pb)
+        {
+            Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
+            Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
+            Bitmap FinalImage = new Bitmap(pb.Width, pb.Height);
+
+            using (Graphics g = Graphics.FromImage(FinalImage))
+            {
+                g.Clear(Color.Black);
+                g.DrawImage(Background, 0, 0);
+                g.DrawImage(ItemImage, 5, 5, pb.Width - 10, pb.Height - 10);
+            }
+
+            return FinalImage;
+        }
+
+        private static Bitmap GetInventoryEquippedBitmap(int bodyPart, bool flip = false)
         {
             foreach (var i in cData.Character.InventoryEquipped)
             {
@@ -238,6 +431,7 @@ namespace WolcenEditor
                 if (i.BodyPart == bodyPart)
                 {
                     string itemName = "";
+                    int itemRarity = i.Rarity;
                     if (bodyPart == 16 || bodyPart == 15)
                         itemName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
                     else if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
@@ -249,13 +443,13 @@ namespace WolcenEditor
                     {
                         if (flip == true)
                         {
-                            Bitmap bmp = new Bitmap(Image.FromFile(dirPath + itemName));
+                            Bitmap bmp = ResizeAndCombine(dirPath, itemName, itemRarity);
                             bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
                             return bmp;
                         }
                         else
                         {
-                            return new Bitmap(Image.FromFile(dirPath + itemName));
+                            return ResizeAndCombine(dirPath, itemName, itemRarity);
                         }
                     }
                     else
@@ -272,6 +466,33 @@ namespace WolcenEditor
                 }
             }
             return null;
+        }
+
+        private static Bitmap ResizeAndCombine(string dirPath, string itemName, int quality)
+        {
+            List<Bitmap> images = new List<Bitmap>();
+            var underImage = new Bitmap(Image.FromFile(@".\UIResources\ItemBorders\" + quality + ".png"));
+
+            var finalImage = new Bitmap(underImage.Width, underImage.Height);
+
+            var itemImage = new Bitmap(Image.FromFile(dirPath + itemName));
+
+            Bitmap resized = new Bitmap(itemImage, new Size(underImage.Width, underImage.Height));
+
+            images.Add(underImage);
+            images.Add(resized);
+
+            using (Graphics g = Graphics.FromImage(finalImage))
+            {
+                g.Clear(Color.Black);
+                //go through each image and draw it on the final image (Notice the offset; since I want to overlay the images i won't have any offset between the images in the finalImage)
+                int offset = 0;
+                foreach (Bitmap image in images)
+                {
+                    g.DrawImage(image, new Rectangle(offset, 0, image.Width, image.Height));
+                }
+            }
+            return finalImage;
         }
     }
 }
