@@ -6,48 +6,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows;
 
 namespace WolcenEditor
 {
     public static class InventoryManager
     {
+        private static Size defaultGridSize = new Size(50, 50);
+        private static PictureBox sourceBox;
+        private static bool isValid = false;
+
         private static Dictionary<string, int> charMap = new Dictionary<string, int>
         {
             {"charHelm", 3 },
-            {"charChest" , 1},
+            {"charChest", 1},
             {"charLPad", 6 },
-            {"charRPad" , 5},
+            {"charRPad", 5},
             {"charLHand", 10 },
-            {"charRHand" , 9},
+            {"charRHand", 9},
             {"charBelt", 19 },
             {"charPants", 11 },
-            {"charNeck" , 14},
+            {"charNeck", 14},
             {"charBoots", 17 },
-            {"charLRing" , 22},
+            {"charLRing", 22},
             {"charRRing", 21 },
-            {"charLWeapon" , 15},
-            {"charRWeapon" , 16},
+            {"charLWeapon", 15},
+            {"charRWeapon", 16},
         };
 
         public static void LoadCharacterInventory(object sender)
         {
             TabPage tabPage = (sender as TabPage);
-            bool flip = false;
+            //bool flip = false;
 
             foreach (Control control in tabPage.Controls)
             {
-                try
+                PictureBox pictureBox = (control as PictureBox);
+                if (pictureBox != null)
                 {
-                    PictureBox pictureBox = (control as PictureBox);
-                    if(charMap[pictureBox.Name] >= 0)
+                    int bodyPart = 0;
+                    charMap.TryGetValue(pictureBox.Name, out bodyPart);
+                    if (bodyPart > 0)
                     {
-                        if (pictureBox.Name == "charLPad" || pictureBox.Name == "charLHand") flip = true;
-                        pictureBox.Image = GetInventoryEquippedBitmap(charMap[pictureBox.Name], flip);
+                        pictureBox.Image = GetInventoryBitmap(charMap[pictureBox.Name]);
                         pictureBox.Click += LoadItemData;
+                        //pictureBox.MouseDown += Pb_MouseDown;
+                        //pictureBox.DragEnter += Pb_DragEnter;
+                        //pictureBox.DragDrop += Pb_DragDrop;
                         //pictureBox.BackgroundImage = setRarityBackground(pictureBox);
                     }
                 }
-                catch (Exception) { }
             }
 
             LoadRandomInventory(sender);
@@ -67,6 +75,7 @@ namespace WolcenEditor
                     pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
                     pb.Location = new Point(x * 50 + 5, y * 50 + 5);
                     pb.Size = new Size(50, 50);
+                    pb.MaximumSize = pb.Size;
                     pb.SizeMode = PictureBoxSizeMode.AutoSize;
                     pb.BackgroundImageLayout = ImageLayout.Stretch;
                     pb.AllowDrop = true;
@@ -86,25 +95,7 @@ namespace WolcenEditor
 
                     if (inv.InventoryX == x && inv.InventoryY == y)
                     {
-                        if (inv.Armor != null)
-                        {
-                            if (inv.ItemType == "Belt" || inv.ItemType == "Ring" || inv.ItemType == "Amulet") pb.Image = GetInventoryGridBitmap(inv.Armor.Name, pb);
-                            else
-                            {
-                                pb.Size = new Size(pb.Size.Width, pb.Size.Height + 50);
-                                pb.Image = GetInventoryGridBitmap(inv.Armor.Name, pb);
-                            }
-                            
-                        }
-                        if (inv.Weapon != null)
-                        {
-                            pb.Size = new Size(pb.Size.Width, pb.Size.Height + 50);
-                            pb.Image = GetInventoryGridBitmap(inv.Weapon.Name, pb);
-                        }
-                        if (inv.Gem != null)
-                        {
-                            pb.Image = GetInventoryGridBitmap(inv.Gem.Name, pb);
-                        }
+                        pb.Image = GetInventoryBitmap(0, pb);
                     }
                 }
             }
@@ -112,15 +103,63 @@ namespace WolcenEditor
 
         private static void Pb_DragDrop(object sender, DragEventArgs e)
         {
+            if ((sender as PictureBox).Name == sourceBox.Name)
+            {
+                int index = (sender as PictureBox).Parent.Controls.IndexOfKey(sourceBox.Name);
+                ((sender as PictureBox).Parent.Controls[index] as PictureBox).Image = sourceBox.Image;
+                isValid = false;
+                return;
+            }
+            if ((sender as PictureBox).Image != null)
+            {
+                isValid = false;
+                return;
+            }
+            int x = Convert.ToInt32((sender as PictureBox).Name.Split('|')[0]);
+            int y = Convert.ToInt32((sender as PictureBox).Name.Split('|')[1]);
+            if (sourceBox.MaximumSize.Height == 100)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (x == i && y == 5)
+                    {
+                        isValid = false;
+                        return;
+                    }
+                }
+            }
             Bitmap bmp = (e.Data.GetData(DataFormats.Bitmap) as Bitmap);
             (sender as PictureBox).Image = bmp;
+            (sender as PictureBox).MaximumSize = sourceBox.MaximumSize;
+            (sender as PictureBox).Size = sourceBox.Size;
+            sourceBox.Image = null;
+            isValid = true;
+            ConfirmMove((sender as PictureBox));
+        }
+
+        private static void ConfirmMove(PictureBox pictureBox)
+        {
+            for (int i = 0; i < cData.Character.InventoryGrid.Count; i++)
+            {
+                int x = Convert.ToInt32(sourceBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(sourceBox.Name.Split('|')[1]);
+                if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
+                {
+                    cData.Character.InventoryGrid[i].InventoryX = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                    cData.Character.InventoryGrid[i].InventoryY = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                }
+            }
         }
 
         private static void Pb_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
-                e.Effect = DragDropEffects.Move;
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
             }
         }
 
@@ -128,14 +167,204 @@ namespace WolcenEditor
         {
             if ((sender as PictureBox).Image == null) return;
             Bitmap bmp = new Bitmap((sender as PictureBox).Image);
-            if (bmp == null) return;
-            if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move)
+            sourceBox = (sender as PictureBox);
+            if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
             {
-                (sender as PictureBox).Image = null;
+                (sender as PictureBox).Size = defaultGridSize;
+                return;
             }
+            LoadItemGridData(sender, e);
         }
 
         private static int posY = 0;
+
+        private static void LoadItemGridData(object sender, EventArgs e)
+        {
+            Panel itemStatDisplay = (((sender as PictureBox).Parent as Panel).Parent.Controls["itemStatDisplay"] as Panel);
+            UnloadItemData(itemStatDisplay);
+            PictureBox pictureBox = (sender as PictureBox);
+
+            string itemName = getItemNameFromGrid(pictureBox);
+            WolcenStaticData.ItemLocalizedNames.TryGetValue(itemName, out itemName);
+
+            Color itemRarity = getItemGridColorRarity(pictureBox);
+
+            itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemName, itemStatDisplay, 13, itemRarity));
+            string itemType = null;
+            WolcenStaticData.ItemArmor.TryGetValue(getItemNameFromGrid(pictureBox), out itemType);
+            if (itemType == null)
+            {
+                WolcenStaticData.ItemAccessories.TryGetValue(getItemNameFromGrid(pictureBox), out itemType);
+                if (itemType == null)
+                {
+                    WolcenStaticData.ItemWeapon.TryGetValue(getItemNameFromGrid(pictureBox), out itemType);
+                }
+            }
+            if(itemType == null) itemType = getItemTypeFromGrid(pictureBox);
+
+            string itemStat = getItemStat(pictureBox, "Health");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(pictureBox, "Armor");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Force Shield: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(pictureBox, "Resistance");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
+
+            itemStat = getItemStat(pictureBox, "DamageMin");
+            string itemStat2 = getItemStat(pictureBox, "DamageMax");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(pictureBox, "ResourceGeneration");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+
+            itemStat = getItemStat(pictureBox, "Charge");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Charge: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(pictureBox, "ImmediateMana");
+            if (itemStat != null)
+            {
+                if (itemStat.Contains("-"))
+                {
+                    if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Rage Generation: " + itemStat.Substring(1, itemStat.Length - 1), itemStatDisplay, 9, Color.White));
+                }
+                else
+                {
+                    if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Umbra Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+                }
+            }
+            itemStat = getItemStat(pictureBox, "ImmediateHP");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+
+            itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+            if (itemType == "Gem")
+            {
+                itemStat = getItemStat(pictureBox, "Name");
+                string socketType = null;
+                string localizedEffect = null;
+                var GemAffixes = WolcenStaticData.GemAffixesWithValues[itemStat];
+                List<int[]> GemOrder = new List<int[]>
+                {
+                    new int[] { 0, 3, 6 },
+                    new int[] { 1, 4, 7 },
+                    new int[] { 2, 5, 8 }
+                };
+
+                if (itemStat.Contains("physical_Gem"))
+                {
+                    GemOrder.RemoveAt(2);
+                    GemOrder.Add(new int[] { 2, 5, 6 });
+                }
+
+                // Offensive 1
+                foreach (int[] x in GemOrder)
+                {
+                    foreach (int i in x)
+                    {
+                        socketType = WolcenStaticData.SocketType[i];
+                        localizedEffect = WolcenStaticData.MagicLocalized[GemAffixes.ElementAt(i).Key];
+                        if (GemAffixes.ElementAt(i).Key.Contains("percent")) localizedEffect = localizedEffect.Replace("%1", "%1%");
+                        if (localizedEffect.Contains("%2")) localizedEffect = localizedEffect.Replace("%2", GemAffixes.ElementAt(i).Value);
+                        localizedEffect = localizedEffect.Replace("%1", "+" + GemAffixes.ElementAt(i).Value);
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, socketType, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, localizedEffect, itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
+                    }
+                }
+            }
+
+            List<Socket> Sockets = getSockets(pictureBox);
+            if (Sockets != null)
+            {
+                foreach (Socket socket in Sockets)
+                {
+                    string s_Socket = WolcenStaticData.SocketType[socket.Effect];
+                    if (socket.Gem == null) s_Socket += " [empty]";
+                    else s_Socket += " " + WolcenStaticData.ItemLocalizedNames[socket.Gem.Name];
+                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Socket, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                    if (socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                }
+            }
+
+            List<Effect> defaultEffects = getItemMagicEffect(pictureBox, "Default");
+            if (defaultEffects != null)
+            {
+                foreach (Effect effect in defaultEffects)
+                {
+                    string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
+                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                }
+            }
+
+            itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+            List<Effect> magicEffects = getItemMagicEffect(pictureBox, "RolledAffixes");
+            if (magicEffects != null)
+            {
+                foreach (Effect effect in magicEffects)
+                {
+                    string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
+                    if (effect.EffectId.Contains("percent")) s_Effect = s_Effect.Replace("%1", "%1%");
+                    s_Effect = s_Effect.Replace("%1", effect.Parameters[0].value.ToString());
+                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                }
+            }
+        }
+
+        private static string getItemTypeFromGrid(PictureBox pictureBox)
+        {
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    return iGrid.ItemType;
+                }
+            }
+            return null;
+        }
+
+        private static string getItemNameFromGrid(PictureBox pictureBox)
+        {
+            foreach (InventoryGrid item in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (item.InventoryX == x && item.InventoryY == y)
+                {
+                    if (item.Armor != null)
+                    {
+                        return item.Armor.Name;
+                    }
+                    if (item.Weapon != null)
+                    {
+                        return item.Weapon.Name;
+                    }
+                    if (item.Gem != null)
+                    {
+                        return item.Gem.Name;
+                    }
+                    if (item.Potion != null)
+                    {
+                        return item.Potion.Name;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private static Color getItemGridColorRarity(PictureBox pictureBox)
+        {
+            foreach (InventoryGrid item in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (item.InventoryX == x && item.InventoryY == y)
+                {
+                    return ColorTranslator.FromHtml(WolcenStaticData.qualityColorBank[item.Rarity]);
+                }
+            }
+            return Color.White;
+        }
 
         private static void LoadItemData(object sender, EventArgs e)
         {
@@ -234,25 +463,6 @@ namespace WolcenEditor
             }
         }
 
-        private static Image setRarityBackground(PictureBox pictureBox)
-        {
-            int bodyPart = charMap[pictureBox.Name];
-            Image returnImage = null;
-            if (pictureBox.Name == "charLRing" || pictureBox.Name == "charRRing") returnImage = WolcenEditor.Properties.Resources.charRing;
-            else if (pictureBox.Name == "charLWeapon" || pictureBox.Name == "charRWeapon") returnImage = WolcenEditor.Properties.Resources.charWeapon;
-            else returnImage = (Properties.Resources.ResourceManager.GetObject(pictureBox.Name) as Image);
-
-            string dirPath = @".\UIResources\ItemBorders\";
-            foreach (var equip in cData.Character.InventoryEquipped)
-            {
-                if (equip.BodyPart == bodyPart)
-                {
-                    return new Bitmap(dirPath + WolcenStaticData.itemBordersByRarity[equip.Rarity]);
-                }
-            }
-            return returnImage;
-        }
-
         private static void UnloadItemData(Panel itemStatDisplay)
         {
             posY = 0;
@@ -276,6 +486,20 @@ namespace WolcenEditor
             return "[NOT FOUND]";
         }
 
+        private static List<Socket> getSockets(PictureBox pictureBox)
+        {
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    return (iGrid.Sockets as List<Socket>);
+                }
+            }
+            return null;
+        }
+
         private static List<Socket> getSockets(int bodyPart)
         {
             foreach (var equip in cData.Character.InventoryEquipped)
@@ -288,6 +512,21 @@ namespace WolcenEditor
             return null;
         }
 
+        private static List<Effect> getItemMagicEffect(PictureBox pictureBox, string stat)
+        {
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    if (iGrid.MagicEffects == null) return null;
+                    return (iGrid.MagicEffects.GetType().GetProperty(stat).GetValue(iGrid.MagicEffects, null) as List<Effect>);
+                }
+            }
+            return null;
+        }
+
         private static List<Effect> getItemMagicEffect(int bodyPart, string stat)
         {
             foreach (var equip in cData.Character.InventoryEquipped)
@@ -295,6 +534,50 @@ namespace WolcenEditor
                 if (equip.BodyPart == bodyPart)
                 {
                     return (equip.MagicEffects.GetType().GetProperty(stat).GetValue(equip.MagicEffects, null) as List<Effect>);
+                }
+            }
+            return null;
+        }
+
+        private static string getItemStat(PictureBox pictureBox, string stat)
+        {
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    string itemStat = null;
+                    if (iGrid.Armor != null)
+                    {
+                        if (iGrid.Armor.GetType().GetProperty(stat) != null)
+                        {
+                            itemStat = iGrid.Armor.GetType().GetProperty(stat).GetValue(iGrid.Armor, null).ToString();
+                        }
+                    }
+                    if (iGrid.Weapon != null)
+                    {
+                        if (iGrid.Weapon.GetType().GetProperty(stat) != null)
+                        {
+                            itemStat = iGrid.Weapon.GetType().GetProperty(stat).GetValue(iGrid.Weapon, null).ToString();
+                        }
+                    }
+                    if (iGrid.Potion != null)
+                    {
+                        if (iGrid.Potion.GetType().GetProperty(stat) != null)
+                        {
+                            itemStat = iGrid.Potion.GetType().GetProperty(stat).GetValue(iGrid.Potion, null).ToString();
+                        }
+                    }
+                    if (iGrid.Gem != null)
+                    {
+                        if (iGrid.Gem.GetType().GetProperty(stat) != null)
+                        {
+                            itemStat = iGrid.Gem.GetType().GetProperty(stat).GetValue(iGrid.Gem, null).ToString();
+                        }
+                    }
+
+                    return itemStat;
                 }
             }
             return null;
@@ -370,97 +653,163 @@ namespace WolcenEditor
             return "Item not found!";
         }
 
-        private static Bitmap GetInventoryGridBitmap(string itemName, PictureBox pb)
-        {
-            string dirPath = @".\UIResources\";
-            foreach (var i in cData.Character.InventoryGrid)
-            {
-                string imagePathName = "";
-                if (i.Armor != null)
-                {
-                    if (i.Armor.Name == itemName)
-                    {
-                        if (WolcenStaticData.ItemArmor.ContainsKey(i.Armor.Name)) imagePathName = WolcenStaticData.ItemArmor[i.Armor.Name];
-                        if (WolcenStaticData.ItemAccessories.ContainsKey(i.Armor.Name)) imagePathName = WolcenStaticData.ItemAccessories[i.Armor.Name];
-
-                        return CombineGridBitmaps(dirPath, imagePathName, i.Rarity, pb);
-                    }
-                }
-                else if (i.Weapon != null)
-                {
-                    if (i.Weapon.Name == itemName)
-                    {
-                        if (WolcenStaticData.ItemWeapon.ContainsKey(i.Weapon.Name)) imagePathName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
-                        if (WolcenStaticData.ItemAccessories.ContainsKey(i.Weapon.Name)) imagePathName = WolcenStaticData.ItemAccessories[i.Weapon.Name];
-
-                        return CombineGridBitmaps(dirPath, imagePathName, i.Rarity, pb);
-                    }
-                }
-                else if (i.Gem != null)
-                {
-                    if (i.Gem.Name == itemName)
-                    {
-                        return CombineGridBitmaps(dirPath, i.Gem.Name + ".png", i.Rarity, pb);
-                    }
-                }
-            }
-            return null;
-        }
-
-        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, PictureBox pb)
+        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null)
         {
             Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
             Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
-            Bitmap FinalImage = new Bitmap(pb.Width, pb.Height);
+            Bitmap FinalImage = new Bitmap(Background.Width, Background.Height);
 
             using (Graphics g = Graphics.FromImage(FinalImage))
             {
                 g.Clear(Color.Black);
                 g.DrawImage(Background, 0, 0);
-                g.DrawImage(ItemImage, 5, 5, pb.Width - 10, pb.Height - 10);
+                int width = Background.Width - 10;
+                int height = Background.Height - 10;
+                if (itemType == "Shoulder")
+                {
+                    width = 50;
+                    height = 55;
+                }
+                if (itemType == "Belt")
+                {
+                    width = 40;
+                    height = 25;
+                }
+                if (itemType == "Ring" || itemType == "Amulet")
+                {
+                    width = 35;
+                    height = 30;
+                }
+                if (itemType == "Helmet")
+                {
+                    height = 65;
+                    width = 50;
+                }
+                if (itemType == "Potions")
+                {
+                    height = 40;
+                    width = 20;
+                }
+                int x = Background.Width / 2 - (width / 2);
+                int y = Background.Height / 2 - (height / 2);
+                g.DrawImage(ItemImage, x, y, width, height);
             }
 
             return FinalImage;
         }
 
-        private static Bitmap GetInventoryEquippedBitmap(int bodyPart, bool flip = false)
+        private static Bitmap GetInventoryBitmap(int bodyPart = 0, PictureBox pb = null)
         {
-            foreach (var i in cData.Character.InventoryEquipped)
+            if (bodyPart == 0)
             {
-                string dirPath = @".\UIResources\Items\";
-                if (i.BodyPart == bodyPart)
+                foreach (var i in cData.Character.InventoryGrid)
                 {
-                    string itemName = "";
-                    int itemRarity = i.Rarity;
-                    if (bodyPart == 16 || bodyPart == 15)
-                        itemName = WolcenStaticData.ItemWeapon[i.Weapon.Name];
-                    else if (bodyPart == 14 || bodyPart == 19 || bodyPart == 21 || bodyPart == 22)
-                        itemName = WolcenStaticData.ItemAccessories[i.Armor.Name];
-                    else
-                        itemName = WolcenStaticData.ItemArmor[i.Armor.Name];
-
-                    if (File.Exists(dirPath + itemName))
+                    int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                    int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+                    if (i.InventoryX == x && i.InventoryY == y)
                     {
-                        if (flip == true)
+                        string dirPath = @".\UIResources\";
+                        string itemName = "";
+                        string l_itemName = null;
+                        int itemRarity = 0;
+                        if (i.Armor != null)
                         {
-                            Bitmap bmp = ResizeAndCombine(dirPath, itemName, itemRarity);
-                            bmp.RotateFlip(RotateFlipType.Rotate180FlipY);
-                            return bmp;
+                            itemName = i.Armor.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemArmor.TryGetValue(itemName, out l_itemName);
+                            if (l_itemName == null)
+                            {
+                                WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
+                            }
+                            else
+                            {
+                                if (i.ItemType != "Belt")
+                                {
+                                    pb.MaximumSize = new Size(50, 100);
+                                    pb.Size = new Size(50, 100);
+                                }
+                            }
+                        }
+                        if (i.Weapon != null)
+                        {
+                            itemName = i.Weapon.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemWeapon.TryGetValue(itemName, out l_itemName);
+                            pb.MaximumSize = new Size(50, 100);
+                            pb.Size = new Size(50, 100);
+                        }
+                        if (i.Potion != null)
+                        {
+                            string[] pName = i.Potion.Name.Split('_');
+                            itemRarity = i.Rarity;
+                            l_itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
+                        }
+                        if (i.Gem != null)
+                        {
+                            itemName = i.Gem.Name;
+                            itemRarity = i.Rarity;
+                            l_itemName = itemName + ".png";
+                        }
+
+                        if (File.Exists(dirPath + "Items\\" + l_itemName))
+                        {
+                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, i.ItemType, pb);
                         }
                         else
+                        {
+                            if (i.Armor != null)
+                            {
+                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_armor.png"));
+                            }
+                            if (i.Weapon != null)
+                            {
+                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_weapon.png"));
+                            }
+                        }
+                    }
+                }
+                }
+            else
+            {
+                foreach (var i in cData.Character.InventoryEquipped)
+                {
+                    string dirPath = @".\UIResources\Items\";
+                    string itemName = "";
+                    string l_itemName = null;
+                    int itemRarity = 0;
+                    if (i.BodyPart == bodyPart)
+                    {
+                        if (i.Armor != null)
+                        {
+                            itemName = i.Armor.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemArmor.TryGetValue(itemName, out l_itemName);
+                            if (l_itemName == null)
+                            {
+                                WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
+                            }
+                        }
+                        if (i.Weapon != null)
+                        {
+                            itemName = i.Weapon.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemWeapon.TryGetValue(itemName, out l_itemName);
+                        }
+
+                        if (File.Exists(dirPath + l_itemName))
                         {
                             return ResizeAndCombine(dirPath, itemName, itemRarity);
                         }
-                    }
-                    else
-                    {
-                        if (i.BodyPart == 15 || i.BodyPart == 16)
-                        {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_weapon.png"));
-                        }
                         else
                         {
-                            return new Bitmap(Image.FromFile(dirPath + "unknown_armor.png"));
+                            if (i.Armor != null)
+                            {
+                                return new Bitmap(Image.FromFile(dirPath + "unknown_armor.png"));
+                            }
+                            if (i.Weapon != null)
+                            {
+                                return new Bitmap(Image.FromFile(dirPath + "unknown_weapon.png"));
+                            }
                         }
                     }
                 }
@@ -475,7 +824,7 @@ namespace WolcenEditor
 
             var finalImage = new Bitmap(underImage.Width, underImage.Height);
 
-            var itemImage = new Bitmap(Image.FromFile(dirPath + itemName));
+            var itemImage = new Bitmap(Image.FromFile(dirPath + itemName + ".png"));
 
             Bitmap resized = new Bitmap(itemImage, new Size(underImage.Width, underImage.Height));
 
