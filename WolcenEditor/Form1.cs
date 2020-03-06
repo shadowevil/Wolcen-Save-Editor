@@ -470,6 +470,10 @@ namespace WolcenEditor
             }
         }
 
+        private void contextMenuEditItem_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            InventoryManager.EditItem(sender, e);
+        }
     }
 
     public static class cData

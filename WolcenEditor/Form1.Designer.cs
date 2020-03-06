@@ -39,7 +39,9 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuEditItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripEditAffix = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripEditSocket = new System.Windows.Forms.ToolStripMenuItem();
             this.charPage = new System.Windows.Forms.TabPage();
             this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.chkChampion = new System.Windows.Forms.CheckBox();
@@ -99,6 +101,7 @@
             this.charSkills = new System.Windows.Forms.TabPage();
             this.lockAllButton = new System.Windows.Forms.Button();
             this.unlockAllButton = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -110,6 +113,7 @@
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.contextMenuEditItem.SuspendLayout();
             this.charPage.SuspendLayout();
             this.charStats.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -209,11 +213,26 @@
             this.panel1.Size = new System.Drawing.Size(835, 533);
             this.panel1.TabIndex = 11;
             // 
-            // imageList1
+            // contextMenuEditItem
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.contextMenuEditItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripEditAffix,
+            this.toolStripEditSocket});
+            this.contextMenuEditItem.Name = "contextMenuEditItem";
+            this.contextMenuEditItem.Size = new System.Drawing.Size(138, 48);
+            this.contextMenuEditItem.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuEditItem_ItemClicked);
+            // 
+            // toolStripEditAffix
+            // 
+            this.toolStripEditAffix.Name = "toolStripEditAffix";
+            this.toolStripEditAffix.Size = new System.Drawing.Size(137, 22);
+            this.toolStripEditAffix.Text = "Edit Affixes";
+            // 
+            // toolStripEditSocket
+            // 
+            this.toolStripEditSocket.Name = "toolStripEditSocket";
+            this.toolStripEditSocket.Size = new System.Drawing.Size(137, 22);
+            this.toolStripEditSocket.Text = "Edit Sockets";
             // 
             // charPage
             // 
@@ -737,6 +756,7 @@
             // 
             this.charRWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRWeapon.BackgroundImage")));
             this.charRWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charRWeapon.ContextMenuStrip = this.contextMenuEditItem;
             this.charRWeapon.Location = new System.Drawing.Point(186, 221);
             this.charRWeapon.MaximumSize = new System.Drawing.Size(62, 91);
             this.charRWeapon.MinimumSize = new System.Drawing.Size(62, 91);
@@ -750,6 +770,7 @@
             // 
             this.charLWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLWeapon.BackgroundImage")));
             this.charLWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charLWeapon.ContextMenuStrip = this.contextMenuEditItem;
             this.charLWeapon.Location = new System.Drawing.Point(47, 221);
             this.charLWeapon.MaximumSize = new System.Drawing.Size(62, 91);
             this.charLWeapon.MinimumSize = new System.Drawing.Size(62, 91);
@@ -763,6 +784,7 @@
             // 
             this.charNeck.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charNeck.BackgroundImage")));
             this.charNeck.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charNeck.ContextMenuStrip = this.contextMenuEditItem;
             this.charNeck.Location = new System.Drawing.Point(194, 32);
             this.charNeck.MaximumSize = new System.Drawing.Size(40, 40);
             this.charNeck.MinimumSize = new System.Drawing.Size(40, 40);
@@ -776,6 +798,7 @@
             // 
             this.charRRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRRing.BackgroundImage")));
             this.charRRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charRRing.ContextMenuStrip = this.contextMenuEditItem;
             this.charRRing.Location = new System.Drawing.Point(245, 175);
             this.charRRing.MaximumSize = new System.Drawing.Size(40, 40);
             this.charRRing.MinimumSize = new System.Drawing.Size(40, 40);
@@ -789,6 +812,7 @@
             // 
             this.charLRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLRing.BackgroundImage")));
             this.charLRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charLRing.ContextMenuStrip = this.contextMenuEditItem;
             this.charLRing.Location = new System.Drawing.Point(10, 175);
             this.charLRing.MaximumSize = new System.Drawing.Size(40, 40);
             this.charLRing.MinimumSize = new System.Drawing.Size(40, 40);
@@ -802,6 +826,7 @@
             // 
             this.charRHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRHand.BackgroundImage")));
             this.charRHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charRHand.ContextMenuStrip = this.contextMenuEditItem;
             this.charRHand.Location = new System.Drawing.Point(186, 132);
             this.charRHand.MaximumSize = new System.Drawing.Size(53, 83);
             this.charRHand.MinimumSize = new System.Drawing.Size(53, 83);
@@ -815,6 +840,7 @@
             // 
             this.charRPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRPad.BackgroundImage")));
             this.charRPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charRPad.ContextMenuStrip = this.contextMenuEditItem;
             this.charRPad.Location = new System.Drawing.Point(186, 78);
             this.charRPad.MaximumSize = new System.Drawing.Size(48, 48);
             this.charRPad.MinimumSize = new System.Drawing.Size(48, 48);
@@ -828,6 +854,7 @@
             // 
             this.charLHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLHand.BackgroundImage")));
             this.charLHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charLHand.ContextMenuStrip = this.contextMenuEditItem;
             this.charLHand.Location = new System.Drawing.Point(56, 132);
             this.charLHand.MaximumSize = new System.Drawing.Size(53, 83);
             this.charLHand.MinimumSize = new System.Drawing.Size(53, 83);
@@ -841,6 +868,7 @@
             // 
             this.charLPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLPad.BackgroundImage")));
             this.charLPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charLPad.ContextMenuStrip = this.contextMenuEditItem;
             this.charLPad.Location = new System.Drawing.Point(61, 78);
             this.charLPad.MaximumSize = new System.Drawing.Size(48, 48);
             this.charLPad.MinimumSize = new System.Drawing.Size(48, 48);
@@ -854,6 +882,7 @@
             // 
             this.charBoots.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBoots.BackgroundImage")));
             this.charBoots.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBoots.ContextMenuStrip = this.contextMenuEditItem;
             this.charBoots.Location = new System.Drawing.Point(123, 294);
             this.charBoots.MaximumSize = new System.Drawing.Size(48, 65);
             this.charBoots.MinimumSize = new System.Drawing.Size(48, 65);
@@ -867,6 +896,7 @@
             // 
             this.charPants.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPants.BackgroundImage")));
             this.charPants.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charPants.ContextMenuStrip = this.contextMenuEditItem;
             this.charPants.Location = new System.Drawing.Point(122, 220);
             this.charPants.MaximumSize = new System.Drawing.Size(50, 68);
             this.charPants.MinimumSize = new System.Drawing.Size(50, 68);
@@ -880,6 +910,7 @@
             // 
             this.charBelt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt.BackgroundImage")));
             this.charBelt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBelt.ContextMenuStrip = this.contextMenuEditItem;
             this.charBelt.Location = new System.Drawing.Point(123, 186);
             this.charBelt.MaximumSize = new System.Drawing.Size(48, 28);
             this.charBelt.MinimumSize = new System.Drawing.Size(48, 28);
@@ -893,6 +924,7 @@
             // 
             this.charChest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charChest.BackgroundImage")));
             this.charChest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charChest.ContextMenuStrip = this.contextMenuEditItem;
             this.charChest.Location = new System.Drawing.Point(115, 78);
             this.charChest.Name = "charChest";
             this.charChest.Size = new System.Drawing.Size(65, 102);
@@ -904,6 +936,7 @@
             // 
             this.charHelm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charHelm.BackgroundImage")));
             this.charHelm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charHelm.ContextMenuStrip = this.contextMenuEditItem;
             this.charHelm.Location = new System.Drawing.Point(123, 7);
             this.charHelm.MaximumSize = new System.Drawing.Size(49, 65);
             this.charHelm.MinimumSize = new System.Drawing.Size(49, 65);
@@ -945,6 +978,12 @@
             this.unlockAllButton.Text = "Unlock All";
             this.unlockAllButton.UseVisualStyleBackColor = true;
             this.unlockAllButton.Click += new System.EventHandler(this.unlockAllButton_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // cboSkinColor
             // 
@@ -1091,6 +1130,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.contextMenuEditItem.ResumeLayout(false);
             this.charPage.ResumeLayout(false);
             this.charPage.PerformLayout();
             this.charStats.ResumeLayout(false);
@@ -1206,6 +1246,9 @@
         private System.Windows.Forms.Button lockAllButton;
         private System.Windows.Forms.Panel itemStatDisplay;
         private System.Windows.Forms.Panel charRandomInv;
+        private System.Windows.Forms.ContextMenuStrip contextMenuEditItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripEditAffix;
+        private System.Windows.Forms.ToolStripMenuItem toolStripEditSocket;
     }
 }
 
