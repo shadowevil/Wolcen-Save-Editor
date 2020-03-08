@@ -16,16 +16,6 @@ namespace WolcenEditor
         public ItemWeapon Weapon { get; set; }
         public List<Socket> Sockets { get; set; }
         public ItemMagicEffects MagicEffects { get; set; } 
-
-        public void AddSocket(Socket socket)
-        {
-            if(Sockets == null)
-            {
-                Sockets = new List<Socket>();
-            }
-            if(Sockets.Count <= 3)
-                Sockets.Add(socket);
-        }
     }
 
     public class ItemWeapon

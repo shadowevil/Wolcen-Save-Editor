@@ -500,7 +500,6 @@ namespace WolcenEditor
             {6, "Offense (III)"},
             {7, "Defensive (III)"},
             {8, "Support (III)"},
-            {-1, "[Empty Socket]"}
         };
 
         public static readonly Dictionary<int, string> SocketColor = new Dictionary<int, string>
@@ -514,7 +513,6 @@ namespace WolcenEditor
             {6, "#e2951c" },
             {7, "#009944" },
             {8, "#00fcff" },
-            {-1, "#0FFFFFF"}
         };
 
         public static readonly Dictionary<string, string> ItemWeapon = new Dictionary<string, string>
@@ -2417,7 +2415,7 @@ namespace WolcenEditor
             { "Special_gem", "Genesis Stone" }
         };
 
-        public static readonly Dictionary<string, string> gemLocalization = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> GemLocalization = new Dictionary<string, string>
         {
             { "Fire_Gem_Tier_01", "Chipped Topaz" },
             { "Fire_Gem_Tier_02", "Crude Topaz" },
@@ -2551,7 +2549,7 @@ namespace WolcenEditor
             { "Utility_Gem_Tier_10", "Exquisite Alexandrite" },
             { "Utility_Gem_Tier_11", "Royal Alexandrite" },
             { "Utility_Gem_Tier_12", "Eternal Alexandrite" },
-            { "Special_gem", "Genesis Stone" }
+            { "Special_gem", "Genesis Stone" },
         };
 
         public static readonly Dictionary<int, string> qualityColorBank = new Dictionary<int, string>
