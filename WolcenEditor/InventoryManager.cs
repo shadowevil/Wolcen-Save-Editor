@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,11 +13,12 @@ namespace WolcenEditor
 {
     public static class InventoryManager
     {
+
         private static Size defaultGridSize = new Size(50, 50);
         private static PictureBox sourceBox;
         private static bool isValid = false;
 
-        private static Dictionary<string, int> charMap = new Dictionary<string, int>
+        public static Dictionary<string, int> charMap = new Dictionary<string, int>
         {
             {"charHelm", 3 },
             {"charChest", 1},
@@ -175,6 +177,7 @@ namespace WolcenEditor
             }
             LoadItemGridData(sender, e);
         }
+
 
         private static int posY = 0;
 
@@ -440,11 +443,13 @@ namespace WolcenEditor
                 {
                     foreach (Socket socket in Sockets)
                     {
+
                         string s_Socket = WolcenStaticData.SocketType[socket.Effect];
                         if (socket.Gem == null) s_Socket += " [empty]";
                         else s_Socket += " " + WolcenStaticData.ItemLocalizedNames[socket.Gem.Name];
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Socket, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
-                        if(socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                        if (socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                        
                     }
                 }
 
@@ -698,6 +703,279 @@ namespace WolcenEditor
             return FinalImage;
         }
 
+        public static void EditItem(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var contextMenuEditItem = (sender as ContextMenuStrip);
+            var bodyPartName = contextMenuEditItem.SourceControl?.Name;
+            var selectedOption = e.ClickedItem;
+            if (selectedOption.Text == "Edit Sockets")
+            {
+                LoadSocketEditor(bodyPartName);
+            }
+            //PictureBox pictureBox = (sender as PictureBox);
+        }
+
+        private static void LoadSocketEditor(string bodyPartName)
+        {
+            var socketCount = new Dictionary<string, int>
+            {
+                {"charHelm", 2 },
+                {"charChest" , 3},
+                {"charLPad", 0 },
+                {"charRPad" , 0},
+                {"charLHand", 0 },
+                {"charRHand" , 0},
+                {"charBelt", 1 },
+                {"charPants", 2 },
+                {"charNeck" , 1},
+                {"charBoots", 0 },
+                {"charLRing" , 1},
+                {"charRRing", 1 },
+                {"charLWeapon" , 3},
+                {"charRWeapon" , 3},
+            };
+            if(socketCount[bodyPartName] == 0)
+                return;
+
+            // Setup Form
+            var socketForm = new Form();
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, socketForm, new object[] { true });
+
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            socketForm.Width = 550;
+            socketForm.Height = 200;
+            socketForm.BackgroundImage = ((Image)(resources.GetObject("charInv.BackgroundImage")));
+            socketForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            socketForm.MaximizeBox = false;
+            socketForm.MinimizeBox = false;
+            socketForm.StartPosition = FormStartPosition.CenterParent;
+
+            #region Socket Controls
+
+            var socketLabel = new Label
+            {
+                Width = 50,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                Text = "Sockets",
+                Location = new Point(40, 10)
+            };
+            socketForm.Controls.Add(socketLabel);
+
+
+            var addSocketButton = new Button
+            {
+                Width = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = "+",
+                Location = new Point(90, 10)
+            };
+            socketForm.Controls.Add(addSocketButton);
+
+
+            var removeSocketButton = new Button
+            {
+                Width = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = "-",
+                Location = new Point(20, 10)
+            };
+            socketForm.Controls.Add(removeSocketButton);
+
+            #endregion
+
+            #region Gem Controls
+            var gemLabel = new Label
+            {
+                Width = 50,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                Text = "Gems:",
+                Location = new Point(180, 10)
+            };
+            socketForm.Controls.Add(gemLabel);
+
+            var addGemButton = new Button
+            {
+                Width = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = "+",
+                Location = new Point(230, 10)
+            };
+            socketForm.Controls.Add(addGemButton);
+
+
+
+            var removeGemButton = new Button
+            {
+                Width = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = "-",
+                Location = new Point(160, 10)
+            };
+            socketForm.Controls.Add(removeGemButton);
+
+            #endregion
+
+            var sockets = getSockets(charMap[bodyPartName]);
+
+            addSocketButton.Click += AddSocketButton_Click;
+            removeSocketButton.Click += RemoveSocketButton_Click;
+            addGemButton.Click += AddGemButton_Click;
+            removeGemButton.Click += RemoveGemButton_Click;
+
+            void AddSocketButton_Click(object sender, EventArgs e)
+            {
+                if(sockets != null && sockets.Count < socketCount[bodyPartName])
+                {
+                    sockets.Add(new Socket { });
+                    createSocketDropDowns(sockets, socketForm);
+
+                }
+            }
+
+            void RemoveSocketButton_Click(object sender, EventArgs e)
+            {
+                if (sockets != null && sockets.Count >= 1)
+                {
+                    sockets.RemoveAt(sockets.Count - 1);
+                    createSocketDropDowns(sockets, socketForm);
+
+                }
+            }
+
+             void AddGemButton_Click(object sender, EventArgs e)
+            {
+                if (sockets != null && sockets.Count >= 1)
+                {
+                    foreach (var socket in sockets)
+                    {
+                        if (socket.Gem == null)
+                        {
+                            socket.Gem = new Gem { Name = "Fire_Gem_Tier_01" };
+                            break;
+                        }
+                    }
+                    createSocketDropDowns(sockets, socketForm);
+                }
+            }
+
+            void RemoveGemButton_Click(object sender, EventArgs e)
+            {
+                if (sockets != null && sockets.Count >= 1)
+                {
+                    for(int i = (sockets.Count - 1); i >= 0; i--)
+                    {
+                        if(sockets[i].Gem != null)
+                        {
+                            sockets[i].Gem = null;
+                            createSocketDropDowns(sockets, socketForm);
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            createSocketDropDowns(sockets, socketForm);
+
+            socketForm.ShowDialog();
+        }
+
+
+        private static void createSocketDropDowns(List<Socket> sockets, Form socketForm)
+        {
+            socketForm.Controls.RemoveByKey("SocketCombo_1");
+            socketForm.Controls.RemoveByKey("SocketCombo_2");
+            socketForm.Controls.RemoveByKey("SocketCombo_3");
+
+            try
+            {
+                socketForm.Controls.RemoveByKey("GemCombo_1");
+            }
+            catch (ArgumentNullException ex) { }
+            try
+            {
+                socketForm.Controls.RemoveByKey("GemCombo_2");
+
+            }
+            catch (ArgumentNullException ex) { }
+            try
+            {
+                socketForm.Controls.RemoveByKey("GemCombo_3");
+
+            }
+            catch (ArgumentNullException ex) { }
+
+            if (sockets != null)
+            {
+                var y = 1;
+                //create a combobox for each socket
+                foreach (var socket in sockets)
+                {
+                    if (socket != null)
+                    {
+
+                        var socketComboBox = new ComboBox();
+                        socketComboBox.Width = 100;
+                        socketComboBox.Location = new Point(10, 15 + (y * 30));
+                        socketComboBox.Name = "SocketCombo_" + y.ToString();
+                        socketComboBox.DataSource = new BindingSource(WolcenStaticData.SocketType, null);
+                        socketComboBox.DisplayMember = "Value";
+                        socketComboBox.ValueMember = "Key";
+                        socketComboBox.DataBindings.Add("SelectedValue", socket, "Effect", true, DataSourceUpdateMode.OnPropertyChanged);
+                        socketForm.Controls.Add(socketComboBox);
+
+                        if (socket.Gem != null)
+                        {
+                            var gemComboBox = new ComboBox();
+                            gemComboBox.Location = new Point(150, 15 + (y * 30));
+                            gemComboBox.Name = "GemCombo_" + y.ToString();
+                            gemComboBox.DataSource = new BindingSource(WolcenStaticData.GemLocalization, null);
+                            gemComboBox.DisplayMember = "Value";
+                            gemComboBox.ValueMember = "Key";
+                            gemComboBox.DataBindings.Add("SelectedValue", socket, "Gem.Name", true, DataSourceUpdateMode.OnPropertyChanged);
+                            socketForm.Controls.Add(gemComboBox);
+                            var GemEffectsLabel = new Label
+                            {
+                                Width = 500,
+                                Height = 20,
+                                TextAlign = ContentAlignment.MiddleLeft,
+                                BackColor = Color.Orange,
+                                ForeColor = Color.White,
+                                Location = new Point(270, 15 + (y * 30))
+                            };
+                            var text = getGemStats(socket.Gem.Name, socket.Effect);
+
+                            //GemEffectsLabel.DataBindings.Add("Text", text, null, true, DataSourceUpdateMode.OnPropertyChanged);
+                            //GemEffectsLabel.DataBindings.Add("SelectedValue", socket, "Effect", true, DataSourceUpdateMode.OnPropertyChanged);
+                            socketForm.Controls.Add(GemEffectsLabel);
+
+                            socketComboBox.SelectedValueChanged += SocketComboBox_SelectedValueChanged;
+                            gemComboBox.SelectedValueChanged += SocketComboBox_SelectedValueChanged;
+
+
+                            void SocketComboBox_SelectedValueChanged(object sender, EventArgs e)
+                            {
+                                GemEffectsLabel.Text = getGemStats(socket.Gem.Name, socket.Effect);
+                            }
+
+
+
+                        }
+                    }
+                    y++;
+                }
+            }
+        }
+
+
+
+        //private static Bitmap GetInventoryEquippedBitmap(int bodyPart, bool flip = false)
         private static Bitmap GetInventoryBitmap(int bodyPart = 0, PictureBox pb = null)
         {
             if (bodyPart == 0)
