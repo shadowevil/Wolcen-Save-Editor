@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -462,8 +463,10 @@ namespace WolcenEditor
 
             // Setup Form
             var socketForm = new Form();
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, socketForm, new object[] { true });
+
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            socketForm.Width = 350;
+            socketForm.Width = 550;
             socketForm.Height = 200;
             socketForm.BackgroundImage = ((Image)(resources.GetObject("charInv.BackgroundImage")));
             socketForm.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -593,9 +596,7 @@ namespace WolcenEditor
                     {
                         if(sockets[i].Gem != null)
                         {
-
                             sockets[i].Gem = null;
-
                             createSocketDropDowns(sockets, socketForm);
                             break;
                         }
@@ -605,6 +606,7 @@ namespace WolcenEditor
             }
 
             createSocketDropDowns(sockets, socketForm);
+
             socketForm.ShowDialog();
         }
 
@@ -618,21 +620,20 @@ namespace WolcenEditor
             try
             {
                 socketForm.Controls.RemoveByKey("GemCombo_1");
-
             }
-            catch (Exception ex) { }
+            catch (ArgumentNullException ex) { }
             try
             {
                 socketForm.Controls.RemoveByKey("GemCombo_2");
 
             }
-            catch (Exception ex) { }
+            catch (ArgumentNullException ex) { }
             try
             {
                 socketForm.Controls.RemoveByKey("GemCombo_3");
 
             }
-            catch (Exception ex) { }
+            catch (ArgumentNullException ex) { }
 
             if (sockets != null)
             {
@@ -642,7 +643,9 @@ namespace WolcenEditor
                 {
                     if (socket != null)
                     {
+
                         var socketComboBox = new ComboBox();
+                        socketComboBox.Width = 100;
                         socketComboBox.Location = new Point(10, 15 + (y * 30));
                         socketComboBox.Name = "SocketCombo_" + y.ToString();
                         socketComboBox.DataSource = new BindingSource(WolcenStaticData.SocketType, null);
@@ -661,6 +664,31 @@ namespace WolcenEditor
                             gemComboBox.ValueMember = "Key";
                             gemComboBox.DataBindings.Add("SelectedValue", socket, "Gem.Name", true, DataSourceUpdateMode.OnPropertyChanged);
                             socketForm.Controls.Add(gemComboBox);
+                            var GemEffectsLabel = new Label
+                            {
+                                Width = 500,
+                                Height = 20,
+                                TextAlign = ContentAlignment.MiddleLeft,
+                                BackColor = Color.Orange,
+                                ForeColor = Color.White,
+                                Location = new Point(270, 15 + (y * 30))
+                            };
+                            var text = getGemStats(socket.Gem.Name, socket.Effect);
+
+                            //GemEffectsLabel.DataBindings.Add("Text", text, null, true, DataSourceUpdateMode.OnPropertyChanged);
+                            //GemEffectsLabel.DataBindings.Add("SelectedValue", socket, "Effect", true, DataSourceUpdateMode.OnPropertyChanged);
+                            socketForm.Controls.Add(GemEffectsLabel);
+
+                            socketComboBox.SelectedValueChanged += SocketComboBox_SelectedValueChanged;
+                            gemComboBox.SelectedValueChanged += SocketComboBox_SelectedValueChanged;
+
+
+                            void SocketComboBox_SelectedValueChanged(object sender, EventArgs e)
+                            {
+                                GemEffectsLabel.Text = getGemStats(socket.Gem.Name, socket.Effect);
+                            }
+
+
 
                         }
                     }
@@ -668,6 +696,8 @@ namespace WolcenEditor
                 }
             }
         }
+
+
 
         private static Bitmap GetInventoryEquippedBitmap(int bodyPart, bool flip = false)
         {
