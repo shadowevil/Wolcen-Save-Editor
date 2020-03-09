@@ -63,29 +63,9 @@ namespace WolcenEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap belt {
-            get {
-                object obj = ResourceManager.GetObject("belt", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap bg {
             get {
                 object obj = ResourceManager.GetObject("bg", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap boots {
-            get {
-                object obj = ResourceManager.GetObject("boots", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +83,119 @@ namespace WolcenEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap chest {
+        internal static System.Drawing.Bitmap charBelt {
             get {
-                object obj = ResourceManager.GetObject("chest", resourceCulture);
+                object obj = ResourceManager.GetObject("charBelt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charBoots {
+            get {
+                object obj = ResourceManager.GetObject("charBoots", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charChest {
+            get {
+                object obj = ResourceManager.GetObject("charChest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charHelm {
+            get {
+                object obj = ResourceManager.GetObject("charHelm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charLHand {
+            get {
+                object obj = ResourceManager.GetObject("charLHand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charLPad {
+            get {
+                object obj = ResourceManager.GetObject("charLPad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charNeck {
+            get {
+                object obj = ResourceManager.GetObject("charNeck", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charPants {
+            get {
+                object obj = ResourceManager.GetObject("charPants", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charRHand {
+            get {
+                object obj = ResourceManager.GetObject("charRHand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charRing {
+            get {
+                object obj = ResourceManager.GetObject("charRing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charRPad {
+            get {
+                object obj = ResourceManager.GetObject("charRPad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap charWeapon {
+            get {
+                object obj = ResourceManager.GetObject("charWeapon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +223,9 @@ namespace WolcenEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap helm {
+        internal static System.Drawing.Bitmap invBackground {
             get {
-                object obj = ResourceManager.GetObject("helm", resourceCulture);
+                object obj = ResourceManager.GetObject("invBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,39 +233,9 @@ namespace WolcenEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap lefthand {
+        internal static System.Drawing.Bitmap inventorySlot {
             get {
-                object obj = ResourceManager.GetObject("lefthand", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap leftpad {
-            get {
-                object obj = ResourceManager.GetObject("leftpad", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap necklace {
-            get {
-                object obj = ResourceManager.GetObject("necklace", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pants {
-            get {
-                object obj = ResourceManager.GetObject("pants", resourceCulture);
+                object obj = ResourceManager.GetObject("inventorySlot", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,39 +253,9 @@ namespace WolcenEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap righthand {
+        internal static System.Drawing.Bitmap skillbg {
             get {
-                object obj = ResourceManager.GetObject("righthand", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap rightpad {
-            get {
-                object obj = ResourceManager.GetObject("rightpad", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ring {
-            get {
-                object obj = ResourceManager.GetObject("ring", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap weapon {
-            get {
-                object obj = ResourceManager.GetObject("weapon", resourceCulture);
+                object obj = ResourceManager.GetObject("skillbg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

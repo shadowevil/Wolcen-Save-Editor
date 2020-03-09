@@ -6,7 +6,8 @@
 
 #Project Test
 WolcenData.Tests/
-WolcenEditor/UIResources/
+scripts/*
+!scripts/*.py
 
 # User-specific files
 .rsuser

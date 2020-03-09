@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace WolcenEditor
 {
@@ -33,31 +34,38 @@ namespace WolcenEditor
         public double Resistance { get; set; }
 
     }
-
     public class Socket
     {
-        public int Type { get; set; }
+        public Gem Gem { get; set; }
+
         public int Effect { get; set; }
+    }
+    public class Gem
+    {
+        public string Name { get; set; }
     }
 
     public class ItemMagicEffects
     {
-        public IList<Effect> Default { get; set; }
-        public IList<Effect> RolledAffixes { get; set; }
+        public List<Effect> Default { get; set; }
 
-        public class Effect
-        {
-            public string EffectId { get; set; }
-            public string EffectName { get; set; }
-            public int MaxStack { get; set; }
-            public int bDefault { get; set; }
-            public IList<EffectParams> Parameters { get; set; }
-        }
+        public List<Effect> RolledAffixes { get; set; }
 
-        public class EffectParams
-        {
-            public string semantic { get; set; }
-            public double value { get; set; }
-        }
+        public List<Effect> FromGems { get; set; }
+    }
+
+    public class Effect
+    {
+        public string EffectId { get; set; }
+        public string EffectName { get; set; }
+        public int MaxStack { get; set; }
+        public int bDefault { get; set; }
+        public List<EffectParams> Parameters { get; set; }
+    }
+
+    public class EffectParams
+    {
+        public string semantic { get; set; }
+        public double value { get; set; }
     }
 }
