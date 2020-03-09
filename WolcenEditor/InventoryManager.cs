@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
-using System.Reflection;
 
 namespace WolcenEditor
 {
     public static class InventoryManager
     {
+
         private static Size defaultGridSize = new Size(50, 50);
         private static PictureBox sourceBox;
         private static bool isValid = false;
@@ -21,7 +22,7 @@ namespace WolcenEditor
         private static int posY = 0;
         private static ContextMenu accessableContextMenu = null;
 
-        private static Dictionary<string, int> charMap = new Dictionary<string, int>
+        public static Dictionary<string, int> charMap = new Dictionary<string, int>
         {
             {"charHelm", 3 },
             {"charChest", 1},
@@ -483,7 +484,7 @@ namespace WolcenEditor
                 (sender as PictureBox).ContextMenu.Show((sender as PictureBox), e.Location);
             }
         }
-
+        
         private static void LoadInventoryContextMenu(ContextMenu contextMenu, bool _editItem = false)
         {
             if(contextMenu.MenuItems.Count > 0) contextMenu.MenuItems.Clear();
@@ -1355,11 +1356,13 @@ namespace WolcenEditor
                 {
                     foreach (Socket socket in Sockets)
                     {
+
                         string s_Socket = WolcenStaticData.SocketType[socket.Effect];
                         if (socket.Gem == null) s_Socket += " [empty]";
                         else s_Socket += " " + WolcenStaticData.ItemLocalizedNames[socket.Gem.Name];
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Socket, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
-                        if(socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                        if (socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
+                        
                     }
                 }
 
@@ -1621,6 +1624,7 @@ namespace WolcenEditor
             return FinalImage;
         }
 
+        //private static Bitmap GetInventoryEquippedBitmap(int bodyPart, bool flip = false)
         private static Bitmap GetInventoryBitmap(int bodyPart = 0, PictureBox pb = null)
         {
             if (bodyPart == 0)
