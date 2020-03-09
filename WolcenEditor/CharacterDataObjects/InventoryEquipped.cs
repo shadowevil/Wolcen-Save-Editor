@@ -14,7 +14,7 @@ namespace WolcenEditor
         public int Level { get; set; }
         public ItemArmor Armor { get; set; }
         public ItemWeapon Weapon { get; set; }
-        public List<Socket> Sockets { get; set; }
+        public IList<Socket> Sockets { get; set; }
         public ItemMagicEffects MagicEffects { get; set; } 
     }
 

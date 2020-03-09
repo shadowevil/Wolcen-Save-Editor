@@ -39,7 +39,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.charPage = new System.Windows.Forms.TabPage();
             this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.chkChampion = new System.Windows.Forms.CheckBox();
@@ -99,6 +98,7 @@
             this.charSkills = new System.Windows.Forms.TabPage();
             this.lockAllButton = new System.Windows.Forms.Button();
             this.unlockAllButton = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.cboSkinColor = new WolcenEditor.ImageComboBox();
             this.cboBeardColor = new WolcenEditor.ImageComboBox();
             this.cboREye = new WolcenEditor.ImageComboBox();
@@ -208,12 +208,6 @@
             this.panel1.SelectedIndex = 0;
             this.panel1.Size = new System.Drawing.Size(835, 533);
             this.panel1.TabIndex = 11;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // charPage
             // 
@@ -945,6 +939,12 @@
             this.unlockAllButton.Text = "Unlock All";
             this.unlockAllButton.UseVisualStyleBackColor = true;
             this.unlockAllButton.Click += new System.EventHandler(this.unlockAllButton_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // cboSkinColor
             // 

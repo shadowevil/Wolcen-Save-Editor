@@ -208,7 +208,7 @@ namespace WolcenEditor
             if(cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
                 apocUnlockCheckBox.Checked = true;
             
-            InventoryManager.LoadCharacterInventory(panel1.Controls["charInv"]);
+            InventoryManager.LoadCharacterInventory(charInv);
 
             SkillTree.LoadSkillInformation(ref panel1);
         }
