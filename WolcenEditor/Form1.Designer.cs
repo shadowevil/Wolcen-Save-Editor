@@ -220,8 +220,6 @@
             this.charPage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPage.BackgroundImage")));
             this.charPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charPage.Controls.Add(this.progressionBox);
-            this.charPage.Controls.Add(this.apocUnlockCheckBox);
-            this.charPage.Controls.Add(this.chkChampion);
             this.charPage.Controls.Add(this.charStats);
             this.charPage.Controls.Add(this.label1);
             this.charPage.Controls.Add(this.charName);
@@ -239,9 +237,11 @@
             // 
             this.progressionBox.BackColor = System.Drawing.Color.Transparent;
             this.progressionBox.Controls.Add(this.label20);
+            this.progressionBox.Controls.Add(this.apocUnlockCheckBox);
             this.progressionBox.Controls.Add(this.stepIdBox);
             this.progressionBox.Controls.Add(this.questBox);
             this.progressionBox.Controls.Add(this.label19);
+            this.progressionBox.Controls.Add(this.chkChampion);
             this.progressionBox.ForeColor = System.Drawing.Color.White;
             this.progressionBox.Location = new System.Drawing.Point(237, 46);
             this.progressionBox.Name = "progressionBox";
@@ -255,7 +255,7 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(6, 59);
+            this.label20.Location = new System.Drawing.Point(6, 99);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(82, 15);
             this.label20.TabIndex = 15;
@@ -264,7 +264,7 @@
             // stepIdBox
             // 
             this.stepIdBox.FormattingEnabled = true;
-            this.stepIdBox.Location = new System.Drawing.Point(6, 80);
+            this.stepIdBox.Location = new System.Drawing.Point(6, 119);
             this.stepIdBox.Name = "stepIdBox";
             this.stepIdBox.Size = new System.Drawing.Size(206, 21);
             this.stepIdBox.TabIndex = 14;
@@ -272,7 +272,7 @@
             // questBox
             // 
             this.questBox.FormattingEnabled = true;
-            this.questBox.Location = new System.Drawing.Point(6, 34);
+            this.questBox.Location = new System.Drawing.Point(6, 75);
             this.questBox.Name = "questBox";
             this.questBox.Size = new System.Drawing.Size(206, 21);
             this.questBox.TabIndex = 13;
@@ -283,7 +283,7 @@
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.ForeColor = System.Drawing.Color.White;
-            this.label19.Location = new System.Drawing.Point(6, 16);
+            this.label19.Location = new System.Drawing.Point(6, 57);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(48, 15);
             this.label19.TabIndex = 12;
@@ -292,8 +292,7 @@
             // apocUnlockCheckBox
             // 
             this.apocUnlockCheckBox.AutoSize = true;
-            this.apocUnlockCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.apocUnlockCheckBox.Location = new System.Drawing.Point(429, 14);
+            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 38);
             this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
             this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
             this.apocUnlockCheckBox.TabIndex = 14;
@@ -303,13 +302,12 @@
             // 
             // chkChampion
             // 
-            this.chkChampion.Location = new System.Drawing.Point(264, 5);
+            this.chkChampion.Location = new System.Drawing.Point(9, 15);
             this.chkChampion.Name = "chkChampion";
-            this.chkChampion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkChampion.Size = new System.Drawing.Size(117, 32);
+            this.chkChampion.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkChampion.Size = new System.Drawing.Size(170, 25);
             this.chkChampion.TabIndex = 13;
             this.chkChampion.Text = "Unlock Champion of Stormfall";
-            this.chkChampion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkChampion.UseVisualStyleBackColor = true;
             this.chkChampion.CheckedChanged += new System.EventHandler(this.chkChampion_CheckedChanged);
             // 

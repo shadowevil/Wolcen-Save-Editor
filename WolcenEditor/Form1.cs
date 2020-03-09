@@ -173,8 +173,6 @@ namespace WolcenEditor
                     UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
                     c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
                 }
-
-
                 cData.Character.Telemetry.GoldDropped = c;
                 cData.Character.Telemetry.GoldGainedQuests = c;
                 cData.Character.Telemetry.GoldGainedMerchant = c;
