@@ -105,6 +105,74 @@ namespace WolcenEditor
             { "ACT3_Quest4", new List<int> { 1,2,4,5,6,8 } },
         };
 
+        public static readonly Dictionary<string, Dictionary<int, string>> QuestIdLocailzation = new Dictionary<string, Dictionary<int, string>>
+        {
+            { 
+                "INTRO_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Follow Maëlys" },
+                }
+            },
+            {
+                "ACT1_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Get out of the Larder" },
+                }
+            },
+            {
+                "ACT1_Quest2",
+                new Dictionary<int, string>
+                {
+                    { 1, "Talk to Mohabi, the Merchant" },
+                    { 2, "Talk to Demetra, the Archivist" },
+                    { 3, "Reach into the Farmsteads" },
+                    { 7, "Reach the Svriir Cave Network" },
+                    { 10, "Find the Den" },
+                    { 12, "Report to Thunderblade Fäarad in Stormfall using your Town Portal" },
+                    { 13, "Reach the Palace" },
+                    { 14, "Reach the Throne" },
+                }
+            },
+                        {
+                "ACT1_Quest3",
+                new Dictionary<int, string>
+                {
+                    { 1, "Reach the Laughing Sea Gal'" },
+                    { 3, "Find the Flayer Outpost" },
+                    { 5, "Journey through the Flayers Territory" },
+                    { 6, "Leave the Flayer Territory" },
+                    { 8, "Cross the Ravaged Camp" },
+                    { 9, "Leave the Ravaged Camp" },
+                    { 12, "Reach the Palace" },
+                }
+            },
+        };
+
+        public static readonly Dictionary<string, string> QuestLocalizedNames = new Dictionary<string, string>()
+        {
+            { "INTRO_Quest1", "(Intro Quest) Children of Heimlock"},
+
+            { "ACT1_Quest1", "(Act 1 Quest 1) Unexpected Saviors" },
+            { "ACT1_Quest2", "(Act 1 Quest 2) The Bane of the Storm" },
+            { "ACT1_Quest3", "(Act 1 Quest 3) Meet the Purifiers" },
+            { "ACT1_Quest4", "(Act 1 Quest 4) The Unknown" },
+            { "ACT1_Quest5", "(Act 1 Quest 5) Secrets of Anankis" },
+
+            { "ACT2_Quest1", "Chasing Val" },
+            { "ACT2_Quest2", "Creeping Shadows" },
+            { "ACT2_Quest3", "The Darkest Dusk" },
+            { "ACT2_Quest4", "Dawnbringer" },
+            { "ACT2_Quest5", "Journey into Madness" },
+            { "ACT2_Quest6", "Cordial Invitation"},
+
+            { "ACT3_Quest1", "Illusions of Peace"},
+            { "ACT3_Quest2", "Infiltration" },
+            { "ACT3_Quest3", "The Gates of Fury" },
+            { "ACT3_Quest4", "Fury's Ascent"},
+        };
+
         public static readonly Dictionary<int, string> Gender = new Dictionary<int, string>
         {
             {0, "Male" },

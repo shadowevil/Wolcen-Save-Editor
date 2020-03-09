@@ -40,6 +40,11 @@
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
             this.charPage = new System.Windows.Forms.TabPage();
+            this.progressionBox = new System.Windows.Forms.GroupBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.stepIdBox = new System.Windows.Forms.ComboBox();
+            this.questBox = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.chkChampion = new System.Windows.Forms.CheckBox();
             this.charStats = new System.Windows.Forms.GroupBox();
@@ -111,6 +116,7 @@
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.charPage.SuspendLayout();
+            this.progressionBox.SuspendLayout();
             this.charStats.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.charInv.SuspendLayout();
@@ -213,6 +219,7 @@
             // 
             this.charPage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPage.BackgroundImage")));
             this.charPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charPage.Controls.Add(this.progressionBox);
             this.charPage.Controls.Add(this.apocUnlockCheckBox);
             this.charPage.Controls.Add(this.chkChampion);
             this.charPage.Controls.Add(this.charStats);
@@ -227,6 +234,60 @@
             this.charPage.TabIndex = 0;
             this.charPage.Text = "Character";
             this.charPage.UseVisualStyleBackColor = true;
+            // 
+            // progressionBox
+            // 
+            this.progressionBox.BackColor = System.Drawing.Color.Transparent;
+            this.progressionBox.Controls.Add(this.label20);
+            this.progressionBox.Controls.Add(this.stepIdBox);
+            this.progressionBox.Controls.Add(this.questBox);
+            this.progressionBox.Controls.Add(this.label19);
+            this.progressionBox.ForeColor = System.Drawing.Color.White;
+            this.progressionBox.Location = new System.Drawing.Point(237, 46);
+            this.progressionBox.Name = "progressionBox";
+            this.progressionBox.Size = new System.Drawing.Size(220, 218);
+            this.progressionBox.TabIndex = 15;
+            this.progressionBox.TabStop = false;
+            this.progressionBox.Text = "Progression";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.White;
+            this.label20.Location = new System.Drawing.Point(6, 59);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(82, 15);
+            this.label20.TabIndex = 15;
+            this.label20.Text = "Checkpoint:";
+            // 
+            // stepIdBox
+            // 
+            this.stepIdBox.FormattingEnabled = true;
+            this.stepIdBox.Location = new System.Drawing.Point(6, 80);
+            this.stepIdBox.Name = "stepIdBox";
+            this.stepIdBox.Size = new System.Drawing.Size(206, 21);
+            this.stepIdBox.TabIndex = 14;
+            // 
+            // questBox
+            // 
+            this.questBox.FormattingEnabled = true;
+            this.questBox.Location = new System.Drawing.Point(6, 34);
+            this.questBox.Name = "questBox";
+            this.questBox.Size = new System.Drawing.Size(206, 21);
+            this.questBox.TabIndex = 13;
+            this.questBox.SelectedValueChanged += new System.EventHandler(this.questBox_SelectedValueChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.ForeColor = System.Drawing.Color.White;
+            this.label19.Location = new System.Drawing.Point(6, 16);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(48, 15);
+            this.label19.TabIndex = 12;
+            this.label19.Text = "Quest:";
             // 
             // apocUnlockCheckBox
             // 
@@ -1093,6 +1154,8 @@
             this.panel1.ResumeLayout(false);
             this.charPage.ResumeLayout(false);
             this.charPage.PerformLayout();
+            this.progressionBox.ResumeLayout(false);
+            this.progressionBox.PerformLayout();
             this.charStats.ResumeLayout(false);
             this.charStats.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1206,6 +1269,11 @@
         private System.Windows.Forms.Button lockAllButton;
         private System.Windows.Forms.Panel itemStatDisplay;
         private System.Windows.Forms.Panel charRandomInv;
+        private System.Windows.Forms.GroupBox progressionBox;
+        private System.Windows.Forms.ComboBox questBox;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox stepIdBox;
     }
 }
 
