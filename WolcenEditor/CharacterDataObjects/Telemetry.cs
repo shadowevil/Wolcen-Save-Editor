@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace WolcenEditor
 {
     public class Telemetry
     {
         public string Version { get; set; }
+
         public Count PlayTime { get; set; }
         public Count PlayTimeOutTown { get; set; }
         public IList<TypeCount> KillCountPerBossrank { get; set; }
@@ -52,7 +54,6 @@ namespace WolcenEditor
         public string Total { get; set; }
         public string PerLevel { get; set; }
     }
-
 
     public class Count
     {

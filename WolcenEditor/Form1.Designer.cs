@@ -40,12 +40,13 @@
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
             this.charPage = new System.Windows.Forms.TabPage();
+            this.treeViewTelemetry = new System.Windows.Forms.TreeView();
             this.progressionBox = new System.Windows.Forms.GroupBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.stepIdBox = new System.Windows.Forms.ComboBox();
             this.questBox = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.chkChampion = new System.Windows.Forms.CheckBox();
             this.charStats = new System.Windows.Forms.GroupBox();
             this.charExp = new System.Windows.Forms.TextBox();
@@ -219,6 +220,7 @@
             // 
             this.charPage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPage.BackgroundImage")));
             this.charPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charPage.Controls.Add(this.treeViewTelemetry);
             this.charPage.Controls.Add(this.progressionBox);
             this.charPage.Controls.Add(this.charStats);
             this.charPage.Controls.Add(this.label1);
@@ -232,6 +234,16 @@
             this.charPage.TabIndex = 0;
             this.charPage.Text = "Character";
             this.charPage.UseVisualStyleBackColor = true;
+            // 
+            // treeViewTelemetry
+            // 
+            this.treeViewTelemetry.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(29)))));
+            this.treeViewTelemetry.ForeColor = System.Drawing.Color.White;
+            this.treeViewTelemetry.LineColor = System.Drawing.Color.White;
+            this.treeViewTelemetry.Location = new System.Drawing.Point(477, 46);
+            this.treeViewTelemetry.Name = "treeViewTelemetry";
+            this.treeViewTelemetry.Size = new System.Drawing.Size(342, 442);
+            this.treeViewTelemetry.TabIndex = 16;
             // 
             // progressionBox
             // 
@@ -261,6 +273,17 @@
             this.label20.TabIndex = 15;
             this.label20.Text = "Checkpoint:";
             // 
+            // apocUnlockCheckBox
+            // 
+            this.apocUnlockCheckBox.AutoSize = true;
+            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 38);
+            this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
+            this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
+            this.apocUnlockCheckBox.TabIndex = 14;
+            this.apocUnlockCheckBox.Text = "Unlock All Apocalyptic Forms\r\n";
+            this.apocUnlockCheckBox.UseVisualStyleBackColor = true;
+            this.apocUnlockCheckBox.CheckedChanged += new System.EventHandler(this.apocUnlockCheckBox_CheckedChanged);
+            // 
             // stepIdBox
             // 
             this.stepIdBox.FormattingEnabled = true;
@@ -288,17 +311,6 @@
             this.label19.Size = new System.Drawing.Size(48, 15);
             this.label19.TabIndex = 12;
             this.label19.Text = "Quest:";
-            // 
-            // apocUnlockCheckBox
-            // 
-            this.apocUnlockCheckBox.AutoSize = true;
-            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 38);
-            this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
-            this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
-            this.apocUnlockCheckBox.TabIndex = 14;
-            this.apocUnlockCheckBox.Text = "Unlock All Apocalyptic Forms\r\n";
-            this.apocUnlockCheckBox.UseVisualStyleBackColor = true;
-            this.apocUnlockCheckBox.CheckedChanged += new System.EventHandler(this.apocUnlockCheckBox_CheckedChanged);
             // 
             // chkChampion
             // 
@@ -1272,6 +1284,7 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox stepIdBox;
+        private System.Windows.Forms.TreeView treeViewTelemetry;
     }
 }
 

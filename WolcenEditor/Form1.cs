@@ -202,6 +202,40 @@ namespace WolcenEditor
             BindToComboBox(questBox, WolcenStaticData.QuestLocalizedNames, cData.Character.Progression.LastPlayed, "QuestId");
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
+            var temp = cData.Character.Telemetry.GetType().GetProperties();
+            var iter = 1;
+            foreach(var value in temp)
+            {
+                var node = new TreeNode(value.Name);
+                treeViewTelemetry.Nodes.Add(node);
+
+                if(value.PropertyType == typeof(Count))
+                {
+                    foreach(var x in value.PropertyType.GetProperties())
+                    {
+                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(x.Name);
+                    }
+                }
+                if(value.PropertyType == typeof(IList<TypeCount>))
+                {
+                    
+                    foreach (var count in value.PropertyType.GetProperties().ToList())
+                    {
+                        foreach (var x in count.PropertyType.GetProperties())
+                        {
+                            var innerNode = new TreeNode(count.Name + iter.ToString());
+                            treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
+                            foreach(var innerX in x.PropertyType.GetProperties())
+                            {
+                                treeViewTelemetry.Nodes[node.Index].Nodes[innerNode.Index].Nodes.Add(innerX.Name);
+
+                            }
+                            iter++;
+                        }
+                    }
+
+                }
+            }
 
 
             SetBinding(ref charName, cData.Character, "Name");
