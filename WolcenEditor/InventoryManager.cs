@@ -95,7 +95,7 @@ namespace WolcenEditor
                         pictureBox.MouseDown += Pb_MouseDown;
                         pictureBox.DragEnter += Pb_DragEnter;
                         pictureBox.DragDrop += Pb_DragDrop;
-                        pictureBox.ContextMenu = new ContextMenu();
+                        //pictureBox.ContextMenu = new ContextMenu();
                     }
                 }
             }
@@ -549,7 +549,8 @@ namespace WolcenEditor
                     View = View.Details,
                     FullRowSelect = true,
                     GridLines = false,
-                    Sorting = SortOrder.Ascending
+                    Sorting = SortOrder.Ascending,
+                    HideSelection = false
                 };
                 itemsInInventoryGrid.ItemSelectionChanged += ItemsInInventoryGrid_ItemSelectionChanged;
                 itemsInInventoryGrid.Columns.Add("X", 20, HorizontalAlignment.Left);
@@ -579,11 +580,132 @@ namespace WolcenEditor
                     Visible = true,
                     Parent = editItemForm,
                     BackColor = ColorTranslator.FromHtml("#1d1d1d"),
-                    ForeColor = Color.White
+                    ForeColor = Color.White,
+                    HideSelection = false
                 };
+
+                statEditView.AfterSelect += StatEditView_AfterSelect;
+
+                Button addSelectedStat = new Button()
+                {
+                    Name = "addSelectedStat",
+                    Text = "Add Selected Stat",
+                    Size = new Size(100, 50),
+                    Location = new Point(statEditView.Location.X + statEditView.Width + 15, 300),
+                    Visible = true,
+                    FlatStyle = FlatStyle.Standard,
+                    Enabled = true,
+                    Parent = editItemForm
+                };
+                addSelectedStat.Click += AddSelectedStat_Click;
             }
             LoadItemsInInventoryGrid(editItemForm.Controls["itemsGrid"] as ListView);
             editItemForm.ShowDialog();
+        }
+
+        private static void StatEditView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            TreeNode selectedNode = (sender as TreeView).SelectedNode;
+            if (selectedNode.Nodes.Count > 0) return;
+            int valueCount = 0;
+            string localizedString = WolcenStaticData.MagicLocalized[selectedNode.ImageKey];
+            if (localizedString.Contains("%1")) valueCount++;
+            if (localizedString.Contains("%2")) valueCount++;
+            if (localizedString.Contains("%3")) valueCount++;
+
+            for (int i = 0; i < 3; i++)
+            {
+                editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
+                editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
+            }
+
+            for (int i = 0; i < valueCount; i++)
+            {
+                Label title = new Label()
+                {
+                    Name = "lblStat" + i,
+                    Text = "Stat value " + (i + 1) + ":",
+                    Location = new Point(480, 100 + (50 * i)),
+                    AutoSize = true,
+                    ForeColor = Color.White,
+                    BackColor = Color.Transparent,
+                    Parent = editItemForm,
+                    Visible = true
+                };
+                TextBox valueBox = new TextBox();
+                valueBox.Name = "txtStat" + i.ToString();
+                valueBox.Parent = editItemForm;
+                valueBox.Location = new Point(480, 115 + (50 * i));
+                valueBox.Size = new Size(150, 20);
+                valueBox.Visible = true;
+                valueBox.Text = "0";
+                valueBox.KeyPress += numberOnly_KeyPress;
+            }
+        }
+
+        private static void numberOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private static void AddSelectedStat_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = ((sender as Button).Parent.Controls["statEditView"] as TreeView).SelectedNode;
+            ListViewItem selectedItem = ((sender as Button).Parent.Controls["itemsGrid"] as ListView).SelectedItems[0];
+            int x = Convert.ToInt32(selectedItem.SubItems[0].Text);
+            int y = Convert.ToInt32(selectedItem.SubItems[1].Text);
+            string l_itemName = selectedItem.SubItems[2].Name;
+            string statName = selectedNode.Name;
+            string effectName = selectedNode.ImageKey;
+            string l_statName = WolcenStaticData.MagicLocalized[effectName];
+            int[] itemStatValue = new int[3];
+            if (l_statName.Contains("%1")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+            if (l_statName.Contains("%2")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat1"] as TextBox).Text);
+            if (l_statName.Contains("%3")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat2"] as TextBox).Text);
+            InventoryGrid itemEditing = null;
+            InventoryGrid oldItem = null;
+
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    oldItem = iGrid;
+                    itemEditing = iGrid;
+                    break;
+                }
+            }
+            if (itemEditing == null) return;
+
+            ItemMagicEffects magics = itemEditing.MagicEffects;
+            Effect effect = new Effect() { EffectName = statName, EffectId = effectName };
+            EffectParams effectParams = new EffectParams();
+            effectParams.value = 100000;
+            string semantic = null;
+            WolcenStaticData.Semantics.TryGetValue(effectName, out semantic);
+            if (semantic == null) return;
+            effectParams.semantic = semantic;
+            if (effect.Parameters == null) effect.Parameters = new List<EffectParams>();
+            effect.Parameters.Add(effectParams);
+
+            if(magics == null) magics = new ItemMagicEffects();
+            if(magics.RolledAffixes == null) magics.RolledAffixes = new List<Effect>();
+            magics.RolledAffixes.Add(effect);
+
+            itemEditing.MagicEffects = magics;
+
+            cData.Character.InventoryGrid.Remove(oldItem);
+            cData.Character.InventoryGrid.Add(itemEditing);
+            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
         }
 
         private static void ItemsInInventoryGrid_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -640,20 +762,84 @@ namespace WolcenEditor
 
                 if (itemName == null) return;
             }
-            displayBox.Image = getImageFromPath(dirPath + itemName, displayBox.Size, itemWidth, itemHeight);
 
+            LoadMagicProperties(((sender as ListView).Parent.Controls["statEditView"] as TreeView));
+
+            displayBox.Image = getImageFromPath(dirPath + itemName, displayBox.Size, itemWidth, itemHeight);
+        }
+
+        private static void LoadMagicProperties(TreeView treeView)
+        {
+            if (treeView.Nodes.Count <= 0)
+            {
+                treeView.Nodes.Clear();
+
+                TreeNode Implicit = new TreeNode() { Name = "AffixesImplicit", Text = "Default Affixes" };
+                TreeNode MastersSlavesMagicWeapons = new TreeNode() { Name = "AffixesMastersSlavesMagicWeapons", Text = "Master Slave Magic Weapon Affixes" };
+                TreeNode MastersSlavesPhysicalWeapons = new TreeNode() { Name = "AffixesMastersSlavesPhysicalWeapons", Text = "Master Slave Physical Weapon Affixes" };
+                TreeNode Accessories = new TreeNode() { Name = "AffixesAccessories", Text = "Accessory Affixes" };
+                TreeNode Armors = new TreeNode() { Name = "AffixesArmors", Text = "Armor Affixes" };
+                TreeNode Uniques = new TreeNode() { Name = "AffixesUniques", Text = "Unique Affixes" };
+                TreeNode UniquesMax = new TreeNode() { Name = "AffixesUniquesMax", Text = "Mid Tier Unique Affixes" };
+                TreeNode UniquesMaxMax = new TreeNode() { Name = "AffixesUniquesMaxMax", Text = "End Game Affixes" };
+                TreeNode Weapons = new TreeNode() { Name = "AffixesWeapons", Text = "Weapon Affixes" };
+
+                treeView.Nodes.Add(Implicit);
+                treeView.Nodes.Add(MastersSlavesMagicWeapons);
+                treeView.Nodes.Add(MastersSlavesPhysicalWeapons);
+                treeView.Nodes.Add(Accessories);
+                treeView.Nodes.Add(Armors);
+                treeView.Nodes.Add(Uniques);
+                treeView.Nodes.Add(UniquesMax);
+                treeView.Nodes.Add(UniquesMaxMax);
+                treeView.Nodes.Add(Weapons);
+
+                AddNodes(treeView.Nodes["AffixesImplicit"], WolcenStaticData.AffixesImplicit);
+                AddNodes(treeView.Nodes["AffixesMastersSlavesMagicWeapons"], WolcenStaticData.AffixesMastersSlavesMagicWeapons);
+                AddNodes(treeView.Nodes["AffixesMastersSlavesPhysicalWeapons"], WolcenStaticData.AffixesMastersSlavesPhysicalWeapons);
+                AddNodes(treeView.Nodes["AffixesAccessories"], WolcenStaticData.AffixesAccessories);
+                AddNodes(treeView.Nodes["AffixesArmors"], WolcenStaticData.AffixesArmors);
+                AddNodes(treeView.Nodes["AffixesUniques"], WolcenStaticData.AffixesUniques);
+                AddNodes(treeView.Nodes["AffixesUniquesMax"], WolcenStaticData.AffixesUniquesMax);
+                AddNodes(treeView.Nodes["AffixesUniquesMaxMax"], WolcenStaticData.AffixesUniquesMaxMax);
+                AddNodes(treeView.Nodes["AffixesWeapons"], WolcenStaticData.AffixesWeapons);
+            }
+        }
+
+        private static void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
+        {
+            foreach (var d in dict)
+            {
+                TreeNode node = null;
+                string key = d.Key;
+                string value = d.Value;
+                string lValue = null;
+                WolcenStaticData.MagicLocalized.TryGetValue(value, out lValue);
+                if (lValue != null)
+                {
+                    node = new TreeNode();
+                    node.Name = d.Key;
+                    node.ImageKey = value;
+                    node.Text = lValue;
+                    treeNode.Nodes.Add(node);
+                }
+            }
         }
 
         private static void LoadItemsInInventoryGrid(ListView listView)
         {
             listView.Items.Clear();
+            string selectedItemCoords = (accessableContextMenu.SourceControl as PictureBox).Name;
+            int x = Convert.ToInt32(selectedItemCoords.Split('|')[0]);
+            int y = Convert.ToInt32(selectedItemCoords.Split('|')[1]);
             foreach (var item in cData.Character.InventoryGrid)
             {
-                ListViewItem i = new ListViewItem();
+                ListViewItem i = null;
                 switch (item.Type)
                 {
                     case (int)typeMap.Weapon:       // Also Offhand
                         //listView.Items.Add(new ListViewItem( new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Weapon.Name] }));
+                        i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
                         i.SubItems.Add(new ListViewItem.ListViewSubItem() {
@@ -663,6 +849,7 @@ namespace WolcenEditor
                         break;
                     case (int)typeMap.Armor:       // Also Accessories
                         //listView.Items.Add(new ListViewItem(new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Armor.Name] }));
+                        i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
                         i.SubItems.Add(new ListViewItem.ListViewSubItem()
@@ -673,16 +860,17 @@ namespace WolcenEditor
                         break;
                     case (int)typeMap.Gem:
                         //listView.Items.Add(new ListViewItem(new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Gem.Name] }));
-                        i.Text = item.InventoryX.ToString();
-                        i.SubItems.Add(item.InventoryY.ToString());
-                        i.SubItems.Add(new ListViewItem.ListViewSubItem()
-                        {
-                            Name = item.Gem.Name,
-                            Text = WolcenStaticData.ItemLocalizedNames[item.Gem.Name]
-                        });
+                        //i.Text = item.InventoryX.ToString();
+                        //i.SubItems.Add(item.InventoryY.ToString());
+                        //i.SubItems.Add(new ListViewItem.ListViewSubItem()
+                        //{
+                        //    Name = item.Gem.Name,
+                        //    Text = WolcenStaticData.ItemLocalizedNames[item.Gem.Name]
+                        //});
                         break;
                     case (int)typeMap.Potion:
                         //listView.Items.Add(new ListViewItem(new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Potion.Name] }));
+                        i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
                         i.SubItems.Add(new ListViewItem.ListViewSubItem()
@@ -692,7 +880,11 @@ namespace WolcenEditor
                         });
                         break;
                 }
-                listView.Items.Add(i);
+                if (i != null)
+                {
+                    if (item.InventoryX == x && item.InventoryY == y) i.Selected = true;
+                    listView.Items.Add(i);
+                }
             }
         }
 
@@ -1296,13 +1488,15 @@ namespace WolcenEditor
                 if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
 
                 List<Effect> defaultEffects = getItemMagicEffect(bodyPart, "Default");
-                foreach (Effect effect in defaultEffects)
+                if (defaultEffects != null)
                 {
-                    string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
-                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    foreach (Effect effect in defaultEffects)
+                    {
+                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
+                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    }
                 }
-
                 itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
 
                 List <Socket> Sockets = getSockets(bodyPart);
