@@ -75,7 +75,7 @@ namespace WolcenEditor
             {
                 File.Copy(outputPath, $"{outputPath}.bak");
             }
-            string newJsonFile = JsonConvert.SerializeObject(characterData, Formatting.Indented);
+            string newJsonFile = JsonConvert.SerializeObject(characterData, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             File.WriteAllText(outputPath, newJsonFile);
         }
     }
@@ -103,6 +103,214 @@ namespace WolcenEditor
             { "ACT3_Quest2", new List<int> { 1,3,5,7 } },
             { "ACT3_Quest3", new List<int> { 1,3,4,5,7 } },
             { "ACT3_Quest4", new List<int> { 1,2,4,5,6,8 } },
+        };
+
+        public static readonly Dictionary<string, Dictionary<int, string>> QuestIdLocailzation = new Dictionary<string, Dictionary<int, string>>
+        {
+            { 
+                "INTRO_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Follow Maëlys" },
+                }
+            },
+            {
+                "ACT1_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Get out of the Larder" },
+                }
+            },
+            {
+                "ACT1_Quest2",
+                new Dictionary<int, string>
+                {
+                    { 1, "Talk to Mohabi, the Merchant" },
+                    { 2, "Talk to Demetra, the Archivist" },
+                    { 3, "Reach into the Farmsteads" },
+                    { 7, "Reach the Svriir Cave Network" },
+                    { 10, "Find the Den" },
+                    { 12, "Report to Thunderblade Fäarad in Stormfall using your Town Portal" },
+                    { 13, "Reach the Palace" },
+                    { 14, "Reach the Throne" },
+                }
+            },
+            {
+                "ACT1_Quest3",
+                new Dictionary<int, string>
+                {
+                    { 1, "Reach the Laughing Sea Gal'" },
+                    { 3, "Find the Flayer Outpost" },
+                    { 5, "Journey through the Flayers Territory" },
+                    { 6, "Leave the Flayer Territory" },
+                    { 8, "Cross the Ravaged Camp" },
+                    { 9, "Leave the Ravaged Camp" },
+                    { 12, "Reach the Palace" },
+                }
+            },
+            {
+                "ACT1_Quest4",
+                new Dictionary<int, string>
+                {
+                    { 1, "Reach the Throne" },
+                    { 3, "Reach the Smuggler's Path" },
+                    { 5, "Reach the Necropolis" },
+                    { 6, "Reach the Next Floor" },
+                    { 7, "Delve deeper into the Necropolis" },
+                    { 9, "Explore the Depths" },
+                    { 11, "Venture into the Frozen Path" },
+                }
+            },
+            {
+                "ACT1_Quest5",
+                new Dictionary<int, string>
+                {
+                    { 1, "Open the Gate of Anankis" },
+                    { 2, "Reach Anankis' Hall 1" },
+                    { 3, "Explore Anankis' Hall 1" },
+                    { 4, "Pursue the Cultist" },
+                    { 5, "Reach Anankis' Core Overlook" },
+                    { 6, "Explore Anankis' Hall 2" },
+                    { 7, "Talk to the Cultist" },
+                    { 8, "Reach Anankis's Halls 3" },
+                    { 10, "Explore Anankis' Core Overlook 2" },
+                }
+            },
+            {
+                "ACT2_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Track Down Valeria" },
+                    { 3, "Talk to Valeria" },
+                }
+            },
+            {
+                "ACT2_Quest2",
+                new Dictionary<int, string>
+                {
+                    { 1, "Find the Entrance to the Shadow Worshippers' Lair" },
+                    { 2, "Go through Shadaron Forest and find Mercy's Arena" },
+                    { 3, "Enter Mercy's Arena" },
+                    { 4, "Enter Zima's Portal" },
+                }
+            },
+            {
+                "ACT2_Quest3",
+                new Dictionary<int, string>
+                {
+                    { 1, "Approach the Brotherhood of Dawn Fortifications" },
+                    { 2, "Enter the Brotherhood of Dawn Fortifications" },
+                    { 5, "Enter the Sanctum of Hope" },
+                }
+            },
+            {
+                "ACT2_Quest4",
+                new Dictionary<int, string>
+                {
+                    { 1, "Talk to Gernese" },
+                    { 2, "Talk to Valeria" },
+                    { 3, "Reach Helmshire" },
+                    { 4, "Enter the Necromantic Ritual" },
+                }
+            },
+            {
+                "ACT2_Quest5",
+                new Dictionary<int, string>
+                {
+                    { 1, "Talk to Gernese" },
+                    { 2, "Journey Toward Cordanon" },
+                    { 3, "Survive the Ambush" },
+                    { 4, "Explore the Flesh Frontier" },
+                    { 5, "Leave the Flesh Frontier" },
+                    { 6, "Journey through the Flesh Forest" },
+                    { 7, "Leave Flesh Forest" },
+                    { 9, "Look for the Brotherhood of Dawn men" },
+                    { 10, "Approach Cordanon" },
+                }
+            },
+            {
+                "ACT2_Quest6",
+                new Dictionary<int, string>
+                {
+                    { 1, "Delve into the Incubation Chambers" },
+                    { 3, "Talk to Lambach" },
+                    { 4, "Delve Deeper" },
+                    { 5, "Reach the Corrupted Catalyst Overlook" },
+                    { 6, "Reach the Genesis" },
+                    { 7, "Talk to Gernese" },
+                    { 8, "Give the First Piece of the Helion to Gernese" },
+                }
+            },
+            {
+                "ACT3_Quest1",
+                new Dictionary<int, string>
+                {
+                    { 1, "Talk to Gernese" },
+                    { 2, "Talk to Aurora Knight Gendris" },
+                    { 3, "Enter the Vault of Truth's Main Halls" },
+                    { 4, "Reach the end of a Wing and Attune to its Altar" },
+                    { 6, "Take the Second Part of the Helion" },
+                    { 7, "Talk to Gernese" },
+                    { 8, "Talk to Valeria" },
+                }
+            },
+           {
+                "ACT3_Quest2",
+                new Dictionary<int, string>
+                {
+                    { 1, "Journey through the Red Wastes" },
+                    { 3, "Journey through the Republican Backline" },
+                    { 5, "Reach Crimson Keep's Remparts" },
+                    { 7, "Use the Portal" },
+
+                }
+            },
+           {
+                "ACT3_Quest3",
+                new Dictionary<int, string>
+                {
+                    { 1, "Fight through Cell-H's Remparts" },
+                    { 3, "Reach the Main Gate Opening Mechanism" },
+                    { 4, "Activate the Main Gate Opening Mechanism" },
+                    { 5, "Reach the Top of the Western Tower" },
+                    { 7, "Reach the Monolith's Entrance" },
+                }
+            },
+           {
+                "ACT3_Quest4",
+                new Dictionary<int, string>
+                {
+                    { 1, "Enter the Monolith" },
+                    { 2, "Talk to Anasareth" },
+                    { 4, "Explore the Area" },
+                    { 5, "Activate the Conflux Access Plateform" },
+                    { 6, "Talk to Gernese" },
+                    { 8, "Thrive in Champion of Stormfall Mode" },
+                }
+            },
+        };
+
+        public static readonly Dictionary<string, string> QuestLocalizedNames = new Dictionary<string, string>()
+        {
+            { "INTRO_Quest1", "(Intro Quest) Children of Heimlock"},
+
+            { "ACT1_Quest1", "(Act 1 Quest 1) Unexpected Saviors" },
+            { "ACT1_Quest2", "(Act 1 Quest 2) The Bane of the Storm" },
+            { "ACT1_Quest3", "(Act 1 Quest 3) Meet the Purifiers" },
+            { "ACT1_Quest4", "(Act 1 Quest 4) The Unknown" },
+            { "ACT1_Quest5", "(Act 1 Quest 5) Secrets of Anankis" },
+
+            { "ACT2_Quest1", "(Act 2 Quest 1) Chasing Val" },
+            { "ACT2_Quest2", "(Act 2 Quest 2) Creeping Shadows" },
+            { "ACT2_Quest3", "(Act 2 Quest 3) The Darkest Dusk" },
+            { "ACT2_Quest4", "(Act 2 Quest 4) Dawnbringer" },
+            { "ACT2_Quest5", "(Act 2 Quest 5) Journey into Madness" },
+            { "ACT2_Quest6", "(Act 2 Quest 6) Cordial Invitation"},
+
+            { "ACT3_Quest1", "(Act 3 Quest 1) Illusions of Peace"},
+            { "ACT3_Quest2", "(Act 3 Quest 2) Infiltration" },
+            { "ACT3_Quest3", "(Act 3 Quest 3) The Gates of Fury" },
+            { "ACT3_Quest4", "(Act 3 Quest 4) Fury's Ascent"},
         };
 
         public static readonly Dictionary<int, string> Gender = new Dictionary<int, string>

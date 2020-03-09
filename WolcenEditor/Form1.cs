@@ -164,10 +164,15 @@ namespace WolcenEditor
             {
                 Count c = new Count();
                 c.Total = charGold.Text;
-                var buffer = new byte[sizeof(UInt64)];
-                new Random().NextBytes(buffer);
-                UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
-                c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                if (charGold.Text == "0")
+                    c.PerLevel = "0";
+                else
+                {
+                    var buffer = new byte[sizeof(UInt64)];
+                    new Random().NextBytes(buffer);
+                    UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
+                    c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                }
                 cData.Character.Telemetry.GoldDropped = c;
                 cData.Character.Telemetry.GoldGainedQuests = c;
                 cData.Character.Telemetry.GoldGainedMerchant = c;
@@ -193,6 +198,12 @@ namespace WolcenEditor
             SetIndexToValueOf(ref cboSkinColor, cData.Character.CharacterCustomization.SkinColor);
 
             BindToComboBox(cboGender, WolcenStaticData.Gender, cData.Character.CharacterCustomization, "Sex");
+
+            BindToComboBox(questBox, WolcenStaticData.QuestLocalizedNames, cData.Character.Progression.LastPlayed, "QuestId");
+            BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
+
+
+
             SetBinding(ref charName, cData.Character, "Name");
             SetBinding(ref charLevel, cData.Character.Stats, "Level");
             SetBinding(ref charExp, cData.Character.Stats, "CurrentXP");
@@ -263,7 +274,7 @@ namespace WolcenEditor
             }
         }
 
-        private void BindToComboBox<T>(T comboBox, Dictionary<int, string> mapping, object dataSource, string dataMemeber) where T : ComboBox
+        private void BindToComboBox<T, DictKey, DictValue>(T comboBox, Dictionary<DictKey, DictValue> mapping, object dataSource, string dataMemeber) where T : ComboBox
         {
             comboBox.ResetBindings();
             comboBox.DataSource = new BindingSource(mapping, null);
@@ -470,6 +481,13 @@ namespace WolcenEditor
             }
         }
 
+        private void questBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var box = (ComboBox)sender;
+            var id = (KeyValuePair<string, string>)box.SelectedItem;
+            cData.Character.Progression.LastPlayed.StepId = 1;
+            BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
+        }
     }
 
     public static class cData
