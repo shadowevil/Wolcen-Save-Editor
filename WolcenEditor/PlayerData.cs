@@ -38,7 +38,7 @@ namespace WolcenEditor
                 File.Copy(outputPath, outputPath + ".bak");
             }
 
-            string newJsonFile = JsonConvert.SerializeObject(playerData, Formatting.Indented);
+            string newJsonFile = JsonConvert.SerializeObject(playerData, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             try
             {
                 File.WriteAllText(outputPath, newJsonFile);

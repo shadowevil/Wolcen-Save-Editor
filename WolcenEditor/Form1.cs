@@ -164,10 +164,17 @@ namespace WolcenEditor
             {
                 Count c = new Count();
                 c.Total = charGold.Text;
-                var buffer = new byte[sizeof(UInt64)];
-                new Random().NextBytes(buffer);
-                UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
-                c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                if (charGold.Text == "0")
+                    c.PerLevel = "0";
+                else
+                {
+                    var buffer = new byte[sizeof(UInt64)];
+                    new Random().NextBytes(buffer);
+                    UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
+                    c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                }
+
+
                 cData.Character.Telemetry.GoldDropped = c;
                 cData.Character.Telemetry.GoldGainedQuests = c;
                 cData.Character.Telemetry.GoldGainedMerchant = c;
@@ -480,6 +487,7 @@ namespace WolcenEditor
         {
             var box = (ComboBox)sender;
             var id = (KeyValuePair<string, string>)box.SelectedItem;
+            cData.Character.Progression.LastPlayed.StepId = 1;
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
     }
