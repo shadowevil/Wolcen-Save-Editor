@@ -202,40 +202,41 @@ namespace WolcenEditor
             BindToComboBox(questBox, WolcenStaticData.QuestLocalizedNames, cData.Character.Progression.LastPlayed, "QuestId");
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
-            var temp = cData.Character.Telemetry.GetType().GetProperties();
+            var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             var iter = 1;
-            foreach(var value in temp)
+            foreach(var teleProps in telemetry)
             {
-                var node = new TreeNode(value.Name);
+                var node = new TreeNode(teleProps.Name);
                 treeViewTelemetry.Nodes.Add(node);
+                var xt = cData.Character.Telemetry;
 
-                if(value.PropertyType == typeof(Count))
+                if (teleProps.PropertyType == typeof(Count))
                 {
-                    foreach(var x in value.PropertyType.GetProperties())
+                    foreach(var countValues in teleProps.PropertyType.GetProperties())
                     {
-                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(x.Name);
+                        var t = teleProps.GetValue(xt);
+                        var nameValue = new TreeNode($"{countValues.Name} : {countValues.GetValue(t, null)}");
+                        nameValue.Tag = countValues.GetValue(t, null);
+                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(nameValue);
                     }
                 }
-                if(value.PropertyType == typeof(IList<TypeCount>))
+                if(teleProps.PropertyType == typeof(List<TypeCount>))
                 {
-                    
-                    foreach (var count in value.PropertyType.GetProperties().ToList())
+                    List<TypeCount> typeCountList = (List < TypeCount > )teleProps.GetValue(cData.Character.Telemetry, null);
+                    foreach (var typeCountValues in typeCountList)
                     {
-                        foreach (var x in count.PropertyType.GetProperties())
+                        var innerNode = new TreeNode(typeCountValues.Type);
+                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
+                        foreach (var value in typeCountValues.GetType().GetProperties())
                         {
-                            var innerNode = new TreeNode(count.Name + iter.ToString());
-                            treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
-                            foreach(var innerX in x.PropertyType.GetProperties())
-                            {
-                                treeViewTelemetry.Nodes[node.Index].Nodes[innerNode.Index].Nodes.Add(innerX.Name);
-
-                            }
-                            iter++;
+                            treeViewTelemetry.Nodes[node.Index].Nodes[innerNode.Index].Nodes.Add($"{value.Name} : {value.GetValue(typeCountValues, null)} ");
                         }
                     }
 
                 }
             }
+
+
 
 
             SetBinding(ref charName, cData.Character, "Name");
@@ -522,6 +523,8 @@ namespace WolcenEditor
             cData.Character.Progression.LastPlayed.StepId = 1;
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
+
+
     }
 
     public static class cData
