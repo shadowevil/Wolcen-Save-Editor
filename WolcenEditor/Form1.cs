@@ -202,42 +202,7 @@ namespace WolcenEditor
             BindToComboBox(questBox, WolcenStaticData.QuestLocalizedNames, cData.Character.Progression.LastPlayed, "QuestId");
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
-            var telemetry = cData.Character.Telemetry.GetType().GetProperties();
-            var iter = 1;
-            foreach(var teleProps in telemetry)
-            {
-                var node = new TreeNode(teleProps.Name);
-                treeViewTelemetry.Nodes.Add(node);
-                var xt = cData.Character.Telemetry;
-
-                if (teleProps.PropertyType == typeof(Count))
-                {
-                    foreach(var countValues in teleProps.PropertyType.GetProperties())
-                    {
-                        var t = teleProps.GetValue(xt);
-                        var nameValue = new TreeNode($"{countValues.Name} : {countValues.GetValue(t, null)}");
-                        nameValue.Tag = countValues.GetValue(t, null);
-                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(nameValue);
-                    }
-                }
-                if(teleProps.PropertyType == typeof(List<TypeCount>))
-                {
-                    List<TypeCount> typeCountList = (List < TypeCount > )teleProps.GetValue(cData.Character.Telemetry, null);
-                    foreach (var typeCountValues in typeCountList)
-                    {
-                        var innerNode = new TreeNode(typeCountValues.Type);
-                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
-                        foreach (var value in typeCountValues.GetType().GetProperties())
-                        {
-                            treeViewTelemetry.Nodes[node.Index].Nodes[innerNode.Index].Nodes.Add($"{value.Name} : {value.GetValue(typeCountValues, null)} ");
-                        }
-                    }
-
-                }
-            }
-
-
-
+            LoadTelemetry();
 
             SetBinding(ref charName, cData.Character, "Name");
             SetBinding(ref charLevel, cData.Character.Stats, "Level");
@@ -251,14 +216,86 @@ namespace WolcenEditor
             charPrimordial.Text = cData.Character.Stats.PrimordialAffinity;
             SetBinding(ref charPrimordial, cData.Character.Stats, "PrimordialAffinity");
 
-            if(cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
+            if (cData.Character.ApocalypticData.UnlockedTypes.Count == 4)
                 apocUnlockCheckBox.Checked = true;
-            
+
             InventoryManager.LoadCharacterInventory(charInv);
 
             SkillTree.LoadSkillInformation(ref panel1);
         }
 
+        private void LoadTelemetry()
+        {
+            telemetryTextBox.Enabled = true;
+            var telemetry = cData.Character.Telemetry.GetType().GetProperties();
+            foreach (var teleProps in telemetry)
+            {
+                var node = new TreeNode(teleProps.Name);
+                node.Name = teleProps.Name;
+                treeViewTelemetry.Nodes.Add(node);
+                var xt = cData.Character.Telemetry;
+
+                if (teleProps.PropertyType == typeof(Count))
+                {
+                    foreach (var countValues in teleProps.PropertyType.GetProperties())
+                    {
+                        var t = teleProps.GetValue(xt);
+                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(countValues.Name, $"{countValues.Name} : {countValues.GetValue(t, null)}");
+                    }
+                }
+                if (teleProps.PropertyType == typeof(List<TypeCount>))
+                {
+                    List<TypeCount> typeCountList = (List<TypeCount>)teleProps.GetValue(cData.Character.Telemetry, null);
+                    var index = 0;
+                    foreach (var typeCountValues in typeCountList)
+                    {
+                        var innerNode = new TreeNode(typeCountValues.Type);
+                        innerNode.Name = "";
+                        treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
+                        foreach (var value in typeCountValues.GetType().GetProperties())
+                        {
+                            treeViewTelemetry.Nodes[node.Index].Nodes[innerNode.Index].Nodes.Add(value.Name, $"{value.Name} : {value.GetValue(typeCountValues, null)} ");
+                        }
+                        index++;
+                    }
+                }
+            }
+        }
+
+        private void treeViewTelemetry_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (treeViewTelemetry.SelectedNode.Parent != null && treeViewTelemetry.SelectedNode.Nodes.Count < 1)
+            {
+                var path = GetKeyPath(treeViewTelemetry.SelectedNode);
+                //MessageBox.Show(path);
+                telemetryTextBox.DataBindings.Clear();
+                telemetryTextBox.DataBindings.Add("Text", cData.Character.Telemetry, path, true, DataSourceUpdateMode.OnPropertyChanged);
+            }
+
+        }
+        private void telemetryTextBox_Leave(object sender, EventArgs e)
+        {
+            treeViewTelemetry.Nodes.Clear();
+            LoadTelemetry();
+        }
+
+        public string GetKeyPath(TreeNode node)
+        {
+            if (node.Parent == null)
+            {
+                return node.Name;
+            }
+            if(String.IsNullOrEmpty(node.Name))
+            {
+                return GetKeyPath(node.Parent) + node.Name;
+
+            }
+            else
+            {
+                return GetKeyPath(node.Parent) + "." + node.Name;
+
+            }
+        }
         private void LoadPlayerData()
         {
             string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
