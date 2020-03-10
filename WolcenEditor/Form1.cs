@@ -226,6 +226,7 @@ namespace WolcenEditor
 
         private void LoadTelemetry()
         {
+
             telemetryTextBox.Enabled = true;
             var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             foreach (var teleProps in telemetry)
@@ -250,7 +251,8 @@ namespace WolcenEditor
                     foreach (var typeCountValues in typeCountList)
                     {
                         var innerNode = new TreeNode(typeCountValues.Type);
-                        innerNode.Name = "";
+                        //innerNode.Name = typeCountValues.Type;
+                        innerNode.Tag = index;
                         treeViewTelemetry.Nodes[node.Index].Nodes.Add(innerNode);
                         foreach (var value in typeCountValues.GetType().GetProperties())
                         {
@@ -262,40 +264,6 @@ namespace WolcenEditor
             }
         }
 
-        private void treeViewTelemetry_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (treeViewTelemetry.SelectedNode.Parent != null && treeViewTelemetry.SelectedNode.Nodes.Count < 1)
-            {
-                var path = GetKeyPath(treeViewTelemetry.SelectedNode);
-                //MessageBox.Show(path);
-                telemetryTextBox.DataBindings.Clear();
-                telemetryTextBox.DataBindings.Add("Text", cData.Character.Telemetry, path, true, DataSourceUpdateMode.OnPropertyChanged);
-            }
-
-        }
-        private void telemetryTextBox_Leave(object sender, EventArgs e)
-        {
-            treeViewTelemetry.Nodes.Clear();
-            LoadTelemetry();
-        }
-
-        public string GetKeyPath(TreeNode node)
-        {
-            if (node.Parent == null)
-            {
-                return node.Name;
-            }
-            if(String.IsNullOrEmpty(node.Name))
-            {
-                return GetKeyPath(node.Parent) + node.Name;
-
-            }
-            else
-            {
-                return GetKeyPath(node.Parent) + "." + node.Name;
-
-            }
-        }
         private void LoadPlayerData()
         {
             string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -561,6 +529,54 @@ namespace WolcenEditor
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
 
+        private void treeViewTelemetry_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (treeViewTelemetry.SelectedNode.Parent != null && treeViewTelemetry.SelectedNode.Nodes.Count < 1)
+            {
+                var path = GetKeyPath(treeViewTelemetry.SelectedNode).Split('.');
+                //MessageBox.Show(cData.Character.Telemetry + path);
+                var pinfo = "cData.Character.Telemetry" + "." + path[0];
+                object value = typeof(CharacterData).GetProperty("Telemetry").GetValue(cData.Character);
+                var test = value.GetType().GetProperty(path[0]).GetValue(value, null);
+                var fffffff = test.GetType();
+                if (test.GetType() == typeof(List<TypeCount>))
+                {
+                    var ar = (List<TypeCount>)test;
+                    telemetryTextBox.DataBindings.Clear();
+                    telemetryTextBox.DataBindings.Add("Text", ar[(int)treeViewTelemetry.SelectedNode.Parent.Tag], path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                }
+                else
+                {
+                    telemetryTextBox.DataBindings.Clear();
+                    telemetryTextBox.DataBindings.Add("Text", test, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                }
+
+
+            }
+
+        }
+        private void telemetryTextBox_Leave(object sender, EventArgs e)
+        {
+            treeViewTelemetry.Nodes.Clear();
+            LoadTelemetry();
+        }
+
+        public string GetKeyPath(TreeNode node)
+        {
+            if (node.Parent == null)
+            {
+                return node.Name;
+            }
+            if (string.IsNullOrEmpty(node.Name))
+            {
+                return GetKeyPath(node.Parent) + node.Name;
+
+            }
+            else
+            {
+                return GetKeyPath(node.Parent) + "." + node.Name;
+            }
+        }
 
     }
 
