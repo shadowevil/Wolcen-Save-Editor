@@ -228,6 +228,7 @@ namespace WolcenEditor
         {
 
             telemetryTextBox.Enabled = true;
+            telemetryTextBox.Visible = true;
             var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             foreach (var teleProps in telemetry)
             {
