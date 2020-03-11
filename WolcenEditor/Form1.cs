@@ -226,9 +226,12 @@ namespace WolcenEditor
 
         private void LoadTelemetry()
         {
-
+            var savedExpansionState = GetExpansionState(treeViewTelemetry.Nodes);
+            treeViewTelemetry.BeginUpdate();
+            treeViewTelemetry.Nodes.Clear();
             telemetryTextBox.Enabled = true;
             telemetryTextBox.Visible = true;
+
             var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             foreach (var teleProps in telemetry)
             {
@@ -263,6 +266,8 @@ namespace WolcenEditor
                     }
                 }
             }
+            SetExpansionState(treeViewTelemetry.Nodes, savedExpansionState);
+            treeViewTelemetry.EndUpdate();
         }
 
         private void LoadPlayerData()
@@ -558,8 +563,40 @@ namespace WolcenEditor
         }
         private void telemetryTextBox_Leave(object sender, EventArgs e)
         {
-            treeViewTelemetry.Nodes.Clear();
+            telemetryTextBox.DataBindings.Clear();
+            telemetryTextBox.Clear();
             LoadTelemetry();
+        }
+
+
+        public static List<string> GetExpansionState(TreeNodeCollection nodes)
+        {
+            return Descendants(nodes)
+                        .Where(n => n.IsExpanded)
+                        .Select(n => n.FullPath)
+                        .ToList();
+        }
+
+        public static void SetExpansionState(TreeNodeCollection nodes, List<string> savedExpansionState)
+        {
+            foreach (var node in Descendants(nodes)
+                                      .Where(n => savedExpansionState.Contains(n.FullPath)))
+            {
+                node.Expand();
+            }
+        }
+
+        public static IEnumerable<TreeNode> Descendants(TreeNodeCollection c)
+        {
+            foreach (var node in c.OfType<TreeNode>())
+            {
+                yield return node;
+
+                foreach (var child in Descendants(node.Nodes))
+                {
+                    yield return child;
+                }
+            }
         }
 
         public string GetKeyPath(TreeNode node)
@@ -579,6 +616,152 @@ namespace WolcenEditor
             }
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form prompt = new Form()
+            {
+                Width = 265,
+                Height = 125,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Enter your character name.",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Name:" };
+            TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
+            Button confirmation = new Button() { Text = "Ok", Left = 75, Width = 100, Top = 50, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender2, e2) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            var name = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+            if(prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
+            {
+                name = name.Replace(" ", "");
+                CreateNewCharacter(name);
+            }
+        }
+
+        private void CreateNewCharacter(string name)
+        {
+            if (cData.Character != null)
+                cData.Character = null;
+            var newCharacter = new CharacterData()
+            {
+                Name = name,
+                PlayerId = "offlineplayer",
+                CharacterId = name,
+                DifficultyMode = 1,
+                League = 1,
+                UpdatedAt = "20-01-01T00:00:00Z",
+                CharacterCustomization = new CharacterCustomization()
+                {
+                    Sex = 0,
+                    Face = 1,
+                    SkinColor = 100,
+                    Haircut = 1,
+                    HairColor = 5,
+                    Beard = 1,
+                    BeardColor = 5,
+                    LeftEye = 1,
+                    RightEye = 1,
+                    Archetype = 1
+                },
+                Stats = new Stats()
+                {
+                    Strength = 1,
+                    Agility = 1,
+                    Constitution = 1,
+                    Power = 1,
+                    Level = 1,
+                    PassiveSkillPoints = 0,
+                    CurrentXP = "0",
+                    RemainingStatsPoints = 0,
+                    Gold = "0",
+                    PrimordialAffinity = "0",
+                    IsAutoDashAvailable = 1,
+                    DashStatusActivation = 1
+                },
+                UnlockedSkills = new List<UnlockedSkill>{ },
+                SkillBar = new List<SkillBar>{ },
+                PassiveSkills = new List<string> { },
+                BeltConfig = new List<BeltConfig>{ },
+                Progression = new Progression { LastPlayed = new LastPlayed { QuestId = "INTRO_Quest1", StepId = 1} },
+                Telemetry = new Telemetry 
+                {
+                    PlayTime  = new Count { Total = "0", PerLevel = "0" },
+                    PlayTimeOutTown  = new Count { Total = "0", PerLevel = "0" },
+                    KillCountPerBossrank  = new List<TypeCount> {},
+                    KillCountPerMobRankType  = new List<TypeCount> { },
+                    MinLevelKilled  = new Count { Total = "0", PerLevel = "0" },
+                    MaxLevelKilled  = new Count { Total = "0", PerLevel = "0" },
+                    DeathCount  = new Count { Total = "0", PerLevel = "0" },
+                    DeathCountPerBossrank  = new List<TypeCount> { },
+                    XpFromQuest  = new Count { Total = "0", PerLevel = "0" },
+                    XpFromKill  = new Count { Total = "0", PerLevel = "0" },
+                    GoldDropped  = new Count { Total = "0", PerLevel = "0" },
+                    GoldGainedQuests  = new Count { Total = "0", PerLevel = "0" },
+                    GoldGainedMerchant  = new Count { Total = "0", PerLevel = "0" },
+                    GoldPicked  = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpent  = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpentMerchant  = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpentJewelerUnsocketItem  = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinitySpent  = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinitySpentSkillLevelUp  = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinityGained  = new Count { Total = "0", PerLevel = "0" },
+                    ItemsDropped  = new List<TypeCount> { },
+                    ItemsPicked  = new List<TypeCount> { },
+                    ItemsBought  = new List<TypeCount> { },
+                    ItemsSold  = new List<TypeCount> { },
+                    TimeSpentPerZone  = new List<TypeCount> { },
+                    SoloReviveTokenUsedPerZone  = new List<TypeCount> { },
+                    SoloDeathPerZone  = new List<TypeCount> { },
+                    MultiRevivePerZone  = new List<TypeCount> { },
+                    SkillUsage  = new List<TypeCount> { },
+                    QuestAttempt_NPC1  = new Count { Total = "0", PerLevel = "0" },
+                    QuestAttempt_NPC2  = new Count { Total = "0", PerLevel = "0" },
+                    QuestSuccess_NPC1  = new Count { Total = "0", PerLevel = "0" },
+                    QuestSuccess_NPC2  = new Count { Total = "0", PerLevel = "0" },
+                    QuestFailed_NPC1  = new Count { Total = "0", PerLevel = "0" },
+                    QuestFailed_NPC2  = new Count { Total = "0", PerLevel = "0" },
+                    QuestMaxFloorReached_NPC2  = new Count { Total = "0", PerLevel = "0" },
+                    UnlockChestCount  = new Count { Total = "0", PerLevel = "0" },
+                    ResetPSTCount  = new Count { Total = "0", PerLevel = "0" },
+                    ResetCharacterAttributesCount  = new Count { Total = "0", PerLevel = "0" },
+                },
+                Versions = new Versions
+                {
+                    SaveVersion = "1.0.0.0",
+                    StatsVersion = "1.0.0.0",
+                    ItemsVersion = "1.0.0.0",
+                    InventoryVersion = "1.0.0.0",
+                    ASTVersion = "1.0.0.0",
+                    ASTVariantsVersion = "1.0.0.0",
+                    PSTVersion = "1.0.0.0",
+                    StorylineVersion = 	"1.0.0.0",
+                    SaveAlterationsVersion = 1
+                },
+                CharacterCosmeticInventory = new CharacterCosmeticInventory { },
+                InventoryEquipped = new List<InventoryEquipped>{ },
+                InventoryGrid = new List<InventoryGrid>{ },
+                InventoryBelt = new List<InventoryBelt> { },
+                PSTConfig = new List<PSTConfig>{ },
+                ApocalypticData = new ApocalypticData{ ChosenType = "", UnlockedTypes = new List<UnlockedTypes> { } },
+                Tutorials = new List<Tutorials> { },
+                Sequences = new List<Sequences>{ },
+                LastGameParameters = new LastGameParameters{GameMode = 1, DifficultyMode = 1, Difficulty = 2, League = 1 , QuestId = "INTRO_Quest1", StepId = 1, Privacy = 2, Level = 3 }
+            };
+
+            cData.Character = newCharacter;
+            panel1.Enabled = true;
+            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
+            string newPath = userFolder + WolcenSavePath;
+            characterSavePath = newPath + cData.Character.Name + ".json";
+            SkillTree.LoadTree(ref panel1);
+            LoadCharacterData();
+        }
     }
 
     public static class cData

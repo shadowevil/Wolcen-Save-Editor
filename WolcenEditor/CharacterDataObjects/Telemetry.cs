@@ -7,7 +7,7 @@ namespace WolcenEditor
     {
         public string Version { get; set; }
 
-        public Count PlayTime { get; set; }
+        public Count PlayTime { get; set; } = new Count { Total = "0", PerLevel = "0" };
         public Count PlayTimeOutTown { get; set; }
         public List<TypeCount> KillCountPerBossrank { get; set; }
         public List<TypeCount> KillCountPerMobRankType { get; set; }

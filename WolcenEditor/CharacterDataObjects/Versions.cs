@@ -10,5 +10,6 @@
         public string ASTVariantsVersion { get; set; }
         public string PSTVersion { get; set; }
         public string StorylineVersion { get; set; }
+        public int SaveAlterationsVersion { get; set; }
     }
 }
