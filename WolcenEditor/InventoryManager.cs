@@ -171,6 +171,21 @@ namespace WolcenEditor
             pb.Image = GetInventoryBitmap(charMap[DestinationPb.Name], DestinationPb);
         }
 
+        private static void ReloadInventoryBitmap(Panel charRandomInv, int dx, int dy)
+        {
+            IList<InventoryGrid> invGrid = cData.Character.InventoryGrid;
+            foreach (PictureBox pb in (charRandomInv.Controls))
+            {
+                int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+
+                if (dx == x && dy == y)
+                {
+                    pb.Image = GetInventoryBitmap(0, pb);
+                }
+            }
+        }
+
         private static void ReloadInventoryBitmap(Panel charRandomInv, PictureBox DestinationPb)
         {
             IList<InventoryGrid> invGrid = cData.Character.InventoryGrid;
@@ -668,16 +683,23 @@ namespace WolcenEditor
                 }
             }
 
+            RemoveItemEditControls();
+
+            (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
+            LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
+            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), x, y);
+            LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
+        }
+
+        private static void RemoveItemEditControls()
+        {
             for (int i = 0; i < 3; i++)
             {
+                editItemForm.Controls.RemoveByKey("cboRarity");
                 editItemForm.Controls.RemoveByKey("defaultAffix");
                 editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
                 editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
             }
-            (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
-            LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
-            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
-            LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
         }
 
         private static void StatEditView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -708,12 +730,7 @@ namespace WolcenEditor
                 (editItemForm.Controls["addSelectedStat"] as Button).Text = "Update Selected Affix";
             }
 
-            for (int i = 0; i < 3; i++)
-            {
-                editItemForm.Controls.RemoveByKey("defaultAffix");
-                editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
-                editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
-            }
+            RemoveItemEditControls();
 
             CheckBox defaultAffix = new CheckBox()
             {
@@ -727,50 +744,78 @@ namespace WolcenEditor
                 Visible = true
             };
 
-            for (int i = 0; i < parameterValues.Count(); i++)
+            if (selectedNode.FullPath == "Current Affixes\\Rarity")
             {
                 Label title = new Label()
                 {
-                    Name = "lblStat" + i,
-                    Text = "Stat value " + (i + 1) + ":",
-                    Location = new Point(480, 100 + (50 * i)),
+                    Name = "lblStat0",
+                    Text = "Rarity of item:",
+                    Location = new Point(480, 100),
                     AutoSize = true,
                     ForeColor = Color.White,
                     BackColor = Color.Transparent,
                     Parent = editItemForm,
                     Visible = true
                 };
-                TextBox valueBox = new TextBox();
-                valueBox.Name = "txtStat" + i.ToString();
-                valueBox.Parent = editItemForm;
-                valueBox.Location = new Point(480, 115 + (50 * i));
-                valueBox.Size = new Size(150, 20);
-                valueBox.Visible = true;
-                if (selectedNode.ImageKey != "default") valueBox.Text = parameterValues[i];
-                else valueBox.Text = parameterValues[0];
-                valueBox.KeyPress += numberOnly_KeyPress;
-            }
-
-            if (selectedNode.FullPath.Contains("Current Affixes"))
-            {
-                (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = false;
+                ComboBox rarityBox = new ComboBox()
+                {
+                    Name = "cboRarity",
+                    Location = new Point(480, 115),
+                    Size = new Size(150, 20),
+                    Parent = editItemForm,
+                    Visible = true,
+                    DisplayMember = "Key",
+                    ValueMember = "Value",
+                };
+                foreach (var d in WolcenStaticData.Rarity)
+                {
+                    KeyValuePair<string, int> rarityKeys = new KeyValuePair<string, int>( d.Key, d.Value );
+                    rarityBox.Items.Add(rarityKeys);
+                }
+                rarityBox.SelectedIndex = WolcenStaticData.Rarity.ElementAt(Convert.ToInt32(parameterValues[0])).Value;
             }
             else
             {
-                (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = true;
+                for (int i = 0; i < parameterValues.Count(); i++)
+                {
+                    Label title = new Label()
+                    {
+                        Name = "lblStat" + i,
+                        Text = "Stat value " + (i + 1) + ":",
+                        Location = new Point(480, 100 + (50 * i)),
+                        AutoSize = true,
+                        ForeColor = Color.White,
+                        BackColor = Color.Transparent,
+                        Parent = editItemForm,
+                        Visible = true
+                    };
+                    TextBox valueBox = new TextBox();
+                    valueBox.Name = "txtStat" + i.ToString();
+                    valueBox.Parent = editItemForm;
+                    valueBox.Location = new Point(480, 115 + (50 * i));
+                    valueBox.Size = new Size(150, 20);
+                    valueBox.Visible = true;
+                    if (selectedNode.ImageKey != "default") valueBox.Text = parameterValues[i];
+                    else valueBox.Text = parameterValues[0];
+                    valueBox.KeyPress += numberOnly_KeyPress;
+                }
             }
+
+            if (selectedNode.FullPath.Contains("Current Affixes")) (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = false;
+            else (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = true;
         }
 
         private static void numberOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-                (e.KeyChar != '.'))
+                (e.KeyChar != '.') && (e.KeyChar != '-'))
             {
                 e.Handled = true;
             }
 
             // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1)
+                || (e.KeyChar == '-') && ((sender as TextBox).Text.IndexOf('-') > -1))
             {
                 e.Handled = true;
             }
@@ -835,12 +880,8 @@ namespace WolcenEditor
                             }
                         }
                     }
-                    for (int i = 0; i < 3; i++)
-                    {
-                        editItemForm.Controls.RemoveByKey("defaultAffix");
-                        editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
-                        editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
-                    }
+
+                    RemoveItemEditControls();
                 }
                 else if (Mode == "add")
                 {
@@ -981,7 +1022,7 @@ namespace WolcenEditor
                 {
                     if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
                     {
-                        if (selectedNode.Name == "Rarity") cData.Character.InventoryGrid[i].Rarity = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                        if (selectedNode.Name == "Rarity") cData.Character.InventoryGrid[i].Rarity = ((sender as Button).Parent.Controls["cboRarity"] as ComboBox).SelectedIndex;
                         if (selectedNode.Name == "Quality") cData.Character.InventoryGrid[i].Quality = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                         if (selectedNode.Name == "Sockets")
                         {
@@ -1015,11 +1056,12 @@ namespace WolcenEditor
                     }
                 }
             }
-            (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
-            (editItemForm.Controls["defaultAffix"] as CheckBox).Checked = false;
+            if((editItemForm.Controls["deleteAffix"] as Button) != null) (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
+            if((editItemForm.Controls["defaultAffix"] as CheckBox) != null) (editItemForm.Controls["defaultAffix"] as CheckBox).Checked = false;
             LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
-            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
+            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), x, y);
             LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
+            RemoveItemEditControls();
         }
 
         private static void ItemsInInventoryGrid_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -2021,7 +2063,9 @@ namespace WolcenEditor
                 int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
                 if (item.InventoryX == x && item.InventoryY == y)
                 {
-                    return ColorTranslator.FromHtml(WolcenStaticData.qualityColorBank[item.Rarity]);
+                    string hexColor = WolcenStaticData.rarityColorBank[1];
+                    WolcenStaticData.rarityColorBank.TryGetValue(item.Rarity, out hexColor);
+                    return ColorTranslator.FromHtml(hexColor);
                 }
             }
             return Color.White;
@@ -2321,7 +2365,7 @@ namespace WolcenEditor
                     else
                         itemName = equip.Armor.Name;
 
-                    itemName += WolcenStaticData.qualityColorBank[equip.Rarity];
+                    itemName += WolcenStaticData.rarityColorBank[equip.Rarity];
 
                     return itemName;
                 }

@@ -2694,16 +2694,6 @@ namespace WolcenEditor
             { "Special_gem", "Genesis Stone" }
         };
 
-        public static readonly Dictionary<int, string> qualityColorBank = new Dictionary<int, string>
-        {
-            { 1, "#FFFFFF" },
-            { 2, "#00C7FF" },
-            { 3, "#FFE100" },
-            { 4, "#BC0000" },
-            { 5, "#00FF6B" },
-            { 6, "#b870dd" }
-        };
-
         public static readonly Dictionary<string, string> MagicLocalized = new Dictionary<string, string>()
         {
             { "ailment_stacks_multiplier_chance", "%1 Chance to multiply the number of Ailment Stacks" },
@@ -5335,17 +5325,29 @@ namespace WolcenEditor
                 }
             }
         };
-
-        public static readonly Dictionary<int, string> Rarity = new Dictionary<int, string>
+        
+        public static readonly Dictionary<int, string> rarityColorBank = new Dictionary<int, string>
         {
-            {0, "Basic"},
-            {1, "Basic"},
-            {2, "Magic"},
-            {3, "Rare"},
-            {4, "Legendary"},
-            {5, "Set"},
-            {6, "Unique"},
-            {7, "Quest"}
+            { 0, "#FFFFFF" },
+            { 1, "#FFFFFF" },
+            { 2, "#00C7FF" },
+            { 3, "#FFE100" },
+            { 4, "#BC0000" },
+            { 5, "#00FF6B" },
+            { 6, "#b870dd" },
+            { 7, "#FFFFFF" },
+        };
+
+        public static readonly Dictionary<string, int> Rarity = new Dictionary<string, int>
+        {
+            {"Common", 0},
+            {"Uncommon", 1},
+            {"Magic", 2},
+            {"Rare", 3},
+            {"Legendary", 4},
+            {"Set", 5},
+            {"Unique", 6},
+            {"Quest", 7}
         };
 
         public static readonly Dictionary<int, string> Quality = new Dictionary<int, string>
