@@ -883,21 +883,43 @@ namespace WolcenEditor
 
                     if (!selectedNode.FullPath.Contains("Current Affixes"))
                     {
-                        if (magicEffects != null && magicEffects.RolledAffixes != null)
+                        if (magicEffects == null) magicEffects = new ItemMagicEffects();
+
+                        if ((editItemForm.Controls["defaultAffix"] as CheckBox).Checked)
                         {
-                            foreach (var t in magicEffects.RolledAffixes)
+                            if (magicEffects.Default != null)
                             {
-                                if (effect.EffectName == t.EffectName)
+                                foreach (var t in magicEffects.Default)
                                 {
-                                    MessageBox.Show("Cannot have the same affix on this item, please edit the current one.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
+                                    if (effect.EffectName == t.EffectName)
+                                    {
+                                        MessageBox.Show("Cannot have the same default affix on this item. Pleas eedit the current one.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                magicEffects.Default = new List<Effect>();
                             }
                         }
                         else
                         {
-                            magicEffects = new ItemMagicEffects();
-                            magicEffects.RolledAffixes = new List<Effect>();
+                            if (magicEffects.RolledAffixes != null)
+                            {
+                                foreach (var t in magicEffects.RolledAffixes)
+                                {
+                                    if (effect.EffectName == t.EffectName)
+                                    {
+                                        MessageBox.Show("Cannot have the same affix on this item, please edit the current one.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                magicEffects.RolledAffixes = new List<Effect>();
+                            }
                         }
                     }
 
@@ -911,16 +933,42 @@ namespace WolcenEditor
                     }
                     if (selectedNode.FullPath.Contains("Current Affixes"))
                     {
-                        for (int i = 0; i < itemEditing.MagicEffects.RolledAffixes.Count(); i++)
+                        if (selectedNode.FullPath.Contains("Default Affixes"))
                         {
-                            if (itemEditing.MagicEffects.RolledAffixes[i].EffectName == effect.EffectName)
+                            for (int i = 0; i < itemEditing.MagicEffects.Default.Count(); i++)
                             {
-                                itemEditing.MagicEffects.RolledAffixes.RemoveAt(i);
-                                break;
+                                if (itemEditing.MagicEffects.Default[i].EffectName == effect.EffectName)
+                                {
+                                    itemEditing.MagicEffects.Default.RemoveAt(i);
+                                    break;
+                                }
                             }
+                            magicEffects.Default.Add(effect);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < itemEditing.MagicEffects.RolledAffixes.Count(); i++)
+                            {
+                                if (itemEditing.MagicEffects.RolledAffixes[i].EffectName == effect.EffectName)
+                                {
+                                    itemEditing.MagicEffects.RolledAffixes.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                            magicEffects.RolledAffixes.Add(effect);
                         }
                     }
-                    magicEffects.RolledAffixes.Add(effect);
+                    else
+                    {
+                        if ((editItemForm.Controls["defaultAffix"] as CheckBox).Checked)
+                        {
+                            magicEffects.Default.Add(effect);
+                        }
+                        else
+                        {
+                            magicEffects.RolledAffixes.Add(effect);
+                        }
+                    }
                     itemEditing.MagicEffects = magicEffects;
 
                     cData.Character.InventoryGrid.Remove(oldItem);
@@ -933,6 +981,18 @@ namespace WolcenEditor
                 {
                     if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
                     {
+                        if (selectedNode.Name == "Rarity") cData.Character.InventoryGrid[i].Rarity = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                        if (selectedNode.Name == "Quality") cData.Character.InventoryGrid[i].Quality = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                        if (selectedNode.Name == "Sockets")
+                        {
+                            cData.Character.InventoryGrid[i].Sockets = new List<Socket>();
+                            for (int s = 0; s < Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text); s++)
+                            {
+                                cData.Character.InventoryGrid[i].Sockets.Add(new Socket());
+                            }
+                        }
+                        if (selectedNode.Name == "Value") cData.Character.InventoryGrid[i].Value = ((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text;
+                        if (selectedNode.Name == "Level") cData.Character.InventoryGrid[i].Level = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                         switch (cData.Character.InventoryGrid[i].Type)
                         {
                             case (int)typeMap.Weapon:
@@ -956,6 +1016,7 @@ namespace WolcenEditor
                 }
             }
             (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
+            (editItemForm.Controls["defaultAffix"] as CheckBox).Checked = false;
             LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
             ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
             LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
@@ -1100,10 +1161,60 @@ namespace WolcenEditor
             TreeNode ImmediateMana = null;
             TreeNode ImmediateStamina = null;
 
+            TreeNode Rarity = null;
+            TreeNode Quality = null;
+            TreeNode Sockets = null;
+            TreeNode Value = null;
+            TreeNode Level = null;
+
             foreach (var iGrid in cData.Character.InventoryGrid)
             {
                 if (iGrid.InventoryX == x && iGrid.InventoryY == y)
                 {
+                    Rarity = new TreeNode()
+                    {
+                        Name = "Rarity",
+                        Text = "Rarity",
+                        ImageKey = "default",
+                        SelectedImageKey = iGrid.Rarity.ToString()
+                    };
+                    Quality = new TreeNode()
+                    {
+                        Name = "Quality",
+                        Text = "Quality",
+                        ImageKey = "default",
+                        SelectedImageKey = iGrid.Quality.ToString()
+                    };
+                    string sockets = "0";
+                    if (iGrid.Sockets != null) sockets = iGrid.Sockets.Count().ToString();
+                    Sockets = new TreeNode()
+                    {
+                        Name = "Sockets",
+                        Text = "Number of Sockets",
+                        ImageKey = "default",
+                        SelectedImageKey = sockets
+                    };
+                    Value = new TreeNode()
+                    {
+                        Name = "Value",
+                        Text = "Value",
+                        ImageKey = "default",
+                        SelectedImageKey = iGrid.Value.ToString()
+                    };
+                    Level = new TreeNode()
+                    {
+                        Name = "Level",
+                        Text = "Item Level",
+                        ImageKey = "default",
+                        SelectedImageKey = iGrid.Level.ToString()
+                    };
+
+                    treeNode.Nodes.Add(Rarity);
+                    treeNode.Nodes.Add(Quality);
+                    treeNode.Nodes.Add(Sockets);
+                    treeNode.Nodes.Add(Value);
+                    treeNode.Nodes.Add(Level);
+
                     if (iGrid.Type == (int)typeMap.Weapon)    // Weapons & offhands
                     {
                         damageMin = new TreeNode()
@@ -1198,44 +1309,49 @@ namespace WolcenEditor
 
                     if (iGrid.MagicEffects != null)
                     {
-                        if (iGrid.MagicEffects.RolledAffixes != null)
+                        if (iGrid.MagicEffects != null)
                         {
-                            foreach (var de in iGrid.MagicEffects.Default)
+                            if (iGrid.MagicEffects.Default != null)
                             {
-                                TreeNode node = new TreeNode();
-                                node.Name = de.EffectName;
-                                node.Text = WolcenStaticData.MagicLocalized[de.EffectId];
-                                node.ImageKey = de.EffectId;
-                                for (int i = 0; i < de.Parameters.Count(); i++)
+                                foreach (var de in iGrid.MagicEffects.Default)
                                 {
-                                    node.StateImageKey += de.Parameters[i].semantic + "|";
-                                    node.SelectedImageKey += de.Parameters[i].value.ToString() + "|";
+                                    TreeNode node = new TreeNode();
+                                    node.Name = de.EffectName;
+                                    node.Text = WolcenStaticData.MagicLocalized[de.EffectId];
+                                    node.ImageKey = de.EffectId;
+                                    for (int i = 0; i < de.Parameters.Count(); i++)
+                                    {
+                                        node.StateImageKey += de.Parameters[i].semantic + "|";
+                                        node.SelectedImageKey += de.Parameters[i].value.ToString() + "|";
+                                    }
+                                    defaultNode.Nodes.Add(node);
                                 }
-                                defaultNode.Nodes.Add(node);
                             }
 
-                            foreach (var me in iGrid.MagicEffects.RolledAffixes)
+                            if(iGrid.MagicEffects.RolledAffixes != null)
                             {
-                                TreeNode node = new TreeNode();
-                                node.StateImageKey = "";
-                                node.SelectedImageKey = "";
-                                node.Name = me.EffectName;
-                                node.Text = WolcenStaticData.MagicLocalized[me.EffectId];
-                                node.ImageKey = me.EffectId;
-                                for (int i = 0; i < me.Parameters.Count(); i++)
+                                foreach (var me in iGrid.MagicEffects.RolledAffixes)
                                 {
-                                    node.StateImageKey += me.Parameters[i].semantic + "|";
-                                    node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
+                                    TreeNode node = new TreeNode();
+                                    node.StateImageKey = "";
+                                    node.SelectedImageKey = "";
+                                    node.Name = me.EffectName;
+                                    node.Text = WolcenStaticData.MagicLocalized[me.EffectId];
+                                    node.ImageKey = me.EffectId;
+                                    for (int i = 0; i < me.Parameters.Count(); i++)
+                                    {
+                                        node.StateImageKey += me.Parameters[i].semantic + "|";
+                                        node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
+                                    }
+                                    affixNode.Nodes.Add(node);
                                 }
-                                affixNode.Nodes.Add(node);
                             }
                         }
                     }
                 }
             }
-            if (affixNode.Nodes.Count == 0) return;
-            treeNode.Nodes.Add(defaultNode);
-            treeNode.Nodes.Add(affixNode);
+            if (affixNode.Nodes.Count != 0) treeNode.Nodes.Add(affixNode);
+            if (defaultNode.Nodes.Count != 0) treeNode.Nodes.Add(defaultNode);
         }
 
         private static void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
