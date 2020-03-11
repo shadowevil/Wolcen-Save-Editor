@@ -619,17 +619,18 @@ namespace WolcenEditor
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (onCloseCheck(sender, e) == false) return;
             Form prompt = new Form()
             {
                 Width = 265,
-                Height = 125,
+                Height = 120,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = "Enter your character name.",
                 StartPosition = FormStartPosition.CenterScreen
             };
             Label textLabel = new Label() { Left = 25, Top = 5, Text = "Name:" };
             TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
-            Button confirmation = new Button() { Text = "Ok", Left = 75, Width = 100, Top = 50, DialogResult = DialogResult.OK };
+            Button confirmation = new Button() { Text = "Ok", Left = 85, Width = 75, Top = 50, DialogResult = DialogResult.OK };
             confirmation.Click += (sender2, e2) => { prompt.Close(); };
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);
@@ -639,15 +640,26 @@ namespace WolcenEditor
             var name = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
             if(prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
             {
+                UnloadRandomInventory();
+
                 name = name.Replace(" ", "");
-                CreateNewCharacter(name);
+
+                if (cData.Character != null)
+                    cData.Character = null;
+                cData.Character = CreateNewCharacter(name);
+
+                panel1.Enabled = true;
+                string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
+                string newPath = userFolder + WolcenSavePath;
+                characterSavePath = newPath + cData.Character.Name + ".json";
+                SkillTree.LoadTree(ref panel1);
+                LoadCharacterData();
             }
         }
 
-        private void CreateNewCharacter(string name)
+        private CharacterData CreateNewCharacter(string name)
         {
-            if (cData.Character != null)
-                cData.Character = null;
             var newCharacter = new CharacterData()
             {
                 Name = name,
@@ -753,15 +765,22 @@ namespace WolcenEditor
                 Sequences = new List<Sequences>{ },
                 LastGameParameters = new LastGameParameters{GameMode = 1, DifficultyMode = 1, Difficulty = 2, League = 1 , QuestId = "INTRO_Quest1", StepId = 1, Privacy = 2, Level = 3 }
             };
+           return newCharacter;
+        }
 
-            cData.Character = newCharacter;
-            panel1.Enabled = true;
-            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
-            string newPath = userFolder + WolcenSavePath;
-            characterSavePath = newPath + cData.Character.Name + ".json";
-            SkillTree.LoadTree(ref panel1);
-            LoadCharacterData();
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var aboutMessage = MessageBox.Show("You are able to import builds from the awesome site over at https://wolcen-universe.com!\n\n" +
+                "The guys over at Wolcen-Universe are still working on updating their API so if something doesn't work here let us know at\n" +
+                "[insert whatevever contact info here]\n\n\n" +
+                "Would you like to be taken to https://wolcen-universe.com/ right now?"
+                , "About Improrting Builds."
+            , MessageBoxButtons.YesNo);
+
+            if(aboutMessage == DialogResult.Yes)
+            {
+                System.Diagnostics.Process.Start("https://wolcen-universe.com/");
+            }
         }
     }
 
