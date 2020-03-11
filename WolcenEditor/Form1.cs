@@ -53,6 +53,7 @@ namespace WolcenEditor
 
             LoadComboBoxes();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
+            LogMe.InitLog();
         }
 
         private void UnloadRandomInventory()

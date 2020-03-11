@@ -42,10 +42,10 @@
             this.charPage = new System.Windows.Forms.TabPage();
             this.progressionBox = new System.Windows.Forms.GroupBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.stepIdBox = new System.Windows.Forms.ComboBox();
             this.questBox = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
             this.chkChampion = new System.Windows.Forms.CheckBox();
             this.charStats = new System.Windows.Forms.GroupBox();
             this.charExp = new System.Windows.Forms.TextBox();
@@ -261,6 +261,17 @@
             this.label20.TabIndex = 15;
             this.label20.Text = "Checkpoint:";
             // 
+            // apocUnlockCheckBox
+            // 
+            this.apocUnlockCheckBox.AutoSize = true;
+            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 38);
+            this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
+            this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
+            this.apocUnlockCheckBox.TabIndex = 14;
+            this.apocUnlockCheckBox.Text = "Unlock All Apocalyptic Forms\r\n";
+            this.apocUnlockCheckBox.UseVisualStyleBackColor = true;
+            this.apocUnlockCheckBox.CheckedChanged += new System.EventHandler(this.apocUnlockCheckBox_CheckedChanged);
+            // 
             // stepIdBox
             // 
             this.stepIdBox.FormattingEnabled = true;
@@ -288,17 +299,6 @@
             this.label19.Size = new System.Drawing.Size(48, 15);
             this.label19.TabIndex = 12;
             this.label19.Text = "Quest:";
-            // 
-            // apocUnlockCheckBox
-            // 
-            this.apocUnlockCheckBox.AutoSize = true;
-            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 38);
-            this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
-            this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
-            this.apocUnlockCheckBox.TabIndex = 14;
-            this.apocUnlockCheckBox.Text = "Unlock All Apocalyptic Forms\r\n";
-            this.apocUnlockCheckBox.UseVisualStyleBackColor = true;
-            this.apocUnlockCheckBox.CheckedChanged += new System.EventHandler(this.apocUnlockCheckBox_CheckedChanged);
             // 
             // chkChampion
             // 
@@ -1141,6 +1141,7 @@
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;

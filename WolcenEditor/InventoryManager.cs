@@ -77,6 +77,7 @@ namespace WolcenEditor
 
         public static void LoadCharacterInventory(object sender)
         {
+            //TestingSemantics();
             TabPage tabPage = (sender as TabPage);
             //bool flip = false;
 
@@ -102,6 +103,17 @@ namespace WolcenEditor
 
             LoadRandomInventory((sender as TabPage).Controls["charRandomInv"] as Panel);
         }
+
+        //private static void TestingSemantics()
+        //{
+        //    foreach (var d in WolcenStaticData.Testing)
+        //    {
+        //        string[] someString = null;
+        //        WolcenStaticData.Semantics.TryGetValue(d.Value, out someString);
+        //        if (someString == null)
+        //            LogMe.WriteLog(d.Key + "[" + d.Value + "] - \"" + WolcenStaticData.MagicLocalized[d.Value] + "\"");
+        //    }
+        //}
 
         private static void LoadRandomInventory(object sender)
         {
@@ -530,7 +542,7 @@ namespace WolcenEditor
                     FormBorderStyle = FormBorderStyle.FixedToolWindow,
                     MaximizeBox = false,
                     MinimizeBox = false,
-                    TopMost = true,
+                    TopMost = false,
                     Text = "Edit items!",
                     BackgroundImage = WolcenEditor.Properties.Resources.bg,
                     BackgroundImageLayout = ImageLayout.Center
@@ -589,37 +601,133 @@ namespace WolcenEditor
                 Button addSelectedStat = new Button()
                 {
                     Name = "addSelectedStat",
-                    Text = "Add Selected Stat",
+                    Text = "Add Selected Affix",
                     Size = new Size(100, 50),
-                    Location = new Point(statEditView.Location.X + statEditView.Width + 15, 300),
+                    Location = new Point(475, 300),
                     Visible = true,
                     FlatStyle = FlatStyle.Standard,
                     Enabled = true,
                     Parent = editItemForm
                 };
                 addSelectedStat.Click += AddSelectedStat_Click;
+
+                Button deleteAffix = new Button()
+                {
+                    Name = "deleteAffix",
+                    Text = "Delete Selected Affix",
+                    Size = new Size(100, 50),
+                    Location = new Point(475 + 105, 300),
+                    Visible = true,
+                    FlatStyle = FlatStyle.Standard,
+                    Enabled = false,
+                    Parent = editItemForm
+                };
+                deleteAffix.Click += DeleteAffix_Click;
             }
             LoadItemsInInventoryGrid(editItemForm.Controls["itemsGrid"] as ListView);
             editItemForm.ShowDialog();
+        }
+
+        private static void DeleteAffix_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = ((sender as Button).Parent.Controls["statEditView"] as TreeView).SelectedNode;
+            string effectName = selectedNode.Name;
+            string effectId = selectedNode.ImageKey;
+            
+            ListViewItem selectedItem = ((sender as Button).Parent.Controls["itemsGrid"] as ListView).SelectedItems[0];
+            int x = Convert.ToInt32(selectedItem.SubItems[0].Text);
+            int y = Convert.ToInt32(selectedItem.SubItems[1].Text);
+            string l_itemName = selectedItem.SubItems[2].Name;
+
+            for (int i = 0; i < cData.Character.InventoryGrid.Count; i++)
+            {
+                if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
+                {
+                    if (selectedNode.FullPath.Contains("Default Affixes"))
+                    {
+                        for (int s = 0; s < cData.Character.InventoryGrid[i].MagicEffects.Default.Count; s++)
+                        {
+                            if (cData.Character.InventoryGrid[i].MagicEffects.Default[s].EffectId == effectId
+                                && cData.Character.InventoryGrid[i].MagicEffects.Default[s].EffectName == effectName)
+                            {
+                                cData.Character.InventoryGrid[i].MagicEffects.Default.RemoveAt(s);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int s = 0; s < cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes.Count; s++)
+                        {
+                            if (cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].EffectId == effectId
+                                && cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].EffectName == effectName)
+                            {
+                                cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes.RemoveAt(s);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                editItemForm.Controls.RemoveByKey("defaultAffix");
+                editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
+                editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
+            }
+            (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
+            LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
+            ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
+            LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
         }
 
         private static void StatEditView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode selectedNode = (sender as TreeView).SelectedNode;
             if (selectedNode.Nodes.Count > 0) return;
-            int valueCount = 0;
-            string localizedString = WolcenStaticData.MagicLocalized[selectedNode.ImageKey];
-            if (localizedString.Contains("%1")) valueCount++;
-            if (localizedString.Contains("%2")) valueCount++;
-            if (localizedString.Contains("%3")) valueCount++;
+            string[] parameters = selectedNode.StateImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parameterValues = selectedNode.SelectedImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (!selectedNode.FullPath.Contains("Current Affixes"))
+            {
+                (editItemForm.Controls["addSelectedStat"] as Button).Text = "Add Selected Affix";
+                if (parameterValues.Count() < 1)
+                {
+                    if (parameters.Count() == 2)
+                    {
+                        parameterValues = new string[] { "0", "0" };
+                    }
+                    else
+                    {
+                        parameterValues = new string[] { "0" };
+                    }
+                }
+            }
+            else
+            {
+                (editItemForm.Controls["deleteAffix"] as Button).Enabled = (selectedNode.FullPath.Contains("Default Affixes") || selectedNode.FullPath.Contains("Rolled Affixes") ? true : false);
+                (editItemForm.Controls["addSelectedStat"] as Button).Text = "Update Selected Affix";
+            }
 
             for (int i = 0; i < 3; i++)
             {
+                editItemForm.Controls.RemoveByKey("defaultAffix");
                 editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
                 editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
             }
 
-            for (int i = 0; i < valueCount; i++)
+            CheckBox defaultAffix = new CheckBox()
+            {
+                Name = "defaultAffix",
+                Text = "Default Affix?",
+                AutoSize = true,
+                Location = new Point(480, 80),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Parent = editItemForm,
+                Visible = true
+            };
+
+            for (int i = 0; i < parameterValues.Count(); i++)
             {
                 Label title = new Label()
                 {
@@ -638,8 +746,18 @@ namespace WolcenEditor
                 valueBox.Location = new Point(480, 115 + (50 * i));
                 valueBox.Size = new Size(150, 20);
                 valueBox.Visible = true;
-                valueBox.Text = "0";
+                if (selectedNode.ImageKey != "default") valueBox.Text = parameterValues[i];
+                else valueBox.Text = parameterValues[0];
                 valueBox.KeyPress += numberOnly_KeyPress;
+            }
+
+            if (selectedNode.FullPath.Contains("Current Affixes"))
+            {
+                (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = false;
+            }
+            else
+            {
+                (editItemForm.Controls["defaultAffix"] as CheckBox).Visible = true;
             }
         }
 
@@ -661,51 +779,186 @@ namespace WolcenEditor
         private static void AddSelectedStat_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = ((sender as Button).Parent.Controls["statEditView"] as TreeView).SelectedNode;
+            string effectName = selectedNode.Name;
+            string effectId = selectedNode.ImageKey;
+            string[] semantics = selectedNode.StateImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] semanticValues = selectedNode.SelectedImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
             ListViewItem selectedItem = ((sender as Button).Parent.Controls["itemsGrid"] as ListView).SelectedItems[0];
             int x = Convert.ToInt32(selectedItem.SubItems[0].Text);
             int y = Convert.ToInt32(selectedItem.SubItems[1].Text);
             string l_itemName = selectedItem.SubItems[2].Name;
-            string statName = selectedNode.Name;
-            string effectName = selectedNode.ImageKey;
-            string l_statName = WolcenStaticData.MagicLocalized[effectName];
-            int[] itemStatValue = new int[3];
-            if (l_statName.Contains("%1")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
-            if (l_statName.Contains("%2")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat1"] as TextBox).Text);
-            if (l_statName.Contains("%3")) itemStatValue[0] = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat2"] as TextBox).Text);
-            InventoryGrid itemEditing = null;
-            InventoryGrid oldItem = null;
 
-            foreach (var iGrid in cData.Character.InventoryGrid)
+            string Mode = (sender as Button).Text.Contains("Update") ? "update" : "add";
+
+            if (selectedNode.ImageKey != "default")
             {
-                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                if (Mode == "update")
                 {
-                    oldItem = iGrid;
-                    itemEditing = iGrid;
-                    break;
+                    for (int i = 0; i < cData.Character.InventoryGrid.Count; i++)
+                    {
+                        if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
+                        {
+                            if (selectedNode.FullPath.Contains("Default Affixes"))
+                            {
+                                for (int s = 0; s < cData.Character.InventoryGrid[i].MagicEffects.Default.Count; s++)
+                                {
+                                    if (cData.Character.InventoryGrid[i].MagicEffects.Default[s].EffectId == effectId
+                                        && cData.Character.InventoryGrid[i].MagicEffects.Default[s].EffectName == effectName)
+                                    {
+                                        for (int d = 0; d < cData.Character.InventoryGrid[i].MagicEffects.Default[s].Parameters.Count; d++)
+                                        {
+                                            if (cData.Character.InventoryGrid[i].MagicEffects.Default[s].Parameters[d].semantic == semantics[d])
+                                            {
+                                                cData.Character.InventoryGrid[i].MagicEffects.Default[s].Parameters[d].value = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat" + d.ToString()] as TextBox).Text);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int s = 0; s < cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes.Count; s++)
+                                {
+                                    if (cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].EffectId == effectId
+                                        && cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].EffectName == effectName)
+                                    {
+                                        for (int d = 0; d < cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].Parameters.Count; d++)
+                                        {
+                                            if (cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].Parameters[d].semantic == semantics[d])
+                                            {
+                                                cData.Character.InventoryGrid[i].MagicEffects.RolledAffixes[s].Parameters[d].value = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat" + d.ToString()] as TextBox).Text);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        editItemForm.Controls.RemoveByKey("defaultAffix");
+                        editItemForm.Controls.RemoveByKey("lblStat" + i.ToString());
+                        editItemForm.Controls.RemoveByKey("txtStat" + i.ToString());
+                    }
+                }
+                else if (Mode == "add")
+                {
+                    string l_statName = WolcenStaticData.MagicLocalized[effectId];
+                    //((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text
+                    if (semantics.Count() == 2)
+                    {
+                        if (((sender as Button).Parent.Controls["txtStat1"] as TextBox).Text == "0")
+                        {
+                            MessageBox.Show("Value 2 cannot be 0", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        semanticValues = new string[] { ((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text, ((sender as Button).Parent.Controls["txtStat1"] as TextBox).Text };
+                    }
+                    else
+                    {
+                        if (((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text == "0")
+                        {
+                            MessageBox.Show("Value 1 cannot be 0", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        semanticValues = new string[] { ((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text };
+                    }
+                    InventoryGrid itemEditing = null;
+                    InventoryGrid oldItem = null;
+
+                    foreach (var iGrid in cData.Character.InventoryGrid)
+                    {
+                        if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                        {
+                            oldItem = iGrid;
+                            itemEditing = iGrid;
+                            break;
+                        }
+                    }
+                    if (itemEditing == null) return;
+
+                    ItemMagicEffects magicEffects = itemEditing.MagicEffects;
+                    Effect effect = new Effect() { EffectName = effectName, EffectId = effectId };
+
+                    if (!selectedNode.FullPath.Contains("Current Affixes"))
+                    {
+                        if (magicEffects != null && magicEffects.RolledAffixes != null)
+                        {
+                            foreach (var t in magicEffects.RolledAffixes)
+                            {
+                                if (effect.EffectName == t.EffectName)
+                                {
+                                    MessageBox.Show("Cannot have the same affix on this item, please edit the current one.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            magicEffects = new ItemMagicEffects();
+                            magicEffects.RolledAffixes = new List<Effect>();
+                        }
+                    }
+
+                    if (effect.Parameters == null) effect.Parameters = new List<EffectParams>();
+                    for (int i = 0; i < semantics.Count(); i++)
+                    {
+                        EffectParams ep = new EffectParams();
+                        ep.semantic = semantics[i];
+                        ep.value = Convert.ToDouble(semanticValues[i]);
+                        effect.Parameters.Add(ep);
+                    }
+                    if (selectedNode.FullPath.Contains("Current Affixes"))
+                    {
+                        for (int i = 0; i < itemEditing.MagicEffects.RolledAffixes.Count(); i++)
+                        {
+                            if (itemEditing.MagicEffects.RolledAffixes[i].EffectName == effect.EffectName)
+                            {
+                                itemEditing.MagicEffects.RolledAffixes.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    magicEffects.RolledAffixes.Add(effect);
+                    itemEditing.MagicEffects = magicEffects;
+
+                    cData.Character.InventoryGrid.Remove(oldItem);
+                    cData.Character.InventoryGrid.Add(itemEditing);
                 }
             }
-            if (itemEditing == null) return;
-
-            ItemMagicEffects magics = itemEditing.MagicEffects;
-            Effect effect = new Effect() { EffectName = statName, EffectId = effectName };
-            EffectParams effectParams = new EffectParams();
-            effectParams.value = 100000;
-            string semantic = null;
-            WolcenStaticData.Semantics.TryGetValue(effectName, out semantic);
-            if (semantic == null) return;
-            effectParams.semantic = semantic;
-            if (effect.Parameters == null) effect.Parameters = new List<EffectParams>();
-            effect.Parameters.Add(effectParams);
-
-            if(magics == null) magics = new ItemMagicEffects();
-            if(magics.RolledAffixes == null) magics.RolledAffixes = new List<Effect>();
-            magics.RolledAffixes.Add(effect);
-
-            itemEditing.MagicEffects = magics;
-
-            cData.Character.InventoryGrid.Remove(oldItem);
-            cData.Character.InventoryGrid.Add(itemEditing);
+            else
+            {
+                for (int i = 0; i < cData.Character.InventoryGrid.Count; i++)
+                {
+                    if (cData.Character.InventoryGrid[i].InventoryX == x && cData.Character.InventoryGrid[i].InventoryY == y)
+                    {
+                        switch (cData.Character.InventoryGrid[i].Type)
+                        {
+                            case (int)typeMap.Weapon:
+                                if (selectedNode.Name == "DamageMin") cData.Character.InventoryGrid[i].Weapon.DamageMin = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "DamageMax") cData.Character.InventoryGrid[i].Weapon.DamageMax = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "ResourceGeneration") cData.Character.InventoryGrid[i].Weapon.ResourceGeneration = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                break;
+                            case (int)typeMap.Armor:
+                                if (selectedNode.Name == "Armor") cData.Character.InventoryGrid[i].Armor.Armor = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "Health") cData.Character.InventoryGrid[i].Armor.Health = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "Resistance") cData.Character.InventoryGrid[i].Armor.Resistance = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                break;
+                            case (int)typeMap.Potion:
+                                if (selectedNode.Name == "Charge") cData.Character.InventoryGrid[i].Potion.Charge = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "ImmediateHP") cData.Character.InventoryGrid[i].Potion.ImmediateHP = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "ImmediateMana") cData.Character.InventoryGrid[i].Potion.ImmediateMana = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                if (selectedNode.Name == "ImmediateStamina") cData.Character.InventoryGrid[i].Potion.ImmediateStamina = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                                break;
+                        }
+                    }
+                }
+            }
+            (editItemForm.Controls["deleteAffix"] as Button).Enabled = false;
+            LoadCurrentAffixes(((sender as Button).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
             ReloadInventoryBitmap(((accessableContextMenu.SourceControl as PictureBox).Parent as Panel), (accessableContextMenu.SourceControl as PictureBox));
+            LoadItemGridData((accessableContextMenu.SourceControl as PictureBox), null);
         }
 
         private static void ItemsInInventoryGrid_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -765,6 +1018,8 @@ namespace WolcenEditor
 
             LoadMagicProperties(((sender as ListView).Parent.Controls["statEditView"] as TreeView));
 
+            LoadCurrentAffixes(((sender as ListView).Parent.Controls["statEditView"] as TreeView).Nodes["CurrentAffixes"]);
+
             displayBox.Image = getImageFromPath(dirPath + itemName, displayBox.Size, itemWidth, itemHeight);
         }
 
@@ -774,7 +1029,7 @@ namespace WolcenEditor
             {
                 treeView.Nodes.Clear();
 
-                TreeNode Implicit = new TreeNode() { Name = "AffixesImplicit", Text = "Default Affixes" };
+                TreeNode Implicit = new TreeNode() { Name = "AffixesImplicit", Text = "Implicit Affixes" };
                 TreeNode MastersSlavesMagicWeapons = new TreeNode() { Name = "AffixesMastersSlavesMagicWeapons", Text = "Master Slave Magic Weapon Affixes" };
                 TreeNode MastersSlavesPhysicalWeapons = new TreeNode() { Name = "AffixesMastersSlavesPhysicalWeapons", Text = "Master Slave Physical Weapon Affixes" };
                 TreeNode Accessories = new TreeNode() { Name = "AffixesAccessories", Text = "Accessory Affixes" };
@@ -784,6 +1039,9 @@ namespace WolcenEditor
                 TreeNode UniquesMaxMax = new TreeNode() { Name = "AffixesUniquesMaxMax", Text = "End Game Affixes" };
                 TreeNode Weapons = new TreeNode() { Name = "AffixesWeapons", Text = "Weapon Affixes" };
 
+                TreeNode currentlyAdded = new TreeNode() { Name = "CurrentAffixes", Text = "Current Affixes" };
+
+                treeView.Nodes.Add(currentlyAdded);
                 treeView.Nodes.Add(Implicit);
                 treeView.Nodes.Add(MastersSlavesMagicWeapons);
                 treeView.Nodes.Add(MastersSlavesPhysicalWeapons);
@@ -806,6 +1064,180 @@ namespace WolcenEditor
             }
         }
 
+        private static void LoadCurrentAffixes(TreeNode treeNode)
+        {
+            if (treeNode == null) return;
+            treeNode.Nodes.Clear();
+            //int x = Convert.ToInt32((accessableContextMenu.SourceControl as PictureBox).Name.Split('|')[0]);
+            //int y = Convert.ToInt32((accessableContextMenu.SourceControl as PictureBox).Name.Split('|')[1]);
+            ListViewItem selectedItem = (treeNode.TreeView.Parent.Controls["itemsGrid"] as ListView).SelectedItems[0];
+            int x = Convert.ToInt32(selectedItem.SubItems[0].Text);
+            int y = Convert.ToInt32(selectedItem.SubItems[1].Text);
+
+            TreeNode affixNode = new TreeNode()
+            {
+                Name = "RolledAffixes",
+                Text = "Rolled Affixes"
+            };
+
+            TreeNode defaultNode = new TreeNode()
+            {
+                Name = "DefaultAffixes",
+                Text = "Default Affixes"
+            };
+
+            // Weapons
+            TreeNode damageMin = null;
+            TreeNode damageMax = null;
+            TreeNode ResourceGeneration = null;
+            // Armor
+            TreeNode Armor = null;
+            TreeNode Health = null;
+            TreeNode Resistance = null;
+            // Potions
+            TreeNode Charge = null;
+            TreeNode ImmediateHP = null;
+            TreeNode ImmediateMana = null;
+            TreeNode ImmediateStamina = null;
+
+            foreach (var iGrid in cData.Character.InventoryGrid)
+            {
+                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                {
+                    if (iGrid.Type == (int)typeMap.Weapon)    // Weapons & offhands
+                    {
+                        damageMin = new TreeNode()
+                        {
+                            Name = "DamageMin",
+                            Text = "Damage Min",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Weapon.DamageMin.ToString()
+                        };
+                        damageMax = new TreeNode()
+                        {
+                            Name = "DamageMax",
+                            Text = "Damage Max",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Weapon.DamageMax.ToString()
+                        };
+                        ResourceGeneration = new TreeNode()
+                        {
+                            Name = "ResourceGeneration",
+                            Text = "Resource Generation",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Weapon.ResourceGeneration.ToString()
+                        };
+                        treeNode.Nodes.Add(damageMin);
+                        treeNode.Nodes.Add(damageMax);
+                        treeNode.Nodes.Add(ResourceGeneration);
+                    }
+
+                    if (iGrid.Type == (int)typeMap.Armor)
+                    {
+                        Armor = new TreeNode()
+                        {
+                            Name = "Armor",
+                            Text = "Armor",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Armor.Armor.ToString()
+                        };
+                        Health = new TreeNode()
+                        {
+                            Name = "Health",
+                            Text = "Health",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Armor.Health.ToString()
+                        };
+                        Resistance = new TreeNode()
+                        {
+                            Name = "Resistance",
+                            Text = "Resistance",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Armor.Resistance.ToString()
+                        };
+                        treeNode.Nodes.Add(Armor);
+                        treeNode.Nodes.Add(Health);
+                        treeNode.Nodes.Add(Resistance);
+                    }
+
+                    if (iGrid.Type == (int)typeMap.Potion)
+                    {
+                        Charge = new TreeNode()
+                        {
+                            Name = "Charge",
+                            Text = "Charges",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Potion.Charge.ToString()
+                        };
+                        ImmediateHP = new TreeNode()
+                        {
+                            Name = "ImmediateHP",
+                            Text = "Immediate Health",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Potion.ImmediateHP.ToString()
+                        };
+                        ImmediateMana = new TreeNode()
+                        {
+                            Name = "ImmediateMana",
+                            Text = "Immediate Umbra",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Potion.ImmediateMana.ToString()
+                        };
+                        ImmediateStamina = new TreeNode()
+                        {
+                            Name = "ImmediateStamina",
+                            Text = "Immediate Stamina",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Potion.ImmediateStamina.ToString()
+                        };
+                        treeNode.Nodes.Add(Charge);
+                        treeNode.Nodes.Add(ImmediateHP);
+                        treeNode.Nodes.Add(ImmediateMana);
+                        treeNode.Nodes.Add(ImmediateStamina);
+                    }
+
+                    if (iGrid.MagicEffects != null)
+                    {
+                        if (iGrid.MagicEffects.RolledAffixes != null)
+                        {
+                            foreach (var de in iGrid.MagicEffects.Default)
+                            {
+                                TreeNode node = new TreeNode();
+                                node.Name = de.EffectName;
+                                node.Text = WolcenStaticData.MagicLocalized[de.EffectId];
+                                node.ImageKey = de.EffectId;
+                                for (int i = 0; i < de.Parameters.Count(); i++)
+                                {
+                                    node.StateImageKey += de.Parameters[i].semantic + "|";
+                                    node.SelectedImageKey += de.Parameters[i].value.ToString() + "|";
+                                }
+                                defaultNode.Nodes.Add(node);
+                            }
+
+                            foreach (var me in iGrid.MagicEffects.RolledAffixes)
+                            {
+                                TreeNode node = new TreeNode();
+                                node.StateImageKey = "";
+                                node.SelectedImageKey = "";
+                                node.Name = me.EffectName;
+                                node.Text = WolcenStaticData.MagicLocalized[me.EffectId];
+                                node.ImageKey = me.EffectId;
+                                for (int i = 0; i < me.Parameters.Count(); i++)
+                                {
+                                    node.StateImageKey += me.Parameters[i].semantic + "|";
+                                    node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
+                                }
+                                affixNode.Nodes.Add(node);
+                            }
+                        }
+                    }
+                }
+            }
+            if (affixNode.Nodes.Count == 0) return;
+            treeNode.Nodes.Add(defaultNode);
+            treeNode.Nodes.Add(affixNode);
+        }
+
         private static void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
         {
             foreach (var d in dict)
@@ -814,13 +1246,26 @@ namespace WolcenEditor
                 string key = d.Key;
                 string value = d.Value;
                 string lValue = null;
+                string[] semantics;
                 WolcenStaticData.MagicLocalized.TryGetValue(value, out lValue);
+                WolcenStaticData.Semantics.TryGetValue(value, out semantics);
                 if (lValue != null)
                 {
                     node = new TreeNode();
                     node.Name = d.Key;
                     node.ImageKey = value;
                     node.Text = lValue;
+                    if (semantics != null && semantics.Count() > 0)
+                    {
+                        for (int i = 0; i < semantics.Count(); i++)
+                        {
+                            node.StateImageKey += semantics[i] + "|";
+                        }
+                    }
+                    else
+                    {
+                        LogMe.WriteLog("Error: null semantic find for " + key + "(" + value + ")");
+                    }
                     treeNode.Nodes.Add(node);
                 }
             }
@@ -838,7 +1283,6 @@ namespace WolcenEditor
                 switch (item.Type)
                 {
                     case (int)typeMap.Weapon:       // Also Offhand
-                        //listView.Items.Add(new ListViewItem( new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Weapon.Name] }));
                         i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
@@ -848,7 +1292,6 @@ namespace WolcenEditor
                         });
                         break;
                     case (int)typeMap.Armor:       // Also Accessories
-                        //listView.Items.Add(new ListViewItem(new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Armor.Name] }));
                         i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
@@ -869,7 +1312,6 @@ namespace WolcenEditor
                         //});
                         break;
                     case (int)typeMap.Potion:
-                        //listView.Items.Add(new ListViewItem(new[] { item.InventoryX.ToString(), item.InventoryY.ToString(), WolcenStaticData.ItemLocalizedNames[item.Potion.Name] }));
                         i = new ListViewItem();
                         i.Text = item.InventoryX.ToString();
                         i.SubItems.Add(item.InventoryY.ToString());
@@ -1401,10 +1843,13 @@ namespace WolcenEditor
                 foreach (Effect effect in magicEffects)
                 {
                     string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
-                    if (effect.EffectId.Contains("percent")) s_Effect = s_Effect.Replace("%1", "%1%");
-                    s_Effect = s_Effect.Replace("%1", effect.Parameters[0].value.ToString());
-                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    if (s_Effect.Contains("%1") || s_Effect.Contains("%2"))
+                    {
+                        if (effect.EffectId.Contains("percent")) s_Effect = s_Effect.Replace("%1", "%1%");
+                        s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
+                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                    }
+                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
                 }
             }
         }
@@ -1870,6 +2315,57 @@ namespace WolcenEditor
                             itemName = i.Gem.Name;
                             itemRarity = i.Rarity;
                             l_itemName = itemName + ".png";
+                        }
+
+                        if (i.MagicEffects != null)
+                        {
+                            if (i.MagicEffects.RolledAffixes != null)
+                            {
+                                foreach (var effect in i.MagicEffects.RolledAffixes)
+                                {
+                                    string effectId = effect.EffectId;
+                                    if (effect.Parameters != null)
+                                    {
+                                        int effectParamCount = effect.Parameters.Count();
+                                        List<string> aSem = new List<string>();
+                                        for(int z=0; z < effect.Parameters.Count(); z++)
+                                        {
+                                            aSem.Add(effect.Parameters[z].semantic);
+                                        }
+                                        string[] actualSemantics = aSem.ToArray();
+                                        if (actualSemantics != null)
+                                        {
+                                            string[] semantics = null;
+                                            WolcenStaticData.Semantics.TryGetValue(effectId, out semantics);
+                                            if (semantics != null)
+                                            {
+                                                if (semantics.Count() != actualSemantics.Count())
+                                                {
+                                                    LogMe.WriteLog("Error: Wrong Semantic count (" + semantics.Count() + ")->(" + actualSemantics.Count() + ")");
+                                                    for (int z = 0; z < actualSemantics.Count(); z++)
+                                                    {
+                                                        LogMe.WriteLog("Error-Cont: Actual Parameters for EffectId: " + effectId + "(" + actualSemantics[z] + ")");
+                                                    }
+                                                } else if (semantics.Count() == actualSemantics.Count())
+                                                {
+                                                    for (int z = 0; z < actualSemantics.Count(); z++)
+                                                    {
+                                                        if (semantics[z] != actualSemantics[z])
+                                                        {
+                                                            LogMe.WriteLog("Error: semantic miss-match " + effectId + "(" + semantics[z] + ")->(" + actualSemantics[z] + ")");
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                for (int z = 0; z < actualSemantics.Count(); z++)
+                                                {
+                                                    LogMe.WriteLog("Error: Semantic doesn't exist for EffectID: " + effectId + "(" + actualSemantics[z] + ")");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (File.Exists(dirPath + "Items\\" + l_itemName))
