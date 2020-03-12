@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ namespace WolcenEditor
             dataStream.Close();
 
             WebResponse response = request.GetResponse();
+
             using (dataStream = response.GetResponseStream())
             {
                 // Open the stream using a StreamReader for easy access.  
@@ -35,7 +37,6 @@ namespace WolcenEditor
                 // Read the content.  
                 string responseFromServer = reader.ReadToEnd();
                 // Display the content.  
-                Console.WriteLine(responseFromServer);
                 output = responseFromServer;
             }
 

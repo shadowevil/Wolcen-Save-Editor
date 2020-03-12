@@ -784,7 +784,7 @@ namespace WolcenEditor
             }
         }
 
-        private void importNewStripMenuItem_Click(object sender, EventArgs e)
+        private void importStripMenuItem_Click(object sender, EventArgs e)
         {
             if (cData.Character == null)
             {
@@ -812,7 +812,7 @@ namespace WolcenEditor
             var url = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
             if (prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
             {
-                if(!url.Contains("wolcen-universe.com/builds/"))
+                if (!url.Contains("wolcen-universe.com/builds/"))
                     MessageBox.Show("That doesn't seem to be a valid url.");
                 else
                 {
@@ -820,6 +820,7 @@ namespace WolcenEditor
                     var urlSections = url.Split('-');
                     var pathSplit = urlSections[1].Split('/');
                     var buildId = pathSplit[2];
+                    var setStats = "";
 
                     // get back json data from the wolcen-universe api for the given build id
                     string jsonData = OnlineBuildRequest.RequestBuild(buildId);
@@ -834,21 +835,18 @@ namespace WolcenEditor
                     cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
                     cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
                     cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
-                    MessageBox.Show("Updated level and main stats");
 
-                    #region Skills
                     // list of skills needed by the build
                     var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
 
                     // create a new list to store all of our skills in.
                     var newUnlockedSkillList = new List<UnlockedSkill>();
+
                     // if we already have some skills then set them in this new list so we don't lose them.
                     if (cData.Character.UnlockedSkills != null)
-                    {
                         newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
-                    }
 
-                    //setup the skillbar with proper slots
+                   //setup the skillbar with proper slots
                     var newSkillBar = new List<SkillBar>()
                     {
                         new SkillBar { Slot = 1, SkillName = "" },
@@ -860,6 +858,8 @@ namespace WolcenEditor
                     };
                     for(int i = 0; i < skills.Count; i++)
                     {
+                        if (skills[i] == null)
+                            break;
                         // converts our jsonObject to a string that represents the skill name.
                         string newSkillName = skills[i]["id"].ToObject(typeof(string));
 
@@ -874,7 +874,7 @@ namespace WolcenEditor
                             newSkill.Level = 90;
 
                             string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                            newSkill.Variants = GetSkillModifiers(skillMod);
+                            newSkill.Variants = TranslateSkillModifiers(skillId,skillMod);
                             newUnlockedSkillList.Add(newSkill);
                         }
                         else //if the skill does exist we find it in our list and just change the values of it.
@@ -884,8 +884,8 @@ namespace WolcenEditor
                                 if(skill.SkillName == newSkillName)
                                 {
                                     skill.Level = 90;
-                                    string[] skillMod = skills[i]["modifiers"];
-                                    skill.Variants = GetSkillModifiers(skillMod); ;
+                                    string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                    skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
                                     break;
                                 }
                             }
@@ -895,44 +895,30 @@ namespace WolcenEditor
                         newSkillBar[i].SkillName = skills[i]["id"];
 
                     }
-
-                    //sets are characters actual data to the new skillbar and unlocked skill list we just made.
+                    //sets our characters actual data to the new skillbar and unlocked skill list we just made.
                     cData.Character.SkillBar = newSkillBar;
                     cData.Character.UnlockedSkills = newUnlockedSkillList;
-                    MessageBox.Show("Updated skills and skill hotbar.");
 
-
-                    
-                    #endregion
+                    MessageBox.Show($"Success in importing character from:\n{url}");
                     SkillTree.LoadTree(ref panel1);
                     LoadCharacterData();
                 }
             }
 
         }
-
-        //need to redo since the way skill modifiers are labeled is messy, so this doesn't work..
-        private string GetSkillModifiers(string[] listOfModifiers)
+        private string TranslateSkillModifiers(string skillName, string[] listOfModifiers)
         {
             char[] modifier = new char[16];
             for(int i =0; i < modifier.Length; i++)
             {
                 modifier[i] = '0';
             }
-
             foreach(var str in listOfModifiers)
             {
-                var modId = Convert.ToInt32(str.Split('_').Last());
-                modifier[modId - 1] = '1';
-
+                int modIndex = WolcenStaticData.SkillModifiers[skillName][str];
+                modifier[modIndex] = '1';
             }
-
             return new string(modifier);
-        }
-
-        private void ImportOnlineCharacter()
-        {
-
         }
     }
 
