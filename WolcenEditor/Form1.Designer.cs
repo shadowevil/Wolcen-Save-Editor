@@ -89,11 +89,9 @@
             this.charInv = new System.Windows.Forms.TabPage();
             this.charRandomInv = new System.Windows.Forms.Panel();
             this.itemStatDisplay = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.beltConfig = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.charBelt2 = new System.Windows.Forms.CheckBox();
-            this.charBelt1 = new System.Windows.Forms.CheckBox();
             this.pictureBox16 = new System.Windows.Forms.PictureBox();
             this.pictureBox15 = new System.Windows.Forms.PictureBox();
             this.charPrimordial = new System.Windows.Forms.TextBox();
@@ -117,6 +115,8 @@
             this.unlockAllButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.charBelt1 = new System.Windows.Forms.PictureBox();
+            this.charBelt2 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.charPage.SuspendLayout();
@@ -125,7 +125,7 @@
             this.charStats.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.charInv.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.beltConfig.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charRWeapon)).BeginInit();
@@ -144,6 +144,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).BeginInit();
             this.charSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt2)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -174,45 +176,45 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // closeStripMenuItem
             // 
             this.closeStripMenuItem.Name = "closeStripMenuItem";
-            this.closeStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeStripMenuItem.Text = "Close";
             this.closeStripMenuItem.Click += new System.EventHandler(this.closeStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(100, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(177, 6);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(100, 6);
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -799,7 +801,7 @@
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charInv.Controls.Add(this.charRandomInv);
             this.charInv.Controls.Add(this.itemStatDisplay);
-            this.charInv.Controls.Add(this.groupBox1);
+            this.charInv.Controls.Add(this.beltConfig);
             this.charInv.Controls.Add(this.pictureBox16);
             this.charInv.Controls.Add(this.pictureBox15);
             this.charInv.Controls.Add(this.charPrimordial);
@@ -844,19 +846,19 @@
             this.itemStatDisplay.Size = new System.Drawing.Size(483, 208);
             this.itemStatDisplay.TabIndex = 21;
             // 
-            // groupBox1
+            // beltConfig
             // 
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.charBelt2);
-            this.groupBox1.Controls.Add(this.charBelt1);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(10, 429);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(185, 96);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Belt Configuration";
+            this.beltConfig.Controls.Add(this.charBelt2);
+            this.beltConfig.Controls.Add(this.charBelt1);
+            this.beltConfig.Controls.Add(this.label12);
+            this.beltConfig.Controls.Add(this.label11);
+            this.beltConfig.ForeColor = System.Drawing.Color.White;
+            this.beltConfig.Location = new System.Drawing.Point(10, 429);
+            this.beltConfig.Name = "beltConfig";
+            this.beltConfig.Size = new System.Drawing.Size(185, 96);
+            this.beltConfig.TabIndex = 14;
+            this.beltConfig.TabStop = false;
+            this.beltConfig.Text = "Belt Configuration";
             // 
             // label12
             // 
@@ -879,40 +881,6 @@
             this.label11.TabIndex = 11;
             this.label11.Text = "SLOT 1";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // charBelt2
-            // 
-            this.charBelt2.Appearance = System.Windows.Forms.Appearance.Button;
-            this.charBelt2.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt2.BackgroundImage")));
-            this.charBelt2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.charBelt2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt2.FlatAppearance.BorderSize = 0;
-            this.charBelt2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.charBelt2.Location = new System.Drawing.Point(112, 39);
-            this.charBelt2.Name = "charBelt2";
-            this.charBelt2.Size = new System.Drawing.Size(45, 46);
-            this.charBelt2.TabIndex = 1;
-            this.charBelt2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt2.UseVisualStyleBackColor = false;
-            this.charBelt2.CheckedChanged += new System.EventHandler(this.charBelt2_CheckedChanged);
-            // 
-            // charBelt1
-            // 
-            this.charBelt1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.charBelt1.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt1.BackgroundImage")));
-            this.charBelt1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.charBelt1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt1.FlatAppearance.BorderSize = 0;
-            this.charBelt1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.charBelt1.Location = new System.Drawing.Point(30, 39);
-            this.charBelt1.Name = "charBelt1";
-            this.charBelt1.Size = new System.Drawing.Size(45, 46);
-            this.charBelt1.TabIndex = 0;
-            this.charBelt1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt1.UseVisualStyleBackColor = false;
-            this.charBelt1.CheckedChanged += new System.EventHandler(this.charBelt1_CheckedChanged);
             // 
             // pictureBox16
             // 
@@ -1181,6 +1149,26 @@
             // 
             this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
             // 
+            // charBelt1
+            // 
+            this.charBelt1.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBelt1.Location = new System.Drawing.Point(27, 40);
+            this.charBelt1.Name = "charBelt1";
+            this.charBelt1.Size = new System.Drawing.Size(50, 50);
+            this.charBelt1.TabIndex = 23;
+            this.charBelt1.TabStop = false;
+            // 
+            // charBelt2
+            // 
+            this.charBelt2.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBelt2.Location = new System.Drawing.Point(109, 40);
+            this.charBelt2.Name = "charBelt2";
+            this.charBelt2.Size = new System.Drawing.Size(50, 50);
+            this.charBelt2.TabIndex = 24;
+            this.charBelt2.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1212,7 +1200,7 @@
             this.groupBox2.PerformLayout();
             this.charInv.ResumeLayout(false);
             this.charInv.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.beltConfig.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charRWeapon)).EndInit();
@@ -1231,6 +1219,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).EndInit();
             this.charSkills.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1279,11 +1269,9 @@
         private System.Windows.Forms.PictureBox pictureBox15;
         private System.Windows.Forms.TextBox charPrimordial;
         private System.Windows.Forms.TextBox charGold;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox beltConfig;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.CheckBox charBelt2;
-        private System.Windows.Forms.CheckBox charBelt1;
         private System.Windows.Forms.PictureBox charRWeapon;
         private System.Windows.Forms.PictureBox charLWeapon;
         private System.Windows.Forms.PictureBox pictureBox16;
@@ -1328,6 +1316,8 @@
         private System.Windows.Forms.GroupBox telemetryBox;
         private System.Windows.Forms.TextBox telemetryTextBox;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.PictureBox charBelt2;
+        private System.Windows.Forms.PictureBox charBelt1;
     }
 }
 

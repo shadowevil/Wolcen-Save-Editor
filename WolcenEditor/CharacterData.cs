@@ -721,6 +721,45 @@ namespace WolcenEditor
             {"Left Ring", 22 },
         };
 
+        public static readonly Dictionary<string, int> MaxSocketsByType = new Dictionary<string, int>
+        {
+            { "Amulet", 1 },
+            { "Helmet", 2 },
+            { "Chest Armor", 3 },
+            { "Foot Armor", 2 },
+            { "Leg Armor", 3 },
+            { "Shoulder", 2 },
+            { "Arm Armor", 2 },
+            { "Belt", 0 },
+            { "Ring", 1 },
+            { "Sword1H", 3 },
+            { "Shield", 3 },
+            { "Trinket", 3 },
+            { "Mace1H", 3 },
+            { "Bow", 3 },
+            { "Axe1H", 3 },
+            { "Staff", 3 },
+            { "Axe2H", 3 },
+            { "Dagger", 3 },
+            { "Mace2H", 3 },
+            { "Gun", 3 }
+        };
+
+        public static readonly Dictionary<int, string> SocketImageLocation = new Dictionary<int, string>
+        {
+            {0, "offensive1.png"},
+            {1, "defensive1.png"},
+            {2, "support1.png"},
+
+            {3, "offensive2.png"},
+            {4, "defensive2.png"},
+            {5, "support2.png"},
+
+            {6, "offensive3.png"},
+            {7, "defensive3.png"},
+            {8, "support3.png"}
+        };
+
         public static readonly Dictionary<int, string> SocketType = new Dictionary<int, string>
         {
             {0, "Offensive (I)"},

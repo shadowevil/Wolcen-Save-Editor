@@ -330,30 +330,6 @@ namespace WolcenEditor
             comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void charBelt1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (charBelt1.Checked == true)
-            {
-                charBelt1.BackgroundImage = WolcenEditor.Properties.Resources.c_beltSlot;
-            }
-            else
-            {
-                charBelt1.BackgroundImage = WolcenEditor.Properties.Resources.e_beltSlot;
-            }
-        }
-
-        private void charBelt2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (charBelt2.Checked == true)
-            {
-                charBelt2.BackgroundImage = WolcenEditor.Properties.Resources.c_beltSlot;
-            }
-            else
-            {
-                charBelt2.BackgroundImage = WolcenEditor.Properties.Resources.e_beltSlot;
-            }
-        }
-
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (cData.PlayerData == null) return;
