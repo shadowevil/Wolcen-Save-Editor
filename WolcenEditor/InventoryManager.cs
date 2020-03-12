@@ -1929,8 +1929,8 @@ namespace WolcenEditor
                     }
                 }
             }
-            if (affixNode.Nodes.Count != 0) treeNode.Nodes.Add(affixNode);
             if (defaultNode.Nodes.Count != 0) treeNode.Nodes.Add(defaultNode);
+            if (affixNode.Nodes.Count != 0) treeNode.Nodes.Add(affixNode);
         }
 
         private static void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
