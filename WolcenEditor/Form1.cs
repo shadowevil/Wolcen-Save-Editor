@@ -621,25 +621,87 @@ namespace WolcenEditor
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (onCloseCheck(sender, e) == false) return;
-            Form prompt = new Form()
-            {
-                Width = 265,
-                Height = 120,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = "Enter your character name.",
-                StartPosition = FormStartPosition.CenterScreen
-            };
-            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Enter your character name:" , AutoSize = true};
-            TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
-            Button confirmation = new Button() { Text = "Ok", Left = 85, Width = 75, Top = 50, DialogResult = DialogResult.OK };
-            confirmation.Click += (sender2, e2) => { prompt.Close(); };
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
 
-            var name = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-            if(prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
+            bool displayBackingText = true;
+            Form importForm = new Form()
+            {
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Create a new character",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
+            };
+
+            Label BuildLabel = new Label()
+            {
+
+                Text = "Name New Character",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 20, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(33, 15),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+
+            TextBox NameTextBox = new TextBox()
+            {
+                Text = "Enter Name Here...",
+                ForeColor = Color.Gray,
+
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+
+            Button AcceptButton = new Button
+            {
+
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK
+
+            };
+            Button CancelButton = new Button
+            {
+
+                Text = "Cancel",
+                Location = new Point(165, 90)
+
+            };
+
+            NameTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
+                {
+                    displayBackingText = false;
+                    NameTextBox.Text = "";
+                    NameTextBox.ForeColor = Color.Black;
+
+                }
+            };
+            NameTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(NameTextBox.Text))
+                {
+                    displayBackingText = true;
+                    NameTextBox.Text = "Enter Name Here...";
+                    NameTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(NameTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var name = importForm.ShowDialog() == DialogResult.OK ? NameTextBox.Text : "";
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
             {
                 UnloadRandomInventory();
 
@@ -791,26 +853,89 @@ namespace WolcenEditor
                 MessageBox.Show("You need to open or create a new character to begin");
                 return;
             }
-            Form prompt = new Form()
+
+            bool displayBackingText = true;
+            Form importForm = new Form()
             {
-                Width = 265,
-                Height = 120,
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = "Build Url",
-                StartPosition = FormStartPosition.CenterScreen
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Import a build",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
             };
-            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Enter a Wolcen Universe URL:", AutoSize = true };
-            TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
-            Button confirmation = new Button() { Text = "Ok", Left = 85, Width = 75, Top = 50, DialogResult = DialogResult.OK };
 
-            confirmation.Click += (sender2, e2) => { prompt.Close(); };
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
+            Label BuildLabel = new Label()
+            {
 
-            var url = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-            if (prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
+                Text = "Import Build",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 30, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(50, 7),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+
+            TextBox BuildUrlTextBox = new TextBox()
+            {
+                Text = "Enter Build URL Here...",
+                ForeColor = Color.Gray,
+
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+
+            Button AcceptButton = new Button
+            {
+
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK         
+
+            };
+            Button CancelButton = new Button
+            {
+
+                Text = "Cancel",
+                Location = new Point(165, 90)
+
+            };
+
+
+            BuildUrlTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
+                {
+                    displayBackingText = false;
+                    BuildUrlTextBox.Text = "";
+                    BuildUrlTextBox.ForeColor = Color.Black;
+
+                }
+            };
+            BuildUrlTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(BuildUrlTextBox.Text))
+                {
+                    displayBackingText = true;
+                    BuildUrlTextBox.Text = "Enter Build URL Here...";
+                    BuildUrlTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(BuildUrlTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
+
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
             {
                 if (!url.Contains("wolcen-universe.com/builds/"))
                     MessageBox.Show("That doesn't seem to be a valid url.");
@@ -820,7 +945,6 @@ namespace WolcenEditor
                     var urlSections = url.Split('-');
                     var pathSplit = urlSections[1].Split('/');
                     var buildId = pathSplit[2];
-                    var setStats = "";
 
                     // get back json data from the wolcen-universe api for the given build id
                     string jsonData = OnlineBuildRequest.RequestBuild(buildId);
@@ -846,7 +970,7 @@ namespace WolcenEditor
                     if (cData.Character.UnlockedSkills != null)
                         newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
 
-                   //setup the skillbar with proper slots
+                    //setup the skillbar with proper slots
                     var newSkillBar = new List<SkillBar>()
                     {
                         new SkillBar { Slot = 1, SkillName = "" },
@@ -856,7 +980,7 @@ namespace WolcenEditor
                         new SkillBar { Slot = 5, SkillName = ""  },
                         new SkillBar { Slot = 12, SkillName = ""  },
                     };
-                    for(int i = 0; i < skills.Count; i++)
+                    for (int i = 0; i < skills.Count; i++)
                     {
                         if (skills[i] == null)
                             break;
@@ -865,7 +989,7 @@ namespace WolcenEditor
 
                         // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
                         bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
-                        if(!alreadyExists)
+                        if (!alreadyExists)
                         {
                             string skillId = skills[i]["id"];
                             UnlockedSkill newSkill = new UnlockedSkill();
@@ -874,14 +998,14 @@ namespace WolcenEditor
                             newSkill.Level = 90;
 
                             string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                            newSkill.Variants = TranslateSkillModifiers(skillId,skillMod);
+                            newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
                             newUnlockedSkillList.Add(newSkill);
                         }
                         else //if the skill does exist we find it in our list and just change the values of it.
                         {
-                            foreach(var skill in newUnlockedSkillList)
+                            foreach (var skill in newUnlockedSkillList)
                             {
-                                if(skill.SkillName == newSkillName)
+                                if (skill.SkillName == newSkillName)
                                 {
                                     skill.Level = 90;
                                     string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
@@ -896,16 +1020,17 @@ namespace WolcenEditor
 
                     }
                     //sets our characters actual data to the new skillbar and unlocked skill list we just made.
+
                     cData.Character.SkillBar = newSkillBar;
                     cData.Character.UnlockedSkills = newUnlockedSkillList;
 
-                    MessageBox.Show($"Success in importing character from:\n{url}");
+                    MessageBox.Show($"Successfully Imported Character From:\n{url}");
                     SkillTree.LoadTree(ref panel1);
                     LoadCharacterData();
                 }
             }
-
         }
+
         private string TranslateSkillModifiers(string skillName, string[] listOfModifiers)
         {
             char[] modifier = new char[16];
