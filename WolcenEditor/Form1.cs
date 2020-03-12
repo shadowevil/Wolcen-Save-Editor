@@ -15,6 +15,7 @@ namespace WolcenEditor
     {
         public static string characterSavePath;
         public static string playerDataSavePath;
+        public static string playerChestSavePath;
         public string WindowName = "Wolcen Save Editor";
         public bool hasSaved = false;
 
@@ -27,7 +28,7 @@ namespace WolcenEditor
         public void InitForm()
         {
             this.Resize += Form1_Resize;
-            panel1.Enabled = true;
+            tabPage.Enabled = true;
             
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
@@ -47,12 +48,13 @@ namespace WolcenEditor
             cboREye.SelectedIndexChanged += _SelectedIndexChanged;
             cboSkinColor.SelectedIndexChanged += _SelectedIndexChanged;
 
-            panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
+            tabPage.SelectedIndexChanged += Panel1_SelectedIndexChanged;
             this.KeyDown += Panel1_KeyDown;
             this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStashStatDisplay, new object[] { true });
             LogMe.InitLog();
         }
 
@@ -60,6 +62,7 @@ namespace WolcenEditor
         {
             cData.Character = null;
             cData.PlayerData = null;
+            cData.PlayerChest = null;
             this.Controls.Clear();
             InitializeComponent();
             InitForm();
@@ -67,7 +70,7 @@ namespace WolcenEditor
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            panel1.Size = new Size(panel1.Width, this.Height - 62);
+            tabPage.Size = new Size(tabPage.Width, this.Height - 62);
         }
 
         private void _SelectedIndexChanged(object sender, EventArgs e)
@@ -187,6 +190,7 @@ namespace WolcenEditor
         private void LoadCharacterData()
         {
             LoadPlayerData();
+            LoadPlayerStashData();
             this.Text = WindowName + " - " + cData.Character.Name;
 
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
@@ -221,8 +225,21 @@ namespace WolcenEditor
                 apocUnlockCheckBox.Checked = true;
 
             InventoryManager.LoadCharacterInventory(charInv);
+            StashManager.LoadPlayerStash(charStash);
 
-            SkillTree.LoadSkillInformation(ref panel1);
+            SkillTree.LoadSkillInformation(ref tabPage);
+        }
+
+        private void LoadPlayerStashData()
+        {
+            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string WolcenPlayerChest = userFolder + "\\Saved Games\\wolcen\\savegames\\playerchest.json";
+            if (File.Exists(WolcenPlayerChest))
+            {
+                if (cData.PlayerChest != null) cData.PlayerChest = null;
+                cData.PlayerChest = PlayerChestIO.ReadPlayerStash(WolcenPlayerChest);
+                playerChestSavePath = WolcenPlayerChest;
+            }
         }
 
         private void LoadTelemetry()
@@ -417,9 +434,9 @@ namespace WolcenEditor
                 else { return; }
             }
 
-            panel1.Enabled = true;
+            tabPage.Enabled = true;
 
-            SkillTree.LoadTree(ref panel1);
+            SkillTree.LoadTree(ref tabPage);
             LoadCharacterData();
         }
 
@@ -452,10 +469,17 @@ namespace WolcenEditor
             if ((sender as TabControl).SelectedTab.Text == "Inventory" || (sender as TabControl).SelectedTab.Text == "Skills")
             {
                 this.Height = 595 + 35;
+                this.Width = 851;
+            }
+            else if ((sender as TabControl).SelectedTab.Text == "Stash")
+            {
+                this.Height = 595 + 60;
+                //this.Width = 851 - 292;
             }
             else
             {
                 this.Height = 595;
+                this.Width = 851;
             }
         }
 
@@ -731,12 +755,12 @@ namespace WolcenEditor
             };
 
             cData.Character = newCharacter;
-            panel1.Enabled = true;
+            tabPage.Enabled = true;
             string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
             string newPath = userFolder + WolcenSavePath;
             characterSavePath = newPath + cData.Character.Name + ".json";
-            SkillTree.LoadTree(ref panel1);
+            SkillTree.LoadTree(ref tabPage);
             LoadCharacterData();
         }
     }
@@ -745,6 +769,13 @@ namespace WolcenEditor
     {
         private static PlayerData playerData;
         private static CharacterData character;
+        private static PlayerChest playerChest;
+
+        public static PlayerChest PlayerChest
+        {
+            get { return playerChest; }
+            set { playerChest = value; }
+        }
 
         public static PlayerData PlayerData
         {

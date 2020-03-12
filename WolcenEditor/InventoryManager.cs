@@ -2183,7 +2183,7 @@ namespace WolcenEditor
             createItemForm = null;
         }
 
-        private static string ParseItemNameForType(string name)
+        public static string ParseItemNameForType(string name)
         {
             if (name.ToLower().Contains("speical"))     return "Gem";
             if (name.ToLower().Contains("1h"))
@@ -2786,7 +2786,7 @@ namespace WolcenEditor
             itemStatDisplay.Controls.Clear();
         }
 
-        private static string getGemStats(string gemName, int gemEffect)
+        public static string getGemStats(string gemName, int gemEffect)
         {
             foreach (var gem in WolcenStaticData.GemAffixesWithValues)
             {
