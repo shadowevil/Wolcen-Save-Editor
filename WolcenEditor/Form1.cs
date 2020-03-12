@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,7 +131,7 @@ namespace WolcenEditor
 
         private bool onCloseCheck(object sender, EventArgs e)
         {
-            if ((sender as ToolStripMenuItem).Text != "Open")
+            if ((sender as ToolStripMenuItem).Text != "Open" && (sender as ToolStripMenuItem).Text != "New")
             {
                 if ((sender as ToolStripMenuItem).Text != "Exit" && cData.Character == null && cData.PlayerData == null)
                 {
@@ -628,7 +629,7 @@ namespace WolcenEditor
                 Text = "Enter your character name.",
                 StartPosition = FormStartPosition.CenterScreen
             };
-            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Name:" };
+            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Enter your character name:" , AutoSize = true};
             TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
             Button confirmation = new Button() { Text = "Ok", Left = 85, Width = 75, Top = 50, DialogResult = DialogResult.OK };
             confirmation.Click += (sender2, e2) => { prompt.Close(); };
@@ -779,39 +780,167 @@ namespace WolcenEditor
 
             if(aboutMessage == DialogResult.Yes)
             {
-                System.Diagnostics.Process.Start("https://wolcen-universe.com/");
+                Process.Start("https://wolcen-universe.com/");
             }
+        }
+
+        private void importNewStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cData.Character == null)
+            {
+                MessageBox.Show("You need to open or create a new character to begin");
+                return;
+            }
+            Form prompt = new Form()
+            {
+                Width = 265,
+                Height = 120,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Build Url",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Enter a Wolcen Universe URL:", AutoSize = true };
+            TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
+            Button confirmation = new Button() { Text = "Ok", Left = 85, Width = 75, Top = 50, DialogResult = DialogResult.OK };
+
+            confirmation.Click += (sender2, e2) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            var url = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+            if (prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
+            {
+                if(!url.Contains("wolcen-universe.com/builds/"))
+                    MessageBox.Show("That doesn't seem to be a valid url.");
+                else
+                {
+                    // splits up the URL to get at the build id we need for the api request.
+                    var urlSections = url.Split('-');
+                    var pathSplit = urlSections[1].Split('/');
+                    var buildId = pathSplit[2];
+
+                    // get back json data from the wolcen-universe api for the given build id
+                    string jsonData = OnlineBuildRequest.RequestBuild(buildId);
+
+                    // converts the json into a dynamic json object.
+                    dynamic resultData = JObject.Parse(jsonData);
+
+                    // sets level and main stats to the data from the jsonObject
+                    var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
+                    cData.Character.Stats.Level = level;
+                    cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
+                    cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
+                    cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
+                    cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                    MessageBox.Show("Updated level and main stats");
+
+                    #region Skills
+                    // list of skills needed by the build
+                    var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
+
+                    // create a new list to store all of our skills in.
+                    var newUnlockedSkillList = new List<UnlockedSkill>();
+                    // if we already have some skills then set them in this new list so we don't lose them.
+                    if (cData.Character.UnlockedSkills != null)
+                    {
+                        newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
+                    }
+
+                    //setup the skillbar with proper slots
+                    var newSkillBar = new List<SkillBar>()
+                    {
+                        new SkillBar { Slot = 1, SkillName = "" },
+                        new SkillBar { Slot = 2, SkillName = "" },
+                        new SkillBar { Slot = 3, SkillName = ""  },
+                        new SkillBar { Slot = 4, SkillName = ""  },
+                        new SkillBar { Slot = 5, SkillName = ""  },
+                        new SkillBar { Slot = 12, SkillName = ""  },
+                    };
+                    for(int i = 0; i < skills.Count; i++)
+                    {
+                        // converts our jsonObject to a string that represents the skill name.
+                        string newSkillName = skills[i]["id"].ToObject(typeof(string));
+
+                        // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
+                        bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
+                        if(!alreadyExists)
+                        {
+                            string skillId = skills[i]["id"];
+                            UnlockedSkill newSkill = new UnlockedSkill();
+                            newSkill.SkillName = skillId;
+                            newSkill.CurrentXp = "0";
+                            newSkill.Level = 90;
+
+                            string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                            newSkill.Variants = GetSkillModifiers(skillMod);
+                            newUnlockedSkillList.Add(newSkill);
+                        }
+                        else //if the skill does exist we find it in our list and just change the values of it.
+                        {
+                            foreach(var skill in newUnlockedSkillList)
+                            {
+                                if(skill.SkillName == newSkillName)
+                                {
+                                    skill.Level = 90;
+                                    string[] skillMod = skills[i]["modifiers"];
+                                    skill.Variants = GetSkillModifiers(skillMod); ;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // this sets the names of the skills we want in our hotbar.
+                        newSkillBar[i].SkillName = skills[i]["id"];
+
+                    }
+
+                    //sets are characters actual data to the new skillbar and unlocked skill list we just made.
+                    cData.Character.SkillBar = newSkillBar;
+                    cData.Character.UnlockedSkills = newUnlockedSkillList;
+                    MessageBox.Show("Updated skills and skill hotbar.");
+
+
+                    
+                    #endregion
+                    SkillTree.LoadTree(ref panel1);
+                    LoadCharacterData();
+                }
+            }
+
+        }
+
+        //need to redo since the way skill modifiers are labeled is messy, so this doesn't work..
+        private string GetSkillModifiers(string[] listOfModifiers)
+        {
+            char[] modifier = new char[16];
+            for(int i =0; i < modifier.Length; i++)
+            {
+                modifier[i] = '0';
+            }
+
+            foreach(var str in listOfModifiers)
+            {
+                var modId = Convert.ToInt32(str.Split('_').Last());
+                modifier[modId - 1] = '1';
+
+            }
+
+            return new string(modifier);
+        }
+
+        private void ImportOnlineCharacter()
+        {
+
         }
     }
 
     public static class cData
     {
-        private static PlayerData playerData;
-        private static CharacterData character;
+        public static PlayerData PlayerData { get; set; }
 
-        public static PlayerData PlayerData
-        {
-            get
-            {
-                return playerData;
-            }
-            set
-            {
-                playerData = value;
-            }
-        }
-
-        public static CharacterData Character
-        {
-            get
-            {
-                return character;
-            }
-            set
-            {
-                character = value;
-            }
-        }
+        public static CharacterData Character { get; set; }
 
     }
 }

@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="InventoryManager.cs" />
     <Compile Include="LogMe.cs" />
+    <Compile Include="OnlineBuildRequest.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

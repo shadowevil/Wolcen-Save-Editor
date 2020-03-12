@@ -2,7 +2,7 @@
 {
     public class SkillBar
     {
-        public string Slot { get; set; }
+        public int Slot { get; set; }
         public string SkillName { get; set; }
     }
 }

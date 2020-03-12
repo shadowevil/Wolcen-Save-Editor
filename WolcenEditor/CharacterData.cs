@@ -82,6 +82,31 @@ namespace WolcenEditor
 
     public static class WolcenStaticData
     {
+        public static readonly Dictionary<string, Dictionary<string, int>> SkillModifiers = new Dictionary<string, Dictionary<string, int>>
+        {
+            { "player_sacredground" ,
+                new Dictionary<string, int>
+                {
+                    { "player_sacredground_variant_1", 0},
+                    { "player_sacredground_variant_15", 1},
+                    { "player_sacredground_variant_10", 2},
+                    { "player_sacredground_variant_11", 3},
+                    { "player_sacredground_variant_3", 4},
+                    { "player_sacredground_variant_4", 5},
+                    { "player_sacredground_variant_6", 6},
+                    { "player_sacredground_variant_7", 7},
+                    { "player_sacredground_variant_12", 8},
+                    { "player_sacredground_variant_5", 9},
+                    { "player_sacredground_variant_9", 10},
+                    { "player_sacredground_variant_14", 11},
+                    { "player_sacredground_variant_16", 12},
+                    { "player_sacredground_variant_8", 13},
+                    { "player_sacredground_variant_2", 14},
+                    { "player_sacredground_variant_13", 15},
+                }
+            }
+        };
+
         public static readonly Dictionary<string, List<int>> QuestSelections = new Dictionary<string, List<int>>
         {
             { "INTRO_Quest1", new List<int> { 1} },
