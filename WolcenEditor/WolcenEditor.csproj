@@ -148,6 +148,7 @@
     <Compile Include="InventoryManager.cs" />
     <Compile Include="LogMe.cs" />
     <Compile Include="OnlineBuildRequest.cs" />
+    <Compile Include="PlayerChest.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -157,6 +158,7 @@
     <Compile Include="SkillTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StashManager.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

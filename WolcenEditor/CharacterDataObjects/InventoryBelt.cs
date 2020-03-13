@@ -7,7 +7,7 @@
         public int Type { get; set; }
         public string ItemType { get; set; }
         public string ItemVersion { get; set; }
-        public int Value { get; set; }
+        public string Value { get; set; }
         public int Level { get; set; }
         public Potion Potion { get; set; }
         public int BeltSlot { get; set; }

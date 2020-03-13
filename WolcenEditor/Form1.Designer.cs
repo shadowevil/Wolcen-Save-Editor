@@ -39,10 +39,13 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.TabControl();
+
+            this.tabPage = new System.Windows.Forms.TabControl();
             this.charPage = new System.Windows.Forms.TabPage();
             this.telemetryBox = new System.Windows.Forms.GroupBox();
             this.telemetryTextBox = new System.Windows.Forms.TextBox();
@@ -92,11 +95,11 @@
             this.charInv = new System.Windows.Forms.TabPage();
             this.charRandomInv = new System.Windows.Forms.Panel();
             this.itemStatDisplay = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.beltConfig = new System.Windows.Forms.GroupBox();
+            this.charBelt2 = new System.Windows.Forms.PictureBox();
+            this.charBelt1 = new System.Windows.Forms.PictureBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.charBelt2 = new System.Windows.Forms.CheckBox();
-            this.charBelt1 = new System.Windows.Forms.CheckBox();
             this.pictureBox16 = new System.Windows.Forms.PictureBox();
             this.pictureBox15 = new System.Windows.Forms.PictureBox();
             this.charPrimordial = new System.Windows.Forms.TextBox();
@@ -115,20 +118,30 @@
             this.charBelt = new System.Windows.Forms.PictureBox();
             this.charChest = new System.Windows.Forms.PictureBox();
             this.charHelm = new System.Windows.Forms.PictureBox();
+            this.charStash = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.stashPanelGrid = new System.Windows.Forms.Panel();
             this.charSkills = new System.Windows.Forms.TabPage();
             this.lockAllButton = new System.Windows.Forms.Button();
             this.unlockAllButton = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.itemStashStatDisplay = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.tabPage.SuspendLayout();
             this.charPage.SuspendLayout();
             this.telemetryBox.SuspendLayout();
             this.progressionBox.SuspendLayout();
             this.charStats.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.charInv.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.beltConfig.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charRWeapon)).BeginInit();
@@ -145,6 +158,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.charBelt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).BeginInit();
+            this.charStash.SuspendLayout();
             this.charSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -220,6 +234,7 @@
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
+
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -244,16 +259,19 @@
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // panel1
+            // tabPage
+
             // 
-            this.panel1.Controls.Add(this.charPage);
-            this.panel1.Controls.Add(this.charInv);
-            this.panel1.Controls.Add(this.charSkills);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.SelectedIndex = 0;
-            this.panel1.Size = new System.Drawing.Size(835, 533);
-            this.panel1.TabIndex = 11;
+            this.tabPage.Controls.Add(this.charPage);
+            this.tabPage.Controls.Add(this.charInv);
+            this.tabPage.Controls.Add(this.charStash);
+            this.tabPage.Controls.Add(this.charSkills);
+            this.tabPage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabPage.Location = new System.Drawing.Point(0, 24);
+            this.tabPage.Name = "tabPage";
+            this.tabPage.SelectedIndex = 0;
+            this.tabPage.Size = new System.Drawing.Size(835, 533);
+            this.tabPage.TabIndex = 11;
             // 
             // charPage
             // 
@@ -826,7 +844,7 @@
             this.charInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charInv.Controls.Add(this.charRandomInv);
             this.charInv.Controls.Add(this.itemStatDisplay);
-            this.charInv.Controls.Add(this.groupBox1);
+            this.charInv.Controls.Add(this.beltConfig);
             this.charInv.Controls.Add(this.pictureBox16);
             this.charInv.Controls.Add(this.pictureBox15);
             this.charInv.Controls.Add(this.charPrimordial);
@@ -871,19 +889,39 @@
             this.itemStatDisplay.Size = new System.Drawing.Size(483, 208);
             this.itemStatDisplay.TabIndex = 21;
             // 
-            // groupBox1
+            // beltConfig
             // 
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.charBelt2);
-            this.groupBox1.Controls.Add(this.charBelt1);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(10, 429);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(185, 96);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Belt Configuration";
+            this.beltConfig.Controls.Add(this.charBelt2);
+            this.beltConfig.Controls.Add(this.charBelt1);
+            this.beltConfig.Controls.Add(this.label12);
+            this.beltConfig.Controls.Add(this.label11);
+            this.beltConfig.ForeColor = System.Drawing.Color.White;
+            this.beltConfig.Location = new System.Drawing.Point(10, 429);
+            this.beltConfig.Name = "beltConfig";
+            this.beltConfig.Size = new System.Drawing.Size(185, 96);
+            this.beltConfig.TabIndex = 14;
+            this.beltConfig.TabStop = false;
+            this.beltConfig.Text = "Belt Configuration";
+            // 
+            // charBelt2
+            // 
+            this.charBelt2.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBelt2.Location = new System.Drawing.Point(109, 40);
+            this.charBelt2.Name = "charBelt2";
+            this.charBelt2.Size = new System.Drawing.Size(50, 50);
+            this.charBelt2.TabIndex = 24;
+            this.charBelt2.TabStop = false;
+            // 
+            // charBelt1
+            // 
+            this.charBelt1.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.charBelt1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charBelt1.Location = new System.Drawing.Point(27, 40);
+            this.charBelt1.Name = "charBelt1";
+            this.charBelt1.Size = new System.Drawing.Size(50, 50);
+            this.charBelt1.TabIndex = 23;
+            this.charBelt1.TabStop = false;
             // 
             // label12
             // 
@@ -906,40 +944,6 @@
             this.label11.TabIndex = 11;
             this.label11.Text = "SLOT 1";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // charBelt2
-            // 
-            this.charBelt2.Appearance = System.Windows.Forms.Appearance.Button;
-            this.charBelt2.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt2.BackgroundImage")));
-            this.charBelt2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.charBelt2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt2.FlatAppearance.BorderSize = 0;
-            this.charBelt2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.charBelt2.Location = new System.Drawing.Point(112, 39);
-            this.charBelt2.Name = "charBelt2";
-            this.charBelt2.Size = new System.Drawing.Size(45, 46);
-            this.charBelt2.TabIndex = 1;
-            this.charBelt2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt2.UseVisualStyleBackColor = false;
-            this.charBelt2.CheckedChanged += new System.EventHandler(this.charBelt2_CheckedChanged);
-            // 
-            // charBelt1
-            // 
-            this.charBelt1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.charBelt1.BackColor = System.Drawing.Color.Transparent;
-            this.charBelt1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt1.BackgroundImage")));
-            this.charBelt1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.charBelt1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt1.FlatAppearance.BorderSize = 0;
-            this.charBelt1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.charBelt1.Location = new System.Drawing.Point(30, 39);
-            this.charBelt1.Name = "charBelt1";
-            this.charBelt1.Size = new System.Drawing.Size(45, 46);
-            this.charBelt1.TabIndex = 0;
-            this.charBelt1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.charBelt1.UseVisualStyleBackColor = false;
-            this.charBelt1.CheckedChanged += new System.EventHandler(this.charBelt1_CheckedChanged);
             // 
             // pictureBox16
             // 
@@ -1165,6 +1169,111 @@
             this.charHelm.TabIndex = 0;
             this.charHelm.TabStop = false;
             // 
+            // charStash
+            // 
+            this.charStash.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
+            this.charStash.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charStash.Controls.Add(this.itemStashStatDisplay);
+            this.charStash.Controls.Add(this.button5);
+            this.charStash.Controls.Add(this.button4);
+            this.charStash.Controls.Add(this.button3);
+            this.charStash.Controls.Add(this.button2);
+            this.charStash.Controls.Add(this.button1);
+            this.charStash.Controls.Add(this.stashPanelGrid);
+            this.charStash.Location = new System.Drawing.Point(4, 22);
+            this.charStash.Name = "charStash";
+            this.charStash.Padding = new System.Windows.Forms.Padding(3);
+            this.charStash.Size = new System.Drawing.Size(827, 507);
+            this.charStash.TabIndex = 3;
+            this.charStash.Text = "Stash";
+            this.charStash.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.Transparent;
+            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
+            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.Location = new System.Drawing.Point(200, 6);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(42, 23);
+            this.button5.TabIndex = 1;
+            this.button5.Text = "5";
+            this.button5.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Transparent;
+            this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Location = new System.Drawing.Point(152, 6);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(42, 23);
+            this.button4.TabIndex = 1;
+            this.button4.Text = "4";
+            this.button4.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Transparent;
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(104, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(42, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "3";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Transparent;
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(56, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(42, 23);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "2";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImage = global::WolcenEditor.Properties.Resources.e_beltSlot;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(8, 6);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(42, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "1";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // stashPanelGrid
+            // 
+            this.stashPanelGrid.BackColor = System.Drawing.Color.Transparent;
+            this.stashPanelGrid.BackgroundImage = global::WolcenEditor.Properties.Resources.invBackground;
+            this.stashPanelGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.stashPanelGrid.ForeColor = System.Drawing.Color.White;
+            this.stashPanelGrid.Location = new System.Drawing.Point(8, 33);
+            this.stashPanelGrid.Name = "stashPanelGrid";
+            this.stashPanelGrid.Size = new System.Drawing.Size(517, 522);
+            this.stashPanelGrid.TabIndex = 0;
+            // 
             // charSkills
             // 
             this.charSkills.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charSkills.BackgroundImage")));
@@ -1208,12 +1317,20 @@
             // 
             this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
             // 
+            // itemStashStatDisplay
+            // 
+            this.itemStashStatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.itemStashStatDisplay.Location = new System.Drawing.Point(531, 33);
+            this.itemStashStatDisplay.Name = "itemStashStatDisplay";
+            this.itemStashStatDisplay.Size = new System.Drawing.Size(288, 522);
+            this.itemStashStatDisplay.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(835, 556);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.tabPage);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -1226,7 +1343,7 @@
             this.Text = "Wolcen Save Editor";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.tabPage.ResumeLayout(false);
             this.charPage.ResumeLayout(false);
             this.charPage.PerformLayout();
             this.telemetryBox.ResumeLayout(false);
@@ -1239,7 +1356,9 @@
             this.groupBox2.PerformLayout();
             this.charInv.ResumeLayout(false);
             this.charInv.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.beltConfig.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.charBelt1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charRWeapon)).EndInit();
@@ -1256,6 +1375,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.charBelt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).EndInit();
+            this.charStash.ResumeLayout(false);
             this.charSkills.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -1288,7 +1408,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox charExp;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TabControl panel1;
+        private System.Windows.Forms.TabControl tabPage;
         private System.Windows.Forms.TabPage charPage;
         private System.Windows.Forms.TabPage charInv;
         private System.Windows.Forms.PictureBox charHelm;
@@ -1306,11 +1426,9 @@
         private System.Windows.Forms.PictureBox pictureBox15;
         private System.Windows.Forms.TextBox charPrimordial;
         private System.Windows.Forms.TextBox charGold;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox beltConfig;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.CheckBox charBelt2;
-        private System.Windows.Forms.CheckBox charBelt1;
         private System.Windows.Forms.PictureBox charRWeapon;
         private System.Windows.Forms.PictureBox charLWeapon;
         private System.Windows.Forms.PictureBox pictureBox16;
@@ -1355,9 +1473,22 @@
         private System.Windows.Forms.GroupBox telemetryBox;
         private System.Windows.Forms.TextBox telemetryTextBox;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+
+        private System.Windows.Forms.PictureBox charBelt2;
+        private System.Windows.Forms.PictureBox charBelt1;
+        private System.Windows.Forms.TabPage charStash;
+        private System.Windows.Forms.Panel stashPanelGrid;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel itemStashStatDisplay;
+
     }
 }
 
