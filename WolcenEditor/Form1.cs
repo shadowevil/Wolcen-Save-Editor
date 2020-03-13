@@ -833,8 +833,8 @@ namespace WolcenEditor
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var aboutMessage = MessageBox.Show("You are able to import builds from the awesome site over at https://wolcen-universe.com!\n\n" +
-                "The guys over at Wolcen-Universe are still working on updating their API so if something doesn't work here let us know at\n" +
+            var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
+                "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
                 "[insert whatevever contact info here]\n\n\n" +
                 "Would you like to be taken to https://wolcen-universe.com/ right now?"
                 , "About Improrting Builds."
@@ -952,77 +952,103 @@ namespace WolcenEditor
                     // converts the json into a dynamic json object.
                     dynamic resultData = JObject.Parse(jsonData);
 
-                    // sets level and main stats to the data from the jsonObject
+                    //sets level and main stats to the data from the jsonObject
+
                     var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
-                    cData.Character.Stats.Level = level;
-                    cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
-                    cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
-                    cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
-                    cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                    if (level != null)
+                    {
+                        cData.Character.Stats.Level = level;
+                        cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
+                        cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
+                        cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
+                        cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                    }
+
+                    //sets the passive skills
+                    List<String> newPassiveSkills = resultData["data"]["build"]["passiveSkillTree"]["nodes"].ToObject(typeof(List<string>));
+                    newPassiveSkills.Remove("root");
+                    cData.Character.PassiveSkills = newPassiveSkills;
+
+                    //sets the rotation of the skill wheels
+                    List<int> rotations = resultData["data"]["build"]["passiveSkillTree"]["rotations"].ToObject(typeof(List<int>));
+                    List<PSTConfig> newPassiveConfig = new List<PSTConfig>
+                    {
+                        new PSTConfig { Id = 0, Mode = 3},
+                        new PSTConfig { Id = 1, Mode = 6},
+                        new PSTConfig { Id = 2, Mode = 12},
+                    };
+                    for(int i = 0; i < newPassiveConfig.Count;  i++)
+                    {
+                        int counter = newPassiveConfig[i].Mode;
+                        newPassiveConfig[i].Mode = (counter - rotations[i]) % counter;
+                    }
+                    cData.Character.PSTConfig = newPassiveConfig;
 
                     // list of skills needed by the build
                     var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
-
-                    // create a new list to store all of our skills in.
-                    var newUnlockedSkillList = new List<UnlockedSkill>();
-
-                    // if we already have some skills then set them in this new list so we don't lose them.
-                    if (cData.Character.UnlockedSkills != null)
-                        newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
-
-                    //setup the skillbar with proper slots
-                    var newSkillBar = new List<SkillBar>()
+                    if(skills != null)
                     {
-                        new SkillBar { Slot = 1, SkillName = "" },
-                        new SkillBar { Slot = 2, SkillName = "" },
-                        new SkillBar { Slot = 3, SkillName = ""  },
-                        new SkillBar { Slot = 4, SkillName = ""  },
-                        new SkillBar { Slot = 5, SkillName = ""  },
-                        new SkillBar { Slot = 12, SkillName = ""  },
-                    };
-                    for (int i = 0; i < skills.Count; i++)
-                    {
-                        if (skills[i] == null)
-                            break;
-                        // converts our jsonObject to a string that represents the skill name.
-                        string newSkillName = skills[i]["id"].ToObject(typeof(string));
+                        // create a new list to store all of our skills in.
+                        var newUnlockedSkillList = new List<UnlockedSkill>();
 
-                        // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
-                        bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
-                        if (!alreadyExists)
-                        {
-                            string skillId = skills[i]["id"];
-                            UnlockedSkill newSkill = new UnlockedSkill();
-                            newSkill.SkillName = skillId;
-                            newSkill.CurrentXp = "0";
-                            newSkill.Level = 90;
+                        // if we already have some skills then set them in this new list so we don't lose them.
+                        if (cData.Character.UnlockedSkills != null)
+                            newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
 
-                            string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                            newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
-                            newUnlockedSkillList.Add(newSkill);
-                        }
-                        else //if the skill does exist we find it in our list and just change the values of it.
+                        //setup the skillbar with proper slots
+                        var newSkillBar = new List<SkillBar>()
                         {
-                            foreach (var skill in newUnlockedSkillList)
+                            new SkillBar { Slot = 1, SkillName = "" },
+                            new SkillBar { Slot = 2, SkillName = "" },
+                            new SkillBar { Slot = 3, SkillName = ""  },
+                            new SkillBar { Slot = 4, SkillName = ""  },
+                            new SkillBar { Slot = 5, SkillName = ""  },
+                            new SkillBar { Slot = 12, SkillName = ""  },
+                        };
+                        for (int i = 0; i < skills.Count; i++)
+                        {
+                            if (skills[i] == null)
+                                break;
+
+                            // this sets the names of the skills we want in our hotbar.
+                            newSkillBar[i].SkillName = skills[i]["id"];
+
+                            // converts our jsonObject to a string that represents the skill name.
+                            string newSkillName = skills[i]["id"].ToObject(typeof(string));
+
+                            // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
+                            bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
+                            if (!alreadyExists)
                             {
-                                if (skill.SkillName == newSkillName)
+                                string skillId = skills[i]["id"];
+                                UnlockedSkill newSkill = new UnlockedSkill();
+                                newSkill.SkillName = skillId;
+                                newSkill.CurrentXp = "0";
+                                newSkill.Level = 90;
+
+                                string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
+                                newUnlockedSkillList.Add(newSkill);
+                            }
+                            else //if the skill does exist we find it in our list and just change the values of it.
+                            {
+                                foreach (var skill in newUnlockedSkillList)
                                 {
-                                    skill.Level = 90;
-                                    string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                                    skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
-                                    break;
+                                    if (skill.SkillName == newSkillName)
+                                    {
+                                        skill.Level = 90;
+                                        string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                        skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
+                                        break;
+                                    }
                                 }
                             }
                         }
+                        //sets our characters actual data to the new skillbar and unlocked skill list we just made.
 
-                        // this sets the names of the skills we want in our hotbar.
-                        newSkillBar[i].SkillName = skills[i]["id"];
-
+                        cData.Character.SkillBar = newSkillBar;
+                        cData.Character.UnlockedSkills = newUnlockedSkillList;
                     }
-                    //sets our characters actual data to the new skillbar and unlocked skill list we just made.
-
-                    cData.Character.SkillBar = newSkillBar;
-                    cData.Character.UnlockedSkills = newUnlockedSkillList;
 
                     MessageBox.Show($"Successfully Imported Character From:\n{url}");
                     SkillTree.LoadTree(ref panel1);
