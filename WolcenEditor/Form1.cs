@@ -320,6 +320,11 @@ namespace WolcenEditor
             {
                 chkChampion.Checked = true;
             } else chkChampion.Checked = false;
+
+            if(cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            {
+                extraSkillButton.Checked = true;
+            } else extraSkillButton.Checked = false;
         }
 
         private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
@@ -1072,9 +1077,31 @@ namespace WolcenEditor
             }
             return new string(modifier);
         }
+
+        private void extraSkillButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cData.PlayerData == null) return;
+            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            {
+                cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
+            }
+            else if (extraSkillButton.Checked == true)
+            {
+                if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+                {
+                    for(int i =0; i < cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Count; i ++)
+                    {
+                        if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
+                        {
+                            cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name = "";
+                        }
+                    }
+                }
+            }
+        }
     }
 
-  public static class cData
+    public static class cData
     {
         private static PlayerData playerData;
         private static CharacterData character;

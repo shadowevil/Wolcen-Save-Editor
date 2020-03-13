@@ -2739,11 +2739,15 @@ namespace WolcenEditor
                 if (itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
                 
                 List<Effect> defaultEffects = getItemMagicEffect(bodyPart, "Default");
-                foreach (Effect effect in defaultEffects)
+                if(defaultEffects != null)
                 {
-                    string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
-                    if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                    itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    foreach (Effect effect in defaultEffects)
+                    {
+                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
+                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
+                    }
+
                 }
 
                 itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
