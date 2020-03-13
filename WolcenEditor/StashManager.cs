@@ -14,6 +14,10 @@ namespace WolcenEditor
     public static class StashManager
     {
         private static int posY = 0;
+        private static int currentPanel = 0;
+        private static PictureBox sourceBox;
+        private static bool isValid = false;
+
         private static Dictionary<string, int> equipMap = new Dictionary<string, int>
         {
             { "Amulet", 14 },
@@ -52,41 +56,216 @@ namespace WolcenEditor
         public static void LoadPlayerStash(object sender)
         {
             Panel stashPanelGrid = (sender as TabPage).Controls["stashPanelGrid"] as Panel;
-            stashPanelGrid.Controls.Clear();
 
+            (stashPanelGrid.Parent.Controls["button1"] as Button).Click += StashManager_Click;
+            (stashPanelGrid.Parent.Controls["button2"] as Button).Click += StashManager_Click;
+            (stashPanelGrid.Parent.Controls["button3"] as Button).Click += StashManager_Click;
+            (stashPanelGrid.Parent.Controls["button4"] as Button).Click += StashManager_Click;
+            (stashPanelGrid.Parent.Controls["button5"] as Button).Click += StashManager_Click;
+
+
+            LoadGrid(stashPanelGrid);
+        }
+
+        private static void LoadGrid(Panel stashPanelGrid)
+        {
+            stashPanelGrid.Controls.Clear();
             foreach (var _panel in cData.PlayerChest.Panels)
             {
-                for (int x = 0; x < 10; x++)
+                if (currentPanel == _panel.ID)
                 {
-                    for (int y = 0; y < 10; y++)
+                    for (int x = 0; x < 10; x++)
                     {
-                        PictureBox pb = new PictureBox();
-                        pb.Name = x.ToString() + "|" + y.ToString() + "|" + _panel.ID.ToString();
-                        pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
-                        pb.Location = new Point(x * 50 + 7, y * 50 + 11);
-                        pb.Size = new Size(50, 50);
-                        pb.MaximumSize = pb.Size;
-                        pb.SizeMode = PictureBoxSizeMode.AutoSize;
-                        pb.BackgroundImageLayout = ImageLayout.Stretch;
-                        //pb.AllowDrop = true;
-                        pb.MouseDown += Pb_MouseDown;
-                        //pb.MouseMove += Pb_MouseMove;
-                        //pb.MouseLeave += Pb_MouseLeave;
-                        //pb.DragEnter += Pb_DragEnter;
-                        //pb.DragDrop += Pb_DragDrop;
-                        //pb.GiveFeedback += Pb_GiveFeedBack;
-                        //pb.ContextMenu = new ContextMenu();
-                        stashPanelGrid.Controls.Add(pb);
+                        for (int y = 0; y < 10; y++)
+                        {
+                            PictureBox pb = new PictureBox();
+                            pb.Name = x.ToString() + "|" + y.ToString() + "|" + _panel.ID.ToString();
+                            pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
+                            pb.Location = new Point(x * 50 + 7, y * 50 + 11);
+                            pb.Size = new Size(50, 50);
+                            pb.MaximumSize = pb.Size;
+                            pb.SizeMode = PictureBoxSizeMode.AutoSize;
+                            pb.BackgroundImageLayout = ImageLayout.Stretch;
+                            pb.AllowDrop = true;
+                            pb.MouseDown += Pb_MouseDown;
+                            pb.MouseMove += Pb_MouseMove;
+                            pb.MouseLeave += Pb_MouseLeave;
+                            pb.DragEnter += Pb_DragEnter;
+                            pb.DragDrop += Pb_DragDrop;
+                            pb.GiveFeedback += Pb_GiveFeedBack;
+                            //pb.ContextMenu = new ContextMenu();
+                            stashPanelGrid.Controls.Add(pb);
+                        }
+                    }
+                }
+            }
+            LoadStashBitmaps(stashPanelGrid);
+        }
+
+        private static void Pb_GiveFeedBack(object sender, GiveFeedbackEventArgs e)
+        {
+            e.UseDefaultCursors = false;
+
+            if ((e.Effect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            {
+                Bitmap _bmp = new Bitmap(sourceBox.Width, sourceBox.Height);
+                sourceBox.DrawToBitmap(_bmp, new Rectangle(Point.Empty, _bmp.Size));
+                _bmp.MakeTransparent(Color.White);
+                Cursor cur = new Cursor(_bmp.GetHicon());
+                Cursor.Current = cur;
+            }
+            else
+            {
+                Cursor.Current = Cursors.NoMove2D;
+            }
+        }
+
+        private static void Pb_DragDrop(object sender, DragEventArgs e)
+        {
+            Bitmap bmp = (e.Data.GetData(DataFormats.Bitmap) as Bitmap);
+            PictureBox Destination = (sender as PictureBox);
+            int dx = Convert.ToInt32(Destination.Name.Split('|')[0]);
+            int dy = Convert.ToInt32(Destination.Name.Split('|')[1]);
+            int dpanelID = Convert.ToInt32(Destination.Name.Split('|')[2]);
+            int sx = Convert.ToInt32(sourceBox.Name.Split('|')[0]);
+            int sy = Convert.ToInt32(sourceBox.Name.Split('|')[1]);
+            int spanelID = Convert.ToInt32(sourceBox.Name.Split('|')[2]);
+
+            if (Destination.Image != null) return;
+
+            if (Destination.Name == sourceBox.Name)
+            {
+                int index = Destination.Parent.Controls.IndexOfKey(sourceBox.Name);
+                (Destination.Parent.Controls[index] as PictureBox).Image = sourceBox.Image;
+                isValid = false;
+                return;
+            }
+
+            if (sourceBox.MaximumSize.Height == 100)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (dx == i && dy == 9)
+                    {
+                        isValid = false;
+                        return;
+                    }
+                }
+                if (Destination.Parent.Controls.ContainsKey(Convert.ToString(dx + "|" + (dy + 1) + "|" + dpanelID)))
+                {
+                    if ((Destination.Parent.Controls[Convert.ToString(dx + "|" + (dy + 1) + "|" + dpanelID)] as PictureBox).Image != null)
+                    {
+                        isValid = false;
+                        return;
                     }
                 }
             }
 
-            LoadStashBitmaps(stashPanelGrid, 0);
+            isValid = true;
+            Destination.Image = bmp;
+            Destination.MaximumSize = sourceBox.MaximumSize;
+            Destination.Size = sourceBox.Size;
+            sourceBox.Image = null;
+            sourceBox.Size = new Size(50, 50);
+            sourceBox.MaximumSize = new Size(50, 50);
+            ConfirmMove(dx, dy, dpanelID);
+            ReloadGridBitmap(Destination.Parent as Panel, dx, dy, dpanelID);
+        }
+
+        private static void ReloadGridBitmap(Panel panel, int dx, int dy, int dpanelID)
+        {
+            foreach (PictureBox pb in panel.Controls)
+            {
+                int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+                int panelid = Convert.ToInt32(pb.Name.Split('|')[2]);
+                if (dx == x && dy == y) pb.Image = GetStashBitmap(x, y, panelid, pb, getGridByLocation(x, y, panelid));
+            }
+        }
+
+        private static InventoryGrid getGridByLocation(int x, int y, int panelid)
+        {
+            foreach (var i in cData.PlayerChest.Panels[panelid].InventoryGrid)
+            {
+                if (i.InventoryX == x && i.InventoryY == y)
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
+
+        private static void ConfirmMove(int dx, int dy, int dpanelID)
+        {
+            int sx = Convert.ToInt32(sourceBox.Name.Split('|')[0]);
+            int sy = Convert.ToInt32(sourceBox.Name.Split('|')[1]);
+            int sPanelID = Convert.ToInt32(sourceBox.Name.Split('|')[2]);
+
+            if (dpanelID != sPanelID) return;
+
+            for (int p = 0; p < cData.PlayerChest.Panels.Count; p++)
+            {
+                if (cData.PlayerChest.Panels[p].ID == dpanelID)
+                {
+                    for (int i = 0; i < cData.PlayerChest.Panels[p].InventoryGrid.Count; i++)
+                    {
+                        if (cData.PlayerChest.Panels[p].InventoryGrid[i].InventoryX == sx &&
+                            cData.PlayerChest.Panels[p].InventoryGrid[i].InventoryY == sy)
+                        {
+                            cData.PlayerChest.Panels[p].InventoryGrid[i].InventoryX = dx;
+                            cData.PlayerChest.Panels[p].InventoryGrid[i].InventoryY = dy;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void Pb_MouseLeave(object sender, EventArgs e)
+        {
+            if (Form1.ActiveForm == null) return;
+            Form1.ActiveForm.Cursor = Cursors.Arrow;
+        }
+
+        private static void Pb_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (Form1.ActiveForm == null) return;
+            if (e.Button == MouseButtons.Left) return;
+            if ((sender as PictureBox).Image != null)
+            {
+                Form1.ActiveForm.Cursor = Cursors.Hand;
+            }
+        }
+
+        private static void Pb_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private static void StashManager_Click(object sender, EventArgs e)
+        {
+            currentPanel = Convert.ToInt32((sender as Button).Name.Substring(6, 1)) - 1;
+            LoadGrid((sender as Button).Parent.Controls["stashPanelGrid"] as Panel);
         }
 
         private static void Pb_MouseDown(object sender, MouseEventArgs e)
         {
-            if((sender as PictureBox).Image != null) LoadItemData(sender, e);
+            if ((sender as PictureBox).Image != null)
+            {
+                Bitmap bmp = new Bitmap((sender as PictureBox).Image);
+                sourceBox = (sender as PictureBox);
+                if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                {
+                    isValid = false;
+                    return;
+                } else LoadItemData(sender, e);
+            }
         }
 
         private static void LoadItemData(object sender, EventArgs e)
@@ -96,36 +275,42 @@ namespace WolcenEditor
             UnloadItemData(itemStatDisplay);
             PictureBox pictureBox = (sender as PictureBox);
 
-            string itemName = getItemNameFromGrid(pictureBox);
+            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
+            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
+            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
+
+            string itemName = getItemNameFromGrid(x, y, panelID, "Armor");
+            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Weapon");
+            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Potion");
+            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Gem");
 
             string l_itemName = null;
             WolcenStaticData.ItemLocalizedNames.TryGetValue(itemName, out l_itemName);
             if (l_itemName == null) return;
 
-            Color itemRarity = getItemGridColorRarity(pictureBox);
+            Color itemRarity = getItemGridColorRarity(x, y, panelID);
 
             itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, l_itemName, itemStatDisplay, 13, itemRarity));
             string itemType = InventoryManager.ParseItemNameForType(itemName);
 
             string itemStat = null;
-            if (itemType != "Potions")
-            {
-                itemStat = getItemStat(pictureBox, "Health");
-                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health: " + itemStat, itemStatDisplay, 9, Color.White));
-                itemStat = getItemStat(pictureBox, "Armor");
-                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Force Shield: " + itemStat, itemStatDisplay, 9, Color.White));
-                itemStat = getItemStat(pictureBox, "Resistance");
-                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
+            
+            itemStat = getItemStat(x, y, panelID, "Armor", "Health");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(x, y, panelID, "Armor", "Armor");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Force Shield: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(x, y, panelID, "Armor", "Resistance");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
 
-                itemStat = getItemStat(pictureBox, "DamageMin");
-                string itemStat2 = getItemStat(pictureBox, "DamageMax");
-                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
-                itemStat = getItemStat(pictureBox, "ResourceGeneration");
-                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
-            }
-            itemStat = getItemStat(pictureBox, "Charge");
+            itemStat = getItemStat(x, y, panelID, "Weapon", "DamageMin");
+            string itemStat2 = getItemStat(x, y, panelID, "Weapon", "DamageMax");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(x, y, panelID, "Weapon", "ResourceGeneration");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+
+            itemStat = getItemStat(x, y, panelID, "Potion", "Charge");
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Charge: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(pictureBox, "ImmediateMana");
+            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateMana");
             if (itemStat != null)
             {
                 if (itemStat.Contains("-"))
@@ -137,15 +322,15 @@ namespace WolcenEditor
                     if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Umbra Generation: " + itemStat, itemStatDisplay, 9, Color.White));
                 }
             }
-            itemStat = getItemStat(pictureBox, "ImmediateHP");
+            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateHP");
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health Generation: " + itemStat, itemStatDisplay, 9, Color.White));
 
-            itemStat = getItemStat(pictureBox, "ImmediateStamina");
+            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateStamina");
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Stamina Generation: " + itemStat, itemStatDisplay, 9, Color.White));
 
             if (itemType != "Potions")
             {
-                List<Effect> defaultEffects = getItemMagicEffect(pictureBox, "Default");
+                List<Effect> defaultEffects = getItemMagicEffect(x, y, panelID, "MagicEffects", "Default");
                 if (defaultEffects != null)
                 {
                     foreach (Effect effect in defaultEffects)
@@ -161,7 +346,7 @@ namespace WolcenEditor
 
             if (itemType == "Gem")
             {
-                itemStat = getItemStat(pictureBox, "Name");
+                itemStat = getItemStat(x, y, panelID, "Gem", "Name");
                 string socketType = null;
                 string localizedEffect = null;
                 var GemAffixes = WolcenStaticData.GemAffixesWithValues[itemStat];
@@ -178,9 +363,9 @@ namespace WolcenEditor
                     GemOrder.Add(new int[] { 2, 5, 6 });
                 }
 
-                foreach (int[] x in GemOrder)
+                foreach (int[] d in GemOrder)
                 {
-                    foreach (int i in x)
+                    foreach (int i in d)
                     {
                         socketType = WolcenStaticData.SocketType[i];
                         localizedEffect = WolcenStaticData.MagicLocalized[GemAffixes.ElementAt(i).Key];
@@ -212,7 +397,7 @@ namespace WolcenEditor
 
             if (itemType != "Potions")
             {
-                List<Effect> magicEffects = getItemMagicEffect(pictureBox, "RolledAffixes");
+                List<Effect> magicEffects = getItemMagicEffect(x, y, panelID, "MagicEffects", "RolledAffixes");
                 if (magicEffects != null)
                 {
                     foreach (Effect effect in magicEffects)
@@ -265,20 +450,17 @@ namespace WolcenEditor
             return null;
         }
 
-        private static List<Effect> getItemMagicEffect(PictureBox pictureBox, string stat)
+        private static List<Effect> getItemMagicEffect(int x, int y, int panel, string type, string stat)
         {
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
             foreach (Panels _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.ID == panelID)
+                if (_panel.ID == panel)
                 {
                     foreach (var item in _panel.InventoryGrid)
                     {
                         if (item.InventoryX == x && item.InventoryY == y)
                         {
-                            return (item.MagicEffects.GetType().GetProperty(stat).GetValue(item.MagicEffects, null) as List<Effect>);
+                            return (GetPropertyValue(GetPropertyValue(item, type), stat) as List<Effect>);
                         }
                     }
                 }
@@ -286,57 +468,34 @@ namespace WolcenEditor
             return null;
         }
 
-        private static string getItemStat(PictureBox pictureBox, string stat)
+        private static string getItemStat(int x, int y, int panel, string type, string stat)
         {
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
             foreach (Panels _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.ID == panelID)
+                if (panel == _panel.ID)
                 {
                     foreach (var item in _panel.InventoryGrid)
                     {
                         if (item.InventoryX == x && item.InventoryY == y)
                         {
-                            string itemStat = null;
-                            if (item.Armor != null)
+                            if (GetPropertyValue(item, type) != null)
                             {
-                                if (item.Armor.GetType().GetProperty(stat) != null)
-                                {
-                                    itemStat = item.Armor.GetType().GetProperty(stat).GetValue(item.Armor, null).ToString();
-                                    return itemStat;
-                                }
-                            }
-                            if (item.Weapon != null)
-                            {
-                                if (item.Weapon.GetType().GetProperty(stat) != null)
-                                {
-                                    itemStat = item.Weapon.GetType().GetProperty(stat).GetValue(item.Weapon, null).ToString();
-                                    return itemStat;
-                                }
-                            }
-                            if (item.Potion != null)
-                            {
-                                if (item.Potion.GetType().GetProperty(stat) != null)
-                                {
-                                    itemStat = item.Potion.GetType().GetProperty(stat).GetValue(item.Potion, null).ToString();
-                                    return itemStat;
-                                }
-                            }
-                            if (item.Gem != null)
-                            {
-                                if (item.Gem.GetType().GetProperty(stat) != null)
-                                {
-                                    itemStat = item.Gem.GetType().GetProperty(stat).GetValue(item.Gem, null).ToString();
-                                    return itemStat;
-                                }
+                                return GetPropertyValue(GetPropertyValue(item, type), stat).ToString();
                             }
                         }
                     }
                 }
             }
             return null;
+        }
+
+        public static object GetPropertyValue(object obj, string propertyName)
+        {
+            if (obj.GetType() == null) return null;
+            var objType = obj.GetType();
+            var prop = objType.GetProperty(propertyName);
+
+            return prop.GetValue(obj, null);
         }
 
         private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor)
@@ -354,11 +513,8 @@ namespace WolcenEditor
             return lb;
         }
 
-        private static Color getItemGridColorRarity(PictureBox pictureBox)
+        private static Color getItemGridColorRarity(int x, int y, int panelID)
         {
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
             foreach (Panels _panel in cData.PlayerChest.Panels)
             {
                 if (_panel.ID == panelID)
@@ -377,11 +533,8 @@ namespace WolcenEditor
             return Color.White;
         }
 
-        private static string getItemNameFromGrid(PictureBox pictureBox)
+        private static string getItemNameFromGrid(int x, int y, int panelID, string type)
         {
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
             foreach (Panels _panel in cData.PlayerChest.Panels)
             {
                 if (_panel.ID == panelID)
@@ -390,21 +543,9 @@ namespace WolcenEditor
                     {
                         if (item.InventoryX == x && item.InventoryY == y)
                         {
-                            if (item.Armor != null)
+                            if (GetPropertyValue(item, type) != null)
                             {
-                                return item.Armor.Name;
-                            }
-                            if (item.Weapon != null)
-                            {
-                                return item.Weapon.Name;
-                            }
-                            if (item.Gem != null)
-                            {
-                                return item.Gem.Name;
-                            }
-                            if (item.Potion != null)
-                            {
-                                return item.Potion.Name;
+                                return GetPropertyValue(GetPropertyValue(item, type), "Name").ToString();
                             }
                         }
                     }
@@ -419,11 +560,11 @@ namespace WolcenEditor
             itemStatDisplay.Controls.Clear();
         }
 
-        private static void LoadStashBitmaps(Panel stashPanelGrid, int selectedPanel = 0)
+        private static void LoadStashBitmaps(Panel stashPanelGrid)
         {
             foreach (var _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.ID == selectedPanel)
+                if (_panel.ID == currentPanel)
                 {
                     foreach (var iGrid in _panel.InventoryGrid)
                     {
@@ -434,7 +575,7 @@ namespace WolcenEditor
 
                             if (iGrid.InventoryX == x && iGrid.InventoryY == y)
                             {
-                                pb.Image = GetStashBitmap(x, y, selectedPanel, pb, iGrid);
+                                pb.Image = GetStashBitmap(x, y, currentPanel, pb, iGrid);
                             }
                         }
                     }
