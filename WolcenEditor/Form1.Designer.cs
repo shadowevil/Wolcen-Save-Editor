@@ -43,7 +43,7 @@
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.TabControl();
+            this.tabPage = new System.Windows.Forms.TabControl();
 
             this.tabPage = new System.Windows.Forms.TabControl();
             this.charPage = new System.Windows.Forms.TabPage();

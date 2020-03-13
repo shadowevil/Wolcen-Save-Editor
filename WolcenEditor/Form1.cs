@@ -711,12 +711,12 @@ namespace WolcenEditor
                     cData.Character = null;
                 cData.Character = CreateNewCharacter(name);
 
-                panel1.Enabled = true;
+                tabPage.Enabled = true;
                 string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
                 string newPath = userFolder + WolcenSavePath;
                 characterSavePath = newPath + cData.Character.Name + ".json";
-                SkillTree.LoadTree(ref panel1);
+                SkillTree.LoadTree(ref tabPage);
                 LoadCharacterData();
             }
         }
@@ -1052,7 +1052,7 @@ namespace WolcenEditor
                     }
 
                     MessageBox.Show($"Successfully Imported Character From:\n{url}");
-                    SkillTree.LoadTree(ref panel1);
+                    SkillTree.LoadTree(ref tabPage);
                     LoadCharacterData();
                 }
             }
