@@ -564,7 +564,7 @@ namespace WolcenEditor
         {
             foreach (var _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.ID == currentPanel)
+                if (_panel.ID == currentPanel && _panel.InventoryGrid != null)
                 {
                     foreach (var iGrid in _panel.InventoryGrid)
                     {
