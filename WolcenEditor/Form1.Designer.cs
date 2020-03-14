@@ -127,6 +127,7 @@
             this.charSkills = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.charCity = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.tabPage.SuspendLayout();
             this.charPage.SuspendLayout();
@@ -155,7 +156,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).BeginInit();
             this.charStash.SuspendLayout();
-            this.charSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -259,6 +259,7 @@
             this.tabPage.Controls.Add(this.charInv);
             this.tabPage.Controls.Add(this.charStash);
             this.tabPage.Controls.Add(this.charSkills);
+            this.tabPage.Controls.Add(this.charCity);
             this.tabPage.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabPage.Location = new System.Drawing.Point(0, 24);
             this.tabPage.Name = "tabPage";
@@ -1298,11 +1299,6 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
-            // lockAllButton
-            // 
-
-
-            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -1312,6 +1308,18 @@
             // characterCustomizationBindingSource
             // 
             this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
+            // 
+            // charCity
+            // 
+            this.charCity.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
+            this.charCity.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.charCity.ImageKey = "(none)";
+            this.charCity.Location = new System.Drawing.Point(4, 22);
+            this.charCity.Name = "charCity";
+            this.charCity.Size = new System.Drawing.Size(827, 507);
+            this.charCity.TabIndex = 4;
+            this.charCity.Text = "City";
+            this.charCity.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1364,7 +1372,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).EndInit();
             this.charStash.ResumeLayout(false);
-            this.charSkills.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1475,6 +1482,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Panel itemStashStatDisplay;
         private System.Windows.Forms.CheckBox extraSkillButton;
+        private System.Windows.Forms.TabPage charCity;
     }
 }
 

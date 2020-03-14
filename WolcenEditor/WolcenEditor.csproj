@@ -136,6 +136,9 @@
     <Compile Include="CharacterDataObjects\Tutorials.cs" />
     <Compile Include="CharacterDataObjects\UnlockedSkill.cs" />
     <Compile Include="CharacterDataObjects\Versions.cs" />
+    <Compile Include="Form1.City.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

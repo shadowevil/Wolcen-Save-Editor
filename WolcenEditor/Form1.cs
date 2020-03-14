@@ -209,6 +209,7 @@ namespace WolcenEditor
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
             LoadTelemetry();
+            initCity();
 
             SetBinding(ref charName, cData.Character, "Name");
             SetBinding(ref charLevel, cData.Character.Stats, "Level");
@@ -316,14 +317,14 @@ namespace WolcenEditor
             } else chkAllCosmetics.Checked = false;
 
             if (cData.PlayerData.SoftcoreNormal.CompletedStory)
-            {
                 chkChampion.Checked = true;
-            } else chkChampion.Checked = false;
+            else
+                chkChampion.Checked = false;
 
             if(cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
-            {
                 extraSkillButton.Checked = true;
-            } else extraSkillButton.Checked = false;
+            else 
+                extraSkillButton.Checked = false;
         }
 
         #region Events
@@ -338,9 +339,7 @@ namespace WolcenEditor
             , MessageBoxButtons.YesNo);
 
             if (aboutMessage == DialogResult.Yes)
-            {
                 Process.Start("https://wolcen-universe.com/");
-            }
         }
 
         private void importStripMenuItem_Click(object sender, EventArgs e)
@@ -350,7 +349,6 @@ namespace WolcenEditor
                 MessageBox.Show("You need to open or create a new character to begin");
                 return;
             }
-
             bool displayBackingText = true;
             Form importForm = new Form()
             {
@@ -364,7 +362,6 @@ namespace WolcenEditor
                 BackgroundImage = WolcenEditor.Properties.Resources.bg,
                 BackgroundImageLayout = ImageLayout.Center,
             };
-
             Label BuildLabel = new Label()
             {
 
@@ -376,7 +373,6 @@ namespace WolcenEditor
                 AutoSize = true,
                 BackColor = Color.Transparent,
             };
-
             TextBox BuildUrlTextBox = new TextBox()
             {
                 Text = "Enter Build URL Here...",
@@ -385,7 +381,6 @@ namespace WolcenEditor
                 Width = 210,
                 Location = new Point(60, 60)
             };
-
             Button AcceptButton = new Button
             {
 
@@ -401,7 +396,6 @@ namespace WolcenEditor
                 Location = new Point(165, 90)
 
             };
-
 
             BuildUrlTextBox.GotFocus += (source, e2) =>
             {
@@ -864,9 +858,7 @@ namespace WolcenEditor
                     telemetryTextBox.DataBindings.Clear();
                     telemetryTextBox.DataBindings.Add("Text", nodeProperties, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
-
             }
-
         }
 
         private void telemetryTextBox_Leave(object sender, EventArgs e)
