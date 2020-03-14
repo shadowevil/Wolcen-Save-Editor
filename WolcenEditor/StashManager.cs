@@ -93,7 +93,7 @@ namespace WolcenEditor
                             pb.DragEnter += Pb_DragEnter;
                             pb.DragDrop += Pb_DragDrop;
                             pb.GiveFeedback += Pb_GiveFeedBack;
-                            //pb.ContextMenu = new ContextMenu();
+                            //pb.ContextMenu = InventoryContextMenu.LoadContextMenu(pb);
                             stashPanelGrid.Controls.Add(pb);
                         }
                     }
@@ -172,7 +172,7 @@ namespace WolcenEditor
             ReloadGridBitmap(Destination.Parent as Panel, dx, dy, dpanelID);
         }
 
-        private static void ReloadGridBitmap(Panel panel, int dx, int dy, int dpanelID)
+        public static void ReloadGridBitmap(Panel panel, int dx, int dy, int dpanelID)
         {
             foreach (PictureBox pb in panel.Controls)
             {
@@ -256,15 +256,23 @@ namespace WolcenEditor
 
         private static void Pb_MouseDown(object sender, MouseEventArgs e)
         {
-            if ((sender as PictureBox).Image != null)
+            if (e.Button == MouseButtons.Left)
             {
-                Bitmap bmp = new Bitmap((sender as PictureBox).Image);
-                sourceBox = (sender as PictureBox);
-                if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                if ((sender as PictureBox).Image != null)
                 {
-                    isValid = false;
-                    return;
-                } else LoadItemData(sender, e);
+                    Bitmap bmp = new Bitmap((sender as PictureBox).Image);
+                    sourceBox = (sender as PictureBox);
+                    if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                    {
+                        isValid = false;
+                        return;
+                    }
+                    else LoadItemData(sender, e);
+                }
+            }
+            else if(e.Button == MouseButtons.Right)
+            {
+                InventoryContextMenu.ShowContextMenu((sender as PictureBox), e.Location, cData.PlayerChest.Panels, "InventoryGrid");
             }
         }
 
@@ -283,6 +291,7 @@ namespace WolcenEditor
             if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Weapon");
             if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Potion");
             if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Gem");
+            if (itemName == null) return;
 
             string l_itemName = null;
             WolcenStaticData.ItemLocalizedNames.TryGetValue(itemName, out l_itemName);

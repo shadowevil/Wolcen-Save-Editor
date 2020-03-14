@@ -182,6 +182,7 @@ namespace WolcenEditor
                 cData.Character.Telemetry.GoldGainedMerchant = c;
                 cData.Character.Telemetry.GoldPicked = c;
                 CharacterIO.WriteCharacter(characterSavePath, cData.Character);
+                PlayerChestIO.WritePlayerChest(playerChestSavePath, cData.PlayerChest);
                 PlayerDataIO.WritePlayerData(playerDataSavePath, cData.PlayerData);
                 hasSaved = true;
             }

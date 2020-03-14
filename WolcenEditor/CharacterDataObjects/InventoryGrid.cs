@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace WolcenEditor
 {
@@ -18,5 +19,14 @@ namespace WolcenEditor
         public Gem Gem { get; set; }
         public Potion Potion { get; set; }
         public ItemMagicEffects MagicEffects { get; set; }
+
+        [JsonIgnore]
+        public InventoryGrid copy
+        {
+            get
+            {
+                return (InventoryGrid)this.MemberwiseClone();
+            }
+        }
     }
 }
