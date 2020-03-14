@@ -96,6 +96,28 @@ namespace WolcenEditor
                     y += skill.Value.sImage.Height + 75;
                 }
             }
+
+            var unlockAllButton = new Button();
+            unlockAllButton.Location = new System.Drawing.Point(735, 477);
+            unlockAllButton.Name = "unlockAllButton";
+            unlockAllButton.Size = new System.Drawing.Size(75, 23);
+            unlockAllButton.TabIndex = 0;
+            unlockAllButton.Text = "Unlock All";
+            unlockAllButton.UseVisualStyleBackColor = true;
+            unlockAllButton.Click += unlockAllButton_Click;
+            skillPage.Controls.Add(unlockAllButton);
+
+            var lockAllButton = new Button();
+            lockAllButton.Location = new System.Drawing.Point(735, 506);
+            lockAllButton.Name = "lockAllButton";
+            lockAllButton.Size = new System.Drawing.Size(75, 23);
+            lockAllButton.TabIndex = 1;
+            lockAllButton.Text = "Lock All";
+            lockAllButton.UseVisualStyleBackColor = true;
+            lockAllButton.Click += lockAllButton_Click;
+            skillPage.Controls.Add(lockAllButton);
+
+
         }
 
         private static PictureBox createPictureBox(string name, Size size, Image bgImage, Point location)
@@ -255,8 +277,29 @@ namespace WolcenEditor
             pb.BorderStyle = BorderStyle.FixedSingle;
         }
 
+        private static void unlockAllButton_Click(object sender, EventArgs e)
+        {
+            var skillList = new List<UnlockedSkill>();
+            foreach (var skill in SkillTree.SkillTreeDict.Keys)
+            {
+                var skillObj = SkillTree.ActivateSkill("_" + skill);
+                skillObj.Level = 90;
+                skillList.Add(skillObj);
+            }
+            cData.Character.UnlockedSkills = skillList;
+            TabControl tabControl = (SkillTree.skillPage.Parent as TabControl);
+            LoadSkillInformation(ref tabControl);
+        }
 
-
+        private static void lockAllButton_Click(object sender, EventArgs e)
+        {
+            foreach (var skill in cData.Character.UnlockedSkills.ToList())
+            {
+                var pic = new PictureBox();
+                pic.Name = "_" + skill.SkillName;
+                RemoveSkill(pic);
+            }
+        }
     }
 
     public class SkillImageBox

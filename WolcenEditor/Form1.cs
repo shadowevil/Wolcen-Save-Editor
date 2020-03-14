@@ -248,8 +248,7 @@ namespace WolcenEditor
             var savedExpansionState = GetExpansionState(treeViewTelemetry.Nodes);
             treeViewTelemetry.BeginUpdate();
             treeViewTelemetry.Nodes.Clear();
-            telemetryTextBox.Enabled = true;
-            telemetryTextBox.Visible = true;
+
 
             var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             foreach (var teleProps in telemetry)
@@ -509,31 +508,6 @@ namespace WolcenEditor
 
         }
 
-        private void unlockAllButton_Click(object sender, EventArgs e)
-        {
-            var skillList = new List<UnlockedSkill>();
-            foreach (var skill in SkillTree.SkillTreeDict.Keys)
-            {
-                var skillObj = SkillTree.ActivateSkill("_" + skill);
-                skillObj.Level = 90;
-                skillList.Add(skillObj);
-            }
-            cData.Character.UnlockedSkills = skillList;
-            TabControl tabControl = (SkillTree.skillPage.Parent as TabControl);
-            SkillTree.LoadSkillInformation(ref tabControl);
-
-        }
-
-        private void lockAllButton_Click(object sender, EventArgs e)
-        {
-            foreach (var skill in cData.Character.UnlockedSkills.ToList())
-            {
-                var pic = new PictureBox();
-                pic.Name = "_" + skill.SkillName;
-                SkillTree.RemoveSkill(pic);
-            }
-        }
-
         private void questBox_SelectedValueChanged(object sender, EventArgs e)
         {
             var box = (ComboBox)sender;
@@ -544,26 +518,35 @@ namespace WolcenEditor
 
         private void treeViewTelemetry_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            telemetryTextBox.Enabled = false;
+            telemetryTextBox.Visible = false;
+            // Ignore top level nodes
             if (treeViewTelemetry.SelectedNode.Parent != null && treeViewTelemetry.SelectedNode.Nodes.Count < 1)
             {
-                var path = GetKeyPath(treeViewTelemetry.SelectedNode).Split('.');
-                //MessageBox.Show(cData.Character.Telemetry + path);
-                var pinfo = "cData.Character.Telemetry" + "." + path[0];
+                telemetryTextBox.Enabled = true;
+                telemetryTextBox.Visible = true;
+
+                // Get the path of the selected node
+                string[] path = GetKeyPath(treeViewTelemetry.SelectedNode).Split('.');
+
+                //gets the properties inside the telemetry object.
                 object value = typeof(CharacterData).GetProperty("Telemetry").GetValue(cData.Character);
-                var test = value.GetType().GetProperty(path[0]).GetValue(value, null);
-                var fffffff = test.GetType();
-                if (test.GetType() == typeof(List<TypeCount>))
+
+                // Get the properties of the selected nodes path
+                var nodeProperties = value.GetType().GetProperty(path[0]).GetValue(value, null);
+
+                //bind the selected treeview node value to our textbox.
+                if (nodeProperties.GetType() == typeof(List<TypeCount>))
                 {
-                    var ar = (List<TypeCount>)test;
+                    var typeCountProperties = (List<TypeCount>)nodeProperties;
                     telemetryTextBox.DataBindings.Clear();
-                    telemetryTextBox.DataBindings.Add("Text", ar[(int)treeViewTelemetry.SelectedNode.Parent.Tag], path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                    telemetryTextBox.DataBindings.Add("Text", typeCountProperties[(int)treeViewTelemetry.SelectedNode.Parent.Tag], path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
                 else
                 {
                     telemetryTextBox.DataBindings.Clear();
-                    telemetryTextBox.DataBindings.Add("Text", test, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                    telemetryTextBox.DataBindings.Add("Text", nodeProperties, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
-
 
             }
 
@@ -576,6 +559,11 @@ namespace WolcenEditor
         }
 
 
+        /// <summary>
+        /// Gets the expanded nodes of a TreeView 
+        /// </summary>
+        /// <param name="nodes">The top level of a TreeView</param>
+        /// <returns>A list of expaneded nodes.</returns>
         public static List<string> GetExpansionState(TreeNodeCollection nodes)
         {
             return Descendants(nodes)
@@ -583,7 +571,11 @@ namespace WolcenEditor
                         .Select(n => n.FullPath)
                         .ToList();
         }
-
+        /// <summary>
+        /// Sets the nodes of a TreeView to a 
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="savedExpansionState"></param>
         public static void SetExpansionState(TreeNodeCollection nodes, List<string> savedExpansionState)
         {
             foreach (var node in Descendants(nodes)
@@ -592,13 +584,16 @@ namespace WolcenEditor
                 node.Expand();
             }
         }
-
+        /// <summary>
+        /// returns an Enumerable containing a list of child objects.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>IEnumerable of child objects.</returns>
         public static IEnumerable<TreeNode> Descendants(TreeNodeCollection c)
         {
             foreach (var node in c.OfType<TreeNode>())
             {
                 yield return node;
-
                 foreach (var child in Descendants(node.Nodes))
                 {
                     yield return child;
@@ -606,21 +601,19 @@ namespace WolcenEditor
             }
         }
 
+        /// <summary>
+        /// Get the path of a tree node as a string sectioned by '.'. 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns>A string representing the path of your node.</returns>
         public string GetKeyPath(TreeNode node)
         {
             if (node.Parent == null)
-            {
                 return node.Name;
-            }
             if (string.IsNullOrEmpty(node.Name))
-            {
                 return GetKeyPath(node.Parent) + node.Name;
-
-            }
             else
-            {
                 return GetKeyPath(node.Parent) + "." + node.Name;
-            }
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1085,7 +1078,7 @@ namespace WolcenEditor
             {
                 cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
             }
-            else if (extraSkillButton.Checked == true)
+            else if (extraSkillButton.Checked == false)
             {
                 if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
                 {
