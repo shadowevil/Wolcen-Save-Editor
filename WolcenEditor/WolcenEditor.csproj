@@ -145,6 +145,7 @@
     <Compile Include="ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="InventoryContextMenu.cs" />
     <Compile Include="InventoryManager.cs" />
     <Compile Include="LogMe.cs" />
     <Compile Include="OnlineBuildRequest.cs" />
