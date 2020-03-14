@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace WolcenEditor
 {
-    public static class InventoryManager
+    public static partial class InventoryManager
     {
 
         private static Size defaultGridSize = new Size(50, 50);
@@ -268,7 +268,7 @@ namespace WolcenEditor
             pb.Image = GetInventoryBitmap(charMap[DestinationPb.Name], DestinationPb);
         }
 
-        private static void ReloadInventoryBitmap(Panel charRandomInv, int dx, int dy)
+        public static void ReloadInventoryBitmap(Panel charRandomInv, int dx, int dy)
         {
             IList<InventoryGrid> invGrid = cData.Character.InventoryGrid;
             foreach (PictureBox pb in (charRandomInv.Controls))
@@ -726,7 +726,8 @@ namespace WolcenEditor
                     LoadInventoryContextMenu((sender as PictureBox).ContextMenu, true);
                 }
                 else LoadInventoryContextMenu((sender as PictureBox).ContextMenu);
-                (sender as PictureBox).ContextMenu.Show((sender as PictureBox), e.Location);
+                InventoryContextMenu.ShowContextMenu((sender as PictureBox), e.Location, cData.Character, "InventoryGrid");
+                //(sender as PictureBox).ContextMenu.Show((sender as PictureBox), e.Location);
             }
         }
         

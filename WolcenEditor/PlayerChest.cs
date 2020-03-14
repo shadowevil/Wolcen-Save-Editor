@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using Newtonsoft.Json.Serialization;
 
 namespace WolcenEditor
 {
     public class PlayerChest
     {
+        public string Version { get; set; }
+        public string InventoryVersion { get; set; }
+        public string ItemsVersion { get; set; }
         public List<Panels> Panels { get; set; }
     }
 
@@ -19,7 +23,7 @@ namespace WolcenEditor
     {
         public int ID { get; set; }
         public bool isLocked { get; set; }
-        public List<InventoryGrid> InventoryGrid { get; set; }
+        public IList<InventoryGrid> InventoryGrid { get; set; }
     }
 
     public static class PlayerChestIO
@@ -39,6 +43,7 @@ namespace WolcenEditor
             }
 
             string newJsonFile = JsonConvert.SerializeObject(playerChest, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
             try
             {
                 File.WriteAllText(outputPath, newJsonFile);
