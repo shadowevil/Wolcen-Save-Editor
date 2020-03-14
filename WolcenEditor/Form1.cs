@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace WolcenEditor
     {
         public static string characterSavePath;
         public static string playerDataSavePath;
+        public static string playerChestSavePath;
         public string WindowName = "Wolcen Save Editor";
         public bool hasSaved = false;
 
@@ -27,7 +29,7 @@ namespace WolcenEditor
         public void InitForm()
         {
             this.Resize += Form1_Resize;
-            panel1.Enabled = true;
+            tabPage.Enabled = true;
             
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
@@ -47,12 +49,13 @@ namespace WolcenEditor
             cboREye.SelectedIndexChanged += _SelectedIndexChanged;
             cboSkinColor.SelectedIndexChanged += _SelectedIndexChanged;
 
-            panel1.SelectedIndexChanged += Panel1_SelectedIndexChanged;
+            tabPage.SelectedIndexChanged += Panel1_SelectedIndexChanged;
             this.KeyDown += Panel1_KeyDown;
             this.KeyUp += Panel1_KeyUp;
 
             LoadComboBoxes();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStashStatDisplay, new object[] { true });
             LogMe.InitLog();
         }
 
@@ -60,6 +63,7 @@ namespace WolcenEditor
         {
             cData.Character = null;
             cData.PlayerData = null;
+            cData.PlayerChest = null;
             this.Controls.Clear();
             InitializeComponent();
             InitForm();
@@ -67,7 +71,7 @@ namespace WolcenEditor
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            panel1.Size = new Size(panel1.Width, this.Height - 62);
+            tabPage.Size = new Size(tabPage.Width, this.Height - 62);
         }
 
         private void _SelectedIndexChanged(object sender, EventArgs e)
@@ -130,7 +134,7 @@ namespace WolcenEditor
 
         private bool onCloseCheck(object sender, EventArgs e)
         {
-            if ((sender as ToolStripMenuItem).Text != "Open")
+            if ((sender as ToolStripMenuItem).Text != "Open" && (sender as ToolStripMenuItem).Text != "New")
             {
                 if ((sender as ToolStripMenuItem).Text != "Exit" && cData.Character == null && cData.PlayerData == null)
                 {
@@ -187,6 +191,7 @@ namespace WolcenEditor
         private void LoadCharacterData()
         {
             LoadPlayerData();
+            LoadPlayerStashData();
             this.Text = WindowName + " - " + cData.Character.Name;
 
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
@@ -221,8 +226,21 @@ namespace WolcenEditor
                 apocUnlockCheckBox.Checked = true;
 
             InventoryManager.LoadCharacterInventory(charInv);
+            StashManager.LoadPlayerStash(charStash);
 
-            SkillTree.LoadSkillInformation(ref panel1);
+            SkillTree.LoadSkillInformation(ref tabPage);
+        }
+
+        private void LoadPlayerStashData()
+        {
+            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string WolcenPlayerChest = userFolder + "\\Saved Games\\wolcen\\savegames\\playerchest.json";
+            if (File.Exists(WolcenPlayerChest))
+            {
+                if (cData.PlayerChest != null) cData.PlayerChest = null;
+                cData.PlayerChest = PlayerChestIO.ReadPlayerStash(WolcenPlayerChest);
+                playerChestSavePath = WolcenPlayerChest;
+            }
         }
 
         private void LoadTelemetry()
@@ -230,8 +248,7 @@ namespace WolcenEditor
             var savedExpansionState = GetExpansionState(treeViewTelemetry.Nodes);
             treeViewTelemetry.BeginUpdate();
             treeViewTelemetry.Nodes.Clear();
-            telemetryTextBox.Enabled = true;
-            telemetryTextBox.Visible = true;
+
 
             var telemetry = cData.Character.Telemetry.GetType().GetProperties();
             foreach (var teleProps in telemetry)
@@ -302,32 +319,354 @@ namespace WolcenEditor
             {
                 chkChampion.Checked = true;
             } else chkChampion.Checked = false;
-        }
 
-        private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
-        {
-            obj.ResetBindings();
-            obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        private void SetIndexToValueOf(ref ImageComboBox cbo, int Value)
-        {
-            for (int i = 0; i < cbo.Items.Count; i++)
+            if(cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
             {
-                if (cbo.Items[i].ToString() == Value.ToString())
+                extraSkillButton.Checked = true;
+            } else extraSkillButton.Checked = false;
+        }
+
+        #region Events
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
+                "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
+                "[insert whatevever contact info here]\n\n\n" +
+                "Would you like to be taken to https://wolcen-universe.com/ right now?"
+                , "About Improrting Builds."
+            , MessageBoxButtons.YesNo);
+
+            if (aboutMessage == DialogResult.Yes)
+            {
+                Process.Start("https://wolcen-universe.com/");
+            }
+        }
+
+        private void importStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cData.Character == null)
+            {
+                MessageBox.Show("You need to open or create a new character to begin");
+                return;
+            }
+
+            bool displayBackingText = true;
+            Form importForm = new Form()
+            {
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Import a build",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
+            };
+
+            Label BuildLabel = new Label()
+            {
+
+                Text = "Import Build",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 30, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(50, 7),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+
+            TextBox BuildUrlTextBox = new TextBox()
+            {
+                Text = "Enter Build URL Here...",
+                ForeColor = Color.Gray,
+
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+
+            Button AcceptButton = new Button
+            {
+
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK
+
+            };
+            Button CancelButton = new Button
+            {
+
+                Text = "Cancel",
+                Location = new Point(165, 90)
+
+            };
+
+
+            BuildUrlTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
                 {
-                    cbo.SelectedIndex = i;
+                    displayBackingText = false;
+                    BuildUrlTextBox.Text = "";
+                    BuildUrlTextBox.ForeColor = Color.Black;
+
+                }
+            };
+            BuildUrlTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(BuildUrlTextBox.Text))
+                {
+                    displayBackingText = true;
+                    BuildUrlTextBox.Text = "Enter Build URL Here...";
+                    BuildUrlTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(BuildUrlTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
+
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
+            {
+                if (!url.Contains("wolcen-universe.com/builds/"))
+                    MessageBox.Show("That doesn't seem to be a valid url.");
+                else
+                {
+                    // splits up the URL to get at the build id we need for the api request.
+                    var urlSections = url.Split('-');
+                    var pathSplit = urlSections[1].Split('/');
+                    var buildId = pathSplit[2];
+
+                    // get back json data from the wolcen-universe api for the given build id
+                    string jsonData = OnlineBuildRequest.RequestBuild(buildId);
+
+                    // converts the json into a dynamic json object.
+                    dynamic resultData = JObject.Parse(jsonData);
+
+                    //sets level and main stats to the data from the jsonObject
+
+                    var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
+                    if (level != null)
+                    {
+                        cData.Character.Stats.Level = level;
+                        cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
+                        cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
+                        cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
+                        cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                    }
+
+                    //sets the passive skills
+                    List<String> newPassiveSkills = resultData["data"]["build"]["passiveSkillTree"]["nodes"].ToObject(typeof(List<string>));
+                    newPassiveSkills.Remove("root");
+                    cData.Character.PassiveSkills = newPassiveSkills;
+
+                    //sets the rotation of the skill wheels
+                    List<int> rotations = resultData["data"]["build"]["passiveSkillTree"]["rotations"].ToObject(typeof(List<int>));
+                    List<PSTConfig> newPassiveConfig = new List<PSTConfig>
+                    {
+                        new PSTConfig { Id = 0, Mode = 3},
+                        new PSTConfig { Id = 1, Mode = 6},
+                        new PSTConfig { Id = 2, Mode = 12},
+                    };
+                    for (int i = 0; i < newPassiveConfig.Count; i++)
+                    {
+                        int counter = newPassiveConfig[i].Mode;
+                        newPassiveConfig[i].Mode = (counter - rotations[i]) % counter;
+                    }
+                    cData.Character.PSTConfig = newPassiveConfig;
+
+                    // list of skills needed by the build
+                    var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
+                    if (skills != null)
+                    {
+                        // create a new list to store all of our skills in.
+                        var newUnlockedSkillList = new List<UnlockedSkill>();
+
+                        // if we already have some skills then set them in this new list so we don't lose them.
+                        if (cData.Character.UnlockedSkills != null)
+                            newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
+
+                        //setup the skillbar with proper slots
+                        var newSkillBar = new List<SkillBar>()
+                        {
+                            new SkillBar { Slot = 1, SkillName = "" },
+                            new SkillBar { Slot = 2, SkillName = "" },
+                            new SkillBar { Slot = 3, SkillName = ""  },
+                            new SkillBar { Slot = 4, SkillName = ""  },
+                            new SkillBar { Slot = 5, SkillName = ""  },
+                            new SkillBar { Slot = 12, SkillName = ""  },
+                        };
+                        for (int i = 0; i < skills.Count; i++)
+                        {
+                            if (skills[i] == null)
+                                break;
+
+                            // this sets the names of the skills we want in our hotbar.
+                            newSkillBar[i].SkillName = skills[i]["id"];
+
+                            // converts our jsonObject to a string that represents the skill name.
+                            string newSkillName = skills[i]["id"].ToObject(typeof(string));
+
+                            // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
+                            bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
+                            if (!alreadyExists)
+                            {
+                                string skillId = skills[i]["id"];
+                                UnlockedSkill newSkill = new UnlockedSkill();
+                                newSkill.SkillName = skillId;
+                                newSkill.CurrentXp = "0";
+                                newSkill.Level = 90;
+
+                                string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
+                                newUnlockedSkillList.Add(newSkill);
+                            }
+                            else //if the skill does exist we find it in our list and just change the values of it.
+                            {
+                                foreach (var skill in newUnlockedSkillList)
+                                {
+                                    if (skill.SkillName == newSkillName)
+                                    {
+                                        skill.Level = 90;
+                                        string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                        skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        //sets our characters actual data to the new skillbar and unlocked skill list we just made.
+
+                        cData.Character.SkillBar = newSkillBar;
+                        cData.Character.UnlockedSkills = newUnlockedSkillList;
+                    }
+
+                    MessageBox.Show($"Successfully Imported Character From:\n{url}");
+                    SkillTree.LoadTree(ref tabPage);
+                    LoadCharacterData();
                 }
             }
         }
 
-        private void BindToComboBox<T, DictKey, DictValue>(T comboBox, Dictionary<DictKey, DictValue> mapping, object dataSource, string dataMemeber) where T : ComboBox
+        private void extraSkillButton_CheckedChanged(object sender, EventArgs e)
         {
-            comboBox.ResetBindings();
-            comboBox.DataSource = new BindingSource(mapping, null);
-            comboBox.DisplayMember = "Value";
-            comboBox.ValueMember = "Key";
-            comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
+            if (cData.PlayerData == null) return;
+            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            {
+                cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
+            }
+            else if (extraSkillButton.Checked == false)
+            {
+                if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+                {
+                    for (int i = 0; i < cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Count; i++)
+                    {
+                        if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
+                        {
+                            cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name = "";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (onCloseCheck(sender, e) == false) return;
+
+            bool displayBackingText = true;
+            Form importForm = new Form()
+            {
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Create a new character",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
+            };
+
+            Label BuildLabel = new Label()
+            {
+                Text = "Name New Character",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 20, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(33, 15),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+            TextBox NameTextBox = new TextBox()
+            {
+                Text = "Enter Name Here...",
+                ForeColor = Color.Gray,
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+            Button AcceptButton = new Button
+            {
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK
+            };
+            Button CancelButton = new Button
+            {
+                Text = "Cancel",
+                Location = new Point(165, 90)
+            };
+            NameTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
+                {
+                    displayBackingText = false;
+                    NameTextBox.Text = "";
+                    NameTextBox.ForeColor = Color.Black;
+                }
+            };
+            NameTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(NameTextBox.Text))
+                {
+                    displayBackingText = true;
+                    NameTextBox.Text = "Enter Name Here...";
+                    NameTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(NameTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var name = importForm.ShowDialog() == DialogResult.OK ? NameTextBox.Text : "";
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
+            {
+                UnloadRandomInventory();
+
+                name = name.Replace(" ", "");
+
+                if (cData.Character != null)
+                    cData.Character = null;
+                cData.Character = CreateNewCharacter(name);
+
+                tabPage.Enabled = true;
+                string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
+                string newPath = userFolder + WolcenSavePath;
+                characterSavePath = newPath + cData.Character.Name + ".json";
+                SkillTree.LoadTree(ref tabPage);
+                LoadCharacterData();
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -417,9 +756,9 @@ namespace WolcenEditor
                 else { return; }
             }
 
-            panel1.Enabled = true;
+            tabPage.Enabled = true;
 
-            SkillTree.LoadTree(ref panel1);
+            SkillTree.LoadTree(ref tabPage);
             LoadCharacterData();
         }
 
@@ -452,10 +791,17 @@ namespace WolcenEditor
             if ((sender as TabControl).SelectedTab.Text == "Inventory" || (sender as TabControl).SelectedTab.Text == "Skills")
             {
                 this.Height = 595 + 35;
+                this.Width = 851;
+            }
+            else if ((sender as TabControl).SelectedTab.Text == "Stash")
+            {
+                this.Height = 595 + 60;
+                //this.Width = 851 - 292;
             }
             else
             {
                 this.Height = 595;
+                this.Width = 851;
             }
         }
 
@@ -479,31 +825,6 @@ namespace WolcenEditor
 
         }
 
-        private void unlockAllButton_Click(object sender, EventArgs e)
-        {
-            var skillList = new List<UnlockedSkill>();
-            foreach (var skill in SkillTree.SkillTreeDict.Keys)
-            {
-                var skillObj = SkillTree.ActivateSkill("_" + skill);
-                skillObj.Level = 90;
-                skillList.Add(skillObj);
-            }
-            cData.Character.UnlockedSkills = skillList;
-            TabControl tabControl = (SkillTree.skillPage.Parent as TabControl);
-            SkillTree.LoadSkillInformation(ref tabControl);
-
-        }
-
-        private void lockAllButton_Click(object sender, EventArgs e)
-        {
-            foreach (var skill in cData.Character.UnlockedSkills.ToList())
-            {
-                var pic = new PictureBox();
-                pic.Name = "_" + skill.SkillName;
-                SkillTree.RemoveSkill(pic);
-            }
-        }
-
         private void questBox_SelectedValueChanged(object sender, EventArgs e)
         {
             var box = (ComboBox)sender;
@@ -514,30 +835,40 @@ namespace WolcenEditor
 
         private void treeViewTelemetry_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            telemetryTextBox.Enabled = false;
+            telemetryTextBox.Visible = false;
+            // Ignore top level nodes
             if (treeViewTelemetry.SelectedNode.Parent != null && treeViewTelemetry.SelectedNode.Nodes.Count < 1)
             {
-                var path = GetKeyPath(treeViewTelemetry.SelectedNode).Split('.');
-                //MessageBox.Show(cData.Character.Telemetry + path);
-                var pinfo = "cData.Character.Telemetry" + "." + path[0];
+                telemetryTextBox.Enabled = true;
+                telemetryTextBox.Visible = true;
+
+                // Get the path of the selected node
+                string[] path = GetKeyPath(treeViewTelemetry.SelectedNode).Split('.');
+
+                //gets the properties inside the telemetry object.
                 object value = typeof(CharacterData).GetProperty("Telemetry").GetValue(cData.Character);
-                var test = value.GetType().GetProperty(path[0]).GetValue(value, null);
-                var fffffff = test.GetType();
-                if (test.GetType() == typeof(List<TypeCount>))
+
+                // Get the properties of the selected nodes path
+                var nodeProperties = value.GetType().GetProperty(path[0]).GetValue(value, null);
+
+                //bind the selected treeview node value to our textbox.
+                if (nodeProperties.GetType() == typeof(List<TypeCount>))
                 {
-                    var ar = (List<TypeCount>)test;
+                    var typeCountProperties = (List<TypeCount>)nodeProperties;
                     telemetryTextBox.DataBindings.Clear();
-                    telemetryTextBox.DataBindings.Add("Text", ar[(int)treeViewTelemetry.SelectedNode.Parent.Tag], path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                    telemetryTextBox.DataBindings.Add("Text", typeCountProperties[(int)treeViewTelemetry.SelectedNode.Parent.Tag], path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
                 else
                 {
                     telemetryTextBox.DataBindings.Clear();
-                    telemetryTextBox.DataBindings.Add("Text", test, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
+                    telemetryTextBox.DataBindings.Add("Text", nodeProperties, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
-
 
             }
 
         }
+
         private void telemetryTextBox_Leave(object sender, EventArgs e)
         {
             telemetryTextBox.DataBindings.Clear();
@@ -545,7 +876,14 @@ namespace WolcenEditor
             LoadTelemetry();
         }
 
+        #endregion
 
+        #region Helper Functions
+        /// <summary>
+        /// Gets the expanded nodes of a TreeView 
+        /// </summary>
+        /// <param name="nodes">The top level of a TreeView</param>
+        /// <returns>A list of expaneded nodes.</returns>
         public static List<string> GetExpansionState(TreeNodeCollection nodes)
         {
             return Descendants(nodes)
@@ -554,6 +892,11 @@ namespace WolcenEditor
                         .ToList();
         }
 
+        /// <summary>
+        /// Sets the nodes of a TreeView to a 
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="savedExpansionState"></param>
         public static void SetExpansionState(TreeNodeCollection nodes, List<string> savedExpansionState)
         {
             foreach (var node in Descendants(nodes)
@@ -563,12 +906,16 @@ namespace WolcenEditor
             }
         }
 
+        /// <summary>
+        /// returns an Enumerable containing a list of child objects.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>IEnumerable of child objects.</returns>
         public static IEnumerable<TreeNode> Descendants(TreeNodeCollection c)
         {
             foreach (var node in c.OfType<TreeNode>())
             {
                 yield return node;
-
                 foreach (var child in Descendants(node.Nodes))
                 {
                     yield return child;
@@ -576,54 +923,66 @@ namespace WolcenEditor
             }
         }
 
+        /// <summary>
+        /// Get the path of a tree node as a string sectioned by '.'. 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns>A string representing the path of your node.</returns>
         public string GetKeyPath(TreeNode node)
         {
             if (node.Parent == null)
-            {
                 return node.Name;
-            }
             if (string.IsNullOrEmpty(node.Name))
-            {
                 return GetKeyPath(node.Parent) + node.Name;
-
-            }
             else
-            {
                 return GetKeyPath(node.Parent) + "." + node.Name;
+        }
+
+        private string TranslateSkillModifiers(string skillName, string[] listOfModifiers)
+        {
+            char[] modifier = new char[16];
+            for (int i = 0; i < modifier.Length; i++)
+            {
+                modifier[i] = '0';
+            }
+            foreach (var str in listOfModifiers)
+            {
+                int modIndex = WolcenStaticData.SkillModifiers[skillName][str];
+                modifier[modIndex] = '1';
+            }
+            return new string(modifier);
+        }
+
+        private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
+        {
+            obj.ResetBindings();
+            obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        private void SetIndexToValueOf(ref ImageComboBox cbo, int Value)
+        {
+            for (int i = 0; i < cbo.Items.Count; i++)
+            {
+                if (cbo.Items[i].ToString() == Value.ToString())
+                {
+                    cbo.SelectedIndex = i;
+                }
             }
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BindToComboBox<T, DictKey, DictValue>(T comboBox, Dictionary<DictKey, DictValue> mapping, object dataSource, string dataMemeber) where T : ComboBox
         {
-            Form prompt = new Form()
-            {
-                Width = 265,
-                Height = 125,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = "Enter your character name.",
-                StartPosition = FormStartPosition.CenterScreen
-            };
-            Label textLabel = new Label() { Left = 25, Top = 5, Text = "Name:" };
-            TextBox textBox = new TextBox() { Left = 25, Top = 25, Width = 200 };
-            Button confirmation = new Button() { Text = "Ok", Left = 75, Width = 100, Top = 50, DialogResult = DialogResult.OK };
-            confirmation.Click += (sender2, e2) => { prompt.Close(); };
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
-
-            var name = prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-            if(prompt.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
-            {
-                name = name.Replace(" ", "");
-                CreateNewCharacter(name);
-            }
+            comboBox.ResetBindings();
+            comboBox.DataSource = new BindingSource(mapping, null);
+            comboBox.DisplayMember = "Value";
+            comboBox.ValueMember = "Key";
+            comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
         }
+        #endregion
 
-        private void CreateNewCharacter(string name)
+
+        private CharacterData CreateNewCharacter(string name)
         {
-            if (cData.Character != null)
-                cData.Character = null;
             var newCharacter = new CharacterData()
             {
                 Name = name,
@@ -729,46 +1088,19 @@ namespace WolcenEditor
                 Sequences = new List<Sequences>{ },
                 LastGameParameters = new LastGameParameters{GameMode = 1, DifficultyMode = 1, Difficulty = 2, League = 1 , QuestId = "INTRO_Quest1", StepId = 1, Privacy = 2, Level = 3 }
             };
+           return newCharacter;
 
-            cData.Character = newCharacter;
-            panel1.Enabled = true;
-            string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
-            string newPath = userFolder + WolcenSavePath;
-            characterSavePath = newPath + cData.Character.Name + ".json";
-            SkillTree.LoadTree(ref panel1);
-            LoadCharacterData();
         }
+
     }
 
     public static class cData
     {
-        private static PlayerData playerData;
-        private static CharacterData character;
+        public static PlayerChest PlayerChest { get; set; }
 
-        public static PlayerData PlayerData
-        {
-            get
-            {
-                return playerData;
-            }
-            set
-            {
-                playerData = value;
-            }
-        }
+        public static PlayerData PlayerData { get; set; }
 
-        public static CharacterData Character
-        {
-            get
-            {
-                return character;
-            }
-            set
-            {
-                character = value;
-            }
-        }
+        public static CharacterData Character { get; set; }
 
     }
 }
