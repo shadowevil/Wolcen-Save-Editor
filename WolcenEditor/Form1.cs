@@ -326,30 +326,347 @@ namespace WolcenEditor
             } else extraSkillButton.Checked = false;
         }
 
-        private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
+        #region Events
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            obj.ResetBindings();
-            obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
+            var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
+                "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
+                "[insert whatevever contact info here]\n\n\n" +
+                "Would you like to be taken to https://wolcen-universe.com/ right now?"
+                , "About Improrting Builds."
+            , MessageBoxButtons.YesNo);
+
+            if (aboutMessage == DialogResult.Yes)
+            {
+                Process.Start("https://wolcen-universe.com/");
+            }
         }
 
-        private void SetIndexToValueOf(ref ImageComboBox cbo, int Value)
+        private void importStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < cbo.Items.Count; i++)
+            if (cData.Character == null)
             {
-                if (cbo.Items[i].ToString() == Value.ToString())
+                MessageBox.Show("You need to open or create a new character to begin");
+                return;
+            }
+
+            bool displayBackingText = true;
+            Form importForm = new Form()
+            {
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Import a build",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
+            };
+
+            Label BuildLabel = new Label()
+            {
+
+                Text = "Import Build",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 30, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(50, 7),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+
+            TextBox BuildUrlTextBox = new TextBox()
+            {
+                Text = "Enter Build URL Here...",
+                ForeColor = Color.Gray,
+
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+
+            Button AcceptButton = new Button
+            {
+
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK
+
+            };
+            Button CancelButton = new Button
+            {
+
+                Text = "Cancel",
+                Location = new Point(165, 90)
+
+            };
+
+
+            BuildUrlTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
                 {
-                    cbo.SelectedIndex = i;
+                    displayBackingText = false;
+                    BuildUrlTextBox.Text = "";
+                    BuildUrlTextBox.ForeColor = Color.Black;
+
+                }
+            };
+            BuildUrlTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(BuildUrlTextBox.Text))
+                {
+                    displayBackingText = true;
+                    BuildUrlTextBox.Text = "Enter Build URL Here...";
+                    BuildUrlTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(BuildUrlTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
+
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
+            {
+                if (!url.Contains("wolcen-universe.com/builds/"))
+                    MessageBox.Show("That doesn't seem to be a valid url.");
+                else
+                {
+                    // splits up the URL to get at the build id we need for the api request.
+                    var urlSections = url.Split('-');
+                    var pathSplit = urlSections[1].Split('/');
+                    var buildId = pathSplit[2];
+
+                    // get back json data from the wolcen-universe api for the given build id
+                    string jsonData = OnlineBuildRequest.RequestBuild(buildId);
+
+                    // converts the json into a dynamic json object.
+                    dynamic resultData = JObject.Parse(jsonData);
+
+                    //sets level and main stats to the data from the jsonObject
+
+                    var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
+                    if (level != null)
+                    {
+                        cData.Character.Stats.Level = level;
+                        cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
+                        cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
+                        cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
+                        cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                    }
+
+                    //sets the passive skills
+                    List<String> newPassiveSkills = resultData["data"]["build"]["passiveSkillTree"]["nodes"].ToObject(typeof(List<string>));
+                    newPassiveSkills.Remove("root");
+                    cData.Character.PassiveSkills = newPassiveSkills;
+
+                    //sets the rotation of the skill wheels
+                    List<int> rotations = resultData["data"]["build"]["passiveSkillTree"]["rotations"].ToObject(typeof(List<int>));
+                    List<PSTConfig> newPassiveConfig = new List<PSTConfig>
+                    {
+                        new PSTConfig { Id = 0, Mode = 3},
+                        new PSTConfig { Id = 1, Mode = 6},
+                        new PSTConfig { Id = 2, Mode = 12},
+                    };
+                    for (int i = 0; i < newPassiveConfig.Count; i++)
+                    {
+                        int counter = newPassiveConfig[i].Mode;
+                        newPassiveConfig[i].Mode = (counter - rotations[i]) % counter;
+                    }
+                    cData.Character.PSTConfig = newPassiveConfig;
+
+                    // list of skills needed by the build
+                    var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
+                    if (skills != null)
+                    {
+                        // create a new list to store all of our skills in.
+                        var newUnlockedSkillList = new List<UnlockedSkill>();
+
+                        // if we already have some skills then set them in this new list so we don't lose them.
+                        if (cData.Character.UnlockedSkills != null)
+                            newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
+
+                        //setup the skillbar with proper slots
+                        var newSkillBar = new List<SkillBar>()
+                        {
+                            new SkillBar { Slot = 1, SkillName = "" },
+                            new SkillBar { Slot = 2, SkillName = "" },
+                            new SkillBar { Slot = 3, SkillName = ""  },
+                            new SkillBar { Slot = 4, SkillName = ""  },
+                            new SkillBar { Slot = 5, SkillName = ""  },
+                            new SkillBar { Slot = 12, SkillName = ""  },
+                        };
+                        for (int i = 0; i < skills.Count; i++)
+                        {
+                            if (skills[i] == null)
+                                break;
+
+                            // this sets the names of the skills we want in our hotbar.
+                            newSkillBar[i].SkillName = skills[i]["id"];
+
+                            // converts our jsonObject to a string that represents the skill name.
+                            string newSkillName = skills[i]["id"].ToObject(typeof(string));
+
+                            // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
+                            bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
+                            if (!alreadyExists)
+                            {
+                                string skillId = skills[i]["id"];
+                                UnlockedSkill newSkill = new UnlockedSkill();
+                                newSkill.SkillName = skillId;
+                                newSkill.CurrentXp = "0";
+                                newSkill.Level = 90;
+
+                                string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
+                                newUnlockedSkillList.Add(newSkill);
+                            }
+                            else //if the skill does exist we find it in our list and just change the values of it.
+                            {
+                                foreach (var skill in newUnlockedSkillList)
+                                {
+                                    if (skill.SkillName == newSkillName)
+                                    {
+                                        skill.Level = 90;
+                                        string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
+                                        skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        //sets our characters actual data to the new skillbar and unlocked skill list we just made.
+
+                        cData.Character.SkillBar = newSkillBar;
+                        cData.Character.UnlockedSkills = newUnlockedSkillList;
+                    }
+
+                    MessageBox.Show($"Successfully Imported Character From:\n{url}");
+                    SkillTree.LoadTree(ref tabPage);
+                    LoadCharacterData();
                 }
             }
         }
 
-        private void BindToComboBox<T, DictKey, DictValue>(T comboBox, Dictionary<DictKey, DictValue> mapping, object dataSource, string dataMemeber) where T : ComboBox
+        private void extraSkillButton_CheckedChanged(object sender, EventArgs e)
         {
-            comboBox.ResetBindings();
-            comboBox.DataSource = new BindingSource(mapping, null);
-            comboBox.DisplayMember = "Value";
-            comboBox.ValueMember = "Key";
-            comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
+            if (cData.PlayerData == null) return;
+            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            {
+                cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
+            }
+            else if (extraSkillButton.Checked == false)
+            {
+                if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+                {
+                    for (int i = 0; i < cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Count; i++)
+                    {
+                        if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
+                        {
+                            cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name = "";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (onCloseCheck(sender, e) == false) return;
+
+            bool displayBackingText = true;
+            Form importForm = new Form()
+            {
+                Width = 350,
+                Height = 200,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                Text = "Create a new character",
+                BackgroundImage = WolcenEditor.Properties.Resources.bg,
+                BackgroundImageLayout = ImageLayout.Center,
+            };
+
+            Label BuildLabel = new Label()
+            {
+                Text = "Name New Character",
+                ForeColor = Color.White,
+                Font = new Font(Form1.DefaultFont.FontFamily, 20, FontStyle.Regular),
+                Visible = true,
+                Location = new Point(33, 15),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+            };
+            TextBox NameTextBox = new TextBox()
+            {
+                Text = "Enter Name Here...",
+                ForeColor = Color.Gray,
+                Width = 210,
+                Location = new Point(60, 60)
+            };
+            Button AcceptButton = new Button
+            {
+                Text = "Accept",
+                Location = new Point(85, 90),
+                DialogResult = DialogResult.OK
+            };
+            Button CancelButton = new Button
+            {
+                Text = "Cancel",
+                Location = new Point(165, 90)
+            };
+            NameTextBox.GotFocus += (source, e2) =>
+            {
+                if (displayBackingText)
+                {
+                    displayBackingText = false;
+                    NameTextBox.Text = "";
+                    NameTextBox.ForeColor = Color.Black;
+                }
+            };
+            NameTextBox.LostFocus += (source, e2) =>
+            {
+                if (!displayBackingText && string.IsNullOrEmpty(NameTextBox.Text))
+                {
+                    displayBackingText = true;
+                    NameTextBox.Text = "Enter Name Here...";
+                    NameTextBox.ForeColor = Color.Gray;
+
+                }
+            };
+            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+
+            importForm.Controls.Add(AcceptButton);
+            importForm.Controls.Add(CancelButton);
+            importForm.Controls.Add(NameTextBox);
+            importForm.Controls.Add(BuildLabel);
+
+            var name = importForm.ShowDialog() == DialogResult.OK ? NameTextBox.Text : "";
+            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
+            {
+                UnloadRandomInventory();
+
+                name = name.Replace(" ", "");
+
+                if (cData.Character != null)
+                    cData.Character = null;
+                cData.Character = CreateNewCharacter(name);
+
+                tabPage.Enabled = true;
+                string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
+                string newPath = userFolder + WolcenSavePath;
+                characterSavePath = newPath + cData.Character.Name + ".json";
+                SkillTree.LoadTree(ref tabPage);
+                LoadCharacterData();
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -551,6 +868,7 @@ namespace WolcenEditor
             }
 
         }
+
         private void telemetryTextBox_Leave(object sender, EventArgs e)
         {
             telemetryTextBox.DataBindings.Clear();
@@ -558,7 +876,9 @@ namespace WolcenEditor
             LoadTelemetry();
         }
 
+        #endregion
 
+        #region Helper Functions
         /// <summary>
         /// Gets the expanded nodes of a TreeView 
         /// </summary>
@@ -571,6 +891,7 @@ namespace WolcenEditor
                         .Select(n => n.FullPath)
                         .ToList();
         }
+
         /// <summary>
         /// Sets the nodes of a TreeView to a 
         /// </summary>
@@ -584,6 +905,7 @@ namespace WolcenEditor
                 node.Expand();
             }
         }
+
         /// <summary>
         /// returns an Enumerable containing a list of child objects.
         /// </summary>
@@ -616,108 +938,48 @@ namespace WolcenEditor
                 return GetKeyPath(node.Parent) + "." + node.Name;
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private string TranslateSkillModifiers(string skillName, string[] listOfModifiers)
         {
-            if (onCloseCheck(sender, e) == false) return;
-
-            bool displayBackingText = true;
-            Form importForm = new Form()
+            char[] modifier = new char[16];
+            for (int i = 0; i < modifier.Length; i++)
             {
-                Width = 350,
-                Height = 200,
-                StartPosition = FormStartPosition.CenterParent,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Text = "Create a new character",
-                BackgroundImage = WolcenEditor.Properties.Resources.bg,
-                BackgroundImageLayout = ImageLayout.Center,
-            };
-
-            Label BuildLabel = new Label()
+                modifier[i] = '0';
+            }
+            foreach (var str in listOfModifiers)
             {
+                int modIndex = WolcenStaticData.SkillModifiers[skillName][str];
+                modifier[modIndex] = '1';
+            }
+            return new string(modifier);
+        }
 
-                Text = "Name New Character",
-                ForeColor = Color.White,
-                Font = new Font(Form1.DefaultFont.FontFamily, 20, FontStyle.Regular),
-                Visible = true,
-                Location = new Point(33, 15),
-                AutoSize = true,
-                BackColor = Color.Transparent,
-            };
+        private void SetBinding(ref TextBox obj, object dataSource, string dataMember)
+        {
+            obj.ResetBindings();
+            obj.DataBindings.Add("Text", dataSource, dataMember, false, DataSourceUpdateMode.OnPropertyChanged);
+        }
 
-            TextBox NameTextBox = new TextBox()
+        private void SetIndexToValueOf(ref ImageComboBox cbo, int Value)
+        {
+            for (int i = 0; i < cbo.Items.Count; i++)
             {
-                Text = "Enter Name Here...",
-                ForeColor = Color.Gray,
-
-                Width = 210,
-                Location = new Point(60, 60)
-            };
-
-            Button AcceptButton = new Button
-            {
-
-                Text = "Accept",
-                Location = new Point(85, 90),
-                DialogResult = DialogResult.OK
-
-            };
-            Button CancelButton = new Button
-            {
-
-                Text = "Cancel",
-                Location = new Point(165, 90)
-
-            };
-
-            NameTextBox.GotFocus += (source, e2) =>
-            {
-                if (displayBackingText)
+                if (cbo.Items[i].ToString() == Value.ToString())
                 {
-                    displayBackingText = false;
-                    NameTextBox.Text = "";
-                    NameTextBox.ForeColor = Color.Black;
-
+                    cbo.SelectedIndex = i;
                 }
-            };
-            NameTextBox.LostFocus += (source, e2) =>
-            {
-                if (!displayBackingText && string.IsNullOrEmpty(NameTextBox.Text))
-                {
-                    displayBackingText = true;
-                    NameTextBox.Text = "Enter Name Here...";
-                    NameTextBox.ForeColor = Color.Gray;
-
-                }
-            };
-            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
-
-            importForm.Controls.Add(AcceptButton);
-            importForm.Controls.Add(CancelButton);
-            importForm.Controls.Add(NameTextBox);
-            importForm.Controls.Add(BuildLabel);
-
-            var name = importForm.ShowDialog() == DialogResult.OK ? NameTextBox.Text : "";
-            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(name))
-            {
-                UnloadRandomInventory();
-
-                name = name.Replace(" ", "");
-
-                if (cData.Character != null)
-                    cData.Character = null;
-                cData.Character = CreateNewCharacter(name);
-
-                tabPage.Enabled = true;
-                string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
-                string newPath = userFolder + WolcenSavePath;
-                characterSavePath = newPath + cData.Character.Name + ".json";
-                SkillTree.LoadTree(ref tabPage);
-                LoadCharacterData();
             }
         }
+
+        private void BindToComboBox<T, DictKey, DictValue>(T comboBox, Dictionary<DictKey, DictValue> mapping, object dataSource, string dataMemeber) where T : ComboBox
+        {
+            comboBox.ResetBindings();
+            comboBox.DataSource = new BindingSource(mapping, null);
+            comboBox.DisplayMember = "Value";
+            comboBox.ValueMember = "Key";
+            comboBox.DataBindings.Add("SelectedValue", dataSource, dataMemeber, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+        #endregion
+
 
         private CharacterData CreateNewCharacter(string name)
         {
@@ -830,305 +1092,15 @@ namespace WolcenEditor
 
         }
 
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
-                "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
-                "[insert whatevever contact info here]\n\n\n" +
-                "Would you like to be taken to https://wolcen-universe.com/ right now?"
-                , "About Improrting Builds."
-            , MessageBoxButtons.YesNo);
-
-            if(aboutMessage == DialogResult.Yes)
-            {
-                Process.Start("https://wolcen-universe.com/");
-            }
-		}
-		 private void importStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (cData.Character == null)
-            {
-                MessageBox.Show("You need to open or create a new character to begin");
-                return;
-            }
-
-            bool displayBackingText = true;
-            Form importForm = new Form()
-            {
-                Width = 350,
-                Height = 200,
-                StartPosition = FormStartPosition.CenterParent,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Text = "Import a build",
-                BackgroundImage = WolcenEditor.Properties.Resources.bg,
-                BackgroundImageLayout = ImageLayout.Center,
-            };
-
-            Label BuildLabel = new Label()
-            {
-
-                Text = "Import Build",
-                ForeColor = Color.White,
-                Font = new Font(Form1.DefaultFont.FontFamily, 30, FontStyle.Regular),
-                Visible = true,
-                Location = new Point(50, 7),
-                AutoSize = true,
-                BackColor = Color.Transparent,
-            };
-
-            TextBox BuildUrlTextBox = new TextBox()
-            {
-                Text = "Enter Build URL Here...",
-                ForeColor = Color.Gray,
-
-                Width = 210,
-                Location = new Point(60, 60)
-            };
-
-            Button AcceptButton = new Button
-            {
-
-                Text = "Accept",
-                Location = new Point(85, 90),
-                DialogResult = DialogResult.OK         
-
-            };
-            Button CancelButton = new Button
-            {
-
-                Text = "Cancel",
-                Location = new Point(165, 90)
-
-            };
-
-
-            BuildUrlTextBox.GotFocus += (source, e2) =>
-            {
-                if (displayBackingText)
-                {
-                    displayBackingText = false;
-                    BuildUrlTextBox.Text = "";
-                    BuildUrlTextBox.ForeColor = Color.Black;
-
-                }
-            };
-            BuildUrlTextBox.LostFocus += (source, e2) =>
-            {
-                if (!displayBackingText && string.IsNullOrEmpty(BuildUrlTextBox.Text))
-                {
-                    displayBackingText = true;
-                    BuildUrlTextBox.Text = "Enter Build URL Here...";
-                    BuildUrlTextBox.ForeColor = Color.Gray;
-
-                }
-            };
-            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
-
-            importForm.Controls.Add(AcceptButton);
-            importForm.Controls.Add(CancelButton);
-            importForm.Controls.Add(BuildUrlTextBox);
-            importForm.Controls.Add(BuildLabel);
-
-            var url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
-
-            if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
-            {
-                if (!url.Contains("wolcen-universe.com/builds/"))
-                    MessageBox.Show("That doesn't seem to be a valid url.");
-                else
-                {
-                    // splits up the URL to get at the build id we need for the api request.
-                    var urlSections = url.Split('-');
-                    var pathSplit = urlSections[1].Split('/');
-                    var buildId = pathSplit[2];
-
-                    // get back json data from the wolcen-universe api for the given build id
-                    string jsonData = OnlineBuildRequest.RequestBuild(buildId);
-
-                    // converts the json into a dynamic json object.
-                    dynamic resultData = JObject.Parse(jsonData);
-
-                    //sets level and main stats to the data from the jsonObject
-
-                    var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
-                    if (level != null)
-                    {
-                        cData.Character.Stats.Level = level;
-                        cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
-                        cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
-                        cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
-                        cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
-                    }
-
-                    //sets the passive skills
-                    List<String> newPassiveSkills = resultData["data"]["build"]["passiveSkillTree"]["nodes"].ToObject(typeof(List<string>));
-                    newPassiveSkills.Remove("root");
-                    cData.Character.PassiveSkills = newPassiveSkills;
-
-                    //sets the rotation of the skill wheels
-                    List<int> rotations = resultData["data"]["build"]["passiveSkillTree"]["rotations"].ToObject(typeof(List<int>));
-                    List<PSTConfig> newPassiveConfig = new List<PSTConfig>
-                    {
-                        new PSTConfig { Id = 0, Mode = 3},
-                        new PSTConfig { Id = 1, Mode = 6},
-                        new PSTConfig { Id = 2, Mode = 12},
-                    };
-                    for(int i = 0; i < newPassiveConfig.Count;  i++)
-                    {
-                        int counter = newPassiveConfig[i].Mode;
-                        newPassiveConfig[i].Mode = (counter - rotations[i]) % counter;
-                    }
-                    cData.Character.PSTConfig = newPassiveConfig;
-
-                    // list of skills needed by the build
-                    var skills = resultData["data"]["build"]["passiveSkillTree"]["skills"];
-                    if(skills != null)
-                    {
-                        // create a new list to store all of our skills in.
-                        var newUnlockedSkillList = new List<UnlockedSkill>();
-
-                        // if we already have some skills then set them in this new list so we don't lose them.
-                        if (cData.Character.UnlockedSkills != null)
-                            newUnlockedSkillList = cData.Character.UnlockedSkills.ToList();
-
-                        //setup the skillbar with proper slots
-                        var newSkillBar = new List<SkillBar>()
-                        {
-                            new SkillBar { Slot = 1, SkillName = "" },
-                            new SkillBar { Slot = 2, SkillName = "" },
-                            new SkillBar { Slot = 3, SkillName = ""  },
-                            new SkillBar { Slot = 4, SkillName = ""  },
-                            new SkillBar { Slot = 5, SkillName = ""  },
-                            new SkillBar { Slot = 12, SkillName = ""  },
-                        };
-                        for (int i = 0; i < skills.Count; i++)
-                        {
-                            if (skills[i] == null)
-                                break;
-
-                            // this sets the names of the skills we want in our hotbar.
-                            newSkillBar[i].SkillName = skills[i]["id"];
-
-                            // converts our jsonObject to a string that represents the skill name.
-                            string newSkillName = skills[i]["id"].ToObject(typeof(string));
-
-                            // if the skill does not exist on our character we create a brand new UnlockedSkill and add it to the list of skills
-                            bool alreadyExists = newUnlockedSkillList.Any(x => x.SkillName == newSkillName);
-                            if (!alreadyExists)
-                            {
-                                string skillId = skills[i]["id"];
-                                UnlockedSkill newSkill = new UnlockedSkill();
-                                newSkill.SkillName = skillId;
-                                newSkill.CurrentXp = "0";
-                                newSkill.Level = 90;
-
-                                string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                                newSkill.Variants = TranslateSkillModifiers(skillId, skillMod);
-                                newUnlockedSkillList.Add(newSkill);
-                            }
-                            else //if the skill does exist we find it in our list and just change the values of it.
-                            {
-                                foreach (var skill in newUnlockedSkillList)
-                                {
-                                    if (skill.SkillName == newSkillName)
-                                    {
-                                        skill.Level = 90;
-                                        string[] skillMod = skills[i]["modifiers"].ToObject(typeof(string[]));
-                                        skill.Variants = TranslateSkillModifiers(skill.SkillName, skillMod); ;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        //sets our characters actual data to the new skillbar and unlocked skill list we just made.
-
-                        cData.Character.SkillBar = newSkillBar;
-                        cData.Character.UnlockedSkills = newUnlockedSkillList;
-                    }
-
-                    MessageBox.Show($"Successfully Imported Character From:\n{url}");
-                    SkillTree.LoadTree(ref tabPage);
-                    LoadCharacterData();
-                }
-            }
-        }
-
-        private string TranslateSkillModifiers(string skillName, string[] listOfModifiers)
-        {
-            char[] modifier = new char[16];
-            for(int i =0; i < modifier.Length; i++)
-            {
-                modifier[i] = '0';
-            }
-            foreach(var str in listOfModifiers)
-            {
-                int modIndex = WolcenStaticData.SkillModifiers[skillName][str];
-                modifier[modIndex] = '1';
-            }
-            return new string(modifier);
-        }
-
-        private void extraSkillButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cData.PlayerData == null) return;
-            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
-            {
-                cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
-            }
-            else if (extraSkillButton.Checked == false)
-            {
-                if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
-                {
-                    for(int i =0; i < cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Count; i ++)
-                    {
-                        if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
-                        {
-                            cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name = "";
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public static class cData
     {
-        private static PlayerData playerData;
-        private static CharacterData character;
-        private static PlayerChest playerChest;
+        public static PlayerChest PlayerChest { get; set; }
 
-        public static PlayerChest PlayerChest
-        {
-            get { return playerChest; }
-            set { playerChest = value; }
-        }
+        public static PlayerData PlayerData { get; set; }
 
-        public static PlayerData PlayerData
-        {
-            get
-            {
-                return playerData;
-            }
-            set
-            {
-                playerData = value;
-            }
-        }
-
-        public static CharacterData Character
-        {
-            get
-            {
-                return character;
-            }
-            set
-            {
-                character = value;
-            }
-        }
+        public static CharacterData Character { get; set; }
 
     }
 }
