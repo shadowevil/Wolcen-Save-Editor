@@ -18,41 +18,6 @@ namespace WolcenEditor
         private static PictureBox sourceBox;
         private static bool isValid = false;
 
-        private static Dictionary<string, int> equipMap = new Dictionary<string, int>
-        {
-            { "Amulet", 14 },
-            { "Helmet", 3 },
-            { "Chest Armor", 1 },
-            { "Foot Armor", 17 },
-            { "Leg Armor", 11 },
-            { "Shoulder", 6 },      // Also 5
-            { "Arm Armor", 10 },    // Also 9
-            { "Belt", 19 },
-            { "Ring", 22 },         // Also 21
-            { "Sword1H", 16 },      // Also 15
-            { "Shield", 16 },
-            { "Trinket", 16 },
-            { "Mace1H", 16 },       // Also 15
-            { "Bow", 15 },
-            { "Axe1H", 16 },        // Also 15
-            { "Staff", 15 },
-            { "Axe2H", 15 },
-            { "Sword2H", 15 },
-            { "Dagger", 16 },       // Also 15
-            { "Mace2H", 15 },
-            { "Gun", 16 },          // Also 15
-        };
-
-        private enum typeMap : int
-        {
-            Weapon = 3,
-            Offhand = 3,
-            Armor = 2,
-            Accessory = 2,
-            Gem = 6,
-            Potion = 4
-        }
-
         public static void LoadPlayerStash(object sender)
         {
             Panel stashPanelGrid = (sender as TabPage).Controls["stashPanelGrid"] as Panel;
@@ -72,6 +37,10 @@ namespace WolcenEditor
             stashPanelGrid.Controls.Clear();
             foreach (var _panel in cData.PlayerChest.Panels)
             {
+                if (_panel.InventoryGrid == null)
+                {
+                    _panel.InventoryGrid = new List<InventoryGrid>();
+                }
                 if (currentPanel == _panel.ID)
                 {
                     for (int x = 0; x < 10; x++)
@@ -276,7 +245,7 @@ namespace WolcenEditor
             }
         }
 
-        private static void LoadItemData(object sender, EventArgs e)
+        public static void LoadItemData(object sender, EventArgs e)
         {
             Panel itemStatDisplay = (((sender as PictureBox).Parent as Panel).Parent as TabPage).Controls["itemStashStatDisplay"] as Panel;
 
@@ -316,6 +285,13 @@ namespace WolcenEditor
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
             itemStat = getItemStat(x, y, panelID, "Weapon", "ResourceGeneration");
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
+
+            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldResistance");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldBlockChance");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Block Chance: " + itemStat, itemStatDisplay, 9, Color.White));
+            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldBlockEfficiency");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Block Efficiency: " + itemStat, itemStatDisplay, 9, Color.White));
 
             itemStat = getItemStat(x, y, panelID, "Potion", "Charge");
             if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Charge: " + itemStat, itemStatDisplay, 9, Color.White));
@@ -598,6 +574,9 @@ namespace WolcenEditor
             string itemName = "";
             string l_itemName = null;
             int itemRarity = 0;
+            pb.Size = new Size(50, 50);
+            pb.MaximumSize = new Size(50, 50);
+            if (iGrid == null) return null;
             if (iGrid.Armor != null)
             {
                 itemName = iGrid.Armor.Name;
