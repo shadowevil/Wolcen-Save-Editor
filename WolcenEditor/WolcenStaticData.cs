@@ -10161,6 +10161,7 @@ namespace WolcenEditor
             { "local_resourcegeneration_flat", new string[] { "LocalFlatFloat" } },
             { "elemental_stacks_to_shock", new string[] { "PossibilityInt" } },
             { "self_shock", new string[] { "PossibilityInt" } },
+            { "stunchance_on_dash", new string[] { "PossibilityInt" } },
             //{ "", new string[] { "", "" } },
         };
     }

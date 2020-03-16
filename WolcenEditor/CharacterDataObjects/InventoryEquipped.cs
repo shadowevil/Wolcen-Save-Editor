@@ -24,6 +24,9 @@ namespace WolcenEditor
         public double DamageMin { get; set; }
         public double DamageMax { get; set; }
         public double ResourceGeneration { get; set; }
+        public int ShieldResistance { get; set; }
+        public int ShieldBlockChance { get; set; }
+        public int ShieldBlockEfficiency { get; set; }
     }
 
     public class ItemArmor
