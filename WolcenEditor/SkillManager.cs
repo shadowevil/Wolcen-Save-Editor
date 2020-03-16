@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace WolcenEditor
 {
-    public class SkillTree
+    public class SkillManager
     {
         public static bool isShiftDown { get; set; }
         public static bool isCtrlDown { get; set; }
@@ -280,14 +280,14 @@ namespace WolcenEditor
         private static void unlockAllButton_Click(object sender, EventArgs e)
         {
             var skillList = new List<UnlockedSkill>();
-            foreach (var skill in SkillTree.SkillTreeDict.Keys)
+            foreach (var skill in SkillManager.SkillTreeDict.Keys)
             {
-                var skillObj = SkillTree.ActivateSkill("_" + skill);
+                var skillObj = SkillManager.ActivateSkill("_" + skill);
                 skillObj.Level = 90;
                 skillList.Add(skillObj);
             }
             cData.Character.UnlockedSkills = skillList;
-            TabControl tabControl = (SkillTree.skillPage.Parent as TabControl);
+            TabControl tabControl = (SkillManager.skillPage.Parent as TabControl);
             LoadSkillInformation(ref tabControl);
         }
 

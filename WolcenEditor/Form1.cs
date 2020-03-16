@@ -57,6 +57,7 @@ namespace WolcenEditor
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStashStatDisplay, new object[] { true });
             LogMe.InitLog();
+            CityManager.initCity(charCity);
         }
 
         private void UnloadRandomInventory()
@@ -210,7 +211,6 @@ namespace WolcenEditor
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
             LoadTelemetry();
-            initCity();
 
             SetBinding(ref charName, cData.Character, "Name");
             SetBinding(ref charLevel, cData.Character.Stats, "Level");
@@ -230,7 +230,7 @@ namespace WolcenEditor
             InventoryManager.LoadCharacterInventory(charInv);
             StashManager.LoadPlayerStash(charStash);
 
-            SkillTree.LoadSkillInformation(ref tabPage);
+            SkillManager.LoadSkillInformation(ref tabPage);
         }
 
         private void LoadPlayerStashData()
@@ -543,7 +543,7 @@ namespace WolcenEditor
                     }
 
                     MessageBox.Show($"Successfully Imported Character From:\n{url}");
-                    SkillTree.LoadTree(ref tabPage);
+                    SkillManager.LoadTree(ref tabPage);
                     LoadCharacterData();
                 }
             }
@@ -659,7 +659,7 @@ namespace WolcenEditor
                 string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
                 string newPath = userFolder + WolcenSavePath;
                 characterSavePath = newPath + cData.Character.Name + ".json";
-                SkillTree.LoadTree(ref tabPage);
+                SkillManager.LoadTree(ref tabPage);
                 LoadCharacterData();
             }
         }
@@ -753,7 +753,7 @@ namespace WolcenEditor
 
             tabPage.Enabled = true;
 
-            SkillTree.LoadTree(ref tabPage);
+            SkillManager.LoadTree(ref tabPage);
             LoadCharacterData();
         }
 
@@ -761,11 +761,11 @@ namespace WolcenEditor
         {
             if (e.KeyCode == Keys.ShiftKey)
             {
-                SkillTree.isShiftDown = false;
+                SkillManager.isShiftDown = false;
             }
             if (e.KeyCode == Keys.ControlKey)
             {
-                SkillTree.isCtrlDown = false;
+                SkillManager.isCtrlDown = false;
             }
         }
 
@@ -773,11 +773,11 @@ namespace WolcenEditor
         {
             if (e.KeyCode == Keys.ShiftKey)
             {
-                SkillTree.isShiftDown = true;
+                SkillManager.isShiftDown = true;
             }
             if (e.KeyCode == Keys.ControlKey)
             {
-                SkillTree.isCtrlDown = true;
+                SkillManager.isCtrlDown = true;
             }
         }
 
