@@ -155,7 +155,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).BeginInit();
             this.charStash.SuspendLayout();
-            this.charSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -1298,11 +1297,6 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
-            // lockAllButton
-            // 
-
-
-            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -1364,7 +1358,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.charChest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.charHelm)).EndInit();
             this.charStash.ResumeLayout(false);
-            this.charSkills.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.characterCustomizationBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

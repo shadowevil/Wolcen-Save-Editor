@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="InventoryContextMenu.cs" />
     <Compile Include="InventoryManager.cs" />
+    <Compile Include="ItemDataDisplay.cs" />
     <Compile Include="LogMe.cs" />
     <Compile Include="OnlineBuildRequest.cs" />
     <Compile Include="PlayerChest.cs" />

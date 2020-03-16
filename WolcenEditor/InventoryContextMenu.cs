@@ -5,8 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WolcenEditor
@@ -49,7 +47,8 @@ namespace WolcenEditor
                 MenuItem editItem = new MenuItem()
                 {
                     Text = "Edit item",
-                    Name = "EditItem"
+                    Name = "EditItem",
+                    Enabled = iGridItem.Gem != null ? false : true
                 };
 
                 MenuItem copyItem = new MenuItem()
@@ -77,6 +76,10 @@ namespace WolcenEditor
 
         public static void ShowContextMenu(PictureBox pb, Point location, object type, string select)
         {
+            coords.x = -1;
+            coords.y = -1;
+            coords.panelID = -1;
+
             accessablePictureBox = pb;
             coords.x = Convert.ToInt32(pb.Name.Split('|')[0]);
             coords.y = Convert.ToInt32(pb.Name.Split('|')[1]);
@@ -363,7 +366,7 @@ namespace WolcenEditor
             {
                 newGridItem.Rarity = 6;
             }
-            newGridItem.ItemType = InventoryManager.ParseItemNameForType(selectedNode.Name);
+            newGridItem.ItemType = ItemDataDisplay.ParseItemNameForType(selectedNode.Name);
             switch (selectedNode.ImageIndex)
             {
                 case (int)InventoryManager.typeMap.Armor:        // Also accessory
@@ -450,11 +453,11 @@ namespace WolcenEditor
 
             foreach (var item in WolcenStaticData.ItemLocalizedNames)
             {
-                if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && InventoryManager.ParseItemNameForType(item.Key) != "Shield")
+                if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
                 {
                     foreach (var d in InventoryManager.equipMap)
                     {
-                        string tester = InventoryManager.ParseItemNameForType(item.Key);
+                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
                         if (tester == d.Key)
                         {
                             itemListView.Nodes["Weapons"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Weapon);
@@ -463,12 +466,12 @@ namespace WolcenEditor
                     }
                     //Weapons.Nodes.Add(item.Key, item.Value, (int)typeMap.Weapon);
                 }
-                else if (WolcenStaticData.ItemArmor.ContainsKey(item.Key) && InventoryManager.ParseItemNameForType(item.Key) != "Amulet" && InventoryManager.ParseItemNameForType(item.Key) != "Ring"
-                    || InventoryManager.ParseItemNameForType(item.Key) == "Shield" || InventoryManager.ParseItemNameForType(item.Key) == "Belt")
+                else if (WolcenStaticData.ItemArmor.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Amulet" && ItemDataDisplay.ParseItemNameForType(item.Key) != "Ring"
+                    || ItemDataDisplay.ParseItemNameForType(item.Key) == "Shield" || ItemDataDisplay.ParseItemNameForType(item.Key) == "Belt")
                 {
                     foreach (var d in InventoryManager.equipMap)
                     {
-                        string tester = InventoryManager.ParseItemNameForType(item.Key);
+                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
                         if (tester == d.Key)
                         {
                             itemListView.Nodes["Armor"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (tester == "Shield" ? (int)InventoryManager.typeMap.Weapon : (int)InventoryManager.typeMap.Armor));
@@ -477,12 +480,12 @@ namespace WolcenEditor
                     }
                     //Armor.Nodes.Add(item.Key, item.Value, (int)typeMap.Armor);
                 }
-                else if (WolcenStaticData.ItemAccessories.ContainsKey(item.Key) && InventoryManager.ParseItemNameForType(item.Key) != "Belt" 
-                    || InventoryManager.ParseItemNameForType(item.Key) == "Amulet" || InventoryManager.ParseItemNameForType(item.Key) == "Ring")
+                else if (WolcenStaticData.ItemAccessories.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Belt" 
+                    || ItemDataDisplay.ParseItemNameForType(item.Key) == "Amulet" || ItemDataDisplay.ParseItemNameForType(item.Key) == "Ring")
                 {
                     foreach (var d in InventoryManager.equipMap)
                     {
-                        string tester = InventoryManager.ParseItemNameForType(item.Key);
+                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
                         if (tester == d.Key)
                         {
                             itemListView.Nodes["Accessories"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Accessory);
@@ -693,7 +696,7 @@ namespace WolcenEditor
 
         private void LoadCurrentAffixes(int panelID)
         {
-            if(magicNodes.Nodes["CurrentAffixes"] != null) magicNodes.Nodes["CurrentAffixes"].Nodes.Clear();
+            if (magicNodes.Nodes["CurrentAffixes"] != null) magicNodes.Nodes["CurrentAffixes"].Nodes.Clear();
             TreeNode affixNode = new TreeNode()
             {
                 Name = "RolledAffixes",
@@ -777,9 +780,11 @@ namespace WolcenEditor
                     {
                         Name = "Value",
                         Text = "Value",
-                        ImageKey = "default",
-                        SelectedImageKey = iGrid.Value.ToString()
+                        ImageKey = "default"
                     };
+                    if (iGrid.Value == null) Value.SelectedImageKey = "0";
+                    else Value.SelectedImageKey = iGrid.Value.ToString();
+
                     Level = new TreeNode()
                     {
                         Name = "Level",
@@ -1120,12 +1125,12 @@ namespace WolcenEditor
             if (_panelID == -1)
             {
                 InventoryManager.ReloadInventoryBitmap((accessablePictureBox.Parent as Panel), accessablePictureBox);
-                InventoryManager.LoadItemGridData(accessablePictureBox, null);
+                ItemDataDisplay.LoadItemData(sender, ((accessablePictureBox.Parent as Panel).Parent as TabPage).Controls["itemStatDisplay"] as Panel, cData.Character, "InventoryGrid");
             }
             else
             {
                 StashManager.ReloadGridBitmap((accessablePictureBox.Parent as Panel), x, y, _panelID);
-                StashManager.LoadItemData(accessablePictureBox, null);
+                ItemDataDisplay.LoadItemData(sender, ((accessablePictureBox.Parent as Panel).Parent as TabPage).Controls["itemStashStatDisplay"] as Panel, cData.PlayerChest.Panels, "InventoryGrid");
             }
         }
 
@@ -1405,12 +1410,12 @@ namespace WolcenEditor
             if (panelID == -1)
             {
                 InventoryManager.ReloadInventoryBitmap(accessablePictureBox.Parent as Panel, x, y);
-                InventoryManager.LoadItemGridData(accessablePictureBox, null);
+                ItemDataDisplay.LoadItemData(accessablePictureBox, ((accessablePictureBox.Parent as Panel).Parent as TabPage).Controls["itemStatDisplay"] as Panel, cData.Character, "InventoryGrid");
             }
             else
             {
                 StashManager.ReloadGridBitmap(accessablePictureBox.Parent as Panel, x, y, _panelid);
-                StashManager.LoadItemData(accessablePictureBox, null);
+                ItemDataDisplay.LoadItemData(accessablePictureBox, ((accessablePictureBox.Parent as Panel).Parent as TabPage).Controls["itemStashStatDisplay"] as Panel, cData.PlayerChest.Panels, "InventoryGrid");
             }
             RemoveItemEditControls();
         }
@@ -1570,8 +1575,11 @@ namespace WolcenEditor
                     stars.FlatAppearance.MouseDownBackColor = Color.Transparent;
                     stars.Click += Stars_Click;
                 }
-                (this.Controls["star" + parameterValues[0]] as CheckBox).Checked = true;
-                Stars_Click(this.Controls["star" + parameterValues[0]] as CheckBox, null);
+                if (parameterValues[0] != "0")
+                {
+                    (this.Controls["star" + parameterValues[0]] as CheckBox).Checked = true;
+                    Stars_Click(this.Controls["star" + parameterValues[0]] as CheckBox, null);
+                }
             }
             else
             {
@@ -1715,16 +1723,19 @@ namespace WolcenEditor
                     KeyValuePair<string, int> socketPair = new KeyValuePair<string, int>(d.Value, d.Key);
                     cboSocket.Items.Add(socketPair);
                 }
-                if (i <= socketEffect.Count())
+                if (socketEffect.Count() < socketsAvailable)
                 {
-                    cboSocket.SelectedIndex = 0;
-                    socketEffect = new string[i + 1];
-                    for (int c = 0; c < socketEffect.Count(); c++)
+                    if (i <= socketEffect.Count())
                     {
-                        socketEffect[c] = "0";
+                        cboSocket.SelectedIndex = 0;
+                        socketEffect = new string[i + 1];
+                        for (int c = 0; c < socketEffect.Count(); c++)
+                        {
+                            socketEffect[c] = "0";
+                        }
                     }
                 }
-                else cboSocket.SelectedIndex = WolcenStaticData.SocketType.ElementAt(Convert.ToInt32(socketEffect[i])).Key;
+                else { cboSocket.SelectedIndex = WolcenStaticData.SocketType.ElementAt(Convert.ToInt32(socketEffect[i])).Key; }
 
                 ComboBox cboSocketed = new ComboBox()
                 {

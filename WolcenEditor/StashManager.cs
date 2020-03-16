@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows;
 
 namespace WolcenEditor
 {
     public static class StashManager
     {
-        private static int posY = 0;
         private static int currentPanel = 0;
         private static PictureBox sourceBox;
         private static bool isValid = false;
@@ -37,9 +32,21 @@ namespace WolcenEditor
             stashPanelGrid.Controls.Clear();
             foreach (var _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.InventoryGrid == null)
+                if (_panel.isLocked == true)
                 {
-                    _panel.InventoryGrid = new List<InventoryGrid>();
+                    Button isLocked = new Button()
+                    {
+                        Name = "isLocked|" + _panel.ID,
+                        Text = "Click to unlock",
+                        AutoSize = false,
+                        Size = new Size(100, 25),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        ForeColor = Color.Black,
+                        Parent = stashPanelGrid,
+                        Location = new Point((stashPanelGrid.Width / 2) - 50, (stashPanelGrid.Height / 2) - 12)
+                    };
+                    isLocked.Click += IsLocked_Click;
+                    return;
                 }
                 if (currentPanel == _panel.ID)
                 {
@@ -69,6 +76,15 @@ namespace WolcenEditor
                 }
             }
             LoadStashBitmaps(stashPanelGrid);
+        }
+
+        private static void IsLocked_Click(object sender, EventArgs e)
+        {
+            int panelID = Convert.ToInt32((sender as Button).Name.Split('|')[1]);
+
+            cData.PlayerChest.Panels[panelID].isLocked = false;
+            cData.PlayerChest.Panels[panelID].InventoryGrid = new List<InventoryGrid>();
+            LoadGrid((sender as Button).Parent as Panel);
         }
 
         private static void Pb_GiveFeedBack(object sender, GiveFeedbackEventArgs e)
@@ -143,12 +159,16 @@ namespace WolcenEditor
 
         public static void ReloadGridBitmap(Panel panel, int dx, int dy, int dpanelID)
         {
-            foreach (PictureBox pb in panel.Controls)
+            for (int i = 0; i < panel.Controls.Count; i++)
             {
-                int x = Convert.ToInt32(pb.Name.Split('|')[0]);
-                int y = Convert.ToInt32(pb.Name.Split('|')[1]);
-                int panelid = Convert.ToInt32(pb.Name.Split('|')[2]);
-                if (dx == x && dy == y) pb.Image = GetStashBitmap(x, y, panelid, pb, getGridByLocation(x, y, panelid));
+                if (!(panel.Controls[i].Name.Contains("isLocked")))
+                {
+                    PictureBox pb = panel.Controls[i] as PictureBox;
+                    int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                    int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+                    int panelid = Convert.ToInt32(pb.Name.Split('|')[2]);
+                    if (dx == x && dy == y) pb.Image = GetStashBitmap(x, y, panelid, pb, getGridByLocation(x, y, panelid));
+                }
             }
         }
 
@@ -236,313 +256,13 @@ namespace WolcenEditor
                         isValid = false;
                         return;
                     }
-                    else LoadItemData(sender, e);
+                    else ItemDataDisplay.LoadItemData(sender, (((sender as PictureBox).Parent as Panel).Parent as TabPage).Controls["itemStashStatDisplay"] as Panel, cData.PlayerChest.Panels, "InventoryGrid");
                 }
             }
             else if(e.Button == MouseButtons.Right)
             {
                 InventoryContextMenu.ShowContextMenu((sender as PictureBox), e.Location, cData.PlayerChest.Panels, "InventoryGrid");
             }
-        }
-
-        public static void LoadItemData(object sender, EventArgs e)
-        {
-            Panel itemStatDisplay = (((sender as PictureBox).Parent as Panel).Parent as TabPage).Controls["itemStashStatDisplay"] as Panel;
-
-            UnloadItemData(itemStatDisplay);
-            PictureBox pictureBox = (sender as PictureBox);
-
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
-
-            string itemName = getItemNameFromGrid(x, y, panelID, "Armor");
-            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Weapon");
-            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Potion");
-            if (itemName == null) itemName = getItemNameFromGrid(x, y, panelID, "Gem");
-            if (itemName == null) return;
-
-            string l_itemName = null;
-            WolcenStaticData.ItemLocalizedNames.TryGetValue(itemName, out l_itemName);
-            if (l_itemName == null) return;
-
-            Color itemRarity = getItemGridColorRarity(x, y, panelID);
-
-            itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, l_itemName, itemStatDisplay, 13, itemRarity));
-            string itemType = InventoryManager.ParseItemNameForType(itemName);
-
-            string itemStat = null;
-            
-            itemStat = getItemStat(x, y, panelID, "Armor", "Health");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Armor", "Armor");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Force Shield: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Armor", "Resistance");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "All Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
-
-            itemStat = getItemStat(x, y, panelID, "Weapon", "DamageMin");
-            string itemStat2 = getItemStat(x, y, panelID, "Weapon", "DamageMax");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Material Damage: " + itemStat + "-" + itemStat2, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Weapon", "ResourceGeneration");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resource Generation: " + itemStat, itemStatDisplay, 9, Color.White));
-
-            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldResistance");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Resistance: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldBlockChance");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Block Chance: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Weapon", "ShieldBlockEfficiency");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Block Efficiency: " + itemStat, itemStatDisplay, 9, Color.White));
-
-            itemStat = getItemStat(x, y, panelID, "Potion", "Charge");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Charge: " + itemStat, itemStatDisplay, 9, Color.White));
-            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateMana");
-            if (itemStat != null)
-            {
-                if (itemStat.Contains("-"))
-                {
-                    if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Rage Generation: " + itemStat.Substring(1, itemStat.Length - 1), itemStatDisplay, 9, Color.White));
-                }
-                else
-                {
-                    if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Umbra Generation: " + itemStat, itemStatDisplay, 9, Color.White));
-                }
-            }
-            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateHP");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Health Generation: " + itemStat, itemStatDisplay, 9, Color.White));
-
-            itemStat = getItemStat(x, y, panelID, "Potion", "ImmediateStamina");
-            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Stamina Generation: " + itemStat, itemStatDisplay, 9, Color.White));
-
-            if (itemType != "Potions")
-            {
-                List<Effect> defaultEffects = getItemMagicEffect(x, y, panelID, "MagicEffects", "Default");
-                if (defaultEffects != null)
-                {
-                    foreach (Effect effect in defaultEffects)
-                    {
-                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
-                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
-                    }
-                }
-            }
-
-            itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
-
-            if (itemType == "Gem")
-            {
-                itemStat = getItemStat(x, y, panelID, "Gem", "Name");
-                string socketType = null;
-                string localizedEffect = null;
-                var GemAffixes = WolcenStaticData.GemAffixesWithValues[itemStat];
-                List<int[]> GemOrder = new List<int[]>
-                    {
-                        new int[] { 0, 3, 6 },
-                        new int[] { 1, 4, 7 },
-                        new int[] { 2, 5, 8 }
-                    };
-
-                if (itemStat.Contains("physical_Gem"))
-                {
-                    GemOrder.RemoveAt(2);
-                    GemOrder.Add(new int[] { 2, 5, 6 });
-                }
-
-                foreach (int[] d in GemOrder)
-                {
-                    foreach (int i in d)
-                    {
-                        socketType = WolcenStaticData.SocketType[i];
-                        localizedEffect = WolcenStaticData.MagicLocalized[GemAffixes.ElementAt(i).Key];
-                        if (GemAffixes.ElementAt(i).Key.Contains("percent")) localizedEffect = localizedEffect.Replace("%1", "%1%");
-                        if (localizedEffect.Contains("%2")) localizedEffect = localizedEffect.Replace("%2", GemAffixes.ElementAt(i).Value);
-                        localizedEffect = localizedEffect.Replace("%1", "+" + GemAffixes.ElementAt(i).Value);
-                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, socketType, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
-                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, localizedEffect, itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
-                    }
-                }
-            }
-
-            if (itemType != "Potions")
-            {
-                List<Socket> Sockets = getSockets(pictureBox);
-                if (Sockets != null)
-                {
-                    foreach (Socket socket in Sockets)
-                    {
-                        string s_Socket = WolcenStaticData.SocketType[socket.Effect];
-                        if (socket.Gem == null) s_Socket += " [empty]";
-                        else s_Socket += " " + WolcenStaticData.ItemLocalizedNames[socket.Gem.Name];
-                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Socket, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
-                        if (socket.Gem != null) itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, InventoryManager.getGemStats(socket.Gem.Name, socket.Effect), itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[socket.Effect])));
-                    }
-                }
-            }
-            itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
-
-            if (itemType != "Potions")
-            {
-                List<Effect> magicEffects = getItemMagicEffect(x, y, panelID, "MagicEffects", "RolledAffixes");
-                if (magicEffects != null)
-                {
-                    foreach (Effect effect in magicEffects)
-                    {
-                        string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
-                        if (s_Effect.Contains("%1") || s_Effect.Contains("%2"))
-                        {
-                            if (effect.EffectId.Contains("percent")) s_Effect = s_Effect.Replace("%1", "%1%");
-                            s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                            if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
-                        }
-                        itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
-                    }
-                }
-            }
-        }
-
-        private static Label createLabelLineBreak(Panel panel)
-        {
-            Label lb = new Label();
-            lb.Name = "s_lbl_LineBreak";
-            lb.Text = "__________________________________________________";
-            lb.Font = new Font(Form1.DefaultFont.FontFamily, 5, FontStyle.Regular);
-            lb.ForeColor = Color.LightGray;
-            lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Size = new Size(panel.Width - 20, 5 + 5);
-            lb.Location = new Point(0, posY - 5);
-            posY += 5;
-            return lb;
-        }
-
-        private static List<Socket> getSockets(PictureBox pictureBox)
-        {
-            int x = Convert.ToInt32(pictureBox.Name.Split('|')[0]);
-            int y = Convert.ToInt32(pictureBox.Name.Split('|')[1]);
-            int panelID = Convert.ToInt32(pictureBox.Name.Split('|')[2]);
-            foreach (Panels _panel in cData.PlayerChest.Panels)
-            {
-                if (_panel.ID == panelID)
-                {
-                    foreach (var item in _panel.InventoryGrid)
-                    {
-                        if (item.InventoryX == x && item.InventoryY == y)
-                        {
-                            return (item.Sockets as List<Socket>);
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        private static List<Effect> getItemMagicEffect(int x, int y, int panel, string type, string stat)
-        {
-            foreach (Panels _panel in cData.PlayerChest.Panels)
-            {
-                if (_panel.ID == panel)
-                {
-                    foreach (var item in _panel.InventoryGrid)
-                    {
-                        if (item.InventoryX == x && item.InventoryY == y)
-                        {
-                            return (GetPropertyValue(GetPropertyValue(item, type), stat) as List<Effect>);
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        private static string getItemStat(int x, int y, int panel, string type, string stat)
-        {
-            foreach (Panels _panel in cData.PlayerChest.Panels)
-            {
-                if (panel == _panel.ID)
-                {
-                    foreach (var item in _panel.InventoryGrid)
-                    {
-                        if (item.InventoryX == x && item.InventoryY == y)
-                        {
-                            if (GetPropertyValue(item, type) != null)
-                            {
-                                return GetPropertyValue(GetPropertyValue(item, type), stat).ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        public static object GetPropertyValue(object obj, string propertyName)
-        {
-            if (obj.GetType() == null) return null;
-            var objType = obj.GetType();
-            var prop = objType.GetProperty(propertyName);
-
-            return prop.GetValue(obj, null);
-        }
-
-        private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor)
-        {
-            Label lb = new Label();
-            lb.Name = "s_lbl" + name;
-            lb.Text = text;
-            lb.Font = new Font(Form1.DefaultFont.FontFamily, fontSize, FontStyle.Regular);
-            lb.ForeColor = fontColor;
-            lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Size = new Size(panel.Width - 10, fontSize + 10);
-            lb.Location = new Point(0, posY);
-            lb.Parent = panel;
-            posY += fontSize + 10;
-            return lb;
-        }
-
-        private static Color getItemGridColorRarity(int x, int y, int panelID)
-        {
-            foreach (Panels _panel in cData.PlayerChest.Panels)
-            {
-                if (_panel.ID == panelID)
-                {
-                    foreach (var item in _panel.InventoryGrid)
-                    {
-                        if (item.InventoryX == x && item.InventoryY == y)
-                        {
-                            string hexColor = WolcenStaticData.rarityColorBank[1];
-                            WolcenStaticData.rarityColorBank.TryGetValue(item.Rarity, out hexColor);
-                            return ColorTranslator.FromHtml(hexColor);
-                        }
-                    }
-                }
-            }
-            return Color.White;
-        }
-
-        private static string getItemNameFromGrid(int x, int y, int panelID, string type)
-        {
-            foreach (Panels _panel in cData.PlayerChest.Panels)
-            {
-                if (_panel.ID == panelID)
-                {
-                    foreach (var item in _panel.InventoryGrid)
-                    {
-                        if (item.InventoryX == x && item.InventoryY == y)
-                        {
-                            if (GetPropertyValue(item, type) != null)
-                            {
-                                return GetPropertyValue(GetPropertyValue(item, type), "Name").ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        private static void UnloadItemData(Panel itemStatDisplay)
-        {
-            posY = 0;
-            itemStatDisplay.Controls.Clear();
         }
 
         private static void LoadStashBitmaps(Panel stashPanelGrid)
