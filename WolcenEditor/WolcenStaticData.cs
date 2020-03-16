@@ -47,23 +47,23 @@ namespace WolcenEditor
             {"building_trade_assembly", new List<string>
                 {
                     "dark_market_construct",
-                    "dark_market_buy_reagent",
+                    //"dark_market_buy_reagent",
                     "dark_market_item_quality_upgrade",
                     "dark_market_item_rarity_upgrade",
                     "dark_market_leg_reagent_upgrade",
-                    "dark_market_item_quality_transform",
-                    "dark_market_item_rarity_transform",
-                    "dark_market_leg_reagent_transform",
-                    "dark_market_buy_uberboss_1",
-                    "dark_market_buy_uberboss_2",
-                    "dark_market_buy_uberboss_3",
+                    //"dark_market_item_quality_transform",
+                    //"dark_market_item_rarity_transform",
+                    //"dark_market_leg_reagent_transform",
+                    //"dark_market_buy_uberboss_1",
+                    //"dark_market_buy_uberboss_2",
+                    //"dark_market_buy_uberboss_3",
                 }
             },
             {"building_transmutation_forge", new List<string>
                 {
                     "transmutation_forge_construct",
                     "transmutation_forge_upgrade",
-                    "transmutation_project",
+                    //"transmutation_project",
                 }
             },
             {"building_bank", new List<string>
@@ -87,21 +87,21 @@ namespace WolcenEditor
             {"building_siphon_chamber", new List<string>
                 {
                     "siphon_chamber_construct",
-                    "pa_to_gold_transfer_1",
-                    "pa_to_gold_transfer_2",
-                    "pa_to_gold_transfer_3",
-                    "pa_to_gold_transfer_4",
-                    "pa_to_gold_transfer_5",
+                    //"pa_to_gold_transfer_1",
+                    //"pa_to_gold_transfer_2",
+                    //"pa_to_gold_transfer_3",
+                    //"pa_to_gold_transfer_4",
+                    //"pa_to_gold_transfer_5",
                 }
             },
             {"building_injector_seat", new List<string>
                 {
                     "injector_seat_construct",
-                    "gold_to_pa_transfer_1",
-                    "gold_to_pa_transfer_2",
-                    "gold_to_pa_transfer_3",
-                    "gold_to_pa_transfer_4",
-                    "gold_to_pa_transfer_5",
+                    //"gold_to_pa_transfer_1",
+                    //"gold_to_pa_transfer_2",
+                    //"gold_to_pa_transfer_3",
+                    //"gold_to_pa_transfer_4",
+                    //"gold_to_pa_transfer_5",
                 }
             },
             {"building_shipyard", new List<string>
@@ -187,7 +187,7 @@ namespace WolcenEditor
             { "transmutation_project", "Transmute Item" },
             { "bank_construct", "Construct Bank" },
             { "buy_stash_1", "Upgrade Personal Vault (1)" },
-            { "buy_stash_2", "Upgrade Personal Vault (1)" },
+            { "buy_stash_2", "Upgrade Personal Vault (2)" },
             { "anankis_artifact_construct", "Retrieve Anankis Artifact" },
             { "enneract_lab_construct", "Construct Enneract Lab" },
             { "enneract_lab_skillcopy_1", "Upgrade Lab: Diamond Tools" },

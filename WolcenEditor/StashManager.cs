@@ -32,7 +32,7 @@ namespace WolcenEditor
             stashPanelGrid.Controls.Clear();
             foreach (var _panel in cData.PlayerChest.Panels)
             {
-                if (_panel.isLocked == true)
+                if (_panel.Locked == true)
                 {
                     Button isLocked = new Button()
                     {
@@ -82,7 +82,7 @@ namespace WolcenEditor
         {
             int panelID = Convert.ToInt32((sender as Button).Name.Split('|')[1]);
 
-            cData.PlayerChest.Panels[panelID].isLocked = false;
+            cData.PlayerChest.Panels[panelID].Locked = false;
             cData.PlayerChest.Panels[panelID].InventoryGrid = new List<InventoryGrid>();
             LoadGrid((sender as Button).Parent as Panel);
         }

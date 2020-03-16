@@ -22,7 +22,7 @@ namespace WolcenEditor
     public class Panels
     {
         public int ID { get; set; }
-        public bool isLocked { get; set; }
+        public bool Locked { get; set; }
         public IList<InventoryGrid> InventoryGrid { get; set; }
     }
 

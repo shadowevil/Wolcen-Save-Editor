@@ -67,7 +67,7 @@ namespace WolcenEditor
         public IList<PlaceHolder> OngoingEventProjects { get; set; }
         public IList<PlaceHolder> PendingRewards { get; set; }
         public IList<PlaceHolder> RewardInstances { get; set; }
-        public IList<PlaceHolder> RolledProjects { get; set; }
+        public IList<RolledProjects> RolledProjects { get; set; }
         public IList<PlaceHolder> PendingEvents { get; set; }
         public int TurnsUntilNextNarrativeEventRoll { get; set; }
         public IList<PlaceHolder> TimedProductionFactors { get; set; }
@@ -75,6 +75,11 @@ namespace WolcenEditor
         public IList<PlaceHolder> NECooldowns { get; set; }
         public IList<PlaceHolder> CECooldowns { get; set; }
         public int TurnsUntilNextCourierEventRoll { get; set; }
+    }
+
+    public class RolledProjects
+    {
+        public string Name;
     }
 
     public class PlaceHolder
@@ -85,6 +90,7 @@ namespace WolcenEditor
         public string Name { get; set; }
         public int CurrentProduction { get; set; }
         public int PlayerLevel { get; set; }
+        public InventoryEquipped ConsumedItem { get; set; }
     }
 
     public class FinishedProjects
