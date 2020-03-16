@@ -56,6 +56,7 @@ namespace WolcenEditor
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStashStatDisplay, new object[] { true });
             LogMe.InitLog();
+            CityManager.initCity(charCity);
         }
        
         public struct IconInfo
@@ -258,7 +259,7 @@ namespace WolcenEditor
             InventoryManager.LoadCharacterInventory(charInv);
             StashManager.LoadPlayerStash(charStash);
 
-            SkillTree.LoadSkillInformation(ref tabPage);
+            SkillManager.LoadSkillInformation(ref tabPage);
         }
 
         private void LoadPlayerStashData()
@@ -346,14 +347,14 @@ namespace WolcenEditor
             } else chkAllCosmetics.Checked = false;
 
             if (cData.PlayerData.SoftcoreNormal.CompletedStory)
-            {
                 chkChampion.Checked = true;
-            } else chkChampion.Checked = false;
+            else
+                chkChampion.Checked = false;
 
             if(cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
-            {
                 extraSkillButton.Checked = true;
-            } else extraSkillButton.Checked = false;
+            else 
+                extraSkillButton.Checked = false;
         }
 
         #region Events
@@ -368,9 +369,7 @@ namespace WolcenEditor
             , MessageBoxButtons.YesNo);
 
             if (aboutMessage == DialogResult.Yes)
-            {
                 Process.Start("https://wolcen-universe.com/");
-            }
         }
 
         private void importStripMenuItem_Click(object sender, EventArgs e)
@@ -380,7 +379,6 @@ namespace WolcenEditor
                 MessageBox.Show("You need to open or create a new character to begin");
                 return;
             }
-
             bool displayBackingText = true;
             Form importForm = new Form()
             {
@@ -394,7 +392,6 @@ namespace WolcenEditor
                 BackgroundImage = WolcenEditor.Properties.Resources.bg,
                 BackgroundImageLayout = ImageLayout.Center,
             };
-
             Label BuildLabel = new Label()
             {
 
@@ -406,7 +403,6 @@ namespace WolcenEditor
                 AutoSize = true,
                 BackColor = Color.Transparent,
             };
-
             TextBox BuildUrlTextBox = new TextBox()
             {
                 Text = "Enter Build URL Here...",
@@ -415,7 +411,6 @@ namespace WolcenEditor
                 Width = 210,
                 Location = new Point(60, 60)
             };
-
             Button AcceptButton = new Button
             {
 
@@ -431,7 +426,6 @@ namespace WolcenEditor
                 Location = new Point(165, 90)
 
             };
-
 
             BuildUrlTextBox.GotFocus += (source, e2) =>
             {
@@ -578,7 +572,7 @@ namespace WolcenEditor
                     }
 
                     MessageBox.Show($"Successfully Imported Character From:\n{url}");
-                    SkillTree.LoadTree(ref tabPage);
+                    SkillManager.LoadTree(ref tabPage);
                     LoadCharacterData();
                 }
             }
@@ -694,7 +688,7 @@ namespace WolcenEditor
                 string WolcenSavePath = "\\Saved Games\\wolcen\\savegames\\characters\\";
                 string newPath = userFolder + WolcenSavePath;
                 characterSavePath = newPath + cData.Character.Name + ".json";
-                SkillTree.LoadTree(ref tabPage);
+                SkillManager.LoadTree(ref tabPage);
                 LoadCharacterData();
             }
         }
@@ -788,7 +782,7 @@ namespace WolcenEditor
 
             tabPage.Enabled = true;
 
-            SkillTree.LoadTree(ref tabPage);
+            SkillManager.LoadTree(ref tabPage);
             LoadCharacterData();
         }
 
@@ -796,11 +790,11 @@ namespace WolcenEditor
         {
             if (e.KeyCode == Keys.ShiftKey)
             {
-                SkillTree.isShiftDown = false;
+                SkillManager.isShiftDown = false;
             }
             if (e.KeyCode == Keys.ControlKey)
             {
-                SkillTree.isCtrlDown = false;
+                SkillManager.isCtrlDown = false;
             }
         }
 
@@ -808,11 +802,11 @@ namespace WolcenEditor
         {
             if (e.KeyCode == Keys.ShiftKey)
             {
-                SkillTree.isShiftDown = true;
+                SkillManager.isShiftDown = true;
             }
             if (e.KeyCode == Keys.ControlKey)
             {
-                SkillTree.isCtrlDown = true;
+                SkillManager.isCtrlDown = true;
             }
         }
 
@@ -894,9 +888,7 @@ namespace WolcenEditor
                     telemetryTextBox.DataBindings.Clear();
                     telemetryTextBox.DataBindings.Add("Text", nodeProperties, path[1], true, DataSourceUpdateMode.OnPropertyChanged);
                 }
-
             }
-
         }
 
         private void telemetryTextBox_Leave(object sender, EventArgs e)

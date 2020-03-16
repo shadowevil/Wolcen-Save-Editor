@@ -6,8 +6,7 @@
 
 #Project Test
 WolcenData.Tests/
-scripts/*
-!scripts/*.py
+scripts/
 
 # User-specific files
 .rsuser

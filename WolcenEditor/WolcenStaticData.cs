@@ -4,6 +4,309 @@ namespace WolcenEditor
 {
     public static class WolcenStaticData
     {
+
+        public static readonly Dictionary<string, List<string>> CityBuildings = new Dictionary<string, List<string>>
+        {
+            {"building_city_stormfall_palace", new List<string>
+                { 
+                    "city_hall_training_equipment",
+                    "city_hall_roadworks",
+                    "city_hall_aqueduct",
+                    "city_hall_sewers",
+                    "city_hall_irrigation",
+                    "city_hall_crop_rotation",
+                    "city_hall_windmill",
+                    "city_hall_trauma_center",
+                    "city_hall_working_conditions",
+                    "city_hall_batch_one_dependency",
+                    "city_hall_batch_two_dependency",
+                    "city_hall_batch_three_dependency",
+                    "city_hall_education",
+                    "city_hall_sawmill",
+                    "city_hall_iron_mines",
+                    "city_hall_quarry",
+                    "city_hall_housing",
+                    "city_hall_lighthouse",
+                    "city_hall_theater",
+                    "city_hall_rift_initiative",
+                    "city_hall_supply_stockpiles",
+                    "city_hall_checkpoints",
+                    "city_hall_crystal_excavation",
+                }
+            },
+            {"building_seekers_garrison", new List<string>
+                {
+                    "seekers_garrison_construct",
+                }
+            },
+            {"building_dark_market", new List<string>
+                {
+                    "trade_assembly_construct",
+                }
+            },
+            {"building_trade_assembly", new List<string>
+                {
+                    "dark_market_construct",
+                    "dark_market_buy_reagent",
+                    "dark_market_item_quality_upgrade",
+                    "dark_market_item_rarity_upgrade",
+                    "dark_market_leg_reagent_upgrade",
+                    "dark_market_item_quality_transform",
+                    "dark_market_item_rarity_transform",
+                    "dark_market_leg_reagent_transform",
+                    "dark_market_buy_uberboss_1",
+                    "dark_market_buy_uberboss_2",
+                    "dark_market_buy_uberboss_3",
+                }
+            },
+            {"building_transmutation_forge", new List<string>
+                {
+                    "transmutation_forge_construct",
+                    "transmutation_forge_upgrade",
+                    "transmutation_project",
+                }
+            },
+            {"building_bank", new List<string>
+                {
+                    "bank_construct",
+                    "buy_stash_1",
+                    "buy_stash_2",
+                }
+            },
+           {"building_anankis_artifact", new List<string>
+                {
+                    "anankis_artifact_construct",
+                }
+            },
+            {"building_enneract_lab", new List<string>
+                {
+                    "enneract_lab_construct",
+                    "enneract_lab_skillcopy_1",
+                }
+            },
+            {"building_siphon_chamber", new List<string>
+                {
+                    "siphon_chamber_construct",
+                    "pa_to_gold_transfer_1",
+                    "pa_to_gold_transfer_2",
+                    "pa_to_gold_transfer_3",
+                    "pa_to_gold_transfer_4",
+                    "pa_to_gold_transfer_5",
+                }
+            },
+            {"building_injector_seat", new List<string>
+                {
+                    "injector_seat_construct",
+                    "gold_to_pa_transfer_1",
+                    "gold_to_pa_transfer_2",
+                    "gold_to_pa_transfer_3",
+                    "gold_to_pa_transfer_4",
+                    "gold_to_pa_transfer_5",
+                }
+            },
+            {"building_shipyard", new List<string>
+                {
+                    "shipyard_construct",
+                }
+            },
+            {"building_wonder_1", new List<string>
+                {
+                    "wonder_1_construct",
+                }
+            },
+            {"building_wonder_2", new List<string>
+                {
+                    "wonder_2_construct",
+                }
+            },
+            {"building_wonder_3", new List<string>
+                {
+                    "wonder_3_construct",
+                }
+            },
+            {"building_wonder_4", new List<string>
+                {
+                    "wonder_4_construct",
+                }
+            },
+            {"building_wonder_5", new List<string>
+                {
+                    "wonder_5_construct",
+                }
+            },
+            {"building_wonder_6", new List<string>
+                {
+                    "wonder_6_construct",
+                }
+            },
+        };
+
+        public static readonly Dictionary<string, string> CityProjectLocalization = new Dictionary<string, string>
+        {
+            { "city_hall_training_equipment", "Training Facilities" },
+            { "city_hall_roadworks",             "Roadworks" },
+            { "city_hall_aqueduct",              "Aqueduct"},
+            { "city_hall_sewers",                "Sewer Renovations"},
+            { "city_hall_irrigation",            "Irrigation Networks"},
+            { "city_hall_crop_rotation",         "Crop Rotation"},
+            { "city_hall_windmill",              "Windmills"},
+            { "city_hall_trauma_center",         "Trauma Center"},
+            { "city_hall_working_conditions",    "Working Conditions"},
+            { "city_hall_batch_one_dependency",  "Planning Committee"},
+            { "city_hall_batch_two_dependency",  "Planning Committee (II)"},
+            { "city_hall_batch_three_dependency","Planning Committee (III)"},
+            { "city_hall_education",         "Educational Institutions" },
+            { "city_hall_sawmill",           "Sawmills"},
+            { "city_hall_iron_mines",        "Iron Mines"},
+            { "city_hall_quarry",            "Stone Quarry"},
+            { "city_hall_housing",           "Housing Initiative"},
+            { "city_hall_lighthouse",        "Lighthouse"},
+            { "city_hall_theater",           "Theater"},
+            { "city_hall_rift_initiative",   "Rift Initiative"},
+            { "city_hall_supply_stockpiles", "Supply Stockpiles"},
+            { "city_hall_checkpoints", "Military Checkpoints" },
+            { "city_hall_crystal_excavation", "Energy Crystal Mine" },
+
+
+            { "seekers_garrison_construct", "Renovate Seekers Garrison" },
+            { "trade_assembly_construct", "Renovate Trade Assembly" },
+            { "dark_market_construct", "Establish Contact: 'The Curator'" },
+            { "dark_market_buy_reagent", "Procure Ethereal Reagent" },
+            { "dark_market_item_quality_upgrade",  "Establish Contact: 'Dark Smith'" },
+            { "dark_market_item_rarity_upgrade",    "Establish Contact: 'GoldenChild'"},
+            { "dark_market_leg_reagent_upgrade",    "Establish Contact: 'The Etherean'"},
+            { "dark_market_item_quality_transform", "Increase Item Quality"},
+            { "dark_market_item_rarity_transform",  "Increase Item Rarity"},
+            { "dark_market_leg_reagent_transform",  "Increase Reagent Rarity"},
+            { "dark_market_buy_uberboss_1",         "Locate \"Memory's Echo\" (1)"},
+            { "dark_market_buy_uberboss_2",         "Locate \"Memory's Echo\" (2)"},
+            { "dark_market_buy_uberboss_3",         "Locate \"Memory's Echo\" (3)"},
+
+            { "transmutation_forge_construct", "Construct Transmutation Forge" },
+            { "transmutation_forge_upgrade", "Upgrade Forge" },
+            { "transmutation_project", "Transmute Item" },
+            { "bank_construct", "Construct Bank" },
+            { "buy_stash_1", "Upgrade Personal Vault (1)" },
+            { "buy_stash_2", "Upgrade Personal Vault (1)" },
+            { "anankis_artifact_construct", "Retrieve Anankis Artifact" },
+            { "enneract_lab_construct", "Construct Enneract Lab" },
+            { "enneract_lab_skillcopy_1", "Upgrade Lab: Diamond Tools" },
+            { "siphon_chamber_construct", "Construct Siphon Chamber" },
+            { "pa_to_gold_transfer_1", "Convert 100 Primordial Affinity" },
+            { "pa_to_gold_transfer_2", "Convert 500 Primordial Affinity" },
+            { "pa_to_gold_transfer_3", "Convert 1000 Primordial Affinity" },
+            { "pa_to_gold_transfer_4", "Convert 5000 Primordial Affinity" },
+            { "pa_to_gold_transfer_5", "Convert 10000 Primordial Affinity" },
+            { "injector_seat_construct", "Construct Instillator" },
+            { "gold_to_pa_transfer_1", "Convert 10,000 Gold" },
+            { "gold_to_pa_transfer_2", "Convert 50,000 Gold" },
+            { "gold_to_pa_transfer_3", "Convert 100,000 Gold" },
+            { "gold_to_pa_transfer_4", "Convert 500,000 Gold" },
+            { "gold_to_pa_transfer_5", "Convert 1,000,000 Gold" },
+            { "shipyard_construct", "Renovate Shipyard" },
+            { "wonder_1_construct", "Renovate the Archives" },
+            { "wonder_2_construct", "Renovate Institute (West)" },
+            { "wonder_3_construct", "Renovate Institute (Main)" },
+            { "wonder_4_construct", "Renovate Institute (East)" },
+            { "wonder_5_construct", "Renovate Salt Baths" },
+            { "wonder_6_construct", "Renovate Refuge" },
+        };
+
+        public static readonly Dictionary<string, string> CityProjectInFile = new Dictionary<string, string>
+        {
+            { "Training Facilities", "city_hall_training_equipment"},
+            { "Roadworks", "city_hall_roadworks"},
+            { "Aqueduct", "city_hall_aqueduct"},
+            { "Sewer Renovations", "city_hall_sewers"},
+            { "Irrigation Networks", "city_hall_irrigation"},
+            { "Crop Rotation", "city_hall_crop_rotation"},
+            { "Windmills", "city_hall_windmill"},
+            { "Trauma Center", "city_hall_trauma_center"},
+            { "Working Conditions", "city_hall_working_conditions"},
+            { "Planning Committee", "city_hall_batch_one_dependency"},
+            { "Planning Committee (II)", "city_hall_batch_two_dependency"},
+            { "Planning Committee (III)", "city_hall_batch_three_dependency"},
+            { "Educational Institutions", "city_hall_education" },
+            { "Sawmills", "city_hall_sawmill"},
+            { "Iron Mines", "city_hall_iron_mines"},
+            { "Stone Quarry", "city_hall_quarry"},
+            { "Housing Initiative", "city_hall_housing"},
+            { "Lighthouse", "city_hall_lighthouse"},
+            { "Theater", "city_hall_theater"},
+            { "Rift Initiative", "city_hall_rift_initiative"},
+            { "Supply Stockpiles", "city_hall_supply_stockpiles"},
+            { "Military Checkpoints", "city_hall_checkpoints" },
+            { "Energy Crystal Mine", "city_hall_crystal_excavation" },
+
+
+            { "Renovate Seekers Garrison", "seekers_garrison_construct" },
+            { "Renovate Trade Assembly", "trade_assembly_construct" },
+            { "Establish Contact: 'The Curator'", "dark_market_construct" },
+            { "Procure Ethereal Reagent", "dark_market_buy_reagent" },
+            { "Establish Contact: 'Dark Smith'", "dark_market_item_quality_upgrade" },
+            { "Establish Contact: 'GoldenChild'", "dark_market_item_rarity_upgrade"},
+            { "Establish Contact: 'The Etherean'", "dark_market_leg_reagent_upgrade"},
+            { "Increase Item Quality", "dark_market_item_quality_transform"},
+            { "Increase Item Rarity", "dark_market_item_rarity_transform"},
+            { "Increase Reagent Rarity", "dark_market_leg_reagent_transform"},
+            { "Locate \"Memory's Echo\" (1)", "dark_market_buy_uberboss_1"},
+            { "Locate \"Memory's Echo\" (2)", "dark_market_buy_uberboss_2"},
+            { "Locate \"Memory's Echo\" (3)", "dark_market_buy_uberboss_3"},
+
+            { "Construct Transmutation Forge", "transmutation_forge_construct" },
+            { "Upgrade Forge", "transmutation_forge_upgrade" },
+            { "Transmute Item" , "transmutation_project"},
+            { "Construct Bank", "bank_construct" },
+            { "Upgrade Personal Vault (1)", "buy_stash_1"},
+            { "Upgrade Personal Vault (2)", "buy_stash_2" },
+            { "Retrieve Anankis Artifact", "anankis_artifact_construct" },
+            { "Construct Enneract Lab", "enneract_lab_construct" },
+            { "Upgrade Lab: Diamond Tools" , "enneract_lab_skillcopy_1"},
+            { "Construct Siphon Chamber", "siphon_chamber_construct" },
+            { "Convert 100 Primordial Affinity", "pa_to_gold_transfer_1" },
+            { "Convert 500 Primordial Affinity", "pa_to_gold_transfer_2" },
+            { "Convert 1000 Primordial Affinity", "pa_to_gold_transfer_3" },
+            { "Convert 5000 Primordial Affinity", "pa_to_gold_transfer_4" },
+            { "Convert 10000 Primordial Affinity", "pa_to_gold_transfer_5" },
+            { "Construct Instillator", "injector_seat_construct" },
+            { "Convert 10,000 Gold" , "gold_to_pa_transfer_1"},
+            { "Convert 50,000 Gold" , "gold_to_pa_transfer_2"},
+            { "Convert 100,000 Gold", "gold_to_pa_transfer_3" },
+            { "Convert 500,000 Gold", "gold_to_pa_transfer_4" },
+            { "Convert 1,000,000 Gold", "gold_to_pa_transfer_5" },
+            { "Renovate Shipyard", "shipyard_construct" },
+            { "Renovate the Archives", "wonder_1_construct" },
+            { "Renovate Institute (West)", "wonder_2_construct" },
+            { "Renovate Institute (Main)", "wonder_3_construct" },
+            { "Renovate Institute (East)", "wonder_4_construct" },
+            { "Renovate Salt Baths", "wonder_5_construct" },
+            { "Renovate Refuge", "wonder_6_construct" },
+        };
+
+
+        public static readonly Dictionary<string, string> CityBulidingsLocalization = new Dictionary<string, string>
+        {
+            {"building_city_stormfall_palace", "Stormfall Palace" },
+            {"building_seekers_garrison", "Seekers Garrison" },
+            {"building_trade_assembly"  , "Stormfall Trade Assembly" },
+            {"building_dark_market"     , "Dark Market" },
+            {"building_transmutation_forge", "Transmutation Forge" },
+            {"building_bank", "Diamond Bank" },
+            {"building_anankis_artifact", "Anankis Artifact" },
+            {"building_enneract_lab", "Enneract Laboratory" },
+            {"building_siphon_chamber", "Siphon Chamber" },
+            {"building_injector_seat", "Energy Instillator" },
+            {"building_wonder_1", "The Cartographical Archives" },
+            {"building_wonder_2", "Stormfall Institute (West)" },
+            {"building_wonder_3", "Stormfall Institute (Main)" },
+            {"building_wonder_4", "Stormfall Institute (East)" },
+            {"building_wonder_5", "Salt Baths of Stormfall" },
+            {"building_wonder_6", "Refuge For the Blind" },
+            {"building_shipyard", "Stormfall Shipyard" },
+
+
+        };
+
         public static readonly Dictionary<string, Dictionary<string, int>> SkillModifiers = new Dictionary<string, Dictionary<string, int>>
         {
             { "player_aetherblade",
@@ -1467,7 +1770,6 @@ namespace WolcenEditor
             { "Unique_curse_ring_max", "unique_ring_curse ring.png" },
             { "Unique_curse_ring_max_max", "unique_ring_curse ring.png" }
         };
-
 
         public static readonly Dictionary<string, int> BodyParts = new Dictionary<string, int>
         {
