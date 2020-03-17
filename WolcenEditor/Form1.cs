@@ -88,6 +88,7 @@ namespace WolcenEditor
             tmp.yHotspot = yHotSpot;
             tmp.fIcon = false;
             ptr = CreateIconIndirect(ref tmp);
+            if (ptr == (IntPtr)0x0000) return Cursors.Arrow;
             return new Cursor(ptr);
         }
 

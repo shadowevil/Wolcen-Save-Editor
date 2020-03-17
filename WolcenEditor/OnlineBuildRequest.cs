@@ -15,7 +15,7 @@ namespace WolcenEditor
         public static string RequestBuild(string buildID)
         {
             string output = "";
-            WebRequest request = WebRequest.Create("https://wolcen-universe.com/graphql");
+            WebRequest request = WebRequest.Create("https://api.wolcen-universe.com/");
             request.Method = "POST";
 
             var query = "{\"operationName\":\"BuildsIdQuery\",\"variables\":{\"buildId\":\""+ buildID +"\"},\"query\":\"query BuildsIdQuery($buildId: ResourceId!) {  build(buildId: $buildId) { passiveSkillTree   }}\"}";
