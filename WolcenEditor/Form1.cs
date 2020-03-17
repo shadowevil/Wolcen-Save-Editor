@@ -426,7 +426,7 @@ namespace WolcenEditor
         {
             var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
                 "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
-                "[insert whatevever contact info here]\n\n\n" +
+                "https://discord.gg/R8WKtQr\n\n\n" +
                 "Would you like to be taken to https://wolcen-universe.com/ right now?"
                 , "About Improrting Builds."
             , MessageBoxButtons.YesNo);
