@@ -900,6 +900,56 @@ namespace WolcenEditor
                                     }
                                 }
                             }
+                            else if (i.MagicEffects.Default != null)
+                            {
+                                foreach (var effect in i.MagicEffects.Default)
+                                {
+                                    string effectId = effect.EffectId;
+                                    if (effect.Parameters != null)
+                                    {
+                                        int effectParamCount = effect.Parameters.Count();
+                                        List<string> aSem = new List<string>();
+                                        for (int z = 0; z < effect.Parameters.Count(); z++)
+                                        {
+                                            aSem.Add(effect.Parameters[z].semantic);
+                                        }
+                                        string[] actualSemantics = aSem.ToArray();
+                                        if (actualSemantics != null)
+                                        {
+                                            string[] semantics = null;
+                                            WolcenStaticData.Semantics.TryGetValue(effectId, out semantics);
+                                            if (semantics != null)
+                                            {
+                                                if (semantics.Count() != actualSemantics.Count())
+                                                {
+                                                    LogMe.WriteLog("Error: Wrong Semantic count (" + semantics.Count() + ")->(" + actualSemantics.Count() + ")");
+                                                    for (int z = 0; z < actualSemantics.Count(); z++)
+                                                    {
+                                                        LogMe.WriteLog("Error-Cont: Actual Parameters for EffectId: " + effectId + "(" + actualSemantics[z] + ")");
+                                                    }
+                                                }
+                                                else if (semantics.Count() == actualSemantics.Count())
+                                                {
+                                                    for (int z = 0; z < actualSemantics.Count(); z++)
+                                                    {
+                                                        if (semantics[z] != actualSemantics[z])
+                                                        {
+                                                            LogMe.WriteLog("Error: semantic miss-match " + effectId + "(" + semantics[z] + ")->(" + actualSemantics[z] + ")");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (int z = 0; z < actualSemantics.Count(); z++)
+                                                {
+                                                    LogMe.WriteLog("Error: Semantic doesn't exist for EffectID: " + effectId + "(" + actualSemantics[z] + ")");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (File.Exists(dirPath + "Items\\" + l_itemName))
