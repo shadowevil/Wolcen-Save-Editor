@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -77,8 +78,9 @@ namespace WolcenEditor
         /// Create a cursor from a bitmap without resizing and with the specified
         /// hot spot
         /// </summary>
-        public static Cursor CreateCursorNoResize(Bitmap bmp, int xHotSpot, int yHotSpot)
+        public static Cursor CreateCursorNoResize(Bitmap bitmap, int xHotSpot, int yHotSpot)
         {
+            Bitmap bmp = SetImageOpacity(bitmap, 0.85f);
             IntPtr ptr = bmp.GetHicon();
             IconInfo tmp = new IconInfo();
             GetIconInfo(ptr, ref tmp);
@@ -87,6 +89,41 @@ namespace WolcenEditor
             tmp.fIcon = false;
             ptr = CreateIconIndirect(ref tmp);
             return new Cursor(ptr);
+        }
+
+        public static Bitmap SetImageOpacity(Image image, float opacity)
+        {
+            try
+            {
+                //create a Bitmap the size of the image provided  
+                Bitmap bmp = new Bitmap(image.Width, image.Height);
+
+                //create a graphics object from the image  
+                using (Graphics gfx = Graphics.FromImage(bmp))
+                {
+
+                    //create a color matrix object  
+                    ColorMatrix matrix = new ColorMatrix();
+
+                    //set the opacity  
+                    matrix.Matrix33 = opacity;
+
+                    //create image attributes  
+                    ImageAttributes attributes = new ImageAttributes();
+
+                    //set the color(opacity) of the image  
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                    //now draw the image  
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                }
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         private void UnloadRandomInventory()
