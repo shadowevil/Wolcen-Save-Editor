@@ -102,6 +102,7 @@ namespace WolcenEditor
 
             projectsPanel.Controls.Add(buildingListView);
 
+            charCityForm.MouseLeave += (sender2, e2) => { charCityForm.Controls.Remove(projectsPanel); };
             charCityForm.ControlAdded += (sender2, e2) => { charCityForm.Controls.Remove(projectsPanel); };
             projectsPanel.BringToFront();
 
