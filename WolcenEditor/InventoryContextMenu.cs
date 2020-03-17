@@ -157,8 +157,18 @@ namespace WolcenEditor
                 item.InventoryX = coords.x;
                 item.InventoryY = coords.y;
 
-                PictureBox check = (accessablePictureBox.Parent as Panel).Controls[(coords.x + "|" + (coords.y + 1)).ToString()] as PictureBox;
+                PictureBox check = null;
 
+                if (coords.panelID == -1)
+                {
+                    check = (accessablePictureBox.Parent as Panel).Controls[(coords.x + "|" + (coords.y + 1)).ToString()] as PictureBox;
+                }
+                else
+                {
+                    check = (accessablePictureBox.Parent as Panel).Controls[(coords.x + "|" + (coords.y + 1) + "|" + coords.panelID).ToString()] as PictureBox;
+                }
+
+                if (check == null) return;
                 if (check.Image != null) return;
 
                 if (coords.panelID == -1)
