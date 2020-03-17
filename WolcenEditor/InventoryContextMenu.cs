@@ -1047,20 +1047,36 @@ namespace WolcenEditor
                     node.Name = d.Key;
                     node.ImageKey = value;
                     node.Text = lValue;
-                    if (semantics != null && semantics.Count() > 0)
+                    if (checkExistingNodes(treeNode, lValue))
                     {
-                        for (int i = 0; i < semantics.Count(); i++)
+                        if (semantics != null && semantics.Count() > 0)
                         {
-                            node.StateImageKey += semantics[i] + "|";
+                            for (int i = 0; i < semantics.Count(); i++)
+                            {
+                                node.StateImageKey += semantics[i] + "|";
+                            }
                         }
+                        else
+                        {
+                            node.Text = "(Missing Semantic)" + node.Text;
+                            LogMe.WriteLog("Error: null semantic find for " + key + "(" + value + ")");
+                        }
+                        treeNode.Nodes.Add(node);
                     }
-                    else
-                    {
-                        LogMe.WriteLog("Error: null semantic find for " + key + "(" + value + ")");
-                    }
-                    treeNode.Nodes.Add(node);
                 }
             }
+        }
+
+        private bool checkExistingNodes(TreeNode treeNode, string lValue)
+        {
+            foreach (TreeNode n in treeNode.Nodes)
+            {
+                if (n.Text == lValue)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private TreeNode createNode(string name, string text)

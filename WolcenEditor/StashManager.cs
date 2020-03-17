@@ -455,6 +455,9 @@ namespace WolcenEditor
                 g.DrawImage(ItemImage, x, y, width, height);
             }
 
+            Background.Dispose();
+            ItemImage.Dispose();
+
             return FinalImage;
         }
     }

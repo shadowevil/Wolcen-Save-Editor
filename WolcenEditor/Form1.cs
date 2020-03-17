@@ -9,6 +9,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Data;
+using System.Security.Cryptography;
 
 namespace WolcenEditor
 {
@@ -73,23 +75,46 @@ namespace WolcenEditor
         public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);
         [DllImport("user32.dll")]
         public static extern IntPtr CreateIconIndirect(ref IconInfo icon);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public extern static bool DestroyIcon(IntPtr handle);
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
+        public static Cursor myCursor = null;
+        public static IntPtr iconPtr = new IntPtr();
+        public static IconInfo icoInfo = new IconInfo();
 
         /// <summary>
         /// Create a cursor from a bitmap without resizing and with the specified
         /// hot spot
         /// </summary>
-        public static Cursor CreateCursorNoResize(Bitmap bitmap, int xHotSpot, int yHotSpot)
+        public static void SetCursor(Image bitmap, int xHotSpot, int yHotSpot)
         {
+            if (myCursor != null) DestroyIcon(myCursor.Handle);
+            if (iconPtr != null) DestroyIcon(iconPtr);
+            if (icoInfo.hbmColor != null) DeleteObject(icoInfo.hbmColor);
+            if (icoInfo.hbmMask != null) DeleteObject(icoInfo.hbmMask);
+            
             Bitmap bmp = SetImageOpacity(bitmap, 0.85f);
-            IntPtr ptr = bmp.GetHicon();
-            IconInfo tmp = new IconInfo();
-            GetIconInfo(ptr, ref tmp);
-            tmp.xHotspot = xHotSpot;
-            tmp.yHotspot = yHotSpot;
-            tmp.fIcon = false;
-            ptr = CreateIconIndirect(ref tmp);
-            if (ptr == (IntPtr)0x0000) return Cursors.Arrow;
-            return new Cursor(ptr);
+            Icon bmpIcon = ConvertoToIcon(bmp);
+            icoInfo = new IconInfo();
+            GetIconInfo(bmpIcon.Handle, ref icoInfo);
+            icoInfo.xHotspot = xHotSpot;
+            icoInfo.yHotspot = yHotSpot;
+            icoInfo.fIcon = false;
+            iconPtr = CreateIconIndirect(ref icoInfo);
+            myCursor = new Cursor(iconPtr);
+            bmpIcon.Dispose();
+            bmp.Dispose();
+            Cursor.Current = myCursor;
+        }
+
+        public static Icon ConvertoToIcon(Bitmap bmp)
+        {
+            IntPtr icH = bmp.GetHicon();
+            var toReturn = (Icon)Icon.FromHandle(icH).Clone();
+            DestroyIcon(icH);
+            return toReturn;
         }
 
         public static Bitmap SetImageOpacity(Image image, float opacity)

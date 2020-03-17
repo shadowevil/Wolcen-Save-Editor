@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace WolcenEditor
@@ -103,13 +104,11 @@ namespace WolcenEditor
         {
             e.UseDefaultCursors = false;
 
-            if ((e.Effect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            if ((e.Effect & DragDropEffects.Move) == DragDropEffects.Move)
             {
-                Bitmap _bmp = new Bitmap(sourceBox.Width, sourceBox.Height);
-                sourceBox.DrawToBitmap(_bmp, new Rectangle(Point.Empty, _bmp.Size));
-                _bmp.MakeTransparent(Color.White);
-                Cursor cur = Form1.CreateCursorNoResize(_bmp, sourceBox.Width / 2, 10);
-                Cursor.Current = cur;
+                Bitmap bmp = new Bitmap(sourceBox.Image);
+                Form1.SetCursor(bmp, sourceBox.Width / 2, 10);
+                bmp.Dispose();
             }
             else
             {
@@ -390,6 +389,14 @@ namespace WolcenEditor
                     ReloadInventoryBitmap((sender as PictureBox).Parent as Panel, Destination);
                     return;
                 }
+
+                if (charMap.ContainsKey(Destination.Name))
+                {
+                    ConfirmMove(Destination);
+                    Destination.Size = sourceBox.Size;
+                    Destination.MaximumSize = sourceBox.Size;
+                    ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
+                }
             }
             else
             {
@@ -402,14 +409,6 @@ namespace WolcenEditor
                 }
                 return;
             }
-
-            //if (charMap.ContainsKey(Destination.Name))
-            //{
-            //    ConfirmMove(Destination);
-            //    Destination.Size = sourceBox.Size;
-            //    Destination.MaximumSize = sourceBox.Size;
-            //    ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
-            //}
         }
 
         private static bool isDestinationOK(PictureBox destination)
@@ -655,7 +654,7 @@ namespace WolcenEditor
         {
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
-                e.Effect = DragDropEffects.Copy;
+                e.Effect = DragDropEffects.Move;
             }
             else
             {
@@ -673,7 +672,7 @@ namespace WolcenEditor
                     {
                         Bitmap bmp = new Bitmap((sender as PictureBox).Image);
                         sourceBox = (sender as PictureBox);
-                        if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                        if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move && isValid)
                         {
                             return;
                         }
@@ -705,7 +704,7 @@ namespace WolcenEditor
                     Bitmap bmp = new Bitmap((sender as PictureBox).Image);
                     sourceBox = (sender as PictureBox);
 
-                    if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                    if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move && isValid)
                     {
                         if (!charMap.ContainsKey((sender as PictureBox).Name))
                         {
@@ -737,38 +736,39 @@ namespace WolcenEditor
                 g.DrawImage(Background, 0, 0);
                 int width = Background.Width - 10;
                 int height = Background.Height - 10;
-                if (itemType == "Shoulder")
+                int xOffset = 0;
+                int yOffset = 0;
+                switch (itemType)
                 {
-                    width = 50;
-                    height = 55;
+                    case "Shoulder":
+                        width = 50; height = 55;
+                        break;
+                    case "Belt":
+                        width = 40; height = 25;
+                        break;
+                    case "Amulet":
+                    case "Ring":
+                        width = 35; height = 30;
+                        break;
+                    case "Helmet":
+                        width = 50; height = 60;
+                        break;
+                    case "Potions":
+                        width = 20; height = 40;
+                        break;
+                    case "Leg Armor":
+                        width = 50; height = 95;
+                        break;
+                    case "Foot Armor":
+                        width = 45; height = 75;
+                        break;
+                    case "Chest Armor":
+                        width = 45; height = 95;
+                        break;
                 }
-                if (itemType == "Belt")
-                {
-                    width = 40;
-                    height = 25;
-                }
-                if (itemType == "Ring" || itemType == "Amulet")
-                {
-                    width = 35;
-                    height = 30;
-                }
-                if (itemType == "Helmet")
-                {
-                    height = 65;
-                    width = 50;
-                }
-                if (itemType == "Potions")
-                {
-                    height = 40;
-                    width = 20;
-                }
-                if (itemType == "Leg Armor")
-                {
-                    height = 75;
-                    width = 45;
-                }
-                int x = Background.Width / 2 - (width / 2);
-                int y = Background.Height / 2 - (height / 2);
+
+                int x = Background.Width / 2 - (width / 2) + xOffset;
+                int y = Background.Height / 2 - (height / 2) + yOffset;
                 g.DrawImage(ItemImage, x, y, width, height);
             }
 
