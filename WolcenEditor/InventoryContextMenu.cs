@@ -1058,8 +1058,7 @@ namespace WolcenEditor
                         }
                         else
                         {
-                            node.Text = "(Missing Semantic)" + node.Text;
-                            LogMe.WriteLog("Error: null semantic find for " + key + "(" + value + ")");
+                            node.StateImageKey = "CountInt";
                         }
                         treeNode.Nodes.Add(node);
                     }
