@@ -1081,7 +1081,7 @@ namespace WolcenEditor
                 UnlockedSkills = new List<UnlockedSkill>{ },
                 SkillBar = new List<SkillBar>{ },
                 PassiveSkills = new List<string> { },
-                BeltConfig = new List<BeltConfig>{ },
+                BeltConfig = new List<BeltConfig> { new BeltConfig { Id = 0, Locked = 0 }, new BeltConfig { Id = 1, Locked = 0 } },
                 Progression = new Progression { LastPlayed = new LastPlayed { QuestId = "INTRO_Quest1", StepId = 1} },
                 Telemetry = new Telemetry 
                 {
