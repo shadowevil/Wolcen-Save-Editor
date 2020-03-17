@@ -10376,7 +10376,7 @@ namespace WolcenEditor
             { "attackspeed_score", new string[] { "CharacteristicScoreInt" } },
             { "spellcastingspeed_score", new string[] { "CharacteristicScoreInt" } },
             { "rage_per_strike_pts", new string[] { "ResourceFlatInt" } },
-            { "umbra_regen_pts", new string[] { "ResourceFlatInt" } },
+            { "umbra_regen_pts", new string[] { "ResourceFlatFloat" } },
             { "local_blockchance_flat", new string[] { "LocalFlatFloat" } },
             { "local_blockchance_percent", new string[] { "LocalPercentFloat" } },
             { "local_blockefficiency_flat", new string[] { "ArmorFlatInt" } },
