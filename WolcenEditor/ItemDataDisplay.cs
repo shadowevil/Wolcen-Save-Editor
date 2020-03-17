@@ -125,13 +125,16 @@ namespace WolcenEditor
                     foreach (Effect effect in defaultEffects)
                     {
                         string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId].Replace("%1", effect.Parameters[0].value.ToString());
-                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        if (s_Effect.Contains("%2") && effect.Parameters.Count > 1) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "+" + s_Effect, itemStatDisplay, 9, Color.White));
                     }
                 }
             }
 
             itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+            itemStat = getItemStat("Gem", "StackSize");
+            if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Amount in stack: " + itemStat, itemStatDisplay, 9, Color.White));
 
             itemStat = getItemStat("Gem", "Name");
             if (itemStat != null)
@@ -196,7 +199,7 @@ namespace WolcenEditor
                             return;
                         }
                         s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                        if (s_Effect.Contains("%2")) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                        if (s_Effect.Contains("%2") && effect.Parameters.Count > 1) s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
                     }
                     itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
                 }

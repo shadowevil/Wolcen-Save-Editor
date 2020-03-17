@@ -724,7 +724,7 @@ namespace WolcenEditor
             }
         }
 
-        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null)
+        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null, string stackSize = null)
         {
             Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
             Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
@@ -770,7 +770,14 @@ namespace WolcenEditor
                 int x = Background.Width / 2 - (width / 2) + xOffset;
                 int y = Background.Height / 2 - (height / 2) + yOffset;
                 g.DrawImage(ItemImage, x, y, width, height);
+                if (stackSize != null)
+                {
+                    g.DrawString(stackSize, Form1.DefaultFont, Brushes.White, 3, 3);
+                }
             }
+
+            Background.Dispose();
+            ItemImage.Dispose();
 
             return FinalImage;
         }
@@ -825,6 +832,7 @@ namespace WolcenEditor
                         string dirPath = @".\UIResources\";
                         string itemName = "";
                         string l_itemName = null;
+                        string stackSize = null;
                         int itemRarity = 0;
                         if (i.Armor != null)
                         {
@@ -865,6 +873,7 @@ namespace WolcenEditor
                             itemName = i.Gem.Name;
                             itemRarity = i.Rarity;
                             l_itemName = itemName + ".png";
+                            stackSize = i.Gem.StackSize.ToString();
                         }
 
                         if (i.MagicEffects != null)
@@ -919,7 +928,8 @@ namespace WolcenEditor
                                     }
                                 }
                             }
-                            else if (i.MagicEffects.Default != null)
+
+                            if (i.MagicEffects.Default != null)
                             {
                                 foreach (var effect in i.MagicEffects.Default)
                                 {
@@ -973,7 +983,7 @@ namespace WolcenEditor
 
                         if (File.Exists(dirPath + "Items\\" + l_itemName))
                         {
-                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, i.ItemType, pb);
+                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, i.ItemType, pb, stackSize);
                         }
                         else
                         {

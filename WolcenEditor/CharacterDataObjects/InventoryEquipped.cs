@@ -46,6 +46,7 @@ namespace WolcenEditor
     public class Gem
     {
         public string Name { get; set; }
+        public int StackSize { get; set; }
     }
 
     public class ItemMagicEffects

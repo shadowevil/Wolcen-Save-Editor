@@ -91,13 +91,11 @@ namespace WolcenEditor
         {
             e.UseDefaultCursors = false;
 
-            if ((e.Effect & DragDropEffects.Copy) == DragDropEffects.Copy)
+            if ((e.Effect & DragDropEffects.Move) == DragDropEffects.Move)
             {
-                Bitmap _bmp = new Bitmap(sourceBox.Width, sourceBox.Height);
-                sourceBox.DrawToBitmap(_bmp, new Rectangle(Point.Empty, _bmp.Size));
-                _bmp.MakeTransparent(Color.White);
-                Cursor cur = new Cursor(_bmp.GetHicon());
-                Cursor.Current = cur;
+                Bitmap bmp = new Bitmap(sourceBox.Image);
+                Form1.SetCursor(bmp, sourceBox.Width / 2, 10);
+                bmp.Dispose();
             }
             else
             {
@@ -229,7 +227,7 @@ namespace WolcenEditor
         {
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
-                e.Effect = DragDropEffects.Copy;
+                e.Effect = DragDropEffects.Move;
             }
             else
             {
@@ -251,7 +249,7 @@ namespace WolcenEditor
                 {
                     Bitmap bmp = new Bitmap((sender as PictureBox).Image);
                     sourceBox = (sender as PictureBox);
-                    if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Copy) == DragDropEffects.Copy && isValid)
+                    if ((sender as PictureBox).DoDragDrop(bmp, DragDropEffects.Move) == DragDropEffects.Move && isValid)
                     {
                         isValid = false;
                         return;
@@ -293,6 +291,7 @@ namespace WolcenEditor
             string dirPath = @".\UIResources\";
             string itemName = "";
             string l_itemName = null;
+            string stackSize = null;
             int itemRarity = 0;
             pb.Size = new Size(50, 50);
             pb.MaximumSize = new Size(50, 50);
@@ -334,8 +333,9 @@ namespace WolcenEditor
                 itemName = iGrid.Gem.Name;
                 itemRarity = iGrid.Rarity;
                 l_itemName = itemName + ".png";
+                stackSize = iGrid.Gem.StackSize.ToString();
             }
-
+            
             if (iGrid.MagicEffects != null)
             {
                 if (iGrid.MagicEffects.RolledAffixes != null)
@@ -388,11 +388,62 @@ namespace WolcenEditor
                         }
                     }
                 }
+
+                if (iGrid.MagicEffects.Default != null)
+                {
+                    foreach (var effect in iGrid.MagicEffects.Default)
+                    {
+                        string effectId = effect.EffectId;
+                        if (effect.Parameters != null)
+                        {
+                            int effectParamCount = effect.Parameters.Count();
+                            List<string> aSem = new List<string>();
+                            for (int z = 0; z < effect.Parameters.Count(); z++)
+                            {
+                                aSem.Add(effect.Parameters[z].semantic);
+                            }
+                            string[] actualSemantics = aSem.ToArray();
+                            if (actualSemantics != null)
+                            {
+                                string[] semantics = null;
+                                WolcenStaticData.Semantics.TryGetValue(effectId, out semantics);
+                                if (semantics != null)
+                                {
+                                    if (semantics.Count() != actualSemantics.Count())
+                                    {
+                                        LogMe.WriteLog("Error: Wrong Semantic count (" + semantics.Count() + ")->(" + actualSemantics.Count() + ")");
+                                        for (int z = 0; z < actualSemantics.Count(); z++)
+                                        {
+                                            LogMe.WriteLog("Error-Cont: Actual Parameters for EffectId: " + effectId + "(" + actualSemantics[z] + ")");
+                                        }
+                                    }
+                                    else if (semantics.Count() == actualSemantics.Count())
+                                    {
+                                        for (int z = 0; z < actualSemantics.Count(); z++)
+                                        {
+                                            if (semantics[z] != actualSemantics[z])
+                                            {
+                                                LogMe.WriteLog("Error: semantic miss-match " + effectId + "(" + semantics[z] + ")->(" + actualSemantics[z] + ")");
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    for (int z = 0; z < actualSemantics.Count(); z++)
+                                    {
+                                        LogMe.WriteLog("Error: Semantic doesn't exist for EffectID: " + effectId + "(" + actualSemantics[z] + ")");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             if (File.Exists(dirPath + "Items\\" + l_itemName))
             {
-                return CombineGridBitmaps(dirPath, l_itemName, itemRarity, iGrid.ItemType, pb);
+                return CombineGridBitmaps(dirPath, l_itemName, itemRarity, iGrid.ItemType, pb, stackSize);
             }
             else
             {
@@ -408,7 +459,7 @@ namespace WolcenEditor
             return null;
         }
 
-        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null)
+        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null, string stackSize = null)
         {
             Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
             Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
@@ -420,39 +471,45 @@ namespace WolcenEditor
                 g.DrawImage(Background, 0, 0);
                 int width = Background.Width - 10;
                 int height = Background.Height - 10;
-                if (itemType == "Shoulder")
+                int xOffset = 0;
+                int yOffset = 0;
+
+                switch (itemType)
                 {
-                    width = 50;
-                    height = 55;
+                    case "Shoulder":
+                        width = 50; height = 55;
+                        break;
+                    case "Belt":
+                        width = 40; height = 25;
+                        break;
+                    case "Amulet":
+                    case "Ring":
+                        width = 35; height = 30;
+                        break;
+                    case "Helmet":
+                        width = 50; height = 60;
+                        break;
+                    case "Potions":
+                        width = 20; height = 40;
+                        break;
+                    case "Leg Armor":
+                        width = 50; height = 95;
+                        break;
+                    case "Foot Armor":
+                        width = 45; height = 75;
+                        break;
+                    case "Chest Armor":
+                        width = 45; height = 95;
+                        break;
                 }
-                if (itemType == "Belt")
-                {
-                    width = 40;
-                    height = 25;
-                }
-                if (itemType == "Ring" || itemType == "Amulet")
-                {
-                    width = 35;
-                    height = 30;
-                }
-                if (itemType == "Helmet")
-                {
-                    height = 65;
-                    width = 50;
-                }
-                if (itemType == "Potions")
-                {
-                    height = 40;
-                    width = 20;
-                }
-                if (itemType == "Leg Armor")
-                {
-                    height = 75;
-                    width = 45;
-                }
-                int x = Background.Width / 2 - (width / 2);
-                int y = Background.Height / 2 - (height / 2);
+
+                int x = Background.Width / 2 - (width / 2) + xOffset;
+                int y = Background.Height / 2 - (height / 2) + yOffset;
                 g.DrawImage(ItemImage, x, y, width, height);
+                if (stackSize != null)
+                {
+                    g.DrawString(stackSize, Form1.DefaultFont, Brushes.White, 3, 3);
+                }
             }
 
             Background.Dispose();
