@@ -386,8 +386,17 @@ namespace WolcenEditor
                     newGridItem.Gem.Name = selectedNode.Name;
                     break;
             }
-            cData.Character.InventoryGrid.Add(newGridItem);
-            InventoryManager.ReloadInventoryBitmap((accessablePictureBox.Parent as Panel), accessablePictureBox);
+
+            if (panelID == -1)
+            {
+                cData.Character.InventoryGrid.Add(newGridItem);
+                InventoryManager.ReloadInventoryBitmap((accessablePictureBox.Parent as Panel), accessablePictureBox);
+            }
+            else
+            {
+                cData.PlayerChest.Panels[panelID].InventoryGrid.Add(newGridItem);
+                StashManager.ReloadGridBitmap((accessablePictureBox.Parent as Panel), x, y, panelID);
+            }
             this.Dispose();
         }
 
@@ -840,6 +849,9 @@ namespace WolcenEditor
                                 ImageKey = "default",
                                 SelectedImageKey = iGrid.Weapon.ShieldBlockEfficiency.ToString()
                             };
+                            magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldResistance);
+                            magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldBlockChance);
+                            magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldBlockEfficiency);
                         }
                         else
                         {
@@ -852,9 +864,6 @@ namespace WolcenEditor
                             };
                             magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ResourceGeneration);
                         }
-                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldResistance);
-                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldBlockChance);
-                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ShieldBlockEfficiency);
                     }
 
                     if (iGrid.Type == (int)typeMap.Armor)
