@@ -1058,6 +1058,7 @@ namespace WolcenEditor
                         }
                         else
                         {
+                            node.Text = "[*]" + node.Text;
                             node.StateImageKey = "CountInt";
                         }
                         treeNode.Nodes.Add(node);
