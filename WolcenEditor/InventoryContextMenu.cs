@@ -44,6 +44,7 @@ namespace WolcenEditor
             }
             else
             {
+                if (iGridItem == null) return null;
                 MenuItem editItem = new MenuItem()
                 {
                     Text = "Edit item",
@@ -152,9 +153,13 @@ namespace WolcenEditor
         {
             if (iGridItem == null && iGridCopiedItem != null)
             {
-                InventoryGrid item = iGridCopiedItem;
+                InventoryGrid item = iGridCopiedItem.copy;
                 item.InventoryX = coords.x;
                 item.InventoryY = coords.y;
+
+                PictureBox check = (accessablePictureBox.Parent as Panel).Controls[(coords.x + "|" + (coords.y + 1)).ToString()] as PictureBox;
+
+                if (check.Image != null) return;
 
                 if (coords.panelID == -1)
                 {

@@ -296,6 +296,7 @@ namespace WolcenEditor
             }
             if (Destination.Name == "charBelt1" || Destination.Name == "charBelt2")
             {
+                if (charMap.ContainsKey(sourceBox.Name)) return;
                 int x = Convert.ToInt32(sourceBox.Name.Split('|')[0]);
                 int y = Convert.ToInt32(sourceBox.Name.Split('|')[1]);
                 foreach (var d in cData.Character.InventoryGrid)
@@ -814,6 +815,8 @@ namespace WolcenEditor
                             if (l_itemName == null)
                             {
                                 WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
+                                pb.Size = new Size(50, 50);
+                                pb.MaximumSize = new Size(50, 50);
                             }
                             else
                             {

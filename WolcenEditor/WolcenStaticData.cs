@@ -1768,7 +1768,9 @@ namespace WolcenEditor
             { "Unique_abyssal_ring_max", "unique_ring_smugglingring.png" },
             { "Unique_abyssal_ring_max_max", "unique_ring_smugglingring.png" },
             { "Unique_curse_ring_max", "unique_ring_curse ring.png" },
-            { "Unique_curse_ring_max_max", "unique_ring_curse ring.png" }
+            { "Unique_curse_ring_max_max", "unique_ring_curse ring.png" },
+            { "Unique_exorcism_amulet_max", "amulet_corrupt rage.png" },
+            { "Unique_exorcism_amulet_max_max", "amulet_corrupt rage.png" }
         };
 
         public static readonly Dictionary<string, int> BodyParts = new Dictionary<string, int>
@@ -2693,8 +2695,6 @@ namespace WolcenEditor
             { "unique_ezaneal_chest", "unique_chestarmor_energizer.png" },
             { "unique_republic_helmet", "unique_helmet_RepuSniper.png" },
             { "unique_frostweave_chest", "unique_Sharpicechest_armor.png" },
-            { "Unique_exorcism_amulet_max", "amulet_corrupt rage.png" },
-            { "Unique_exorcism_amulet_max_max", "amulet_corrupt rage.png" },
             { "unique_figurehead_boots", "unique_boots_copperboots.png" },
             { "unique_necromancer_shoulder", "unique_pauldron_unicorn.png" },
             { "unique_expurgation_glove", "unique_exorcistbracer.png" },
