@@ -393,25 +393,43 @@ namespace WolcenEditor
             }
             else
             {
-                ConfirmMove(Destination);
-                if (charMap.ContainsKey(Destination.Name))
+                if (ConfirmMove(Destination))
                 {
-                    ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
+                    if (charMap.ContainsKey(Destination.Name))
+                    {
+                        ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
+                    }
                 }
                 return;
             }
 
-            if (charMap.ContainsKey(Destination.Name))
-            {
-                ConfirmMove(Destination);
-                Destination.Size = sourceBox.Size;
-                Destination.MaximumSize = sourceBox.Size;
-                ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
-            }
+            //if (charMap.ContainsKey(Destination.Name))
+            //{
+            //    ConfirmMove(Destination);
+            //    Destination.Size = sourceBox.Size;
+            //    Destination.MaximumSize = sourceBox.Size;
+            //    ReloadEquipBitmap(Destination.Parent as TabPage, Destination);
+            //}
         }
 
         private static bool isDestinationOK(PictureBox destination)
         {
+            if (destination.Name == "charRWeapon" || destination.Name == "charLWeapon")
+            {
+                foreach (var item in cData.Character.InventoryEquipped)
+                {
+                    if (item.BodyPart == charMap["charLWeapon"])
+                    {
+                        if (ItemDataDisplay.ParseItemNameForType(item.Weapon.Name).Contains("2H")
+                            || ItemDataDisplay.ParseItemNameForType(item.Weapon.Name).Contains("Bow")
+                            || ItemDataDisplay.ParseItemNameForType(item.Weapon.Name).Contains("Staff"))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
             string sourceItemType = null;
             if (charMap.ContainsKey(destination.Name) && charMap.ContainsKey(sourceBox.Name))
             {
@@ -489,7 +507,7 @@ namespace WolcenEditor
             cData.Character.InventoryGrid.Add(_tmpNew);
         }
 
-        private static void ConfirmMove(PictureBox pictureBox)
+        private static bool ConfirmMove(PictureBox pictureBox)
         {
             if (charMap.ContainsKey(pictureBox.Name))
             {
@@ -630,6 +648,7 @@ namespace WolcenEditor
                     }
                 }
             }
+            return true;
         }
 
         private static void Pb_DragEnter(object sender, DragEventArgs e)
