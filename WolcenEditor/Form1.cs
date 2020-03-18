@@ -927,7 +927,10 @@ namespace WolcenEditor
                 cData.Character.Progression.LastPlayed.QuestId = "ACT1_Quest1";
                 cData.Character.Progression.LastPlayed.StepId = 1;
             }
-            cData.Character.Progression.LastPlayed.StepId = 1;
+            if(!WolcenStaticData.QuestSelections[cData.Character.Progression.LastPlayed.QuestId].Contains(cData.Character.Progression.LastPlayed.StepId))
+            {
+                cData.Character.Progression.LastPlayed.StepId = 1;
+            }
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
 
