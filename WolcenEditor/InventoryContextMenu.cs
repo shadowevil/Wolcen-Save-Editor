@@ -1037,7 +1037,7 @@ namespace WolcenEditor
                                             node.StateImageKey += me.Parameters[i].semantic + "|";
                                             node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
                                         }
-                                        affixNode.Nodes.Add(node);
+                                        affixNode.Nodes.Add(node); 
                                     }
                                 }
                             }
