@@ -25,52 +25,56 @@ namespace WolcenEditor
         public static ContextMenu LoadContextMenu(PictureBox pb)
         {
             ContextMenu _return = new ContextMenu();
-            if (pb.Image == null)
+
+            MenuItem createItem = new MenuItem();
+            createItem.Text = "Create item";
+            createItem.Name = "CreateItem";
+            createItem.Click += CreateItem_Click;
+            createItem.Visible = (pb.Image == null ? true : false);
+
+            MenuItem pasteItem = new MenuItem()
             {
-                MenuItem createItem = new MenuItem();
-                createItem.Text = "Create item";
-                createItem.Name = "CreateItem";
-                createItem.Click += CreateItem_Click;
+                Text = "Paste",
+                Name = "PasteItem",
+                Enabled = iGridCopiedItem != null ? true : false,
+                Visible = (pb.Image == null ? true : false)
+            };
 
-                MenuItem pasteItem = new MenuItem()
-                {
-                    Text = "Paste",
-                    Name = "PasteItem"
-                };
-                pasteItem.Click += PasteItem_Click;
-
-                _return.MenuItems.Add(createItem);
-                _return.MenuItems.Add(pasteItem);
-            }
-            else
+            MenuItem editItem = new MenuItem()
             {
-                if (iGridItem == null) return null;
-                MenuItem editItem = new MenuItem()
-                {
-                    Text = "Edit item",
-                    Name = "EditItem",
-                    Enabled = iGridItem.Gem != null ? false : true
-                };
-
-                MenuItem copyItem = new MenuItem()
-                {
-                    Text = "Copy",
-                    Name = "CopyItem"
-                };
-
-                MenuItem deleteItem = new MenuItem()
-                {
-                    Text = "Delete item",
-                    Name = "DeleteItem"
-                };
-
-                deleteItem.Click += DeleteItem_Click;
-                copyItem.Click += CopyItem_Click;
-                editItem.Click += EditItem_Click;
-                _return.MenuItems.Add(editItem);
-                _return.MenuItems.Add(copyItem);
-                _return.MenuItems.Add(deleteItem);
+                Text = "Edit item",
+                Name = "EditItem",
+                Visible = (pb.Image == null ? false : true)
+            };
+            if (iGridItem != null)
+            {
+                editItem.Enabled = true;//iGridItem.Gem != null ? false : true;
             }
+
+            MenuItem copyItem = new MenuItem()
+            {
+                Text = "Copy",
+                Name = "CopyItem",
+                Visible = (pb.Image == null ? false : true)
+            };
+
+            MenuItem deleteItem = new MenuItem()
+            {
+                Text = "Delete item",
+                Name = "DeleteItem",
+                Visible = (pb.Image == null ? false : true)
+            };
+
+            deleteItem.Click += DeleteItem_Click;
+            copyItem.Click += CopyItem_Click;
+            editItem.Click += EditItem_Click;
+            pasteItem.Click += PasteItem_Click;
+
+            _return.MenuItems.Add(createItem);
+            _return.MenuItems.Add(pasteItem);
+            _return.MenuItems.Add(editItem);
+            _return.MenuItems.Add(copyItem);
+            _return.MenuItems.Add(deleteItem);
 
             return _return;
         }
@@ -309,6 +313,12 @@ namespace WolcenEditor
             }
             if (itemName == null)
             {
+                WolcenStaticData.ItemReagent.TryGetValue(selectedNode.Name, out itemName);
+                itemWidth = 50;
+                itemHeight = 50;
+            }
+            if (itemName == null)
+            {
                 // Try Potions
                 if (selectedNode.Name.ToLower().Contains("potion"))
                 {
@@ -381,25 +391,38 @@ namespace WolcenEditor
             {
                 newGridItem.Rarity = 6;
             }
-            newGridItem.ItemType = ItemDataDisplay.ParseItemNameForType(selectedNode.Name);
-            switch (selectedNode.ImageIndex)
+
+            if (selectedNode.Name.ToLower().Contains("reagent"))
             {
-                case (int)InventoryManager.typeMap.Armor:        // Also accessory
-                    newGridItem.Armor = new ItemArmor();
-                    newGridItem.Armor.Name = selectedNode.Name;
-                    break;
-                case (int)InventoryManager.typeMap.Weapon:       // Also offhand
-                    newGridItem.Weapon = new ItemWeapon();
-                    newGridItem.Weapon.Name = selectedNode.Name;
-                    break;
-                case (int)InventoryManager.typeMap.Potion:
-                    newGridItem.Potion = new Potion();
-                    newGridItem.Potion.Name = selectedNode.Name;
-                    break;
-                case (int)InventoryManager.typeMap.Gem:
-                    newGridItem.Gem = new Gem();
-                    newGridItem.Gem.Name = selectedNode.Name;
-                    break;
+                if (selectedNode.Name.ToLower().Contains("legendary"))
+                {
+                    newGridItem.Rarity = 4;
+                }
+                newGridItem.Reagent = new Reagent();
+                newGridItem.Reagent.Name = selectedNode.Name;
+            }
+            else
+            {
+                newGridItem.ItemType = ItemDataDisplay.ParseItemNameForType(selectedNode.Name);
+                switch (selectedNode.ImageIndex)
+                {
+                    case (int)InventoryManager.typeMap.Armor:        // Also accessory
+                        newGridItem.Armor = new ItemArmor();
+                        newGridItem.Armor.Name = selectedNode.Name;
+                        break;
+                    case (int)InventoryManager.typeMap.Weapon:       // Also offhand
+                        newGridItem.Weapon = new ItemWeapon();
+                        newGridItem.Weapon.Name = selectedNode.Name;
+                        break;
+                    case (int)InventoryManager.typeMap.Potion:
+                        newGridItem.Potion = new Potion();
+                        newGridItem.Potion.Name = selectedNode.Name;
+                        break;
+                    case (int)InventoryManager.typeMap.Gem:
+                        newGridItem.Gem = new Gem();
+                        newGridItem.Gem.Name = selectedNode.Name;
+                        break;
+                }
             }
 
             if (panelID == -1)
@@ -423,6 +446,7 @@ namespace WolcenEditor
             TreeNode Accessories = new TreeNode() { Name = "Accessories", Text = "Accessories", Tag = "Accessories" };
             TreeNode Potions = new TreeNode() { Name = "Potions", Text = "Potions", Tag = "Potions" };
             TreeNode Gems = new TreeNode() { Name = "Gems", Text = "Gems", Tag = "Gems" };
+            TreeNode Reagents = new TreeNode() { Name = "Reagents", Text = "Reagents", Tag = "Reagents" };
 
             // Sub Categories
             TreeNode Amulet = new TreeNode() { Name = "Amulet", Text = "Amulets", Tag = "Amulet" };
@@ -474,6 +498,7 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Accessories);
             itemListView.Nodes.Add(Potions);
             itemListView.Nodes.Add(Gems);
+            itemListView.Nodes.Add(Reagents);
 
             foreach (var item in WolcenStaticData.ItemLocalizedNames)
             {
@@ -526,6 +551,10 @@ namespace WolcenEditor
                 {
                     Gems.Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Gem);
                 }
+                else if (item.Key.ToLower().Contains("reagent"))
+                {
+                    Reagents.Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Reagent);
+                }
             }
         }
     }
@@ -546,7 +575,8 @@ namespace WolcenEditor
             Armor = 2,
             Accessory = 2,
             Gem = 6,
-            Potion = 4
+            Potion = 4,
+            Reagent = 10
         }
 
         public EditItem(int panelid, InventoryGrid itemSelected, PictureBox accPB)
@@ -667,8 +697,9 @@ namespace WolcenEditor
                     {
                         case (int)typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Weapon.Name); break;
                         case (int)typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Armor.Name); break;
-                        case (int)typeMap.Gem: break;
+                        case (int)typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Gem.Name); break;
                         case (int)typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Potion.Name);  break;
+                        case (int)typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Reagent.Name); break;
                     }
                     if (i != null)
                     {
@@ -689,8 +720,9 @@ namespace WolcenEditor
                         {
                             case (int)typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Weapon.Name); break;
                             case (int)typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Armor.Name); break;
-                            case (int)typeMap.Gem: break;
+                            case (int)typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Gem.Name); break;
                             case (int)typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Potion.Name); break;
+                            case (int)typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Reagent.Name); break;
                         }
                         if (i != null)
                         {
@@ -755,6 +787,7 @@ namespace WolcenEditor
             TreeNode Sockets = null;
             TreeNode Value = null;
             TreeNode Level = null;
+            TreeNode StackSize = null;
 
             IList<InventoryGrid> invGrid = null;
             if (panelID == -1) invGrid = cData.Character.InventoryGrid;
@@ -766,63 +799,84 @@ namespace WolcenEditor
             {
                 if (iGrid.InventoryX == selectedGridItem.InventoryX && iGrid.InventoryY == selectedGridItem.InventoryY)
                 {
-                    Rarity = new TreeNode()
+                    if (iGrid.Gem == null && iGrid.Reagent == null)
                     {
-                        Name = "Rarity",
-                        Text = "Rarity",
-                        ImageKey = "default",
-                        SelectedImageKey = iGrid.Rarity.ToString()
-                    };
-                    Quality = new TreeNode()
-                    {
-                        Name = "Quality",
-                        Text = "Quality",
-                        ImageKey = "default",
-                        SelectedImageKey = iGrid.Quality.ToString()
-                    };
-                    string sockets = "0";
-                    if (iGrid.Sockets != null) sockets = iGrid.Sockets.Count().ToString();
-                    Sockets = new TreeNode()
-                    {
-                        Name = "Sockets",
-                        Text = "Number of Sockets",
-                        ImageKey = "default",
-                        SelectedImageKey = sockets
-                    };
-                    if (iGrid.Sockets != null)
-                    {
-                        foreach (var sock in iGrid.Sockets)
+                        Rarity = new TreeNode()
                         {
-                            Sockets.StateImageKey += sock.Effect + "|";
-                            if (sock.Gem != null)
+                            Name = "Rarity",
+                            Text = "Rarity",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Rarity.ToString()
+                        };
+                        Quality = new TreeNode()
+                        {
+                            Name = "Quality",
+                            Text = "Quality",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Quality.ToString()
+                        };
+                        string sockets = "0";
+                        if (iGrid.Sockets != null) sockets = iGrid.Sockets.Count().ToString();
+                        Sockets = new TreeNode()
+                        {
+                            Name = "Sockets",
+                            Text = "Number of Sockets",
+                            ImageKey = "default",
+                            SelectedImageKey = sockets
+                        };
+                        if (iGrid.Sockets != null)
+                        {
+                            foreach (var sock in iGrid.Sockets)
                             {
-                                Sockets.Tag += sock.Gem.Name + "|";
+                                Sockets.StateImageKey += sock.Effect + "|";
+                                if (sock.Gem != null)
+                                {
+                                    Sockets.Tag += sock.Gem.Name + "|";
+                                }
                             }
                         }
+
+                        Level = new TreeNode()
+                        {
+                            Name = "Level",
+                            Text = "Item Level",
+                            ImageKey = "default",
+                            SelectedImageKey = iGrid.Level.ToString()
+                        };
+
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Rarity);
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Quality);
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Sockets);
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Level);
                     }
-                    Value = new TreeNode()
+                    else
                     {
-                        Name = "Value",
-                        Text = "Value",
-                        ImageKey = "default"
-                    };
-                    if (iGrid.Value == null) Value.SelectedImageKey = "0";
-                    else Value.SelectedImageKey = iGrid.Value.ToString();
 
-                    Level = new TreeNode()
-                    {
-                        Name = "Level",
-                        Text = "Item Level",
-                        ImageKey = "default",
-                        SelectedImageKey = iGrid.Level.ToString()
-                    };
+                        Value = new TreeNode()
+                        {
+                            Name = "Value",
+                            Text = "Value",
+                            ImageKey = "default"
+                        };
+                        if (iGrid.Value == null) Value.SelectedImageKey = "0";
+                        else Value.SelectedImageKey = iGrid.Value.ToString();
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Value);
 
-                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Rarity);
-                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Quality);
-                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Sockets);
-                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Value);
-                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Level);
+                        if (iGrid.Gem != null || iGrid.Reagent != null)
+                        {
+                            StackSize = new TreeNode()
+                            {
+                                Name = "StackSize",
+                                Text = "Stack Size",
+                                ImageKey = "default"
+                            };
 
+                            if (iGrid.Gem != null) StackSize.SelectedImageKey = iGrid.Gem.StackSize.ToString();
+                            if (iGrid.Reagent != null) StackSize.SelectedImageKey = iGrid.Reagent.StackSize.ToString();
+
+                            magicNodes.Nodes["CurrentAffixes"].Nodes.Add(StackSize);
+                        }
+                    }
                     if (iGrid.Type == (int)typeMap.Weapon)    // Weapons & offhands
                     {
                         damageMin = new TreeNode()
@@ -945,43 +999,46 @@ namespace WolcenEditor
                         magicNodes.Nodes["CurrentAffixes"].Nodes.Add(ImmediateStamina);
                     }
 
-                    if (iGrid.MagicEffects != null)
+                    if (iGrid.Gem == null && iGrid.Reagent == null)
                     {
                         if (iGrid.MagicEffects != null)
                         {
-                            if (iGrid.MagicEffects.Default != null)
+                            if (iGrid.MagicEffects != null)
                             {
-                                foreach (var de in iGrid.MagicEffects.Default)
+                                if (iGrid.MagicEffects.Default != null)
                                 {
-                                    TreeNode node = new TreeNode();
-                                    node.Name = de.EffectName;
-                                    node.Text = WolcenStaticData.MagicLocalized[de.EffectId];
-                                    node.ImageKey = de.EffectId;
-                                    for (int i = 0; i < de.Parameters.Count(); i++)
+                                    foreach (var de in iGrid.MagicEffects.Default)
                                     {
-                                        node.StateImageKey += de.Parameters[i].semantic + "|";
-                                        node.SelectedImageKey += de.Parameters[i].value.ToString() + "|";
+                                        TreeNode node = new TreeNode();
+                                        node.Name = de.EffectName;
+                                        node.Text = WolcenStaticData.MagicLocalized[de.EffectId];
+                                        node.ImageKey = de.EffectId;
+                                        for (int i = 0; i < de.Parameters.Count(); i++)
+                                        {
+                                            node.StateImageKey += de.Parameters[i].semantic + "|";
+                                            node.SelectedImageKey += de.Parameters[i].value.ToString() + "|";
+                                        }
+                                        defaultNode.Nodes.Add(node);
                                     }
-                                    defaultNode.Nodes.Add(node);
                                 }
-                            }
 
-                            if (iGrid.MagicEffects.RolledAffixes != null)
-                            {
-                                foreach (var me in iGrid.MagicEffects.RolledAffixes)
+                                if (iGrid.MagicEffects.RolledAffixes != null)
                                 {
-                                    TreeNode node = new TreeNode();
-                                    node.StateImageKey = "";
-                                    node.SelectedImageKey = "";
-                                    node.Name = me.EffectName;
-                                    node.Text = WolcenStaticData.MagicLocalized[me.EffectId];
-                                    node.ImageKey = me.EffectId;
-                                    for (int i = 0; i < me.Parameters.Count(); i++)
+                                    foreach (var me in iGrid.MagicEffects.RolledAffixes)
                                     {
-                                        node.StateImageKey += me.Parameters[i].semantic + "|";
-                                        node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
+                                        TreeNode node = new TreeNode();
+                                        node.StateImageKey = "";
+                                        node.SelectedImageKey = "";
+                                        node.Name = me.EffectName;
+                                        node.Text = WolcenStaticData.MagicLocalized[me.EffectId];
+                                        node.ImageKey = me.EffectId;
+                                        for (int i = 0; i < me.Parameters.Count(); i++)
+                                        {
+                                            node.StateImageKey += me.Parameters[i].semantic + "|";
+                                            node.SelectedImageKey += me.Parameters[i].value.ToString() + "|";
+                                        }
+                                        affixNode.Nodes.Add(node);
                                     }
-                                    affixNode.Nodes.Add(node);
                                 }
                             }
                         }
@@ -1253,6 +1310,11 @@ namespace WolcenEditor
                         RemoveItemEditControls();
                         break;
                     case "add":
+                        if (selectedGridItem.Reagent != null || selectedGridItem.Gem != null)
+                        {
+                            MessageBox.Show("Reagent's or Gems cannot possess magic affixes", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                         string l_statName = WolcenStaticData.MagicLocalized[effectId];
                         //((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text
                         if (semantics.Count() == 2)
@@ -1414,6 +1476,8 @@ namespace WolcenEditor
                 {
                     if (inventoryGrid[i].InventoryX == x && inventoryGrid[i].InventoryY == y)
                     {
+                        if (selectedNode.Name == "StackSize" && inventoryGrid[i].Gem != null) inventoryGrid[i].Gem.StackSize = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
+                        if (selectedNode.Name == "StackSize" && inventoryGrid[i].Reagent != null) inventoryGrid[i].Reagent.StackSize = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                         if (selectedNode.Name == "Rarity") inventoryGrid[i].Rarity = ((sender as Button).Parent.Controls["cboRarity"] as ComboBox).SelectedIndex;
                         if (selectedNode.Name == "Quality") inventoryGrid[i].Quality = ItemQuality;
                         if (selectedNode.Name == "Sockets")
@@ -1918,6 +1982,12 @@ namespace WolcenEditor
                 WolcenStaticData.ItemAccessories.TryGetValue(l_itemName, out itemName);
                 itemWidth = 85;
                 itemHeight = 85;
+            }
+            if (itemName == null)
+            {
+                WolcenStaticData.ItemReagent.TryGetValue(l_itemName, out itemName);
+                itemWidth = 50;
+                itemHeight = 50;
             }
             if (itemName == null)
             {
