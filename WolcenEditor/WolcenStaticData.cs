@@ -1748,6 +1748,7 @@ namespace WolcenEditor
             { "Unique_Hit_hard_max_max", "ring_attributes_onyx_tier1.png" },
             { "Unique_Poison_max", "ring_attributes_green_tier2.png" },
             { "Unique_Poison_max_max", "ring_attributes_green_tier2.png" },
+            { "Unique_glass_canon", "amulet_5.png" },
             { "Unique_glass_canon_max", "amulet_5.png" },
             { "Unique_glass_canon_max_max", "amulet_5.png" },
             { "Unique_amulet_crownsbrooch_max", "amulet_6.png" },
@@ -3798,7 +3799,27 @@ namespace WolcenEditor
             { "Utility_Gem_Tier_10", "Exquisite Alexandrite" },
             { "Utility_Gem_Tier_11", "Royal Alexandrite" },
             { "Utility_Gem_Tier_12", "Eternal Alexandrite" },
-            { "Special_gem", "Genesis Stone" }
+            { "Special_gem", "Genesis Stone" },
+            { "Reagent_1", "Entropy Orb" },
+            { "Reagent_2", "Ohm's Echo" },
+            { "Reagent_3", "Erieban Tear" },
+            { "Reagent_4", "Abyssal Tear" },
+            { "Reagent_1_Legendary", "Greater Entropy Orb" },
+            { "Reagent_2_Legendary", "Greater Ohm's Echo" },
+            { "Reagent_3_Legendary", "Greater Erieban Tear" },
+            { "Reagent_4_Legendary", "Greater Abyssal Tear" },
+        };
+
+        public static readonly Dictionary<string, string> ItemReagent = new Dictionary<string, string>
+        {
+            { "Reagent_1", "reagent_reroll_001.png" },
+            { "Reagent_2", "reagents_removeandadd_004.png" },
+            { "Reagent_3", "reagents_add_002.png" },
+            { "Reagent_4", "reagents_remove_003.png" },
+            { "Reagent_1_Legendary", "reagent_reroll_001.png" },
+            { "Reagent_2_Legendary", "reagents_removeandadd_004.png" },
+            { "Reagent_3_Legendary", "reagents_add_002.png" },
+            { "Reagent_4_Legendary", "reagents_remove_003.png" },
         };
 
         public static readonly Dictionary<string, string> MagicLocalized = new Dictionary<string, string>()

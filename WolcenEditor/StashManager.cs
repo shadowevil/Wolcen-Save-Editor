@@ -333,9 +333,18 @@ namespace WolcenEditor
                 itemName = iGrid.Gem.Name;
                 itemRarity = iGrid.Rarity;
                 l_itemName = itemName + ".png";
-                stackSize = iGrid.Gem.StackSize.ToString();
+                if(iGrid.Gem.StackSize > 0) stackSize = iGrid.Gem.StackSize.ToString();
             }
-            
+            if (iGrid.Reagent != null)
+            {
+                itemName = iGrid.Reagent.Name;
+                itemRarity = iGrid.Rarity;
+                WolcenStaticData.ItemReagent.TryGetValue(itemName, out l_itemName);
+                pb.MaximumSize = new Size(50, 50);
+                pb.Size = new Size(50, 50);
+                if(iGrid.Reagent.StackSize > 0) stackSize = iGrid.Reagent.StackSize.ToString();
+            }
+
             if (iGrid.MagicEffects != null)
             {
                 if (iGrid.MagicEffects.RolledAffixes != null)

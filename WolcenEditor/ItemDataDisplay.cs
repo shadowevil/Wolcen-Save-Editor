@@ -64,6 +64,7 @@ namespace WolcenEditor
             if (itemName == null) itemName = getItemStat("Weapon", "Name");
             if (itemName == null) itemName = getItemStat("Potion", "Name");
             if (itemName == null) itemName = getItemStat("Gem", "Name");
+            if (itemName == null) itemName = getItemStat("Reagent", "Name");
             if (itemName == null) return;
 
             string l_itemName = null;
@@ -131,6 +132,35 @@ namespace WolcenEditor
                 }
             }
 
+            if (itemName.Contains("Reagent"))
+            {
+                itemStat = getItemStat("Reagent", "StackSize");
+                if (itemStat != null && itemStat != "0") itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, "Amount in stack: " + itemStat, itemStatDisplay, 9, Color.White));
+
+                switch (Convert.ToInt32(itemName.Substring(8, 1)))
+                {
+                    case 1:
+                        itemStat = "Rerolls all magic effects when used on an item. It will consume all socketed gems to guarantee a magic effect whose power depends on the gems' level, and whose type is chosen randomly among all the types of gems on the item.";
+                        break;
+                    case 2:
+                        itemStat = "Removes a random magic effect and adds another when used on an item. It will consume all socketed gems to guarantee a new magic effect whose power depends on the gems' level, and whose type is chosen randomly among all the types of gems on the item.";
+                        break;
+                    case 3:
+                        itemStat = "Adds a new random magic effect when used on an item. It will consume all socketed gems to guarantee a new magic effect whose power depends on the gems' level, and whose type is chosen randomly among all the types of gems on the item.";
+                        break;
+                    case 4:
+                        itemStat = "Removes a random magic effect when used on an item. It will consume all socketed gems to guarantee keeping a magic effect whose type is chosen randomly among all the types of gems on the item. Greater gems power allow the keeping of higher level magic effects.";
+                        break;
+                }
+                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White, true));
+                itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
+
+                if (itemName.Contains("Legendary")) itemStat = "This item can only be applied on legendary items.";
+                else itemStat = "This item cannot be applied on legendary and unique items.";
+                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White, true));
+                return;
+            }
+
             itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
 
             itemStat = getItemStat("Gem", "StackSize");
@@ -168,6 +198,7 @@ namespace WolcenEditor
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, localizedEffect, itemStatDisplay, 7, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
                     }
                 }
+                return;
             }
             
             List<Socket> Sockets = getSockets();
@@ -282,7 +313,7 @@ namespace WolcenEditor
             return valueReturn;
         }
 
-        private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor)
+        private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor, bool reagent = false)
         {
             Label lb = new Label();
             lb.Name = "s_lbl" + name;
@@ -290,10 +321,21 @@ namespace WolcenEditor
             lb.Font = new Font(Form1.DefaultFont.FontFamily, fontSize, FontStyle.Regular);
             lb.ForeColor = fontColor;
             lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Size = new Size(panel.Width - 10, fontSize + 10);
             lb.Location = new Point(0, posY);
             lb.Parent = panel;
-            posY += fontSize + 10;
+            if (!reagent)
+            {
+                lb.Size = new Size(panel.Width - 19, fontSize + 10);
+                posY += fontSize + 10;
+            }
+            else
+            {
+                int lineheight = fontSize + 8;
+                int numLines = (int)(text.Length / 60);
+                lb.Size = new Size(panel.Width - 19, lineheight + ((fontSize + 2) * numLines));
+                lb.MaximumSize = lb.Size;
+                posY += lb.Height + 5;
+            }
             return lb;
         }
 
@@ -305,8 +347,8 @@ namespace WolcenEditor
             lb.Font = new Font(Form1.DefaultFont.FontFamily, 5, FontStyle.Regular);
             lb.ForeColor = Color.LightGray;
             lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Size = new Size(panel.Width - 20, 5 + 5);
             lb.Location = new Point(0, posY - 5);
+            lb.Size = new Size(panel.Width - 20, 5 + 5);
             posY += 5;
             return lb;
         }
@@ -543,8 +585,8 @@ namespace WolcenEditor
             {
                 if (gem.Key == gemName)
                 {
-                    string returnStr = WolcenStaticData.MagicLocalized[gem.Value.ElementAt(gemEffect).Key];
                     if (gemName.Contains("physical_Gem") && gemEffect == 8) gemEffect = 6;
+                    string returnStr = WolcenStaticData.MagicLocalized[gem.Value.ElementAt(gemEffect).Key];
                     if (gem.Value.ElementAt(gemEffect).Key.Contains("percent")) returnStr = returnStr.Replace("%1", "%1%");
                     returnStr = "+" + returnStr.Replace("%1", gem.Value.ElementAt(gemEffect).Value);
                     if (returnStr.Contains("%2")) returnStr = returnStr.Replace("%2", gem.Value.ElementAt(gemEffect).Value);
@@ -581,7 +623,7 @@ namespace WolcenEditor
                 if (name.ToLower().Contains("axe")) return "Axe2H";
             }
             if (name.ToLower().Contains("bow")) return "Bow";
-            if (name.ToLower().Contains("amulet")) return "Amulet";
+            if (name.ToLower().Contains("amulet") || name.ToLower().Contains("unique_glass_canon")) return "Amulet";
             if (name.ToLower().Contains("helmet")) return "Helmet";
             if (name.ToLower().Contains("chest") || name.ToLower().Contains("torso")) return "Chest Armor";
             if (name.ToLower().Contains("boots")) return "Foot Armor";

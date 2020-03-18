@@ -130,6 +130,7 @@
     <Compile Include="CharacterDataObjects\LastGameParameters.cs" />
     <Compile Include="CharacterDataObjects\Progression.cs" />
     <Compile Include="CharacterDataObjects\PSTConfig.cs" />
+    <Compile Include="CharacterDataObjects\Reagent.cs" />
     <Compile Include="CharacterDataObjects\Sequences.cs" />
     <Compile Include="CharacterDataObjects\SkillBar.cs" />
     <Compile Include="CharacterDataObjects\Stats.cs" />

@@ -56,7 +56,7 @@ namespace WolcenEditor
             { "Mace2H", 15 },
             { "Gun", 16 },          // Also 15
         };
-
+        
         public enum typeMap : int
         {
             Weapon = 3,
@@ -64,7 +64,8 @@ namespace WolcenEditor
             Armor = 2,
             Accessory = 2,
             Gem = 6,
-            Potion = 4
+            Potion = 4,
+            Reagent = 10
         }
 
         public static void LoadCharacterInventory(object sender)
@@ -765,6 +766,9 @@ namespace WolcenEditor
                     case "Chest Armor":
                         width = 45; height = 95;
                         break;
+                    case "":
+                        width = 45; height = 45;
+                        break;
                 }
 
                 int x = Background.Width / 2 - (width / 2) + xOffset;
@@ -873,7 +877,16 @@ namespace WolcenEditor
                             itemName = i.Gem.Name;
                             itemRarity = i.Rarity;
                             l_itemName = itemName + ".png";
-                            stackSize = i.Gem.StackSize.ToString();
+                            if (i.Gem.StackSize > 0) stackSize = i.Gem.StackSize.ToString();
+                        }
+                        if (i.Reagent != null)
+                        {
+                            itemName = i.Reagent.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemReagent.TryGetValue(itemName, out l_itemName);
+                            pb.MaximumSize = new Size(50, 50);
+                            pb.Size = new Size(50, 50);
+                            if(i.Reagent.StackSize > 0) stackSize = i.Reagent.StackSize.ToString();
                         }
 
                         if (i.MagicEffects != null)

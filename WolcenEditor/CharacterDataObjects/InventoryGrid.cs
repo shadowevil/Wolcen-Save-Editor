@@ -18,6 +18,7 @@ namespace WolcenEditor
         public IList<Socket> Sockets { get; set; }
         public Gem Gem { get; set; }
         public Potion Potion { get; set; }
+        public Reagent Reagent { get; set; }
         public ItemMagicEffects MagicEffects { get; set; }
 
         [JsonIgnore]
