@@ -128,7 +128,7 @@ namespace WolcenEditor
 
         private static void CopyItem_Click(object sender, EventArgs e)
         {
-            iGridCopiedItem = iGridItem;
+            iGridCopiedItem = iGridItem.copy;
         }
 
         private static void DeleteItem_Click(object sender, EventArgs e)
@@ -151,7 +151,7 @@ namespace WolcenEditor
 
         private static void PasteItem_Click(object sender, EventArgs e)
         {
-            if (iGridItem == null && iGridCopiedItem != null)
+            if (iGridCopiedItem != null)
             {
                 InventoryGrid item = iGridCopiedItem.copy;
                 item.InventoryX = coords.x;
@@ -504,7 +504,7 @@ namespace WolcenEditor
                     }
                     //Armor.Nodes.Add(item.Key, item.Value, (int)typeMap.Armor);
                 }
-                else if (WolcenStaticData.ItemAccessories.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Belt" 
+                else if (WolcenStaticData.ItemAccessories.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Belt"
                     || ItemDataDisplay.ParseItemNameForType(item.Key) == "Amulet" || ItemDataDisplay.ParseItemNameForType(item.Key) == "Ring")
                 {
                     foreach (var d in InventoryManager.equipMap)
@@ -1276,13 +1276,28 @@ namespace WolcenEditor
                         InventoryGrid itemEditing = null;
                         InventoryGrid oldItem = null;
 
-                        foreach (var iGrid in cData.Character.InventoryGrid)
+                        if (_panelid == -1)
                         {
-                            if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                            foreach (var iGrid in cData.Character.InventoryGrid)
                             {
-                                oldItem = iGrid;
-                                itemEditing = iGrid;
-                                break;
+                                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                                {
+                                    oldItem = iGrid;
+                                    itemEditing = iGrid.copy;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var iGrid in cData.PlayerChest.Panels[_panelid].InventoryGrid)
+                            {
+                                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                                {
+                                    oldItem = iGrid;
+                                    itemEditing = iGrid.copy;
+                                    break;
+                                }
                             }
                         }
                         if (itemEditing == null) return;
@@ -1380,8 +1395,16 @@ namespace WolcenEditor
                         }
                         itemEditing.MagicEffects = magicEffects;
 
-                        cData.Character.InventoryGrid.Remove(oldItem);
-                        cData.Character.InventoryGrid.Add(itemEditing);
+                        if (_panelid == -1)
+                        {
+                            cData.Character.InventoryGrid.Remove(oldItem);
+                            cData.Character.InventoryGrid.Add(itemEditing);
+                        }
+                        else
+                        {
+                            cData.PlayerChest.Panels[_panelid].InventoryGrid.Remove(oldItem);
+                            cData.PlayerChest.Panels[_panelid].InventoryGrid.Add(itemEditing);
+                        }
                         break;
                 }
             }

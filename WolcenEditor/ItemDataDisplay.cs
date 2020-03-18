@@ -543,8 +543,8 @@ namespace WolcenEditor
             {
                 if (gem.Key == gemName)
                 {
-                    string returnStr = WolcenStaticData.MagicLocalized[gem.Value.ElementAt(gemEffect).Key];
                     if (gemName.Contains("physical_Gem") && gemEffect == 8) gemEffect = 6;
+                    string returnStr = WolcenStaticData.MagicLocalized[gem.Value.ElementAt(gemEffect).Key];
                     if (gem.Value.ElementAt(gemEffect).Key.Contains("percent")) returnStr = returnStr.Replace("%1", "%1%");
                     returnStr = "+" + returnStr.Replace("%1", gem.Value.ElementAt(gemEffect).Value);
                     if (returnStr.Contains("%2")) returnStr = returnStr.Replace("%2", gem.Value.ElementAt(gemEffect).Value);
@@ -581,7 +581,7 @@ namespace WolcenEditor
                 if (name.ToLower().Contains("axe")) return "Axe2H";
             }
             if (name.ToLower().Contains("bow")) return "Bow";
-            if (name.ToLower().Contains("amulet")) return "Amulet";
+            if (name.ToLower().Contains("amulet") || name.ToLower().Contains("unique_glass_canon")) return "Amulet";
             if (name.ToLower().Contains("helmet")) return "Helmet";
             if (name.ToLower().Contains("chest") || name.ToLower().Contains("torso")) return "Chest Armor";
             if (name.ToLower().Contains("boots")) return "Foot Armor";

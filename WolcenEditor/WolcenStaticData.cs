@@ -1748,6 +1748,7 @@ namespace WolcenEditor
             { "Unique_Hit_hard_max_max", "ring_attributes_onyx_tier1.png" },
             { "Unique_Poison_max", "ring_attributes_green_tier2.png" },
             { "Unique_Poison_max_max", "ring_attributes_green_tier2.png" },
+            { "Unique_glass_canon", "amulet_5.png" },
             { "Unique_glass_canon_max", "amulet_5.png" },
             { "Unique_glass_canon_max_max", "amulet_5.png" },
             { "Unique_amulet_crownsbrooch_max", "amulet_6.png" },
