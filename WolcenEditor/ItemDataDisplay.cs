@@ -630,9 +630,9 @@ namespace WolcenEditor
             if (name.ToLower().Contains("pants")) return "Leg Armor";
             if (name.ToLower().Contains("pauldron") || name.ToLower().Contains("shoulder")) return "Shoulder";
             if (name.ToLower().Contains("glove")) return "Arm Armor";
-            if (name.ToLower().Contains("belt")) return "Belt";
+            if (name.ToLower().Contains("belt") || name.ToLower().Contains("sash") || name.ToLower().Contains("waistband")) return "Belt";
             if (name.ToLower().Contains("ring")) return "Ring";
-            if (name.ToLower().Contains("catalyst")) return "Trinket";
+            if (name.ToLower().Contains("catalyst") || name.ToLower().Contains("1h_offhand")) return "Trinket";
             if (name.ToLower().Contains("shield")) return "Shield";
             if (name.ToLower().Contains("staff")) return "Staff";
             if (name.ToLower().Contains("dagger")) return "Dagger";
