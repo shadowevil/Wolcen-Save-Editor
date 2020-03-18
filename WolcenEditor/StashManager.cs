@@ -46,31 +46,33 @@ namespace WolcenEditor
                         Location = new Point((stashPanelGrid.Width / 2) - 50, (stashPanelGrid.Height / 2) - 12)
                     };
                     isLocked.Click += IsLocked_Click;
-                    return;
                 }
-                if (currentPanel == _panel.ID)
+                else
                 {
-                    for (int x = 0; x < 10; x++)
+                    if (currentPanel == _panel.ID)
                     {
-                        for (int y = 0; y < 10; y++)
+                        for (int x = 0; x < 10; x++)
                         {
-                            PictureBox pb = new PictureBox();
-                            pb.Name = x.ToString() + "|" + y.ToString() + "|" + _panel.ID.ToString();
-                            pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
-                            pb.Location = new Point(x * 50 + 7, y * 50 + 11);
-                            pb.Size = new Size(50, 50);
-                            pb.MaximumSize = pb.Size;
-                            pb.SizeMode = PictureBoxSizeMode.AutoSize;
-                            pb.BackgroundImageLayout = ImageLayout.Stretch;
-                            pb.AllowDrop = true;
-                            pb.MouseDown += Pb_MouseDown;
-                            pb.MouseMove += Pb_MouseMove;
-                            pb.MouseLeave += Pb_MouseLeave;
-                            pb.DragEnter += Pb_DragEnter;
-                            pb.DragDrop += Pb_DragDrop;
-                            pb.GiveFeedback += Pb_GiveFeedBack;
-                            //pb.ContextMenu = InventoryContextMenu.LoadContextMenu(pb);
-                            stashPanelGrid.Controls.Add(pb);
+                            for (int y = 0; y < 10; y++)
+                            {
+                                PictureBox pb = new PictureBox();
+                                pb.Name = x.ToString() + "|" + y.ToString() + "|" + _panel.ID.ToString();
+                                pb.BackgroundImage = WolcenEditor.Properties.Resources.inventorySlot;
+                                pb.Location = new Point(x * 50 + 7, y * 50 + 11);
+                                pb.Size = new Size(50, 50);
+                                pb.MaximumSize = pb.Size;
+                                pb.SizeMode = PictureBoxSizeMode.AutoSize;
+                                pb.BackgroundImageLayout = ImageLayout.Stretch;
+                                pb.AllowDrop = true;
+                                pb.MouseDown += Pb_MouseDown;
+                                pb.MouseMove += Pb_MouseMove;
+                                pb.MouseLeave += Pb_MouseLeave;
+                                pb.DragEnter += Pb_DragEnter;
+                                pb.DragDrop += Pb_DragDrop;
+                                pb.GiveFeedback += Pb_GiveFeedBack;
+                                //pb.ContextMenu = InventoryContextMenu.LoadContextMenu(pb);
+                                stashPanelGrid.Controls.Add(pb);
+                            }
                         }
                     }
                 }
@@ -271,14 +273,18 @@ namespace WolcenEditor
                 {
                     foreach (var iGrid in _panel.InventoryGrid)
                     {
-                        foreach (PictureBox pb in stashPanelGrid.Controls)
+                        for (int i = 0; i < stashPanelGrid.Controls.Count; i++)
                         {
-                            int x = Convert.ToInt32(pb.Name.Split('|')[0]);
-                            int y = Convert.ToInt32(pb.Name.Split('|')[1]);
-
-                            if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                            PictureBox pb = stashPanelGrid.Controls[i] as PictureBox;
+                            if (pb != null)
                             {
-                                pb.Image = GetStashBitmap(x, y, currentPanel, pb, iGrid);
+                                int x = Convert.ToInt32(pb.Name.Split('|')[0]);
+                                int y = Convert.ToInt32(pb.Name.Split('|')[1]);
+
+                                if (iGrid.InventoryX == x && iGrid.InventoryY == y)
+                                {
+                                    pb.Image = GetStashBitmap(x, y, currentPanel, pb, iGrid);
+                                }
                             }
                         }
                     }

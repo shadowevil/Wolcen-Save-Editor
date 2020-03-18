@@ -849,33 +849,30 @@ namespace WolcenEditor
                         magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Sockets);
                         magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Level);
                     }
-                    else
-                    {
 
-                        Value = new TreeNode()
+                    Value = new TreeNode()
+                    {
+                        Name = "Value",
+                        Text = "Value",
+                        ImageKey = "default"
+                    };
+                    if (iGrid.Value == null) Value.SelectedImageKey = "0";
+                    else Value.SelectedImageKey = iGrid.Value.ToString();
+                    magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Value);
+
+                    if (iGrid.Gem != null || iGrid.Reagent != null)
+                    {
+                        StackSize = new TreeNode()
                         {
-                            Name = "Value",
-                            Text = "Value",
+                            Name = "StackSize",
+                            Text = "Stack Size",
                             ImageKey = "default"
                         };
-                        if (iGrid.Value == null) Value.SelectedImageKey = "0";
-                        else Value.SelectedImageKey = iGrid.Value.ToString();
-                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Value);
 
-                        if (iGrid.Gem != null || iGrid.Reagent != null)
-                        {
-                            StackSize = new TreeNode()
-                            {
-                                Name = "StackSize",
-                                Text = "Stack Size",
-                                ImageKey = "default"
-                            };
+                        if (iGrid.Gem != null) StackSize.SelectedImageKey = iGrid.Gem.StackSize.ToString();
+                        if (iGrid.Reagent != null) StackSize.SelectedImageKey = iGrid.Reagent.StackSize.ToString();
 
-                            if (iGrid.Gem != null) StackSize.SelectedImageKey = iGrid.Gem.StackSize.ToString();
-                            if (iGrid.Reagent != null) StackSize.SelectedImageKey = iGrid.Reagent.StackSize.ToString();
-
-                            magicNodes.Nodes["CurrentAffixes"].Nodes.Add(StackSize);
-                        }
+                        magicNodes.Nodes["CurrentAffixes"].Nodes.Add(StackSize);
                     }
                     if (iGrid.Type == (int)typeMap.Weapon)    // Weapons & offhands
                     {
