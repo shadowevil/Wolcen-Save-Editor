@@ -298,7 +298,12 @@ namespace WolcenEditor
             SetIndexToValueOf(ref cboSkinColor, cData.Character.CharacterCustomization.SkinColor);
 
             BindToComboBox(cboGender, WolcenStaticData.Gender, cData.Character.CharacterCustomization, "Sex");
-
+            
+            if (cData.Character.Progression.LastPlayed == null)
+            {
+                cData.Character.Progression.LastPlayed = new LastPlayed();
+                cData.Character.Progression.LastPlayed.QuestId = "ACT1_Quest1";
+            }
             BindToComboBox(questBox, WolcenStaticData.QuestLocalizedNames, cData.Character.Progression.LastPlayed, "QuestId");
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[cData.Character.Progression.LastPlayed.QuestId], cData.Character.Progression.LastPlayed, "StepId");
 
@@ -916,6 +921,12 @@ namespace WolcenEditor
         {
             var box = (ComboBox)sender;
             var id = (KeyValuePair<string, string>)box.SelectedItem;
+            if (cData.Character.Progression.LastPlayed == null)
+            {
+                cData.Character.Progression.LastPlayed = new LastPlayed();
+                cData.Character.Progression.LastPlayed.QuestId = "ACT1_Quest1";
+                cData.Character.Progression.LastPlayed.StepId = 1;
+            }
             cData.Character.Progression.LastPlayed.StepId = 1;
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
