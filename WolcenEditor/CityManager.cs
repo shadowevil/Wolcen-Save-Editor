@@ -119,6 +119,20 @@ namespace WolcenEditor
                 var localizedName = WolcenStaticData.CityProjectInFile[buildingListView.Items[i].ToString()];
                 if (buildingListView.GetItemChecked(i) == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == localizedName))
                 {
+                    //hacky fix for unlocking stash tabs from the city menu
+                    if (localizedName == "buy_stash_1")
+                    {
+                        cData.PlayerChest.Panels[3].Locked = false;
+                        if(cData.PlayerChest.Panels[3].InventoryGrid == null)
+                            cData.PlayerChest.Panels[3].InventoryGrid = new List<InventoryGrid>();
+                    }
+                    if (localizedName == "buy_stash_2")
+                    {
+                        cData.PlayerChest.Panels[4].Locked = false;
+                        if (cData.PlayerChest.Panels[4].InventoryGrid == null)
+                            cData.PlayerChest.Panels[4].InventoryGrid = new List<InventoryGrid>();
+                    }
+
                     cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = localizedName });
                 }
                 else if (buildingListView.GetItemChecked(i) == false)

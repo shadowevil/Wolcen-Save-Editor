@@ -21,6 +21,7 @@ namespace WolcenEditor
         public static string playerChestSavePath;
         public string WindowName = "Wolcen Save Editor";
         public bool hasSaved = false;
+        public bool CHAR_LOADED = false;
 
         public Form1()
         {
@@ -154,12 +155,14 @@ namespace WolcenEditor
 
         private void UnloadRandomInventory()
         {
+            CHAR_LOADED = false;
             cData.Character = null;
             cData.PlayerData = null;
             cData.PlayerChest = null;
             this.Controls.Clear();
             InitializeComponent();
             InitForm();
+
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -328,6 +331,7 @@ namespace WolcenEditor
             StashManager.LoadPlayerStash(charStash);
 
             SkillManager.LoadSkillInformation(ref tabPage);
+            CHAR_LOADED = true;
         }
 
         private void LoadPlayerStashData()
@@ -799,11 +803,7 @@ namespace WolcenEditor
         private void closeStripMenuItem_Click(object sender, EventArgs e)
         {
             if (onCloseCheck(sender, e) == false) return;
-            cData.Character = null;
-            cData.PlayerData = null;
-            this.Controls.Clear();
-            InitializeComponent();
-            InitForm();
+            UnloadRandomInventory();
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -919,6 +919,8 @@ namespace WolcenEditor
 
         private void questBox_SelectedValueChanged(object sender, EventArgs e)
         {
+            if (!CHAR_LOADED)
+                return;
             var box = (ComboBox)sender;
             var id = (KeyValuePair<string, string>)box.SelectedItem;
             if (cData.Character.Progression.LastPlayed == null)
@@ -927,9 +929,10 @@ namespace WolcenEditor
                 cData.Character.Progression.LastPlayed.QuestId = "ACT1_Quest1";
                 cData.Character.Progression.LastPlayed.StepId = 1;
             }
-            if(!WolcenStaticData.QuestSelections[cData.Character.Progression.LastPlayed.QuestId].Contains(cData.Character.Progression.LastPlayed.StepId))
+            if(!WolcenStaticData.QuestSelections[id.Key].Contains(cData.Character.Progression.LastPlayed.StepId))
             {
                 cData.Character.Progression.LastPlayed.StepId = 1;
+                questBox.SelectedIndex = 1;
             }
             BindToComboBox(stepIdBox, WolcenStaticData.QuestIdLocailzation[id.Key], cData.Character.Progression.LastPlayed, "StepId");
         }
