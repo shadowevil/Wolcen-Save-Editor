@@ -300,8 +300,17 @@ namespace WolcenEditor
             SetIndexToValueOf(ref cboREye, cData.Character.CharacterCustomization.RightEye);
             SetIndexToValueOf(ref cboSkinColor, cData.Character.CharacterCustomization.SkinColor);
 
+
             BindToComboBox(cboGender, WolcenStaticData.Gender, cData.Character.CharacterCustomization, "Sex");
-            
+
+
+            //Create the dict here rather than it being a static dict in WolcenStaticData.cs
+            var expeditionLevels = new Dictionary<int, string>();
+            foreach(var i in Enumerable.Range(1,50))
+                expeditionLevels.Add(i, (37 + (3 * i)).ToString());
+            BindToComboBox(cboExpedition, expeditionLevels, cData.PlayerData.SoftcoreNormal, "ExpeditionsMaxLevelReached");
+
+
             if (cData.Character.Progression.LastPlayed == null)
             {
                 cData.Character.Progression.LastPlayed = new LastPlayed();
