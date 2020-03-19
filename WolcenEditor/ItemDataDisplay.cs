@@ -65,6 +65,8 @@ namespace WolcenEditor
             if (itemName == null) itemName = getItemStat("Potion", "Name");
             if (itemName == null) itemName = getItemStat("Gem", "Name");
             if (itemName == null) itemName = getItemStat("Reagent", "Name");
+            if (itemName == null) itemName = getItemStat("Enneract", "Name");
+            if (itemName == null) itemName = getItemStat("NPC2Consumable", "Name");
             if (itemName == null) return;
 
             string l_itemName = null;
@@ -72,7 +74,7 @@ namespace WolcenEditor
             if (l_itemName == null) return;
 
             Color itemRarity = getItemColorRarity();
-
+            
             itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, l_itemName, itemStatDisplay, 13, itemRarity));
             string itemType = ParseItemNameForType(itemName);
 
@@ -152,12 +154,12 @@ namespace WolcenEditor
                         itemStat = "Removes a random magic effect when used on an item. It will consume all socketed gems to guarantee keeping a magic effect whose type is chosen randomly among all the types of gems on the item. Greater gems power allow the keeping of higher level magic effects.";
                         break;
                 }
-                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White, true));
+                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White));
                 itemStatDisplay.Controls.Add(createLabelLineBreak(itemStatDisplay));
 
                 if (itemName.Contains("Legendary")) itemStat = "This item can only be applied on legendary items.";
                 else itemStat = "This item cannot be applied on legendary and unique items.";
-                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White, true));
+                itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, itemStat, itemStatDisplay, 9, Color.White));
                 return;
             }
 
@@ -313,7 +315,9 @@ namespace WolcenEditor
             return valueReturn;
         }
 
-        private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor, bool reagent = false)
+        private static int posX = -1;
+
+        private static Label createLabel(string name, string text, Panel panel, int fontSize, Color fontColor)
         {
             Label lb = new Label();
             lb.Name = "s_lbl" + name;
@@ -321,21 +325,23 @@ namespace WolcenEditor
             lb.Font = new Font(Form1.DefaultFont.FontFamily, fontSize, FontStyle.Regular);
             lb.ForeColor = fontColor;
             lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Location = new Point(0, posY);
+            lb.Width = panel.Width - 10;
+            SizeF textSize = new SizeF();
+            using (Bitmap bmp = new Bitmap(panel.Width, panel.Height))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    textSize = g.MeasureString(text, lb.Font, lb.Width);
+                }
+            }
+            lb.Height = (int)textSize.Height + 1;
+            if (lb.Height >= 25) lb.Height += 10;
+            lb.MaximumSize = new Size(lb.Width, lb.Height);
+            if (posX == -1) posX = (panel.Width / 2) - lb.Width / 2;
+            lb.Location = new Point(posX, posY);
+            posY += lb.Height;
             lb.Parent = panel;
-            if (!reagent)
-            {
-                lb.Size = new Size(panel.Width - 19, fontSize + 10);
-                posY += fontSize + 10;
-            }
-            else
-            {
-                int lineheight = fontSize + 8;
-                int numLines = (int)(text.Length / 60);
-                lb.Size = new Size(panel.Width - 19, lineheight + ((fontSize + 2) * numLines));
-                lb.MaximumSize = lb.Size;
-                posY += lb.Height + 5;
-            }
+            lb.AutoSize = false;
             return lb;
         }
 
@@ -344,12 +350,17 @@ namespace WolcenEditor
             Label lb = new Label();
             lb.Name = "s_lbl_LineBreak";
             lb.Text = "__________________________________________________";
+            lb.AutoSize = false;
             lb.Font = new Font(Form1.DefaultFont.FontFamily, 5, FontStyle.Regular);
             lb.ForeColor = Color.LightGray;
             lb.TextAlign = ContentAlignment.MiddleCenter;
-            lb.Location = new Point(0, posY - 5);
-            lb.Size = new Size(panel.Width - 20, 5 + 5);
-            posY += 5;
+            lb.Parent = panel;
+            lb.Width = panel.Width - 10;
+            lb.Height = 10;
+
+            if (posX == -1) posX = (panel.Width / 2) - lb.Width / 2;
+            lb.Location = new Point(posX, posY);
+            posY += lb.Height;
             return lb;
         }
 

@@ -49,6 +49,19 @@ namespace WolcenEditor
         public int StackSize { get; set; }
     }
 
+    public class Enneract
+    {
+        public string Name { get; set; }
+        public string Stats_SkillUID { get; set; }
+        public int Stats_SkillLevel { get; set; }
+    }
+
+    public class NPC2Consumable
+    {
+        public string Name { get; set; }
+        public int StackSize { get; set; }
+    }
+
     public class ItemMagicEffects
     {
         public List<Effect> Default { get; set; }

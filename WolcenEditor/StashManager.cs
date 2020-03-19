@@ -351,6 +351,26 @@ namespace WolcenEditor
                 if(iGrid.Reagent.StackSize > 0) stackSize = iGrid.Reagent.StackSize.ToString();
             }
 
+            if (iGrid.Enneract != null)
+            {
+                itemName = iGrid.Enneract.Name;
+                itemRarity = iGrid.Rarity;
+                string[] enneractData;
+                WolcenStaticData.ItemEnneract.TryGetValue(itemName, out enneractData);
+                l_itemName = enneractData[1];
+                pb.MaximumSize = new Size(50, 50);
+                pb.Size = new Size(50, 50);
+            }
+
+            if (iGrid.NPC2Consumable != null)
+            {
+                itemName = iGrid.NPC2Consumable.Name;
+                itemRarity = iGrid.Rarity;
+                WolcenStaticData.ItemConsumables.TryGetValue(itemName, out l_itemName);
+                pb.MaximumSize = new Size(50, 50);
+                pb.Size = new Size(50, 50);
+            }
+
             if (iGrid.MagicEffects != null)
             {
                 if (iGrid.MagicEffects.RolledAffixes != null)

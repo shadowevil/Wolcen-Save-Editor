@@ -19,6 +19,8 @@ namespace WolcenEditor
         public Gem Gem { get; set; }
         public Potion Potion { get; set; }
         public Reagent Reagent { get; set; }
+        public Enneract Enneract { get; set; }
+        public NPC2Consumable NPC2Consumable { get; set; }
         public ItemMagicEffects MagicEffects { get; set; }
 
         [JsonIgnore]
