@@ -65,7 +65,9 @@ namespace WolcenEditor
             Accessory = 2,
             Gem = 6,
             Potion = 4,
-            Reagent = 10
+            Reagent = 10,
+            Enneract = 7,
+            NPC2Consumable = 9
         }
 
         public static void LoadCharacterInventory(object sender)
@@ -887,6 +889,26 @@ namespace WolcenEditor
                             pb.MaximumSize = new Size(50, 50);
                             pb.Size = new Size(50, 50);
                             if(i.Reagent.StackSize > 0) stackSize = i.Reagent.StackSize.ToString();
+                        }
+
+                        if (i.Enneract != null)
+                        {
+                            itemName = i.Enneract.Name;
+                            itemRarity = i.Rarity;
+                            string[] enneractData;
+                            WolcenStaticData.ItemEnneract.TryGetValue(itemName, out enneractData);
+                            l_itemName = enneractData[1];
+                            pb.MaximumSize = new Size(50, 50);
+                            pb.Size = new Size(50, 50);
+                        }
+
+                        if (i.NPC2Consumable != null)
+                        {
+                            itemName = i.NPC2Consumable.Name;
+                            itemRarity = i.Rarity;
+                            WolcenStaticData.ItemConsumables.TryGetValue(itemName, out l_itemName);
+                            pb.MaximumSize = new Size(50, 50);
+                            pb.Size = new Size(50, 50);
                         }
 
                         if (i.MagicEffects != null)

@@ -319,6 +319,23 @@ namespace WolcenEditor
             }
             if (itemName == null)
             {
+                string[] enneractData;
+                WolcenStaticData.ItemEnneract.TryGetValue(selectedNode.Name, out enneractData);
+                if (enneractData != null)
+                {
+                    itemName = enneractData[1];
+                    itemWidth = 70;
+                    itemHeight = 70;
+                }
+            }
+            if (itemName == null)
+            {
+                WolcenStaticData.ItemConsumables.TryGetValue(selectedNode.Name, out itemName);
+                itemWidth = 70;
+                itemHeight = 70;
+            }
+            if (itemName == null)
+            {
                 // Try Potions
                 if (selectedNode.Name.ToLower().Contains("potion"))
                 {
@@ -422,6 +439,18 @@ namespace WolcenEditor
                         newGridItem.Gem = new Gem();
                         newGridItem.Gem.Name = selectedNode.Name;
                         break;
+                    case (int)InventoryManager.typeMap.Enneract:
+                        newGridItem.Enneract = new Enneract();
+                        string[] enneractData;
+                        WolcenStaticData.ItemEnneract.TryGetValue(selectedNode.Name, out enneractData);
+                        newGridItem.Enneract.Name = selectedNode.Name;
+                        newGridItem.Enneract.Stats_SkillLevel = 1;
+                        newGridItem.Enneract.Stats_SkillUID = enneractData[0];
+                        break;
+                    case (int)InventoryManager.typeMap.NPC2Consumable:
+                        newGridItem.NPC2Consumable = new NPC2Consumable();
+                        newGridItem.NPC2Consumable.Name = selectedNode.Name;
+                        break;
                 }
             }
 
@@ -447,6 +476,8 @@ namespace WolcenEditor
             TreeNode Potions = new TreeNode() { Name = "Potions", Text = "Potions", Tag = "Potions" };
             TreeNode Gems = new TreeNode() { Name = "Gems", Text = "Gems", Tag = "Gems" };
             TreeNode Reagents = new TreeNode() { Name = "Reagents", Text = "Reagents", Tag = "Reagents" };
+            TreeNode Enneracts = new TreeNode() { Name = "Enneracts", Text = "Enneracts", Tag = "Enneracts" };
+            TreeNode Consumables = new TreeNode() { Name = "Consumables", Text = "Consumables", Tag = "Consumables" };
 
             // Sub Categories
             TreeNode Amulet = new TreeNode() { Name = "Amulet", Text = "Amulets", Tag = "Amulet" };
@@ -499,6 +530,8 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Potions);
             itemListView.Nodes.Add(Gems);
             itemListView.Nodes.Add(Reagents);
+            itemListView.Nodes.Add(Enneracts);
+            itemListView.Nodes.Add(Consumables);
 
             foreach (var item in WolcenStaticData.ItemLocalizedNames)
             {
@@ -555,6 +588,14 @@ namespace WolcenEditor
                 {
                     Reagents.Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Reagent);
                 }
+                else if (item.Key.ToLower().Contains("enneract"))
+                {
+                    Enneracts.Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Enneract);
+                }
+                else if (item.Key.ToLower().Contains("npc2_consumable"))
+                {
+                    Consumables.Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.NPC2Consumable);
+                }
             }
         }
     }
@@ -567,17 +608,6 @@ namespace WolcenEditor
         public TreeView magicNodes;
         private int ItemQuality = 1;
         private PictureBox accessablePictureBox;
-
-        private enum typeMap : int
-        {
-            Weapon = 3,
-            Offhand = 3,
-            Armor = 2,
-            Accessory = 2,
-            Gem = 6,
-            Potion = 4,
-            Reagent = 10
-        }
 
         public EditItem(int panelid, InventoryGrid itemSelected, PictureBox accPB)
         {
@@ -695,11 +725,12 @@ namespace WolcenEditor
                     ListViewItem i = null;
                     switch (iGrid.Type)
                     {
-                        case (int)typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Weapon.Name); break;
-                        case (int)typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Armor.Name); break;
-                        case (int)typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Gem.Name); break;
-                        case (int)typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Potion.Name);  break;
-                        case (int)typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Reagent.Name); break;
+                        case (int)InventoryManager.typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Weapon.Name); break;
+                        case (int)InventoryManager.typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Armor.Name); break;
+                        case (int)InventoryManager.typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Gem.Name); break;
+                        case (int)InventoryManager.typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Potion.Name);  break;
+                        case (int)InventoryManager.typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.Reagent.Name); break;
+                        case (int)InventoryManager.typeMap.NPC2Consumable: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), iGrid.NPC2Consumable.Name); break;
                     }
                     if (i != null)
                     {
@@ -718,11 +749,12 @@ namespace WolcenEditor
                         ListViewItem i = null;
                         switch (iGrid.Type)
                         {
-                            case (int)typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Weapon.Name); break;
-                            case (int)typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Armor.Name); break;
-                            case (int)typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Gem.Name); break;
-                            case (int)typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Potion.Name); break;
-                            case (int)typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Reagent.Name); break;
+                            case (int)InventoryManager.typeMap.Weapon: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Weapon.Name); break;
+                            case (int)InventoryManager.typeMap.Armor: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Armor.Name); break;
+                            case (int)InventoryManager.typeMap.Gem: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Gem.Name); break;
+                            case (int)InventoryManager.typeMap.Potion: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Potion.Name); break;
+                            case (int)InventoryManager.typeMap.Reagent: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.Reagent.Name); break;
+                            case (int)InventoryManager.typeMap.NPC2Consumable: i = createLVItem(iGrid.InventoryX.ToString(), iGrid.InventoryY.ToString(), (p.ID + 1).ToString(), iGrid.NPC2Consumable.Name); break;
                         }
                         if (i != null)
                         {
@@ -874,7 +906,7 @@ namespace WolcenEditor
 
                         magicNodes.Nodes["CurrentAffixes"].Nodes.Add(StackSize);
                     }
-                    if (iGrid.Type == (int)typeMap.Weapon)    // Weapons & offhands
+                    if (iGrid.Type == (int)InventoryManager.typeMap.Weapon)    // Weapons & offhands
                     {
                         damageMin = new TreeNode()
                         {
@@ -932,7 +964,7 @@ namespace WolcenEditor
                         }
                     }
 
-                    if (iGrid.Type == (int)typeMap.Armor)
+                    if (iGrid.Type == (int)InventoryManager.typeMap.Armor)
                     {
                         Armor = new TreeNode()
                         {
@@ -960,7 +992,7 @@ namespace WolcenEditor
                         magicNodes.Nodes["CurrentAffixes"].Nodes.Add(Resistance);
                     }
 
-                    if (iGrid.Type == (int)typeMap.Potion)
+                    if (iGrid.Type == (int)InventoryManager.typeMap.Potion)
                     {
                         Charge = new TreeNode()
                         {
@@ -1500,7 +1532,7 @@ namespace WolcenEditor
                         if (selectedNode.Name == "Level") inventoryGrid[i].Level = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                         switch (inventoryGrid[i].Type)
                         {
-                            case (int)typeMap.Weapon:
+                            case (int)InventoryManager.typeMap.Weapon:
                                 if (selectedNode.Name == "DamageMin") inventoryGrid[i].Weapon.DamageMin = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (selectedNode.Name == "DamageMax") inventoryGrid[i].Weapon.DamageMax = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (inventoryGrid[i].ItemType == "Shield")
@@ -1512,12 +1544,12 @@ namespace WolcenEditor
                                     if (selectedNode.Name == "ResourceGeneration") inventoryGrid[i].Weapon.ResourceGeneration = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 }
                                 break;
-                            case (int)typeMap.Armor:
+                            case (int)InventoryManager.typeMap.Armor:
                                 if (selectedNode.Name == "Armor") inventoryGrid[i].Armor.Armor = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (selectedNode.Name == "Health") inventoryGrid[i].Armor.Health = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (selectedNode.Name == "Resistance") inventoryGrid[i].Armor.Resistance = Convert.ToDouble(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 break;
-                            case (int)typeMap.Potion:
+                            case (int)InventoryManager.typeMap.Potion:
                                 if (selectedNode.Name == "Charge") inventoryGrid[i].Potion.Charge = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (selectedNode.Name == "ImmediateHP") inventoryGrid[i].Potion.ImmediateHP = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
                                 if (selectedNode.Name == "ImmediateMana") inventoryGrid[i].Potion.ImmediateMana = Convert.ToInt32(((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text);
@@ -1644,7 +1676,8 @@ namespace WolcenEditor
                     Minimum = 0,
                 };
                 int maxSockets = 0;
-                WolcenStaticData.MaxSocketsByType.TryGetValue(getItemTypeFromGrid(x, y), out maxSockets);
+                string itemType = getItemTypeFromGrid(x, y);
+                if(itemType != null) WolcenStaticData.MaxSocketsByType.TryGetValue(itemType, out maxSockets);
                 numberOfSockets.Maximum = maxSockets;
                 numberOfSockets.Value = Convert.ToInt32(parameterValues[0]);
                 numberOfSockets.ValueChanged += NumberOfSockets_ValueChanged;
