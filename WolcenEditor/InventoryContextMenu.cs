@@ -273,6 +273,22 @@ namespace WolcenEditor
             button.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 15);
             button.Parent = this;
 
+            TextBox itemSearchTextBox = new TextBox();
+            itemSearchTextBox.Name = "searchItem";
+            itemSearchTextBox.Size = new Size(100, 50);
+            itemSearchTextBox.Text = "";
+            itemSearchTextBox.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 90);
+            itemSearchTextBox.Parent = this;
+
+            Button itemSearchButton = new Button();
+            itemSearchButton.Name = "searchItemButton";
+            //itemSearchButton.Size = new Size(50, 30);
+            itemSearchButton.AutoSize = true;
+            itemSearchButton.Click += ItemSearchButton_Click;
+            itemSearchButton.Text = "Search";
+            itemSearchButton.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 113);
+            itemSearchButton.Parent = this;
+
             Panel itemDescriptionView = new Panel();
             itemDescriptionView.Name = "itemDescriptionView";
             itemDescriptionView.Size = new Size(353, this.Height - 60);
@@ -284,6 +300,13 @@ namespace WolcenEditor
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemDescriptionView, new object[] { true });
 
             LoadItemList(itemListView);
+        }
+
+        private void ItemSearchButton_Click(object sender, EventArgs e)
+        {
+            var t = accessableForm.Controls["itemListView"] as TreeView;
+            t.Nodes.Clear();
+            LoadItemList(t);
         }
 
         private void ItemListView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -340,7 +363,7 @@ namespace WolcenEditor
                 if (selectedNode.Name.ToLower().Contains("potion"))
                 {
                     string[] pName = selectedNode.Name.Split('_');
-                    if (File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
+                    if (pName.Length >= 3 && File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
                     {
                         itemWidth = 100;
                         itemHeight = 130;
@@ -533,7 +556,7 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Enneracts);
             itemListView.Nodes.Add(Consumables);
 
-            foreach (var item in WolcenStaticData.ItemLocalizedNames)
+            foreach (var item in WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.Contains(accessableForm.Controls["searchItem"].Text)))
             {
                 if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
                 {
