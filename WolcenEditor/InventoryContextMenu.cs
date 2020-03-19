@@ -1185,10 +1185,37 @@ namespace WolcenEditor
                 string value = d.Value;
                 string lValue = null;
                 string[] semantics;
+
                 WolcenStaticData.MagicLocalized.TryGetValue(value, out lValue);
                 WolcenStaticData.Semantics.TryGetValue(value, out semantics);
+
+
                 if (lValue != null)
                 {
+                    if (semantics.Count() >= 1)
+                    {
+                        if (semantics[0].Contains("percent") || semantics[0].Contains("ChanceFlatFloat"))
+                        {
+                            lValue = lValue.Replace("%1", "(%)");
+                        }
+                        else
+                        {
+                            lValue = lValue.Replace("%1", "(X)");
+                        }
+
+                        if (semantics.Count() >= 2)
+                        {
+                            if (semantics[1].Contains("percent") || semantics[1].Contains("ChanceFlatFloat"))
+                            {
+                                lValue = lValue.Replace("%2", "(%)");
+                            }
+                            else
+                            {
+                                lValue = lValue.Replace("%2", "(X)");
+                            }
+                        }
+                    }
+
                     node = new TreeNode();
                     node.Name = d.Key;
                     node.ImageKey = value;
