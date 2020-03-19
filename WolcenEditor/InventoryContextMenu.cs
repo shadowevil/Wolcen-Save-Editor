@@ -273,6 +273,27 @@ namespace WolcenEditor
             button.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 15);
             button.Parent = this;
 
+            TextBox itemSearchTextBox = new TextBox();
+            itemSearchTextBox.Name = "searchItem";
+            itemSearchTextBox.Size = new Size(100, 50);
+            itemSearchTextBox.TextChanged += ItemSearchTextBox_TextChanged;
+            itemSearchTextBox.Text = "";
+            itemSearchTextBox.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 90);
+            itemSearchTextBox.Parent = this;
+
+            Label itemSearchButton = new Label
+            {
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                Name = "searchItemButton",
+                //itemSearchButton.Size = new Size(50, 30);
+                AutoSize = true,
+                Text = "Search",
+                TextAlign = ContentAlignment.MiddleRight,
+                Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 113),
+                Parent = this
+            };
+
             Panel itemDescriptionView = new Panel();
             itemDescriptionView.Name = "itemDescriptionView";
             itemDescriptionView.Size = new Size(353, this.Height - 60);
@@ -284,6 +305,13 @@ namespace WolcenEditor
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemDescriptionView, new object[] { true });
 
             LoadItemList(itemListView);
+        }
+
+        private void ItemSearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var t = accessableForm.Controls["itemListView"] as TreeView;
+            t.Nodes.Clear();
+            LoadItemList(t);
         }
 
         private void ItemListView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -340,7 +368,7 @@ namespace WolcenEditor
                 if (selectedNode.Name.ToLower().Contains("potion"))
                 {
                     string[] pName = selectedNode.Name.Split('_');
-                    if (File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
+                    if (pName.Length >= 3 && File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
                     {
                         itemWidth = 100;
                         itemHeight = 130;
@@ -533,7 +561,7 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Enneracts);
             itemListView.Nodes.Add(Consumables);
 
-            foreach (var item in WolcenStaticData.ItemLocalizedNames)
+            foreach (var item in WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.ToLower().Contains(accessableForm.Controls["searchItem"].Text.ToLower())))
             {
                 if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
                 {
@@ -710,10 +738,41 @@ namespace WolcenEditor
                 Parent = this
             };
             deleteAffix.Click += DeleteAffix_Click;
-        
+
+            Label SearchAffix = new Label()
+            {
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleRight,
+                Name = "searchAffixButton",
+                Text = "Search:",
+                //AutoSize = true,
+                Location = new Point(475, 300),
+                Visible = true,
+                FlatStyle = FlatStyle.Standard,
+                Enabled = true,
+                Parent = this
+            };
+
+            TextBox SearchTextAffix = new TextBox()
+            {
+                Name = "searchAffixTextBox",
+                
+                Location = new Point(475 + 105, 302),
+                Visible = true,
+                Enabled = true,
+                Parent = this
+            };
+            SearchTextAffix.TextChanged += SearchTextAffix_TextChanged;
+
             LoadItemsFromGrid(itemsInGrid);
             LoadTreeNodes();
             LoadCurrentAffixes(panelID);
+        }
+
+        private void SearchTextAffix_TextChanged(object sender, EventArgs e)
+        {
+            LoadTreeNodes();
         }
 
         private void LoadItemsFromGrid(ListView itemsInGrid)
@@ -1118,7 +1177,8 @@ namespace WolcenEditor
 
         private void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
         {
-            foreach (var d in dict)
+            
+            foreach (var d in dict.Where(x => WolcenStaticData.MagicLocalized[x.Value].ToLower().Contains(accessableForm.Controls["searchAffixTextBox"].Text.ToLower())))
             {
                 TreeNode node = null;
                 string key = d.Key;
@@ -1263,6 +1323,7 @@ namespace WolcenEditor
         private void AddSelectedStat_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = (this.Controls["statEditView"] as TreeView).SelectedNode;
+            if (selectedNode == null) return;
             string effectName = selectedNode.Name;
             string effectId = selectedNode.ImageKey;
             string[] semantics = selectedNode.StateImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1344,6 +1405,7 @@ namespace WolcenEditor
                             MessageBox.Show("Reagent's or Gems cannot possess magic affixes", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
+                        if (string.IsNullOrWhiteSpace(effectId)) return;
                         string l_statName = WolcenStaticData.MagicLocalized[effectId];
                         //((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text
                         if (semantics.Count() == 2)
