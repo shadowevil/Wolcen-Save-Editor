@@ -556,7 +556,7 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Enneracts);
             itemListView.Nodes.Add(Consumables);
 
-            foreach (var item in WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.Contains(accessableForm.Controls["searchItem"].Text)))
+            foreach (var item in WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.ToLower().Contains(accessableForm.Controls["searchItem"].Text.ToLower())))
             {
                 if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
                 {
@@ -733,10 +733,39 @@ namespace WolcenEditor
                 Parent = this
             };
             deleteAffix.Click += DeleteAffix_Click;
-        
+
+            Button SearchAffix = new Button()
+            {
+                Name = "searchAffixButton",
+                Text = "Search",
+                Location = new Point(475, 300),
+                Visible = true,
+                FlatStyle = FlatStyle.Standard,
+                Enabled = true,
+                Parent = this
+            };
+            SearchAffix.Click += SearchAffix_Click;
+
+            TextBox SearchTextAffix = new TextBox()
+            {
+                Name = "searchAffixTextBox",
+                
+                Location = new Point(475 + 80, 302),
+                Width = 125,
+                Visible = true,
+                Enabled = true,
+                Parent = this
+            };
+
             LoadItemsFromGrid(itemsInGrid);
             LoadTreeNodes();
             LoadCurrentAffixes(panelID);
+        }
+
+
+        private void SearchAffix_Click(object sender, EventArgs e)
+        {
+            LoadTreeNodes();
         }
 
         private void LoadItemsFromGrid(ListView itemsInGrid)
@@ -1141,7 +1170,8 @@ namespace WolcenEditor
 
         private void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
         {
-            foreach (var d in dict)
+            
+            foreach (var d in dict.Where(x => x.Value.ToLower().Contains(accessableForm.Controls["searchAffixTextBox"].Text.ToLower())))
             {
                 TreeNode node = null;
                 string key = d.Key;
