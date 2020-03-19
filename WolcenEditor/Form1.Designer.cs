@@ -48,6 +48,8 @@
             this.telemetryTextBox = new System.Windows.Forms.TextBox();
             this.treeViewTelemetry = new System.Windows.Forms.TreeView();
             this.progressionBox = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.cboExpedition = new System.Windows.Forms.ComboBox();
             this.extraSkillButton = new System.Windows.Forms.CheckBox();
             this.label20 = new System.Windows.Forms.Label();
             this.apocUnlockCheckBox = new System.Windows.Forms.CheckBox();
@@ -125,9 +127,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.stashPanelGrid = new System.Windows.Forms.Panel();
             this.charSkills = new System.Windows.Forms.TabPage();
+            this.charCity = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.characterCustomizationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.charCity = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.tabPage.SuspendLayout();
             this.charPage.SuspendLayout();
@@ -324,6 +326,8 @@
             // progressionBox
             // 
             this.progressionBox.BackColor = System.Drawing.Color.Transparent;
+            this.progressionBox.Controls.Add(this.label21);
+            this.progressionBox.Controls.Add(this.cboExpedition);
             this.progressionBox.Controls.Add(this.extraSkillButton);
             this.progressionBox.Controls.Add(this.label20);
             this.progressionBox.Controls.Add(this.apocUnlockCheckBox);
@@ -339,10 +343,29 @@
             this.progressionBox.TabStop = false;
             this.progressionBox.Text = "Progression";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.ForeColor = System.Drawing.Color.White;
+            this.label21.Location = new System.Drawing.Point(5, 102);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(148, 15);
+            this.label21.TabIndex = 18;
+            this.label21.Text = "Max Expedition Level:";
+            // 
+            // cboExpedition
+            // 
+            this.cboExpedition.FormattingEnabled = true;
+            this.cboExpedition.Location = new System.Drawing.Point(159, 100);
+            this.cboExpedition.Name = "cboExpedition";
+            this.cboExpedition.Size = new System.Drawing.Size(53, 21);
+            this.cboExpedition.TabIndex = 17;
+            // 
             // extraSkillButton
             // 
             this.extraSkillButton.AutoSize = true;
-            this.extraSkillButton.Location = new System.Drawing.Point(9, 143);
+            this.extraSkillButton.Location = new System.Drawing.Point(9, 191);
             this.extraSkillButton.Name = "extraSkillButton";
             this.extraSkillButton.Size = new System.Drawing.Size(130, 17);
             this.extraSkillButton.TabIndex = 16;
@@ -364,7 +387,7 @@
             // apocUnlockCheckBox
             // 
             this.apocUnlockCheckBox.AutoSize = true;
-            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 125);
+            this.apocUnlockCheckBox.Location = new System.Drawing.Point(9, 173);
             this.apocUnlockCheckBox.Name = "apocUnlockCheckBox";
             this.apocUnlockCheckBox.Size = new System.Drawing.Size(163, 17);
             this.apocUnlockCheckBox.TabIndex = 14;
@@ -402,7 +425,7 @@
             // 
             // chkChampion
             // 
-            this.chkChampion.Location = new System.Drawing.Point(9, 102);
+            this.chkChampion.Location = new System.Drawing.Point(9, 150);
             this.chkChampion.Name = "chkChampion";
             this.chkChampion.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.chkChampion.Size = new System.Drawing.Size(170, 25);
@@ -1299,16 +1322,6 @@
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
             // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // characterCustomizationBindingSource
-            // 
-            this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
-            // 
             // charCity
             // 
             this.charCity.BackgroundImage = global::WolcenEditor.Properties.Resources.bg;
@@ -1320,6 +1333,16 @@
             this.charCity.TabIndex = 4;
             this.charCity.Text = "City";
             this.charCity.UseVisualStyleBackColor = true;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // characterCustomizationBindingSource
+            // 
+            this.characterCustomizationBindingSource.DataSource = typeof(WolcenEditor.CharacterCustomization);
             // 
             // Form1
             // 
@@ -1483,6 +1506,8 @@
         private System.Windows.Forms.Panel itemStashStatDisplay;
         private System.Windows.Forms.CheckBox extraSkillButton;
         private System.Windows.Forms.TabPage charCity;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox cboExpedition;
     }
 }
 
