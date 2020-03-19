@@ -1171,7 +1171,7 @@ namespace WolcenEditor
         private void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
         {
             
-            foreach (var d in dict.Where(x => x.Value.ToLower().Contains(accessableForm.Controls["searchAffixTextBox"].Text.ToLower())))
+            foreach (var d in dict.Where(x => WolcenStaticData.MagicLocalized[x.Value].ToLower().Contains(accessableForm.Controls["searchAffixTextBox"].Text.ToLower())))
             {
                 TreeNode node = null;
                 string key = d.Key;
@@ -1316,6 +1316,7 @@ namespace WolcenEditor
         private void AddSelectedStat_Click(object sender, EventArgs e)
         {
             TreeNode selectedNode = (this.Controls["statEditView"] as TreeView).SelectedNode;
+            if (selectedNode == null) return;
             string effectName = selectedNode.Name;
             string effectId = selectedNode.ImageKey;
             string[] semantics = selectedNode.StateImageKey.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1397,6 +1398,7 @@ namespace WolcenEditor
                             MessageBox.Show("Reagent's or Gems cannot possess magic affixes", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
+                        if (string.IsNullOrWhiteSpace(effectId)) return;
                         string l_statName = WolcenStaticData.MagicLocalized[effectId];
                         //((sender as Button).Parent.Controls["txtStat0"] as TextBox).Text
                         if (semantics.Count() == 2)
