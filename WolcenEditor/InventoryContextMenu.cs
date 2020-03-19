@@ -276,18 +276,23 @@ namespace WolcenEditor
             TextBox itemSearchTextBox = new TextBox();
             itemSearchTextBox.Name = "searchItem";
             itemSearchTextBox.Size = new Size(100, 50);
+            itemSearchTextBox.TextChanged += ItemSearchTextBox_TextChanged;
             itemSearchTextBox.Text = "";
             itemSearchTextBox.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 90);
             itemSearchTextBox.Parent = this;
 
-            Button itemSearchButton = new Button();
-            itemSearchButton.Name = "searchItemButton";
-            //itemSearchButton.Size = new Size(50, 30);
-            itemSearchButton.AutoSize = true;
-            itemSearchButton.Click += ItemSearchButton_Click;
-            itemSearchButton.Text = "Search";
-            itemSearchButton.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 113);
-            itemSearchButton.Parent = this;
+            Label itemSearchButton = new Label
+            {
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                Name = "searchItemButton",
+                //itemSearchButton.Size = new Size(50, 30);
+                AutoSize = true,
+                Text = "Search",
+                TextAlign = ContentAlignment.MiddleRight,
+                Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 113),
+                Parent = this
+            };
 
             Panel itemDescriptionView = new Panel();
             itemDescriptionView.Name = "itemDescriptionView";
@@ -302,7 +307,7 @@ namespace WolcenEditor
             LoadItemList(itemListView);
         }
 
-        private void ItemSearchButton_Click(object sender, EventArgs e)
+        private void ItemSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             var t = accessableForm.Controls["itemListView"] as TreeView;
             t.Nodes.Clear();
@@ -734,36 +739,38 @@ namespace WolcenEditor
             };
             deleteAffix.Click += DeleteAffix_Click;
 
-            Button SearchAffix = new Button()
+            Label SearchAffix = new Label()
             {
+                BackColor = Color.Transparent,
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleRight,
                 Name = "searchAffixButton",
-                Text = "Search",
+                Text = "Search:",
+                //AutoSize = true,
                 Location = new Point(475, 300),
                 Visible = true,
                 FlatStyle = FlatStyle.Standard,
                 Enabled = true,
                 Parent = this
             };
-            SearchAffix.Click += SearchAffix_Click;
 
             TextBox SearchTextAffix = new TextBox()
             {
                 Name = "searchAffixTextBox",
                 
-                Location = new Point(475 + 80, 302),
-                Width = 125,
+                Location = new Point(475 + 105, 302),
                 Visible = true,
                 Enabled = true,
                 Parent = this
             };
+            SearchTextAffix.TextChanged += SearchTextAffix_TextChanged;
 
             LoadItemsFromGrid(itemsInGrid);
             LoadTreeNodes();
             LoadCurrentAffixes(panelID);
         }
 
-
-        private void SearchAffix_Click(object sender, EventArgs e)
+        private void SearchTextAffix_TextChanged(object sender, EventArgs e)
         {
             LoadTreeNodes();
         }
