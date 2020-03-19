@@ -48,7 +48,7 @@ namespace WolcenEditor
             };
             if (iGridItem != null)
             {
-                editItem.Enabled = true;//iGridItem.Gem != null ? false : true;
+                editItem.Enabled = iGridItem.Enneract != null ? false : true;
             }
 
             MenuItem copyItem = new MenuItem()
