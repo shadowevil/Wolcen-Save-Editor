@@ -1746,6 +1746,7 @@ namespace WolcenEditor
             { "Unique_Hit_hard", "ring_attributes_onyx_tier1.png" },
             { "Unique_Hit_hard_max", "ring_attributes_onyx_tier1.png" },
             { "Unique_Hit_hard_max_max", "ring_attributes_onyx_tier1.png" },
+            { "Unique_Poison", "ring_attributes_green_tier2.png" },
             { "Unique_Poison_max", "ring_attributes_green_tier2.png" },
             { "Unique_Poison_max_max", "ring_attributes_green_tier2.png" },
             { "Unique_glass_canon", "amulet_5.png" },
@@ -10408,8 +10409,8 @@ namespace WolcenEditor
             { "umbra_regen_pts", new string[] { "ResourceFlatFloat" } },
             { "local_blockchance_flat", new string[] { "LocalFlatFloat" } },
             { "local_blockchance_percent", new string[] { "LocalPercentFloat" } },
-            { "local_blockefficiency_flat", new string[] { "ArmorFlatInt" } },
-            { "local_blockefficiency_percent", new string[] { "ArmorPercentFloat" } },
+            { "local_blockefficiency_flat", new string[] { "LocalFlatFloat" } },
+            { "local_blockefficiency_percent", new string[] { "LocalPercentFloat" } },
             { "rageandumbra_cost_percent", new string[] { "ResourcePercentFloat" } },
             { "additional_stacks_chance_pts", new string[] { "StackCountInt" } },
             { "all_attribute_pts", new string[] { "AttributeFlatInt" } },
@@ -10421,7 +10422,7 @@ namespace WolcenEditor
             { "local_damage_percent_all", new string[] { "DamagePercentFloat" } },
             { "criticalchance_magicspell_score", new string[] { "CharacteristicScoreInt" } },
             { "criticaldamage_attackskill_pts", new string[] { "DamagePercentInt" } },
-            { "skillrequirement_keyword_sacred", new string[] { "FileOverrideString" } },
+            { "skillrequirement_keyword_sacred", new string[] { "CountInt" } },
             { "local_damage_flat_rend", new string[] { "DamagesFlatInt_Min", "DamagesFlatInt_Max" } },
             { "local_damage_percent_material", new string[] { "DamagePercentFloat" } },
             { "local_damage_flat_physical", new string[] { "DamagesFlatInt_Min", "DamagesFlatInt_Max" } },
@@ -10530,7 +10531,7 @@ namespace WolcenEditor
             { "freeze_chance_to_crit", new string[] { "ChanceFlatFloat" } },
             { "ailment_spread", new string[] { "ChanceFlatFloat" } },
             { "dodge_roll_breaks_cc", new string[] { "PossibilityInt" } },
-            { "elemental_cycling_percent", new string[] { "DamagePercentFloat" } }
+            { "elemental_cycling_percent", new string[] { "DamagePercentFloat" } },
             //{ "", new string[] { "", "" } },
         };
     }
