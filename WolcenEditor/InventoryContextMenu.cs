@@ -1219,7 +1219,7 @@ namespace WolcenEditor
                 {
                     if (semantics.Count() >= 1)
                     {
-                        if (semantics[0].Contains("percent") || semantics[0].Contains("ChanceFlatFloat"))
+                        if (semantics[0].ToLower().Contains("percent") || semantics[0].Contains("ChanceFlatFloat"))
                         {
                             lValue = lValue.Replace("%1", "(%)");
                         }
@@ -1230,7 +1230,7 @@ namespace WolcenEditor
 
                         if (semantics.Count() >= 2)
                         {
-                            if (semantics[1].Contains("percent") || semantics[1].Contains("ChanceFlatFloat"))
+                            if (semantics[1].ToLower().Contains("percent") || semantics[1].Contains("ChanceFlatFloat"))
                             {
                                 lValue = lValue.Replace("%2", "(%)");
                             }
