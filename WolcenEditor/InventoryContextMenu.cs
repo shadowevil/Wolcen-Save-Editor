@@ -104,7 +104,7 @@ namespace WolcenEditor
             {
                 if (iGrid.InventoryX == coords.x && iGrid.InventoryY == coords.y)
                 {
-                    iGridItem = iGrid.copy;
+                    iGridItem = ObjectExtensions.Copy(iGrid);
                     globalItemIndex = i;
                     return;
                 }
@@ -132,7 +132,7 @@ namespace WolcenEditor
 
         private static void CopyItem_Click(object sender, EventArgs e)
         {
-            iGridCopiedItem = iGridItem.copy;
+            iGridCopiedItem = ObjectExtensions.Copy(iGridItem);
         }
 
         private static void DeleteItem_Click(object sender, EventArgs e)
@@ -157,7 +157,7 @@ namespace WolcenEditor
         {
             if (iGridCopiedItem != null)
             {
-                InventoryGrid item = iGridCopiedItem.copy;
+                InventoryGrid item = ObjectExtensions.Copy(iGridCopiedItem);
                 item.InventoryX = coords.x;
                 item.InventoryY = coords.y;
 
@@ -1488,7 +1488,7 @@ namespace WolcenEditor
                                 if (iGrid.InventoryX == x && iGrid.InventoryY == y)
                                 {
                                     oldItem = iGrid;
-                                    itemEditing = iGrid.copy;
+                                    itemEditing = ObjectExtensions.Copy(iGrid);
                                     break;
                                 }
                             }
@@ -1500,7 +1500,7 @@ namespace WolcenEditor
                                 if (iGrid.InventoryX == x && iGrid.InventoryY == y)
                                 {
                                     oldItem = iGrid;
-                                    itemEditing = iGrid.copy;
+                                    itemEditing = ObjectExtensions.Copy(iGrid);
                                     break;
                                 }
                             }

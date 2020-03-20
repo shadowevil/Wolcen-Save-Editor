@@ -268,8 +268,7 @@ namespace WolcenEditor
                         if (!effect.Parameters[0].semantic.Contains("TriggeredSkillSelector"))
                         {
                             if (effect.EffectId.Contains("percent")
-                                || effect.Parameters[0].semantic.Contains("ChanceFlatFloat")
-                                || effect.Parameters[0].semantic.Contains("PossibilityInt"))
+                                || effect.Parameters[0].semantic.Contains("ChanceFlatFloat"))
                             {
                                 s_Effect = s_Effect.Replace("%1", "%1%");
                             }
@@ -338,7 +337,7 @@ namespace WolcenEditor
                 {
                     if (iGrid.InventoryX == coords.x && iGrid.InventoryY == coords.y)
                     {
-                        iGridItem = iGrid.copy;
+                        iGridItem = ObjectExtensions.Copy(iGrid);
                         globalItemIndex = i;
                         return;
                     }

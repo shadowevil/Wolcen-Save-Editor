@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WolcenEditor
 {
@@ -22,14 +25,5 @@ namespace WolcenEditor
         public Enneract Enneract { get; set; }
         public NPC2Consumable NPC2Consumable { get; set; }
         public ItemMagicEffects MagicEffects { get; set; }
-
-        [JsonIgnore]
-        public InventoryGrid copy
-        {
-            get
-            {
-                return (InventoryGrid)this.MemberwiseClone();
-            }
-        }
     }
 }

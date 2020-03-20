@@ -152,6 +152,7 @@
     <Compile Include="InventoryManager.cs" />
     <Compile Include="ItemDataDisplay.cs" />
     <Compile Include="LogMe.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="OnlineBuildRequest.cs" />
     <Compile Include="PlayerChest.cs" />
     <Compile Include="PlayerData.cs" />
