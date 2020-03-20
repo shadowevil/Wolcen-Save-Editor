@@ -130,16 +130,43 @@ namespace WolcenEditor
                         string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
                         if (s_Effect.Contains("%1") || s_Effect.Contains("%2"))
                         {
-                            if (effect.EffectId.Contains("percent") || effect.Parameters[0].semantic.Contains("ChanceFlatFloat")) s_Effect = s_Effect.Replace("%1", "%1%");
-                            if (effect.Parameters.Count <= 0)
+                            if (!effect.Parameters[0].semantic.Contains("TriggeredSkillSelector"))
                             {
-                                LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
-                                return;
+                                if (effect.EffectId.Contains("percent")
+                                    || effect.Parameters[0].semantic.Contains("ChanceFlatFloat")
+                                    || effect.Parameters[0].semantic.Contains("PossibilityInt"))
+                                {
+                                    s_Effect = s_Effect.Replace("%1", "%1%");
+                                }
+
+                                if (effect.Parameters.Count <= 0)
+                                {
+                                    LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
+                                    return;
+                                }
+
+                                s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
+                                if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                                {
+                                    s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                }
                             }
-                            s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                            if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                            else
                             {
-                                s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                if (effect.EffectId.Contains("percent")
+                                    || effect.Parameters[1].semantic.Contains("ChanceFlatFloat")
+                                    || effect.Parameters[1].semantic.Contains("PossibilityInt"))
+                                {
+                                    s_Effect = s_Effect.Replace("%1", "%1%");
+                                }
+
+                                if (effect.Parameters.Count <= 0)
+                                {
+                                    LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
+                                    return;
+                                }
+
+                                s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[1].value.ToString());
                             }
                         }
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));
@@ -238,16 +265,43 @@ namespace WolcenEditor
                     string s_Effect = WolcenStaticData.MagicLocalized[effect.EffectId];
                     if (s_Effect.Contains("%1") || s_Effect.Contains("%2"))
                     {
-                        if (effect.EffectId.Contains("percent") || effect.EffectId.Contains("ChanceFlatFloat")) s_Effect = s_Effect.Replace("%1", "%1%");
-                        if (effect.Parameters.Count <= 0)
+                        if (!effect.Parameters[0].semantic.Contains("TriggeredSkillSelector"))
                         {
-                            LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
-                            return;
+                            if (effect.EffectId.Contains("percent")
+                                || effect.Parameters[0].semantic.Contains("ChanceFlatFloat")
+                                || effect.Parameters[0].semantic.Contains("PossibilityInt"))
+                            {
+                                s_Effect = s_Effect.Replace("%1", "%1%");
+                            }
+
+                            if (effect.Parameters.Count <= 0)
+                            {
+                                LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
+                                return;
+                            }
+
+                            s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
+                            if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                            {
+                                s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                            }
                         }
-                        s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                        if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                        else
                         {
-                            s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                            if (effect.EffectId.Contains("percent")
+                                || effect.Parameters[1].semantic.Contains("ChanceFlatFloat")
+                                || effect.Parameters[1].semantic.Contains("PossibilityInt"))
+                            {
+                                s_Effect = s_Effect.Replace("%1", "%1%");
+                            }
+
+                            if (effect.Parameters.Count <= 0)
+                            {
+                                LogMe.WriteLog("Error: effectID(" + effect.EffectId + "), effectName(" + effect.EffectName + ") missing semantics!");
+                                return;
+                            }
+
+                            s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[1].value.ToString());
                         }
                     }
                     itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, s_Effect, itemStatDisplay, 9, Color.White));

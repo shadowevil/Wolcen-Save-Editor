@@ -4165,7 +4165,6 @@ namespace WolcenEditor
             { "damage_ranged_weapon", "%1 Ranged Weapon Damage" },
             { "damage_reduction_on_full_force_shield", "%1 decrease to Damage received when Force Shield is full" },
             { "dash_cooldown_on_kill", "%1 Dash Cooldown decrease" },
-            { "deathmark_on_hit", "%1 Chance to infilct Mark of Impurity to an Enemy when they are Hit" },
             { "cast_deathmark_on_hit", "%1 Chance to infilct Mark of Impurity to an Enemy when they are Hit" },
             { "defense_up_on_block", "%1 All Resistances Score for you and your Allies after a Hit is Blocked" },
             { "defense_up_on_globe_pickup", "%1 All Resistances Score for you and your Allies after a Health Globe is picked up" },

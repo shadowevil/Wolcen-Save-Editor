@@ -255,9 +255,9 @@ namespace WolcenEditor
 
             TreeView itemListView = new TreeView();
             itemListView.Name = "itemListView";
-            itemListView.Size = new Size(175, this.Height);
-            itemListView.MaximumSize = new Size(175, this.Height - 60);
-            itemListView.Location = new Point(5, 20);
+            itemListView.Size = new Size(175, this.Height - 85);
+            itemListView.MaximumSize = new Size(175, this.Height - 85);
+            itemListView.Location = new Point(5, 45);
             itemListView.Visible = true;
             itemListView.BorderStyle = BorderStyle.FixedSingle;
             itemListView.BackColor = ColorTranslator.FromHtml("#1d1d1d");
@@ -275,24 +275,13 @@ namespace WolcenEditor
 
             TextBox itemSearchTextBox = new TextBox();
             itemSearchTextBox.Name = "searchItem";
-            itemSearchTextBox.Size = new Size(100, 50);
+            itemSearchTextBox.Size = new Size(itemListView.Width, 20);
             itemSearchTextBox.TextChanged += ItemSearchTextBox_TextChanged;
-            itemSearchTextBox.Text = "";
-            itemSearchTextBox.Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 90);
+            itemSearchTextBox.GotFocus += ItemSearchTextBox_GotFocus;
+            itemSearchTextBox.LostFocus += ItemSearchTextBox_LostFocus;
+            itemSearchTextBox.Text = "Search items...";
+            itemSearchTextBox.Location = new Point(itemListView.Location.X, itemListView.Location.Y - 24);
             itemSearchTextBox.Parent = this;
-
-            Label itemSearchButton = new Label
-            {
-                BackColor = Color.Transparent,
-                ForeColor = Color.White,
-                Name = "searchItemButton",
-                //itemSearchButton.Size = new Size(50, 30);
-                AutoSize = true,
-                Text = "Search",
-                TextAlign = ContentAlignment.MiddleRight,
-                Location = new Point(displayItemView.Location.X, displayItemView.Location.Y + displayItemView.Height + 113),
-                Parent = this
-            };
 
             Panel itemDescriptionView = new Panel();
             itemDescriptionView.Name = "itemDescriptionView";
@@ -307,9 +296,31 @@ namespace WolcenEditor
             LoadItemList(itemListView);
         }
 
+
+        //"Search items..."
+        private void ItemSearchTextBox_LostFocus(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace((sender as TextBox).Text))
+            {
+                (sender as TextBox).ForeColor = Color.Gray;
+                (sender as TextBox).Text = "Search items...";
+                ItemSearchTextBox_TextChanged(sender, e);
+            }
+        }
+
+        private void ItemSearchTextBox_GotFocus(object sender, EventArgs e)
+        {
+            (sender as TextBox).ForeColor = Color.Black;
+            if ((sender as TextBox).Text == "Search items...")
+            {
+                (sender as TextBox).Text = "";
+            }
+        }
+
         private void ItemSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             var t = accessableForm.Controls["itemListView"] as TreeView;
+            if (t.Nodes.Count <= 0) return;
             t.Nodes.Clear();
             LoadItemList(t);
         }
@@ -560,8 +571,12 @@ namespace WolcenEditor
             itemListView.Nodes.Add(Reagents);
             itemListView.Nodes.Add(Enneracts);
             itemListView.Nodes.Add(Consumables);
+            
+            Dictionary<string, string> dict = WolcenStaticData.ItemLocalizedNames;
+            string txtboxText = accessableForm.Controls["searchItem"].Text;
+            if (txtboxText != "Search items...") dict = WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.ToLower().Contains(txtboxText.ToLower())).ToDictionary(x => x.Key, x => x.Value);
 
-            foreach (var item in WolcenStaticData.ItemLocalizedNames.Where(x => x.Value.ToLower().Contains(accessableForm.Controls["searchItem"].Text.ToLower())))
+            foreach (var item in dict)
             {
                 if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
                 {
@@ -1542,7 +1557,8 @@ namespace WolcenEditor
                         {
                             EffectParams ep = new EffectParams();
                             ep.semantic = semantics[i];
-                            ep.value = Convert.ToDouble(semanticValues[i]);
+                            if (ep.semantic == "TriggeredSkillSelector") ep.value = 0;
+                            else ep.value = Convert.ToDouble(semanticValues[i]);
                             effect.Parameters.Add(ep);
                         }
                         if (selectedNode.FullPath.Contains("Current Affixes"))
@@ -1844,7 +1860,7 @@ namespace WolcenEditor
                     Label title = new Label()
                     {
                         Name = "lblStat" + i,
-                        Text = "Stat value " + (i + 1) + ":",
+                        Text = parameters.Count() <= 1 ? selectedNode.Text + ":" : parameters[i] + ":",
                         Location = new Point(480, 100 + (50 * i)),
                         AutoSize = true,
                         ForeColor = Color.White,
@@ -1858,6 +1874,7 @@ namespace WolcenEditor
                     valueBox.Location = new Point(480, 115 + (50 * i));
                     valueBox.Size = new Size(150, 20);
                     valueBox.Visible = true;
+                    if(parameters.Count() >= 1) valueBox.Enabled = parameters[i] == "TriggeredSkillSelector" ? false : true;
                     if (selectedNode.ImageKey != "default") valueBox.Text = parameterValues[i];
                     else valueBox.Text = parameterValues[0];
                     valueBox.KeyPress += numberOnly_KeyPress;
