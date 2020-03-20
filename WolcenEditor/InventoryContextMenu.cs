@@ -699,10 +699,10 @@ namespace WolcenEditor
             TreeView statEditView = new TreeView()
             {
                 Name = "statEditView",
-                Size = new Size(250, 350),
-                MaximumSize = new Size(250, 345),
+                Size = new Size(250, 325),
+                MaximumSize = new Size(250, 325),
                 BorderStyle = BorderStyle.FixedSingle,
-                Location = new Point(itemsInGrid.Width + 20, 10),
+                Location = new Point(itemsInGrid.Width + 20, 35),
                 Visible = true,
                 Parent = this,
                 BackColor = ColorTranslator.FromHtml("#1d1d1d"),
@@ -739,35 +739,43 @@ namespace WolcenEditor
             };
             deleteAffix.Click += DeleteAffix_Click;
 
-            Label SearchAffix = new Label()
-            {
-                BackColor = Color.Transparent,
-                ForeColor = Color.White,
-                TextAlign = ContentAlignment.MiddleRight,
-                Name = "searchAffixButton",
-                Text = "Search:",
-                //AutoSize = true,
-                Location = new Point(475, 300),
-                Visible = true,
-                FlatStyle = FlatStyle.Standard,
-                Enabled = true,
-                Parent = this
-            };
-
             TextBox SearchTextAffix = new TextBox()
             {
                 Name = "searchAffixTextBox",
-                
-                Location = new Point(475 + 105, 302),
+                Size = new Size(statEditView.Width, 10),
+                Location = new Point(statEditView.Location.X, statEditView.Location.Y - 24),
                 Visible = true,
                 Enabled = true,
-                Parent = this
+                Parent = this,
+                Text = "Search affixes...",
+                ForeColor = Color.Gray
             };
             SearchTextAffix.TextChanged += SearchTextAffix_TextChanged;
+            SearchTextAffix.GotFocus += SearchTextAffix_GotFocus;
+            SearchTextAffix.LostFocus += SearchTextAffix_LostFocus;
 
             LoadItemsFromGrid(itemsInGrid);
             LoadTreeNodes();
             LoadCurrentAffixes(panelID);
+        }
+
+        private void SearchTextAffix_LostFocus(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace((sender as TextBox).Text))
+            {
+                (sender as TextBox).ForeColor = Color.Gray;
+                (sender as TextBox).Text = "Search affixes...";
+                LoadCurrentAffixes(panelID);
+            }
+        }
+
+        private void SearchTextAffix_GotFocus(object sender, EventArgs e)
+        {
+            (sender as TextBox).ForeColor = Color.Black;
+            if ((sender as TextBox).Text == "Search affixes...")
+            {
+                (sender as TextBox).Text = "";
+            }
         }
 
         private void SearchTextAffix_TextChanged(object sender, EventArgs e)
@@ -1177,8 +1185,10 @@ namespace WolcenEditor
 
         private void AddNodes(TreeNode treeNode, Dictionary<string, string> dict)
         {
-            
-            foreach (var d in dict.Where(x => WolcenStaticData.MagicLocalized[x.Value].ToLower().Contains(accessableForm.Controls["searchAffixTextBox"].Text.ToLower())))
+            string txtboxText = accessableForm.Controls["searchAffixTextBox"].Text;
+            if (txtboxText != "Search affixes...") dict = dict.Where(x => WolcenStaticData.MagicLocalized[x.Value].ToLower().Contains(txtboxText.ToLower())).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var d in dict)
             {
                 TreeNode node = null;
                 string key = d.Key;

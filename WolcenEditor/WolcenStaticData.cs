@@ -4228,7 +4228,7 @@ namespace WolcenEditor
             { "health_percent", "%1 Maximum Health" },
             { "health_pts", "%1 Maximum Health" },
             { "health_regen_frequency", "%1 Health Regeneration Rate" },
-            { "health_regen_on_low_health", "When under %2 of Maximum Health, trigger a burst of Health Regeneration" },
+            { "health_regen_on_low_health", "When under %1 of Maximum Health, trigger a burst of Health Regeneration" },
             { "health_regen_percent", "%1 Health Regeneration" },
             { "health_regen_pts", "%1 Health Regeneration" },
             { "health_regen_true_percent", "%1 Health Regeneration" },
