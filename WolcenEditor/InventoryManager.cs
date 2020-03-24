@@ -727,50 +727,37 @@ namespace WolcenEditor
             }
         }
 
-        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null, string stackSize = null)
+        public static Bitmap CombineGridBitmaps(string itemName, int quality, string itemType, PictureBox pb = null, string stackSize = null)
         {
-            Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
-            Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
+            Bitmap Background = new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
+            Bitmap ItemImage = new Bitmap(Image.FromFile(itemName));
             Bitmap FinalImage = new Bitmap(Background.Width, Background.Height);
 
             using (Graphics g = Graphics.FromImage(FinalImage))
             {
                 g.Clear(Color.Black);
                 g.DrawImage(Background, 0, 0);
-                int width = Background.Width - 10;
-                int height = Background.Height - 10;
+                int width = 0;
+                int height = 0;
                 int xOffset = 0;
                 int yOffset = 0;
-                switch (itemType)
+
+                ItemImage = new Bitmap(WolcenStaticData.FixedSize(ItemImage, Background.Width - 7, Background.Height - 7));
+                width = ItemImage.Width;
+                height = ItemImage.Height;
+
+                if (itemType == "Leg Armor")
                 {
-                    case "Shoulder":
-                        width = 50; height = 55;
-                        break;
-                    case "Belt":
-                        width = 40; height = 25;
-                        break;
-                    case "Amulet":
-                    case "Ring":
-                        width = 35; height = 30;
-                        break;
-                    case "Helmet":
-                        width = 50; height = 60;
-                        break;
-                    case "Potions":
-                        width = 20; height = 40;
-                        break;
-                    case "Leg Armor":
-                        width = 50; height = 95;
-                        break;
-                    case "Foot Armor":
-                        width = 45; height = 75;
-                        break;
-                    case "Chest Armor":
-                        width = 45; height = 95;
-                        break;
-                    case "":
-                        width = 45; height = 45;
-                        break;
+                    width = (int)Math.Round(width * 0.90);
+                    height = (int)Math.Round(height * 0.90);
+                }
+                if (charMap.ContainsKey(pb.Name))
+                {
+                    if (pb.Name == "charPants")
+                    {
+                        width -= 10;
+                        height -= 10;
+                    }
                 }
 
                 int x = Background.Width / 2 - (width / 2) + xOffset;
@@ -793,36 +780,34 @@ namespace WolcenEditor
         {
             if (pb.Name == "charBelt1")
             {
-                string dirPath = @".\UIResources\";
                 foreach (InventoryBelt iv in cData.Character.InventoryBelt)
                 {
                     if (iv.Potion != null && iv.BeltSlot == 0)
                     {
-                        string[] pName = iv.Potion.Name.Split('_');
+                        string pName = iv.Potion.Name;
                         int itemRarity = iv.Rarity;
-                        string l_itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
-
-                        if (File.Exists(dirPath + "Items\\" + l_itemName))
+                        string itemLocation = null;
+                        WolcenStaticData.ItemLocations.TryGetValue(pName, out itemLocation);
+                        if (File.Exists(Directory.GetCurrentDirectory() + itemLocation))
                         {
-                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, iv.ItemType, pb);
+                            return CombineGridBitmaps(Directory.GetCurrentDirectory() + itemLocation, itemRarity, iv.ItemType, pb);
                         }
                     }
                 }
             }
             else if (pb.Name == "charBelt2")
             {
-                string dirPath = @".\UIResources\";
                 foreach (InventoryBelt iv in cData.Character.InventoryBelt)
                 {
                     if (iv.Potion != null && iv.BeltSlot == 1)
                     {
-                        string[] pName = iv.Potion.Name.Split('_');
+                        string pName = iv.Potion.Name;
                         int itemRarity = iv.Rarity;
-                        string l_itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
-
-                        if (File.Exists(dirPath + "Items\\" + l_itemName))
+                        string itemLocation = null;
+                        WolcenStaticData.ItemLocations.TryGetValue(pName, out itemLocation);
+                        if (File.Exists(Directory.GetCurrentDirectory() + itemLocation))
                         {
-                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, iv.ItemType, pb);
+                            return CombineGridBitmaps(Directory.GetCurrentDirectory() + itemLocation, itemRarity, iv.ItemType, pb);
                         }
                     }
                 }
@@ -835,19 +820,16 @@ namespace WolcenEditor
                     int y = Convert.ToInt32(pb.Name.Split('|')[1]);
                     if (i.InventoryX == x && i.InventoryY == y)
                     {
-                        string dirPath = @".\UIResources\";
                         string itemName = "";
-                        string l_itemName = null;
+                        string itemLocation = null;
                         string stackSize = null;
                         int itemRarity = 0;
                         if (i.Armor != null)
                         {
                             itemName = i.Armor.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemArmor.TryGetValue(itemName, out l_itemName);
-                            if (l_itemName == null)
+                            if (ItemDataDisplay.ParseItemNameForType(itemName) == "Amulet" || ItemDataDisplay.ParseItemNameForType(itemName) == "Ring")
                             {
-                                WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
                                 pb.Size = new Size(50, 50);
                                 pb.MaximumSize = new Size(50, 50);
                             }
@@ -864,28 +846,24 @@ namespace WolcenEditor
                         {
                             itemName = i.Weapon.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemWeapon.TryGetValue(itemName, out l_itemName);
                             pb.MaximumSize = new Size(50, 100);
                             pb.Size = new Size(50, 100);
                         }
                         if (i.Potion != null)
                         {
-                            string[] pName = i.Potion.Name.Split('_');
+                            itemName = i.Potion.Name;
                             itemRarity = i.Rarity;
-                            l_itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
                         }
                         if (i.Gem != null)
                         {
                             itemName = i.Gem.Name;
                             itemRarity = i.Rarity;
-                            l_itemName = itemName + ".png";
                             if (i.Gem.StackSize > 0) stackSize = i.Gem.StackSize.ToString();
                         }
                         if (i.Reagent != null)
                         {
                             itemName = i.Reagent.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemReagent.TryGetValue(itemName, out l_itemName);
                             pb.MaximumSize = new Size(50, 50);
                             pb.Size = new Size(50, 50);
                             if(i.Reagent.StackSize > 0) stackSize = i.Reagent.StackSize.ToString();
@@ -897,7 +875,7 @@ namespace WolcenEditor
                             itemRarity = i.Rarity;
                             string[] enneractData;
                             WolcenStaticData.ItemEnneract.TryGetValue(itemName, out enneractData);
-                            l_itemName = enneractData[1];
+                            itemLocation = enneractData[1];
                             pb.MaximumSize = new Size(50, 50);
                             pb.Size = new Size(50, 50);
                         }
@@ -906,9 +884,13 @@ namespace WolcenEditor
                         {
                             itemName = i.NPC2Consumable.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemConsumables.TryGetValue(itemName, out l_itemName);
                             pb.MaximumSize = new Size(50, 50);
                             pb.Size = new Size(50, 50);
+                        }
+
+                        if (itemLocation == null)
+                        {
+                            WolcenStaticData.ItemLocations.TryGetValue(itemName, out itemLocation);
                         }
 
                         if (i.MagicEffects != null)
@@ -1016,19 +998,19 @@ namespace WolcenEditor
                             }
                         }
 
-                        if (File.Exists(dirPath + "Items\\" + l_itemName))
+                        if (File.Exists(Directory.GetCurrentDirectory() + itemLocation))
                         {
-                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, i.ItemType, pb, stackSize);
+                            return CombineGridBitmaps(Directory.GetCurrentDirectory() + itemLocation, itemRarity, i.ItemType, pb, stackSize);
                         }
                         else
                         {
                             if (i.Armor != null)
                             {
-                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_armor.png"));
+                                return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_armor.png"));
                             }
                             if (i.Weapon != null)
                             {
-                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_weapon.png"));
+                                return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_weapon.png"));
                             }
                         }
                     }
@@ -1038,9 +1020,8 @@ namespace WolcenEditor
             {
                 foreach (var i in cData.Character.InventoryEquipped)
                 {
-                    string dirPath = @".\UIResources\";
                     string itemName = "";
-                    string l_itemName = null;
+                    string itemLocation = null;
                     int itemRarity = 0;
                     if (i.BodyPart == bodyPart)
                     {
@@ -1048,32 +1029,28 @@ namespace WolcenEditor
                         {
                             itemName = i.Armor.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemArmor.TryGetValue(itemName, out l_itemName);
-                            if (l_itemName == null)
-                            {
-                                WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
-                            }
                         }
                         if (i.Weapon != null)
                         {
                             itemName = i.Weapon.Name;
                             itemRarity = i.Rarity;
-                            WolcenStaticData.ItemWeapon.TryGetValue(itemName, out l_itemName);
                         }
+                        
+                        WolcenStaticData.ItemLocations.TryGetValue(itemName, out itemLocation);
 
-                        if (File.Exists(dirPath + "Items\\" + l_itemName))
+                        if (File.Exists(Directory.GetCurrentDirectory() + itemLocation))
                         {
-                            return CombineGridBitmaps(dirPath, l_itemName, itemRarity, i.ItemType, pb);
+                            return CombineGridBitmaps(Directory.GetCurrentDirectory() + itemLocation, itemRarity, i.ItemType, pb);
                         }
                         else
                         {
                             if (i.Armor != null)
                             {
-                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_armor.png"));
+                                return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_armor.png"));
                             }
                             if (i.Weapon != null)
                             {
-                                return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_weapon.png"));
+                                return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_weapon.png"));
                             }
                         }
                     }
@@ -1087,14 +1064,16 @@ namespace WolcenEditor
             return null;
         }
 
-        public static Image getImageFromPath(string v, Size destionationSize, int itemWidth, int itemHeight)
+        public static Image getImageFromPath(string v, Size destionationSize)
         {
             Bitmap finalImage = new Bitmap(destionationSize.Width, destionationSize.Height);
-            Bitmap itemImage = new Bitmap(Image.FromFile(v), itemWidth, itemHeight);
+            Bitmap itemImage = new Bitmap(WolcenStaticData.FixedSize(Image.FromFile(v), finalImage.Width, finalImage.Height));
+            int width = itemImage.Width - 10;
+            int height = itemImage.Height - 10;
             using (Graphics g = Graphics.FromImage(finalImage))
             {
                 g.Clear(Color.Transparent);
-                g.DrawImage(itemImage, (finalImage.Width / 2) - (itemImage.Width / 2), (finalImage.Height / 2) - (itemImage.Height / 2), itemWidth, itemHeight);
+                g.DrawImage(itemImage, (finalImage.Width / 2) - (width / 2), (finalImage.Height / 2) - (height / 2), width, height);
             }
             return finalImage;
         }

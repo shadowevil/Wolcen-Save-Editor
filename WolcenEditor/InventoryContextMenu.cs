@@ -328,89 +328,27 @@ namespace WolcenEditor
         private void ItemListView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             posY = 0;
-            string dirPath = @".\UIResources\Items\";
             if ((sender as TreeView).SelectedNode.Nodes.Count > 0) return;
             TreeNode selectedNode = (sender as TreeView).SelectedNode;
             PictureBox itemView = ((sender as TreeView).Parent.Controls["displayItemView"] as PictureBox);
             Panel descView = ((sender as TreeView).Parent.Controls["itemDescriptionView"] as Panel);
             descView.Controls.Clear();
-            string itemName = null;
-            int itemWidth = 60;
-            int itemHeight = 150;
-            WolcenStaticData.ItemWeapon.TryGetValue(selectedNode.Name, out itemName);
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemArmor.TryGetValue(selectedNode.Name, out itemName);
-                itemWidth = 75;
-                itemHeight = 135;
-            }
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemAccessories.TryGetValue(selectedNode.Name, out itemName);
-                itemWidth = 85;
-                itemHeight = 85;
-            }
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemReagent.TryGetValue(selectedNode.Name, out itemName);
-                itemWidth = 50;
-                itemHeight = 50;
-            }
-            if (itemName == null)
+            string itemLocation = null;
+            WolcenStaticData.ItemLocations.TryGetValue(selectedNode.Name, out itemLocation);
+            string itemType = ItemDataDisplay.ParseItemNameForType(selectedNode.Name);
+
+            if (itemLocation == null)
             {
                 string[] enneractData;
                 WolcenStaticData.ItemEnneract.TryGetValue(selectedNode.Name, out enneractData);
                 if (enneractData != null)
                 {
-                    itemName = enneractData[1];
-                    itemWidth = 70;
-                    itemHeight = 70;
-                }
-            }
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemConsumables.TryGetValue(selectedNode.Name, out itemName);
-                itemWidth = 70;
-                itemHeight = 70;
-            }
-            if (itemName == null)
-            {
-                // Try Potions
-                if (selectedNode.Name.ToLower().Contains("potion"))
-                {
-                    string[] pName = selectedNode.Name.Split('_');
-                    if (pName.Length >= 3 && File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
-                    {
-                        itemWidth = 100;
-                        itemHeight = 130;
-                        itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
-                    }
-                }
-
-                // Try Gems
-                if (selectedNode.Name.ToLower().Contains("gem"))
-                {
-                    if (File.Exists(dirPath + selectedNode.Name + ".png"))
-                    {
-                        itemWidth = 90;
-                        itemHeight = 100;
-                        itemName = selectedNode.Name + ".png";
-                    }
-                }
-
-                if (itemName == null)
-                {
-                    //string writeToFile = "Missing: " + selectedNode.Name + ", " + WolcenStaticData.ItemLocalizedNames[selectedNode.Name];
-                    //using (StreamWriter sw = File.AppendText(".\\missingItems.txt"))
-                    //{
-                    //    sw.WriteLine(writeToFile);
-                    //}
-                    return;
+                    itemLocation = enneractData[1];
                 }
             }
 
             descView.Controls.Add(createLabel(selectedNode.Name, WolcenStaticData.ItemLocalizedNames[selectedNode.Name], descView, 13, Color.White));
-            itemView.Image = InventoryManager.getImageFromPath(dirPath + itemName, itemView.Size, itemWidth, itemHeight);
+            itemView.Image = InventoryManager.getImageFromPath(Directory.GetCurrentDirectory() + itemLocation, itemView.Size);
             posY = 0;
         }
 
@@ -578,46 +516,27 @@ namespace WolcenEditor
 
             foreach (var item in dict)
             {
-                if (WolcenStaticData.ItemWeapon.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Shield")
+                string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
+                if (WolcenStaticData.ItemLocations.ContainsKey(item.Key) && tester != null && tester != "Potions" && tester != "Gem")
                 {
                     foreach (var d in InventoryManager.equipMap)
                     {
-                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
-                        if (tester == d.Key)
+                        if (ItemDataDisplay.ParseItemTypeForBasicType(tester) == "Weapon" && tester != "Shield")
                         {
                             itemListView.Nodes["Weapons"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Weapon);
                             break;
                         }
-                    }
-                    //Weapons.Nodes.Add(item.Key, item.Value, (int)typeMap.Weapon);
-                }
-                else if (WolcenStaticData.ItemArmor.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Amulet" && ItemDataDisplay.ParseItemNameForType(item.Key) != "Ring"
-                    || ItemDataDisplay.ParseItemNameForType(item.Key) == "Shield" || ItemDataDisplay.ParseItemNameForType(item.Key) == "Belt")
-                {
-                    foreach (var d in InventoryManager.equipMap)
-                    {
-                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
-                        if (tester == d.Key)
+                        if (ItemDataDisplay.ParseItemTypeForBasicType(tester) == "Armor" || tester == "Shield")
                         {
                             itemListView.Nodes["Armor"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (tester == "Shield" ? (int)InventoryManager.typeMap.Weapon : (int)InventoryManager.typeMap.Armor));
                             break;
                         }
-                    }
-                    //Armor.Nodes.Add(item.Key, item.Value, (int)typeMap.Armor);
-                }
-                else if (WolcenStaticData.ItemAccessories.ContainsKey(item.Key) && ItemDataDisplay.ParseItemNameForType(item.Key) != "Belt"
-                    || ItemDataDisplay.ParseItemNameForType(item.Key) == "Amulet" || ItemDataDisplay.ParseItemNameForType(item.Key) == "Ring")
-                {
-                    foreach (var d in InventoryManager.equipMap)
-                    {
-                        string tester = ItemDataDisplay.ParseItemNameForType(item.Key);
-                        if (tester == d.Key)
+                        if (ItemDataDisplay.ParseItemTypeForBasicType(tester) == "Accessory")
                         {
                             itemListView.Nodes["Accessories"].Nodes[tester.Trim(' ')].Nodes.Add(item.Key, item.Value, (int)InventoryManager.typeMap.Accessory);
                             break;
                         }
                     }
-                    //Accessories.Nodes.Add(item.Key, item.Value, (int)typeMap.Accessory);
                 }
                 else if (item.Key.ToLower().Contains("potion"))
                 {
@@ -2033,12 +1952,12 @@ namespace WolcenEditor
                 else if (GemName[i] != "") cboSocketed.SelectedIndex = cboSocketed.FindStringExact(WolcenStaticData.ItemLocalizedNames[GemName[i]]);
                 else cboSocketed.SelectedIndex = 0;
 
-                gemDisplay.BackgroundImage = new Bitmap(Image.FromFile(@".\UIResources\Inventory\" + WolcenStaticData.SocketImageLocation[Convert.ToInt32(socketEffect[i])]), 35, 35);
+                gemDisplay.BackgroundImage = new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + WolcenStaticData.SocketImageLocation[Convert.ToInt32(socketEffect[i])]), 35, 35);
                 if (i < GemName.Count())
                 {
                     if (GemName[i] != "")
                     {
-                        gemDisplay.Image = new Bitmap(Image.FromFile(@".\UIResources\Items\" + GemName[i] + ".png"), 50, 50);
+                        gemDisplay.Image = new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + WolcenStaticData.ItemLocations[GemName[i]]), 50, 50);
                     }
                 }
             }
@@ -2047,14 +1966,14 @@ namespace WolcenEditor
         private static void CboSocket_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (sender as ComboBox);
-            (comboBox.Parent.Controls["gemDisplay"] as PictureBox).BackgroundImage = new Bitmap(Image.FromFile(@".\UIResources\Inventory\" + WolcenStaticData.SocketImageLocation[((KeyValuePair<string, int>)comboBox.SelectedItem).Value]), 35, 35);
+            (comboBox.Parent.Controls["gemDisplay"] as PictureBox).BackgroundImage = new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + WolcenStaticData.SocketImageLocation[((KeyValuePair<string, int>)comboBox.SelectedItem).Value]), 35, 35);
         }
 
         private static void CboSocketed_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (sender as ComboBox);
             if (((KeyValuePair<string, string>)comboBox.SelectedItem).Value == "NULL") return;
-            (comboBox.Parent.Controls["gemDisplay"] as PictureBox).Image = new Bitmap(Image.FromFile(@".\UIResources\Items\" + ((KeyValuePair<string, string>)comboBox.SelectedItem).Value + ".png"), 50, 50);
+            (comboBox.Parent.Controls["gemDisplay"] as PictureBox).Image = new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + WolcenStaticData.ItemLocations[((KeyValuePair<string, string>)comboBox.SelectedItem).Value]), 50, 50);
         }
 
         private void RemoveItemEditControls()
@@ -2111,62 +2030,23 @@ namespace WolcenEditor
                 }
             }
 
-            string itemName = null;
-            string dirPath = @".\UIResources\Items\";
+            string itemLocation = null;
 
-            int itemWidth = 60;
-            int itemHeight = 150;
-            WolcenStaticData.ItemWeapon.TryGetValue(l_itemName, out itemName);
-            if (itemName == null)
+            WolcenStaticData.ItemLocations.TryGetValue(l_itemName, out itemLocation);
+            if (itemLocation == null)
             {
-                WolcenStaticData.ItemArmor.TryGetValue(l_itemName, out itemName);
-                itemWidth = 75;
-                itemHeight = 135;
-            }
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemAccessories.TryGetValue(l_itemName, out itemName);
-                itemWidth = 85;
-                itemHeight = 85;
-            }
-            if (itemName == null)
-            {
-                WolcenStaticData.ItemReagent.TryGetValue(l_itemName, out itemName);
-                itemWidth = 50;
-                itemHeight = 50;
-            }
-            if (itemName == null)
-            {
-                // Try Potions
-                if (l_itemName.ToLower().Contains("potion"))
+                string[] enneractData;
+                WolcenStaticData.ItemEnneract.TryGetValue(l_itemName, out enneractData);
+                if (enneractData != null)
                 {
-                    string[] pName = l_itemName.Split('_');
-                    if (File.Exists(dirPath + pName[0] + "_" + pName[1] + "_" + pName[2] + ".png"))
-                    {
-                        itemWidth = 100;
-                        itemHeight = 130;
-                        itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
-                    }
+                    itemLocation = enneractData[1];
                 }
-
-                // Try Gems
-                if (l_itemName.ToLower().Contains("gem"))
-                {
-                    if (File.Exists(dirPath + l_itemName + ".png"))
-                    {
-                        itemWidth = 90;
-                        itemHeight = 100;
-                        itemName = l_itemName + ".png";
-                    }
-                }
-
-                if (itemName == null) return;
             }
 
             //LoadTreeNodes();
             LoadCurrentAffixes(_panelid);
 
-            displayBox.Image = InventoryManager.getImageFromPath(dirPath + itemName, displayBox.Size, itemWidth, itemHeight);
+            displayBox.Image = InventoryManager.getImageFromPath(Directory.GetCurrentDirectory() + itemLocation, displayBox.Size);
         }
     }
 }

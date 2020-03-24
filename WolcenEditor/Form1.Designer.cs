@@ -904,7 +904,7 @@
             // 
             this.charRandomInv.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRandomInv.BackgroundImage")));
             this.charRandomInv.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRandomInv.Location = new System.Drawing.Point(296, 221);
+            this.charRandomInv.Location = new System.Drawing.Point(308, 221);
             this.charRandomInv.Name = "charRandomInv";
             this.charRandomInv.Size = new System.Drawing.Size(510, 310);
             this.charRandomInv.TabIndex = 22;
@@ -913,7 +913,7 @@
             // 
             this.itemStatDisplay.AutoScroll = true;
             this.itemStatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.itemStatDisplay.Location = new System.Drawing.Point(323, 7);
+            this.itemStatDisplay.Location = new System.Drawing.Point(335, 7);
             this.itemStatDisplay.Name = "itemStatDisplay";
             this.itemStatDisplay.Size = new System.Drawing.Size(483, 208);
             this.itemStatDisplay.TabIndex = 21;
@@ -977,7 +977,7 @@
             // pictureBox16
             // 
             this.pictureBox16.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox16.Image")));
-            this.pictureBox16.Location = new System.Drawing.Point(15, 373);
+            this.pictureBox16.Location = new System.Drawing.Point(10, 406);
             this.pictureBox16.MaximumSize = new System.Drawing.Size(35, 20);
             this.pictureBox16.MinimumSize = new System.Drawing.Size(35, 20);
             this.pictureBox16.Name = "pictureBox16";
@@ -989,7 +989,7 @@
             // pictureBox15
             // 
             this.pictureBox15.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox15.Image")));
-            this.pictureBox15.Location = new System.Drawing.Point(24, 395);
+            this.pictureBox15.Location = new System.Drawing.Point(155, 404);
             this.pictureBox15.MaximumSize = new System.Drawing.Size(25, 25);
             this.pictureBox15.MinimumSize = new System.Drawing.Size(25, 25);
             this.pictureBox15.Name = "pictureBox15";
@@ -1000,20 +1000,20 @@
             // 
             // charPrimordial
             // 
-            this.charPrimordial.Location = new System.Drawing.Point(56, 397);
+            this.charPrimordial.Location = new System.Drawing.Point(186, 406);
             this.charPrimordial.MaxLength = 10;
             this.charPrimordial.Name = "charPrimordial";
-            this.charPrimordial.Size = new System.Drawing.Size(118, 20);
+            this.charPrimordial.Size = new System.Drawing.Size(104, 20);
             this.charPrimordial.TabIndex = 18;
             this.charPrimordial.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.charPrimordial.WordWrap = false;
             // 
             // charGold
             // 
-            this.charGold.Location = new System.Drawing.Point(56, 373);
+            this.charGold.Location = new System.Drawing.Point(51, 406);
             this.charGold.MaxLength = 10;
             this.charGold.Name = "charGold";
-            this.charGold.Size = new System.Drawing.Size(118, 20);
+            this.charGold.Size = new System.Drawing.Size(98, 20);
             this.charGold.TabIndex = 16;
             this.charGold.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.charGold.WordWrap = false;
@@ -1022,11 +1022,11 @@
             // 
             this.charRWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRWeapon.BackgroundImage")));
             this.charRWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRWeapon.Location = new System.Drawing.Point(186, 221);
-            this.charRWeapon.MaximumSize = new System.Drawing.Size(62, 91);
-            this.charRWeapon.MinimumSize = new System.Drawing.Size(62, 91);
+            this.charRWeapon.Location = new System.Drawing.Point(202, 245);
+            this.charRWeapon.MaximumSize = new System.Drawing.Size(64, 99);
+            this.charRWeapon.MinimumSize = new System.Drawing.Size(64, 99);
             this.charRWeapon.Name = "charRWeapon";
-            this.charRWeapon.Size = new System.Drawing.Size(62, 91);
+            this.charRWeapon.Size = new System.Drawing.Size(64, 99);
             this.charRWeapon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charRWeapon.TabIndex = 13;
             this.charRWeapon.TabStop = false;
@@ -1035,11 +1035,11 @@
             // 
             this.charLWeapon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLWeapon.BackgroundImage")));
             this.charLWeapon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLWeapon.Location = new System.Drawing.Point(47, 221);
-            this.charLWeapon.MaximumSize = new System.Drawing.Size(62, 91);
-            this.charLWeapon.MinimumSize = new System.Drawing.Size(62, 91);
+            this.charLWeapon.Location = new System.Drawing.Point(60, 245);
+            this.charLWeapon.MaximumSize = new System.Drawing.Size(64, 99);
+            this.charLWeapon.MinimumSize = new System.Drawing.Size(64, 99);
             this.charLWeapon.Name = "charLWeapon";
-            this.charLWeapon.Size = new System.Drawing.Size(62, 91);
+            this.charLWeapon.Size = new System.Drawing.Size(64, 99);
             this.charLWeapon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charLWeapon.TabIndex = 12;
             this.charLWeapon.TabStop = false;
@@ -1048,11 +1048,11 @@
             // 
             this.charNeck.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charNeck.BackgroundImage")));
             this.charNeck.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charNeck.Location = new System.Drawing.Point(194, 32);
-            this.charNeck.MaximumSize = new System.Drawing.Size(40, 40);
-            this.charNeck.MinimumSize = new System.Drawing.Size(40, 40);
+            this.charNeck.Location = new System.Drawing.Point(205, 21);
+            this.charNeck.MaximumSize = new System.Drawing.Size(50, 50);
+            this.charNeck.MinimumSize = new System.Drawing.Size(50, 50);
             this.charNeck.Name = "charNeck";
-            this.charNeck.Size = new System.Drawing.Size(40, 40);
+            this.charNeck.Size = new System.Drawing.Size(50, 50);
             this.charNeck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charNeck.TabIndex = 11;
             this.charNeck.TabStop = false;
@@ -1061,11 +1061,11 @@
             // 
             this.charRRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRRing.BackgroundImage")));
             this.charRRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRRing.Location = new System.Drawing.Point(245, 175);
-            this.charRRing.MaximumSize = new System.Drawing.Size(40, 40);
-            this.charRRing.MinimumSize = new System.Drawing.Size(40, 40);
+            this.charRRing.Location = new System.Drawing.Point(272, 148);
+            this.charRRing.MaximumSize = new System.Drawing.Size(50, 50);
+            this.charRRing.MinimumSize = new System.Drawing.Size(50, 50);
             this.charRRing.Name = "charRRing";
-            this.charRRing.Size = new System.Drawing.Size(40, 40);
+            this.charRRing.Size = new System.Drawing.Size(50, 50);
             this.charRRing.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charRRing.TabIndex = 10;
             this.charRRing.TabStop = false;
@@ -1074,11 +1074,11 @@
             // 
             this.charLRing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLRing.BackgroundImage")));
             this.charLRing.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLRing.Location = new System.Drawing.Point(10, 175);
-            this.charLRing.MaximumSize = new System.Drawing.Size(40, 40);
-            this.charLRing.MinimumSize = new System.Drawing.Size(40, 40);
+            this.charLRing.Location = new System.Drawing.Point(4, 148);
+            this.charLRing.MaximumSize = new System.Drawing.Size(50, 50);
+            this.charLRing.MinimumSize = new System.Drawing.Size(50, 50);
             this.charLRing.Name = "charLRing";
-            this.charLRing.Size = new System.Drawing.Size(40, 40);
+            this.charLRing.Size = new System.Drawing.Size(50, 50);
             this.charLRing.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charLRing.TabIndex = 9;
             this.charLRing.TabStop = false;
@@ -1087,11 +1087,11 @@
             // 
             this.charRHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRHand.BackgroundImage")));
             this.charRHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRHand.Location = new System.Drawing.Point(186, 132);
-            this.charRHand.MaximumSize = new System.Drawing.Size(53, 83);
-            this.charRHand.MinimumSize = new System.Drawing.Size(53, 83);
+            this.charRHand.Location = new System.Drawing.Point(201, 148);
+            this.charRHand.MaximumSize = new System.Drawing.Size(65, 91);
+            this.charRHand.MinimumSize = new System.Drawing.Size(65, 91);
             this.charRHand.Name = "charRHand";
-            this.charRHand.Size = new System.Drawing.Size(53, 83);
+            this.charRHand.Size = new System.Drawing.Size(65, 91);
             this.charRHand.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charRHand.TabIndex = 8;
             this.charRHand.TabStop = false;
@@ -1100,11 +1100,11 @@
             // 
             this.charRPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charRPad.BackgroundImage")));
             this.charRPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charRPad.Location = new System.Drawing.Point(186, 78);
-            this.charRPad.MaximumSize = new System.Drawing.Size(48, 48);
-            this.charRPad.MinimumSize = new System.Drawing.Size(48, 48);
+            this.charRPad.Location = new System.Drawing.Point(201, 77);
+            this.charRPad.MaximumSize = new System.Drawing.Size(65, 65);
+            this.charRPad.MinimumSize = new System.Drawing.Size(65, 65);
             this.charRPad.Name = "charRPad";
-            this.charRPad.Size = new System.Drawing.Size(48, 48);
+            this.charRPad.Size = new System.Drawing.Size(65, 65);
             this.charRPad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charRPad.TabIndex = 7;
             this.charRPad.TabStop = false;
@@ -1113,11 +1113,11 @@
             // 
             this.charLHand.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLHand.BackgroundImage")));
             this.charLHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLHand.Location = new System.Drawing.Point(56, 132);
-            this.charLHand.MaximumSize = new System.Drawing.Size(53, 83);
-            this.charLHand.MinimumSize = new System.Drawing.Size(53, 83);
+            this.charLHand.Location = new System.Drawing.Point(60, 148);
+            this.charLHand.MaximumSize = new System.Drawing.Size(65, 91);
+            this.charLHand.MinimumSize = new System.Drawing.Size(65, 91);
             this.charLHand.Name = "charLHand";
-            this.charLHand.Size = new System.Drawing.Size(53, 83);
+            this.charLHand.Size = new System.Drawing.Size(65, 91);
             this.charLHand.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charLHand.TabIndex = 6;
             this.charLHand.TabStop = false;
@@ -1126,11 +1126,11 @@
             // 
             this.charLPad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charLPad.BackgroundImage")));
             this.charLPad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charLPad.Location = new System.Drawing.Point(61, 78);
-            this.charLPad.MaximumSize = new System.Drawing.Size(48, 48);
-            this.charLPad.MinimumSize = new System.Drawing.Size(48, 48);
+            this.charLPad.Location = new System.Drawing.Point(60, 77);
+            this.charLPad.MaximumSize = new System.Drawing.Size(65, 65);
+            this.charLPad.MinimumSize = new System.Drawing.Size(65, 65);
             this.charLPad.Name = "charLPad";
-            this.charLPad.Size = new System.Drawing.Size(48, 48);
+            this.charLPad.Size = new System.Drawing.Size(65, 65);
             this.charLPad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charLPad.TabIndex = 5;
             this.charLPad.TabStop = false;
@@ -1139,11 +1139,9 @@
             // 
             this.charBoots.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBoots.BackgroundImage")));
             this.charBoots.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charBoots.Location = new System.Drawing.Point(123, 294);
-            this.charBoots.MaximumSize = new System.Drawing.Size(48, 65);
-            this.charBoots.MinimumSize = new System.Drawing.Size(48, 65);
+            this.charBoots.Location = new System.Drawing.Point(131, 315);
             this.charBoots.Name = "charBoots";
-            this.charBoots.Size = new System.Drawing.Size(48, 65);
+            this.charBoots.Size = new System.Drawing.Size(65, 86);
             this.charBoots.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charBoots.TabIndex = 4;
             this.charBoots.TabStop = false;
@@ -1152,11 +1150,9 @@
             // 
             this.charPants.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charPants.BackgroundImage")));
             this.charPants.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charPants.Location = new System.Drawing.Point(122, 220);
-            this.charPants.MaximumSize = new System.Drawing.Size(50, 68);
-            this.charPants.MinimumSize = new System.Drawing.Size(50, 68);
+            this.charPants.Location = new System.Drawing.Point(131, 211);
             this.charPants.Name = "charPants";
-            this.charPants.Size = new System.Drawing.Size(50, 68);
+            this.charPants.Size = new System.Drawing.Size(65, 98);
             this.charPants.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charPants.TabIndex = 3;
             this.charPants.TabStop = false;
@@ -1165,11 +1161,11 @@
             // 
             this.charBelt.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charBelt.BackgroundImage")));
             this.charBelt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charBelt.Location = new System.Drawing.Point(123, 186);
-            this.charBelt.MaximumSize = new System.Drawing.Size(48, 28);
-            this.charBelt.MinimumSize = new System.Drawing.Size(48, 28);
+            this.charBelt.Location = new System.Drawing.Point(131, 177);
+            this.charBelt.MaximumSize = new System.Drawing.Size(65, 28);
+            this.charBelt.MinimumSize = new System.Drawing.Size(65, 28);
             this.charBelt.Name = "charBelt";
-            this.charBelt.Size = new System.Drawing.Size(48, 28);
+            this.charBelt.Size = new System.Drawing.Size(65, 28);
             this.charBelt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charBelt.TabIndex = 2;
             this.charBelt.TabStop = false;
@@ -1178,9 +1174,9 @@
             // 
             this.charChest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charChest.BackgroundImage")));
             this.charChest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charChest.Location = new System.Drawing.Point(115, 78);
+            this.charChest.Location = new System.Drawing.Point(131, 77);
             this.charChest.Name = "charChest";
-            this.charChest.Size = new System.Drawing.Size(65, 102);
+            this.charChest.Size = new System.Drawing.Size(65, 94);
             this.charChest.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.charChest.TabIndex = 1;
             this.charChest.TabStop = false;
@@ -1189,7 +1185,7 @@
             // 
             this.charHelm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("charHelm.BackgroundImage")));
             this.charHelm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.charHelm.Location = new System.Drawing.Point(123, 7);
+            this.charHelm.Location = new System.Drawing.Point(139, 6);
             this.charHelm.MaximumSize = new System.Drawing.Size(49, 65);
             this.charHelm.MinimumSize = new System.Drawing.Size(49, 65);
             this.charHelm.Name = "charHelm";

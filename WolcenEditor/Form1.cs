@@ -56,6 +56,8 @@ namespace WolcenEditor
             this.KeyDown += Panel1_KeyDown;
             this.KeyUp += Panel1_KeyUp;
 
+            WolcenStaticData.InitData();
+
             LoadComboBoxes();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStatDisplay, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, itemStashStatDisplay, new object[] { true });

@@ -687,6 +687,17 @@ namespace WolcenEditor
             else return prop.GetValue(obj, null);
         }
 
+        public static string ParseItemTypeForBasicType(string type)
+        {
+            switch (type)
+            {
+                case "Ring": case "Amulet": { return "Accessory"; }
+                case "Helmet": case "Chest Armor": case "Foot Armor": case "Leg Armor":
+                case "Shoulder": case "Arm Armor": case "Belt": { return "Armor"; }
+                default: { return "Weapon"; }
+            }
+        }
+
         public static string ParseItemNameForType(string name)
         {
             if (name.ToLower().Contains("speical")) return "Gem";

@@ -294,9 +294,8 @@ namespace WolcenEditor
 
         private static Image GetStashBitmap(int x, int y, int selectedPanel, PictureBox pb, InventoryGrid iGrid)
         {
-            string dirPath = @".\UIResources\";
             string itemName = "";
-            string l_itemName = null;
+            string itemLocation = null;
             string stackSize = null;
             int itemRarity = 0;
             pb.Size = new Size(50, 50);
@@ -306,10 +305,10 @@ namespace WolcenEditor
             {
                 itemName = iGrid.Armor.Name;
                 itemRarity = iGrid.Rarity;
-                WolcenStaticData.ItemArmor.TryGetValue(itemName, out l_itemName);
-                if (l_itemName == null)
+                if (ItemDataDisplay.ParseItemNameForType(itemName) == "Amulet" || ItemDataDisplay.ParseItemNameForType(itemName) == "Ring")
                 {
-                    WolcenStaticData.ItemAccessories.TryGetValue(itemName, out l_itemName);
+                    pb.Size = new Size(50, 50);
+                    pb.MaximumSize = new Size(50, 50);
                 }
                 else
                 {
@@ -324,31 +323,35 @@ namespace WolcenEditor
             {
                 itemName = iGrid.Weapon.Name;
                 itemRarity = iGrid.Rarity;
-                WolcenStaticData.ItemWeapon.TryGetValue(itemName, out l_itemName);
                 pb.MaximumSize = new Size(50, 100);
                 pb.Size = new Size(50, 100);
             }
             if (iGrid.Potion != null)
             {
-                string[] pName = iGrid.Potion.Name.Split('_');
+                itemName = iGrid.Potion.Name;
                 itemRarity = iGrid.Rarity;
-                l_itemName = pName[0] + "_" + pName[1] + "_" + pName[2] + ".png";
             }
             if (iGrid.Gem != null)
             {
                 itemName = iGrid.Gem.Name;
                 itemRarity = iGrid.Rarity;
-                l_itemName = itemName + ".png";
-                if(iGrid.Gem.StackSize > 0) stackSize = iGrid.Gem.StackSize.ToString();
+                if (iGrid.Gem.StackSize > 0) stackSize = iGrid.Gem.StackSize.ToString();
             }
             if (iGrid.Reagent != null)
             {
                 itemName = iGrid.Reagent.Name;
                 itemRarity = iGrid.Rarity;
-                WolcenStaticData.ItemReagent.TryGetValue(itemName, out l_itemName);
                 pb.MaximumSize = new Size(50, 50);
                 pb.Size = new Size(50, 50);
-                if(iGrid.Reagent.StackSize > 0) stackSize = iGrid.Reagent.StackSize.ToString();
+                if (iGrid.Reagent.StackSize > 0) stackSize = iGrid.Reagent.StackSize.ToString();
+            }
+
+            if (iGrid.NPC2Consumable != null)
+            {
+                itemName = iGrid.NPC2Consumable.Name;
+                itemRarity = iGrid.Rarity;
+                pb.MaximumSize = new Size(50, 50);
+                pb.Size = new Size(50, 50);
             }
 
             if (iGrid.Enneract != null)
@@ -357,18 +360,14 @@ namespace WolcenEditor
                 itemRarity = iGrid.Rarity;
                 string[] enneractData;
                 WolcenStaticData.ItemEnneract.TryGetValue(itemName, out enneractData);
-                l_itemName = enneractData[1];
+                itemLocation = enneractData[1];
                 pb.MaximumSize = new Size(50, 50);
                 pb.Size = new Size(50, 50);
             }
 
-            if (iGrid.NPC2Consumable != null)
+            if (itemLocation == null)
             {
-                itemName = iGrid.NPC2Consumable.Name;
-                itemRarity = iGrid.Rarity;
-                WolcenStaticData.ItemConsumables.TryGetValue(itemName, out l_itemName);
-                pb.MaximumSize = new Size(50, 50);
-                pb.Size = new Size(50, 50);
+                WolcenStaticData.ItemLocations.TryGetValue(itemName, out itemLocation);
             }
 
             if (iGrid.MagicEffects != null)
@@ -475,82 +474,23 @@ namespace WolcenEditor
                     }
                 }
             }
-
-            if (File.Exists(dirPath + "Items\\" + l_itemName))
+            
+            if (File.Exists(Directory.GetCurrentDirectory() + itemLocation))
             {
-                return CombineGridBitmaps(dirPath, l_itemName, itemRarity, iGrid.ItemType, pb, stackSize);
+                return InventoryManager.CombineGridBitmaps(Directory.GetCurrentDirectory() + itemLocation, itemRarity, iGrid.ItemType, pb, stackSize);
             }
             else
             {
                 if (iGrid.Armor != null)
                 {
-                    return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_armor.png"));
+                    return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_armor.png"));
                 }
                 if (iGrid.Weapon != null)
                 {
-                    return new Bitmap(Image.FromFile(dirPath + "Items\\" + "unknown_weapon.png"));
+                    return new Bitmap(Image.FromFile(Directory.GetCurrentDirectory() + "\\UIResources\\Items\\unknown_weapon.png"));
                 }
             }
             return null;
-        }
-
-        private static Bitmap CombineGridBitmaps(string dirPath, string itemName, int quality, string itemType, PictureBox pb = null, string stackSize = null)
-        {
-            Bitmap Background = new Bitmap(Image.FromFile(dirPath + "ItemBorders\\" + quality + ".png"), pb.Width, pb.Height);
-            Bitmap ItemImage = new Bitmap(Image.FromFile(dirPath + "Items\\" + itemName));
-            Bitmap FinalImage = new Bitmap(Background.Width, Background.Height);
-
-            using (Graphics g = Graphics.FromImage(FinalImage))
-            {
-                g.Clear(Color.Black);
-                g.DrawImage(Background, 0, 0);
-                int width = Background.Width - 10;
-                int height = Background.Height - 10;
-                int xOffset = 0;
-                int yOffset = 0;
-
-                switch (itemType)
-                {
-                    case "Shoulder":
-                        width = 50; height = 55;
-                        break;
-                    case "Belt":
-                        width = 40; height = 25;
-                        break;
-                    case "Amulet":
-                    case "Ring":
-                        width = 35; height = 30;
-                        break;
-                    case "Helmet":
-                        width = 50; height = 60;
-                        break;
-                    case "Potions":
-                        width = 20; height = 40;
-                        break;
-                    case "Leg Armor":
-                        width = 50; height = 95;
-                        break;
-                    case "Foot Armor":
-                        width = 45; height = 75;
-                        break;
-                    case "Chest Armor":
-                        width = 45; height = 95;
-                        break;
-                }
-
-                int x = Background.Width / 2 - (width / 2) + xOffset;
-                int y = Background.Height / 2 - (height / 2) + yOffset;
-                g.DrawImage(ItemImage, x, y, width, height);
-                if (stackSize != null)
-                {
-                    g.DrawString(stackSize, Form1.DefaultFont, Brushes.White, 3, 3);
-                }
-            }
-
-            Background.Dispose();
-            ItemImage.Dispose();
-
-            return FinalImage;
         }
     }
 }
