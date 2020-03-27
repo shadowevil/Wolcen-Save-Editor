@@ -558,14 +558,15 @@ namespace WolcenEditor
 
                     //sets level and main stats to the data from the jsonObject
 
-                    var level = resultData["data"]["build"]["passiveSkillTree"]["level"];
-                    if (level != null)
+                    var importedlevel = resultData["data"]["build"]["passiveSkillTree"]["level"];
+                    if (importedlevel != null)
                     {
-                        cData.Character.Stats.Level = level;
-                        cData.Character.Stats.Strength = resultData["data"]["build"]["passiveSkillTree"]["strength"] + level;
-                        cData.Character.Stats.Constitution = resultData["data"]["build"]["passiveSkillTree"]["constitution"] + level;
-                        cData.Character.Stats.Agility = resultData["data"]["build"]["passiveSkillTree"]["agility"] + level;
-                        cData.Character.Stats.Power = resultData["data"]["build"]["passiveSkillTree"]["power"] + level;
+                        int level = importedlevel.ToObject(typeof(int));
+                        cData.Character.Stats.Level = Math.Max(level, cData.Character.Stats.Level);
+                        cData.Character.Stats.Strength = Math.Max(resultData["data"]["build"]["passiveSkillTree"]["strength"].ToObject(typeof(int)) + level, cData.Character.Stats.Strength);
+                        cData.Character.Stats.Constitution = Math.Max(resultData["data"]["build"]["passiveSkillTree"]["constitution"].ToObject(typeof(int)) + level, cData.Character.Stats.Constitution);
+                        cData.Character.Stats.Agility = Math.Max(resultData["data"]["build"]["passiveSkillTree"]["agility"].ToObject(typeof(int)) + level, cData.Character.Stats.Agility);
+                        cData.Character.Stats.Power = Math.Max(resultData["data"]["build"]["passiveSkillTree"]["power"].ToObject(typeof(int)) + level, cData.Character.Stats.Power);
                     }
 
                     //sets the passive skills
