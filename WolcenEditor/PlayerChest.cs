@@ -35,23 +35,17 @@ namespace WolcenEditor
             return playerChest;
         }
 
-        public static void WritePlayerChest(string outputPath, PlayerChest playerChest)
+        public static void WritePlayerChest(string outputPath, PlayerChest playerChest, bool backup = true)
         {
-            if (File.Exists($"{outputPath}") && !File.Exists($"{outputPath}.bak"))
+            if (backup)
             {
-                File.Copy(outputPath, outputPath + ".bak");
+                if (File.Exists($"{outputPath}") && !File.Exists($"{outputPath}.bak"))
+                {
+                    File.Copy(outputPath, outputPath + ".bak");
+                }
             }
-
             string newJsonFile = JsonConvert.SerializeObject(playerChest, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-            try
-            {
-                File.WriteAllText(outputPath, newJsonFile);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            File.WriteAllText(outputPath, newJsonFile);
         }
     }
 }

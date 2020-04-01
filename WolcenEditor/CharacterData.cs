@@ -69,11 +69,14 @@ namespace WolcenEditor
             return character;
         }
 
-        public static void WriteCharacter(string outputPath, CharacterData characterData)
+        public static void WriteCharacter(string outputPath, CharacterData characterData, bool backup = true)
         {
-            if (File.Exists($"{outputPath}") && !File.Exists($"{outputPath}.bak"))
+            if (backup)
             {
-                File.Copy(outputPath, $"{outputPath}.bak");
+                if (File.Exists($"{outputPath}") && !File.Exists($"{outputPath}.bak"))
+                {
+                    File.Copy(outputPath, $"{outputPath}.bak");
+                }
             }
             string newJsonFile = JsonConvert.SerializeObject(characterData, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             File.WriteAllText(outputPath, newJsonFile);

@@ -20,6 +20,7 @@ namespace WolcenEditor
         public static string playerDataSavePath;
         public static string playerChestSavePath;
         public string WindowName = "Wolcen Save Editor";
+        public string Version = Application.ProductVersion;
         public bool hasSaved = false;
         public bool CHAR_LOADED = false;
 
@@ -31,6 +32,7 @@ namespace WolcenEditor
 
         public void InitForm()
         {
+            this.Text = WindowName + " - " + Version;
             this.Resize += Form1_Resize;
             tabPage.Enabled = false;
             
@@ -164,7 +166,6 @@ namespace WolcenEditor
             this.Controls.Clear();
             InitializeComponent();
             InitForm();
-
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -263,7 +264,7 @@ namespace WolcenEditor
 
         private void SaveProfile()
         {
-            if (cData.Character != null && cData.PlayerData != null)
+            if (cData.Character != null && cData.PlayerData != null && cData.PlayerChest != null)
             {
                 Count c = new Count();
                 c.Total = charGold.Text;
@@ -291,7 +292,7 @@ namespace WolcenEditor
         {
             LoadPlayerData();
             LoadPlayerStashData();
-            this.Text = WindowName + " - " + cData.Character.Name;
+            this.Text = WindowName + " - " + cData.Character.Name + " - " + Version;
 
             SetIndexToValueOf(ref cboFace, cData.Character.CharacterCustomization.Face);
             SetIndexToValueOf(ref cboHaircut, cData.Character.CharacterCustomization.Haircut);
@@ -343,6 +344,10 @@ namespace WolcenEditor
 
             SkillManager.LoadSkillInformation(ref tabPage);
             CHAR_LOADED = true;
+
+            closeStripMenuItem.Enabled = true;
+            saveToolStripMenuItem.Enabled = true;
+            saveAsToolStripMenuItem.Enabled = true;
         }
 
         private void LoadPlayerStashData()
@@ -444,15 +449,29 @@ namespace WolcenEditor
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
-                "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
-                "https://discord.gg/R8WKtQr\n\n\n" +
-                "Would you like to be taken to https://wolcen-universe.com/ right now?"
-                , "About Improrting Builds."
-            , MessageBoxButtons.YesNo);
+            using (NewTextDialog importAbout = new NewTextDialog(410, 130, "About importing builds"))
+            {
+                importAbout.DrawLabel(5, "You can import builds from the site", 12);
+                importAbout.DrawLinkLabel(18, "https://wolcen-universe.com", new Uri("https://wolcen-universe.com"), 12, true);
+                importAbout.DrawLabel(40, "Things are still very much a work in progress so if something", 12);
+                importAbout.DrawLabel(52, "doesn't work here let us know in our discord.", 12);
+                importAbout.ShowDialog(this);
 
-            if (aboutMessage == DialogResult.Yes)
-                Process.Start("https://wolcen-universe.com/");
+                if (importAbout.DialogResult == DialogResult.OK)
+                {
+                    importAbout.Dispose();
+                }
+            }
+
+            //    var aboutMessage = MessageBox.Show("You can import builds from the site https://wolcen-universe.com!\n\n" +
+            //        "Things are still very much a work in progress so if something doesn't work here let us know at\n" +
+            //        "https://discord.gg/R8WKtQr\n\n\n" +
+            //        "Would you like to be taken to https://wolcen-universe.com/ right now?"
+            //        , "About Improrting Builds."
+            //    , MessageBoxButtons.YesNo);
+
+            //if (aboutMessage == DialogResult.Yes)
+            //    Process.Start("https://wolcen-universe.com/");
         }
 
         private void importStripMenuItem_Click(object sender, EventArgs e)
@@ -530,14 +549,17 @@ namespace WolcenEditor
 
                 }
             };
-            CancelButton.Click += (sender2, e2) => { importForm.Close(); };
+            CancelButton.Click += (sender2, e2) => {
+                importForm.Close();
+                importForm.Dispose();
+            };
 
             importForm.Controls.Add(AcceptButton);
             importForm.Controls.Add(CancelButton);
             importForm.Controls.Add(BuildUrlTextBox);
             importForm.Controls.Add(BuildLabel);
 
-            var url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
+            string url = importForm.ShowDialog() == DialogResult.OK ? BuildUrlTextBox.Text : "";
 
             if (importForm.DialogResult == DialogResult.OK && !String.IsNullOrWhiteSpace(url))
             {
@@ -657,6 +679,7 @@ namespace WolcenEditor
                     MessageBox.Show($"Successfully Imported Character From:\n{url}");
                     SkillManager.LoadTree(ref tabPage);
                     LoadCharacterData();
+                    importForm.Dispose();
                 }
             }
         }
@@ -1203,6 +1226,82 @@ namespace WolcenEditor
             };
            return newCharacter;
 
+        }
+
+        private void characterDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cData.Character != null)
+            {
+                Count c = new Count();
+                c.Total = charGold.Text;
+                if (charGold.Text == "0")
+                    c.PerLevel = "0";
+                else
+                {
+                    var buffer = new byte[sizeof(UInt64)];
+                    new Random().NextBytes(buffer);
+                    UInt64 rnd = BitConverter.ToUInt64(buffer, 0);
+                    c.PerLevel = (rnd % (Convert.ToUInt64(charGold.Text) - 0) + 0).ToString();
+                }
+                cData.Character.Telemetry.GoldDropped = c;
+                cData.Character.Telemetry.GoldGainedQuests = c;
+                cData.Character.Telemetry.GoldGainedMerchant = c;
+                cData.Character.Telemetry.GoldPicked = c;
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = "JSON File|*.json";
+                    sfd.InitialDirectory = playerDataSavePath;
+                    sfd.FileName = cData.Character.Name.ToLower() + ".json";
+                    DialogResult dr = sfd.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        CharacterIO.WriteCharacter(sfd.FileName, cData.Character, false);
+                    }
+                }
+            }
+        }
+
+        private void stashDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cData.PlayerChest != null)
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = "JSON File|*.json";
+                    sfd.InitialDirectory = Directory.GetParent(playerChestSavePath).FullName;
+                    sfd.FileName = "playerchest.json";
+                    DialogResult dr = sfd.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        PlayerChestIO.WritePlayerChest(sfd.FileName, cData.PlayerChest, false);
+                    }
+                }
+            }
+        }
+
+        private void aboutUsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var aboutUsDialog = new NewTextDialog(400, 130, "About us"))
+            {
+                aboutUsDialog.DrawLabel(5, "About Us", 15, true);
+                aboutUsDialog.DrawLabel(20, "We are here to provide everyone with a better editing experience!", 12);
+                aboutUsDialog.DrawLabel(48, "Thanks for using our program.", 12);
+                aboutUsDialog.DrawLabel(60, "ShadowEvil" + ", " + "Stoned Puppy", 12, true);
+                aboutUsDialog.ShowDialog(this);
+            }
+        }
+
+        private void discordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var discordDialog = new NewTextDialog(400, 130, "Discord link"))
+            {
+                discordDialog.DrawLabel(5, "Discord Link", 15, true);
+                discordDialog.DrawLinkLabel(44, "https://discord.gg/v67rjPm", new Uri("https://discord.gg/v67rjPm"), 13, true);
+                if(discordDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    discordDialog.Close();
+                }
+            }
         }
     }
 
