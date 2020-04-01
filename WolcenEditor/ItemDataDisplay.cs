@@ -132,11 +132,21 @@ namespace WolcenEditor
                         {
                             if (!effect.Parameters[0].semantic.Contains("TriggeredSkillSelector"))
                             {
-                                if (effect.EffectId.Contains("percent")
-                                    || effect.Parameters[0].semantic.Contains("ChanceFlatFloat")
-                                    || effect.Parameters[0].semantic.Contains("PossibilityInt"))
+                                if (effect.EffectId.ToLower().Contains("percent")
+                                    || effect.Parameters[0].semantic.ToLower().Contains("percent")
+                                    || effect.Parameters[0].semantic.ToLower().Contains("ChanceFlatFloat")
+                                    || effect.Parameters[0].semantic.ToLower().Contains("PossibilityInt"))
                                 {
                                     s_Effect = s_Effect.Replace("%1", "%1%");
+                                }
+                                if (effect.Parameters.Count > 1)
+                                {
+                                    if (effect.Parameters[1].semantic.ToLower().Contains("percent")
+                                        || effect.Parameters[1].semantic.ToLower().Contains("ChanceFlatFloat")
+                                        || effect.Parameters[1].semantic.ToLower().Contains("PossibilityInt"))
+                                    {
+                                        s_Effect = s_Effect.Replace("%2", "%2%");
+                                    }
                                 }
 
                                 if (effect.Parameters.Count <= 0)
@@ -145,17 +155,24 @@ namespace WolcenEditor
                                     return;
                                 }
 
-                                s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                                if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                                if (effect.EffectId.ToLower().Contains("rage_conservation_time"))
                                 {
-                                    s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                    s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString() + "/s");
+                                }
+                                else
+                                {
+                                    s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
+                                    if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                                    {
+                                        s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                    }
                                 }
                             }
                             else
                             {
-                                if (effect.EffectId.Contains("percent")
-                                    || effect.Parameters[1].semantic.Contains("ChanceFlatFloat")
-                                    || effect.Parameters[1].semantic.Contains("PossibilityInt"))
+                                if (effect.EffectId.ToLower().Contains("percent")
+                                    || effect.Parameters[1].semantic.ToLower().Contains("ChanceFlatFloat")
+                                    || effect.Parameters[1].semantic.ToLower().Contains("PossibilityInt"))
                                 {
                                     s_Effect = s_Effect.Replace("%1", "%1%");
                                 }
@@ -233,7 +250,7 @@ namespace WolcenEditor
                     {
                         socketType = WolcenStaticData.SocketType[i];
                         localizedEffect = WolcenStaticData.MagicLocalized[GemAffixes.ElementAt(i).Key];
-                        if (GemAffixes.ElementAt(i).Key.Contains("percent")) localizedEffect = localizedEffect.Replace("%1", "%1%");
+                        if (GemAffixes.ElementAt(i).Key.ToLower().Contains("percent")) localizedEffect = localizedEffect.Replace("%1", "%1%");
                         if (localizedEffect.Contains("%2")) localizedEffect = localizedEffect.Replace("%2", GemAffixes.ElementAt(i).Value);
                         localizedEffect = localizedEffect.Replace("%1", "+" + GemAffixes.ElementAt(i).Value);
                         itemStatDisplay.Controls.Add(createLabel(pictureBox.Name, socketType, itemStatDisplay, 9, ColorTranslator.FromHtml(WolcenStaticData.SocketColor[i])));
@@ -267,10 +284,22 @@ namespace WolcenEditor
                     {
                         if (!effect.Parameters[0].semantic.Contains("TriggeredSkillSelector"))
                         {
-                            if (effect.EffectId.Contains("percent")
-                                || effect.Parameters[0].semantic.Contains("ChanceFlatFloat"))
+                            if (effect.EffectId.ToLower().Contains("percent")
+                                || effect.Parameters[0].semantic.ToLower().Contains("percent")
+                                || effect.Parameters[0].semantic.ToLower().Contains("ChanceFlatFloat")
+                                || effect.Parameters[0].semantic.ToLower().Contains("PossibilityInt"))
                             {
                                 s_Effect = s_Effect.Replace("%1", "%1%");
+                            }
+
+                            if (effect.Parameters.Count > 1)
+                            {
+                                if (effect.Parameters[1].semantic.ToLower().Contains("percent")
+                                    || effect.Parameters[1].semantic.ToLower().Contains("ChanceFlatFloat")
+                                    || effect.Parameters[1].semantic.ToLower().Contains("PossibilityInt"))
+                                {
+                                    s_Effect = s_Effect.Replace("%2", "%2%");
+                                }
                             }
 
                             if (effect.Parameters.Count <= 0)
@@ -279,17 +308,26 @@ namespace WolcenEditor
                                 return;
                             }
 
-                            s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
-                            if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+
+                            if (effect.EffectId.ToLower().Contains("rage_conservation_time"))
                             {
-                                s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString() + "/s");
+                            }
+                            else
+                            {
+                                s_Effect = s_Effect.Replace("%1", "+" + effect.Parameters[0].value.ToString());
+                                if (s_Effect.Contains("%2") && effect.Parameters.Count > 1)
+                                {
+                                    s_Effect = s_Effect.Replace("%2", effect.Parameters[1].value.ToString());
+                                }
                             }
                         }
                         else
                         {
-                            if (effect.EffectId.Contains("percent")
-                                || effect.Parameters[1].semantic.Contains("ChanceFlatFloat")
-                                || effect.Parameters[1].semantic.Contains("PossibilityInt"))
+                            if (effect.EffectId.ToLower().Contains("percent")
+                                || effect.Parameters[1].semantic.ToLower().Contains("percent")
+                                || effect.Parameters[1].semantic.ToLower().Contains("ChanceFlatFloat")
+                                || effect.Parameters[1].semantic.ToLower().Contains("PossibilityInt"))
                             {
                                 s_Effect = s_Effect.Replace("%1", "%1%");
                             }

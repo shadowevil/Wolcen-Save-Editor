@@ -24,6 +24,25 @@ namespace WolcenEditor
         public bool hasSaved = false;
         public bool CHAR_LOADED = false;
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
+
+        public enum ScrollBarDirection
+        {
+            SB_HORZ = 0,
+            SB_VERT = 1,
+            SB_CTL = 2,
+            SB_BOTH = 3
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            ShowScrollBar(itemStatDisplay.Handle, (int)ScrollBarDirection.SB_HORZ, false);
+            ShowScrollBar(itemStashStatDisplay.Handle, (int)ScrollBarDirection.SB_HORZ, false);
+            base.WndProc(ref m);
+        }
+
         public Form1()
         {
             InitializeComponent();
