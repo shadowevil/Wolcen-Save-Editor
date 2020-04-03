@@ -306,14 +306,14 @@
             // discordToolStripMenuItem
             // 
             this.discordToolStripMenuItem.Name = "discordToolStripMenuItem";
-            this.discordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.discordToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.discordToolStripMenuItem.Text = "Discord";
             this.discordToolStripMenuItem.Click += new System.EventHandler(this.discordToolStripMenuItem_Click);
             // 
             // aboutUsToolStripMenuItem
             // 
             this.aboutUsToolStripMenuItem.Name = "aboutUsToolStripMenuItem";
-            this.aboutUsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutUsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.aboutUsToolStripMenuItem.Text = "About us";
             this.aboutUsToolStripMenuItem.Click += new System.EventHandler(this.aboutUsToolStripMenuItem_Click);
             // 
@@ -324,11 +324,11 @@
             this.tabPage.Controls.Add(this.charStash);
             this.tabPage.Controls.Add(this.charSkills);
             this.tabPage.Controls.Add(this.charCity);
-            this.tabPage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPage.Location = new System.Drawing.Point(0, 24);
             this.tabPage.Name = "tabPage";
             this.tabPage.SelectedIndex = 0;
-            this.tabPage.Size = new System.Drawing.Size(835, 533);
+            this.tabPage.Size = new System.Drawing.Size(835, 532);
             this.tabPage.TabIndex = 11;
             // 
             // charPage
@@ -345,7 +345,7 @@
             this.charPage.Location = new System.Drawing.Point(4, 22);
             this.charPage.Name = "charPage";
             this.charPage.Padding = new System.Windows.Forms.Padding(3);
-            this.charPage.Size = new System.Drawing.Size(827, 507);
+            this.charPage.Size = new System.Drawing.Size(827, 506);
             this.charPage.TabIndex = 0;
             this.charPage.Text = "Character";
             this.charPage.UseVisualStyleBackColor = true;
@@ -957,7 +957,7 @@
             this.charInv.Location = new System.Drawing.Point(4, 22);
             this.charInv.Name = "charInv";
             this.charInv.Padding = new System.Windows.Forms.Padding(3);
-            this.charInv.Size = new System.Drawing.Size(827, 507);
+            this.charInv.Size = new System.Drawing.Size(827, 506);
             this.charInv.TabIndex = 1;
             this.charInv.Text = "Inventory";
             this.charInv.UseVisualStyleBackColor = true;
@@ -1270,7 +1270,7 @@
             this.charStash.Location = new System.Drawing.Point(4, 22);
             this.charStash.Name = "charStash";
             this.charStash.Padding = new System.Windows.Forms.Padding(3);
-            this.charStash.Size = new System.Drawing.Size(827, 507);
+            this.charStash.Size = new System.Drawing.Size(827, 506);
             this.charStash.TabIndex = 3;
             this.charStash.Text = "Stash";
             this.charStash.UseVisualStyleBackColor = true;
@@ -1375,7 +1375,7 @@
             this.charSkills.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.charSkills.Location = new System.Drawing.Point(4, 22);
             this.charSkills.Name = "charSkills";
-            this.charSkills.Size = new System.Drawing.Size(827, 507);
+            this.charSkills.Size = new System.Drawing.Size(827, 506);
             this.charSkills.TabIndex = 2;
             this.charSkills.Text = "Skills";
             this.charSkills.UseVisualStyleBackColor = true;
@@ -1387,7 +1387,7 @@
             this.charCity.ImageKey = "(none)";
             this.charCity.Location = new System.Drawing.Point(4, 22);
             this.charCity.Name = "charCity";
-            this.charCity.Size = new System.Drawing.Size(827, 507);
+            this.charCity.Size = new System.Drawing.Size(827, 506);
             this.charCity.TabIndex = 4;
             this.charCity.Text = "City";
             this.charCity.UseVisualStyleBackColor = true;
@@ -1415,6 +1415,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(851, 595);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Wolcen Save Editor";

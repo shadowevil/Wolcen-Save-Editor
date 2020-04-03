@@ -24,6 +24,8 @@ namespace WolcenEditor
         public bool hasSaved = false;
         public bool CHAR_LOADED = false;
 
+        public static int Scaling = 0;
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowScrollBar(IntPtr hWnd, int wBar, bool bShow);
@@ -52,9 +54,8 @@ namespace WolcenEditor
         public void InitForm()
         {
             this.Text = WindowName + " - " + Version;
-            this.Resize += Form1_Resize;
             tabPage.Enabled = false;
-            
+
             charGold.KeyPress += numberOnly_KeyPress;
             charPrimordial.KeyPress += numberOnly_KeyPress;
             charFerocity.KeyPress += numberOnly_KeyPress;
@@ -85,7 +86,7 @@ namespace WolcenEditor
             LogMe.InitLog();
             CityManager.initCity(charCity);
         }
-       
+
         public struct IconInfo
         {
             public bool fIcon;
@@ -118,7 +119,7 @@ namespace WolcenEditor
             if (iconPtr != null) DestroyIcon(iconPtr);
             if (icoInfo.hbmColor != null) DeleteObject(icoInfo.hbmColor);
             if (icoInfo.hbmMask != null) DeleteObject(icoInfo.hbmMask);
-            
+
             Bitmap bmp = SetImageOpacity(bitmap, 0.85f);
             Icon bmpIcon = ConvertoToIcon(bmp);
             icoInfo = new IconInfo();
@@ -185,11 +186,6 @@ namespace WolcenEditor
             this.Controls.Clear();
             InitializeComponent();
             InitForm();
-        }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            tabPage.Size = new Size(tabPage.Width, this.Height - 62);
         }
 
         private void _SelectedIndexChanged(object sender, EventArgs e)
@@ -328,7 +324,7 @@ namespace WolcenEditor
 
             //Create the dict here rather than it being a static dict in WolcenStaticData.cs
             var expeditionLevels = new Dictionary<int, string>();
-            foreach(var i in Enumerable.Range(1,50))
+            foreach (var i in Enumerable.Range(1, 50))
                 expeditionLevels.Add(i, (37 + (3 * i)).ToString());
             BindToComboBox(cboExpedition, expeditionLevels, cData.PlayerData.SoftcoreNormal, "ExpeditionsMaxLevelReached");
 
@@ -449,18 +445,21 @@ namespace WolcenEditor
                     if (cData.PlayerData.AccountCosmeticInventory.CosmeticArmorsUnlocked.bitmask == PlayerDataIO.ArmorsUnlockedBitmask)
                     {
                         chkAllCosmetics.Checked = true;
-                    } else chkAllCosmetics.Checked = false;
-                } else chkAllCosmetics.Checked = false;
-            } else chkAllCosmetics.Checked = false;
+                    }
+                    else chkAllCosmetics.Checked = false;
+                }
+                else chkAllCosmetics.Checked = false;
+            }
+            else chkAllCosmetics.Checked = false;
 
             if (cData.PlayerData.SoftcoreNormal.CompletedStory)
                 chkChampion.Checked = true;
             else
                 chkChampion.Checked = false;
 
-            if(cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
                 extraSkillButton.Checked = true;
-            else 
+            else
                 extraSkillButton.Checked = false;
         }
 
@@ -568,7 +567,8 @@ namespace WolcenEditor
 
                 }
             };
-            CancelButton.Click += (sender2, e2) => {
+            CancelButton.Click += (sender2, e2) =>
+            {
                 importForm.Close();
                 importForm.Dispose();
             };
@@ -982,7 +982,7 @@ namespace WolcenEditor
                 cData.Character.Progression.LastPlayed.QuestId = "ACT1_Quest1";
                 cData.Character.Progression.LastPlayed.StepId = 1;
             }
-            if(!WolcenStaticData.QuestSelections[id.Key].Contains(cData.Character.Progression.LastPlayed.StepId))
+            if (!WolcenStaticData.QuestSelections[id.Key].Contains(cData.Character.Progression.LastPlayed.StepId))
             {
                 cData.Character.Progression.LastPlayed.StepId = 1;
                 questBox.SelectedIndex = 1;
@@ -1174,52 +1174,52 @@ namespace WolcenEditor
                     IsAutoDashAvailable = 1,
                     DashStatusActivation = 1
                 },
-                UnlockedSkills = new List<UnlockedSkill>{ },
-                SkillBar = new List<SkillBar>{ },
+                UnlockedSkills = new List<UnlockedSkill> { },
+                SkillBar = new List<SkillBar> { },
                 PassiveSkills = new List<string> { },
                 BeltConfig = new List<BeltConfig> { new BeltConfig { Id = 0, Locked = 0 }, new BeltConfig { Id = 1, Locked = 0 } },
-                Progression = new Progression { LastPlayed = new LastPlayed { QuestId = "INTRO_Quest1", StepId = 1} },
-                Telemetry = new Telemetry 
+                Progression = new Progression { LastPlayed = new LastPlayed { QuestId = "INTRO_Quest1", StepId = 1 } },
+                Telemetry = new Telemetry
                 {
-                    PlayTime  = new Count { Total = "0", PerLevel = "0" },
-                    PlayTimeOutTown  = new Count { Total = "0", PerLevel = "0" },
-                    KillCountPerBossrank  = new List<TypeCount> {},
-                    KillCountPerMobRankType  = new List<TypeCount> { },
-                    MinLevelKilled  = new Count { Total = "0", PerLevel = "0" },
-                    MaxLevelKilled  = new Count { Total = "0", PerLevel = "0" },
-                    DeathCount  = new Count { Total = "0", PerLevel = "0" },
-                    DeathCountPerBossrank  = new List<TypeCount> { },
-                    XpFromQuest  = new Count { Total = "0", PerLevel = "0" },
-                    XpFromKill  = new Count { Total = "0", PerLevel = "0" },
-                    GoldDropped  = new Count { Total = "0", PerLevel = "0" },
-                    GoldGainedQuests  = new Count { Total = "0", PerLevel = "0" },
-                    GoldGainedMerchant  = new Count { Total = "0", PerLevel = "0" },
-                    GoldPicked  = new Count { Total = "0", PerLevel = "0" },
-                    GoldSpent  = new Count { Total = "0", PerLevel = "0" },
-                    GoldSpentMerchant  = new Count { Total = "0", PerLevel = "0" },
-                    GoldSpentJewelerUnsocketItem  = new Count { Total = "0", PerLevel = "0" },
-                    PrimordialAffinitySpent  = new Count { Total = "0", PerLevel = "0" },
-                    PrimordialAffinitySpentSkillLevelUp  = new Count { Total = "0", PerLevel = "0" },
-                    PrimordialAffinityGained  = new Count { Total = "0", PerLevel = "0" },
-                    ItemsDropped  = new List<TypeCount> { },
-                    ItemsPicked  = new List<TypeCount> { },
-                    ItemsBought  = new List<TypeCount> { },
-                    ItemsSold  = new List<TypeCount> { },
-                    TimeSpentPerZone  = new List<TypeCount> { },
-                    SoloReviveTokenUsedPerZone  = new List<TypeCount> { },
-                    SoloDeathPerZone  = new List<TypeCount> { },
-                    MultiRevivePerZone  = new List<TypeCount> { },
-                    SkillUsage  = new List<TypeCount> { },
-                    QuestAttempt_NPC1  = new Count { Total = "0", PerLevel = "0" },
-                    QuestAttempt_NPC2  = new Count { Total = "0", PerLevel = "0" },
-                    QuestSuccess_NPC1  = new Count { Total = "0", PerLevel = "0" },
-                    QuestSuccess_NPC2  = new Count { Total = "0", PerLevel = "0" },
-                    QuestFailed_NPC1  = new Count { Total = "0", PerLevel = "0" },
-                    QuestFailed_NPC2  = new Count { Total = "0", PerLevel = "0" },
-                    QuestMaxFloorReached_NPC2  = new Count { Total = "0", PerLevel = "0" },
-                    UnlockChestCount  = new Count { Total = "0", PerLevel = "0" },
-                    ResetPSTCount  = new Count { Total = "0", PerLevel = "0" },
-                    ResetCharacterAttributesCount  = new Count { Total = "0", PerLevel = "0" },
+                    PlayTime = new Count { Total = "0", PerLevel = "0" },
+                    PlayTimeOutTown = new Count { Total = "0", PerLevel = "0" },
+                    KillCountPerBossrank = new List<TypeCount> { },
+                    KillCountPerMobRankType = new List<TypeCount> { },
+                    MinLevelKilled = new Count { Total = "0", PerLevel = "0" },
+                    MaxLevelKilled = new Count { Total = "0", PerLevel = "0" },
+                    DeathCount = new Count { Total = "0", PerLevel = "0" },
+                    DeathCountPerBossrank = new List<TypeCount> { },
+                    XpFromQuest = new Count { Total = "0", PerLevel = "0" },
+                    XpFromKill = new Count { Total = "0", PerLevel = "0" },
+                    GoldDropped = new Count { Total = "0", PerLevel = "0" },
+                    GoldGainedQuests = new Count { Total = "0", PerLevel = "0" },
+                    GoldGainedMerchant = new Count { Total = "0", PerLevel = "0" },
+                    GoldPicked = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpent = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpentMerchant = new Count { Total = "0", PerLevel = "0" },
+                    GoldSpentJewelerUnsocketItem = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinitySpent = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinitySpentSkillLevelUp = new Count { Total = "0", PerLevel = "0" },
+                    PrimordialAffinityGained = new Count { Total = "0", PerLevel = "0" },
+                    ItemsDropped = new List<TypeCount> { },
+                    ItemsPicked = new List<TypeCount> { },
+                    ItemsBought = new List<TypeCount> { },
+                    ItemsSold = new List<TypeCount> { },
+                    TimeSpentPerZone = new List<TypeCount> { },
+                    SoloReviveTokenUsedPerZone = new List<TypeCount> { },
+                    SoloDeathPerZone = new List<TypeCount> { },
+                    MultiRevivePerZone = new List<TypeCount> { },
+                    SkillUsage = new List<TypeCount> { },
+                    QuestAttempt_NPC1 = new Count { Total = "0", PerLevel = "0" },
+                    QuestAttempt_NPC2 = new Count { Total = "0", PerLevel = "0" },
+                    QuestSuccess_NPC1 = new Count { Total = "0", PerLevel = "0" },
+                    QuestSuccess_NPC2 = new Count { Total = "0", PerLevel = "0" },
+                    QuestFailed_NPC1 = new Count { Total = "0", PerLevel = "0" },
+                    QuestFailed_NPC2 = new Count { Total = "0", PerLevel = "0" },
+                    QuestMaxFloorReached_NPC2 = new Count { Total = "0", PerLevel = "0" },
+                    UnlockChestCount = new Count { Total = "0", PerLevel = "0" },
+                    ResetPSTCount = new Count { Total = "0", PerLevel = "0" },
+                    ResetCharacterAttributesCount = new Count { Total = "0", PerLevel = "0" },
                 },
                 Versions = new Versions
                 {
@@ -1230,20 +1230,20 @@ namespace WolcenEditor
                     ASTVersion = "1.0.0.0",
                     ASTVariantsVersion = "1.0.0.0",
                     PSTVersion = "1.0.0.0",
-                    StorylineVersion = 	"1.0.0.0",
+                    StorylineVersion = "1.0.0.0",
                     SaveAlterationsVersion = 1
                 },
                 CharacterCosmeticInventory = new CharacterCosmeticInventory { },
-                InventoryEquipped = new List<InventoryEquipped>{ },
-                InventoryGrid = new List<InventoryGrid>{ },
+                InventoryEquipped = new List<InventoryEquipped> { },
+                InventoryGrid = new List<InventoryGrid> { },
                 InventoryBelt = new List<InventoryBelt> { },
-                PSTConfig = new List<PSTConfig>{ },
-                ApocalypticData = new ApocalypticData{ ChosenType = "", UnlockedTypes = new List<UnlockedTypes> { } },
+                PSTConfig = new List<PSTConfig> { },
+                ApocalypticData = new ApocalypticData { ChosenType = "", UnlockedTypes = new List<UnlockedTypes> { } },
                 Tutorials = new List<Tutorials> { },
-                Sequences = new List<Sequences>{ },
-                LastGameParameters = new LastGameParameters{GameMode = 1, DifficultyMode = 1, Difficulty = 2, League = 1 , QuestId = "INTRO_Quest1", StepId = 1, Privacy = 2, Level = 3 }
+                Sequences = new List<Sequences> { },
+                LastGameParameters = new LastGameParameters { GameMode = 1, DifficultyMode = 1, Difficulty = 2, League = 1, QuestId = "INTRO_Quest1", StepId = 1, Privacy = 2, Level = 3 }
             };
-           return newCharacter;
+            return newCharacter;
 
         }
 
@@ -1316,7 +1316,7 @@ namespace WolcenEditor
             {
                 discordDialog.DrawLabel(5, "Discord Link", 15, true);
                 discordDialog.DrawLinkLabel(44, "https://discord.gg/v67rjPm", new Uri("https://discord.gg/v67rjPm"), 13, true);
-                if(discordDialog.ShowDialog(this) == DialogResult.OK)
+                if (discordDialog.ShowDialog(this) == DialogResult.OK)
                 {
                     discordDialog.Close();
                 }

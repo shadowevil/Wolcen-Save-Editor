@@ -12,6 +12,7 @@ namespace WolcenEditor
             this.Text = Title;
             this.MaximumSize = new Size(width, height);
             this.MinimumSize = new Size(width, height);
+            this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
         }

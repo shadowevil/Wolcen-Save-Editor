@@ -579,15 +579,15 @@ namespace WolcenEditor
             accessableForm = this;
             Width = 700;
             Height = 400;
-            MaximumSize = new Size(700, 400);
+            MinimumSize = new Size(700, 400);
             StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             MaximizeBox = false;
             MinimizeBox = false;
             TopMost = false;
             Text = "Edit Items";
             BackgroundImage = WolcenEditor.Properties.Resources.bg;
-            BackgroundImageLayout = ImageLayout.Center;
+            BackgroundImageLayout = ImageLayout.Stretch;
 
             InitFormControls();
             this.ShowDialog();
@@ -599,6 +599,7 @@ namespace WolcenEditor
             {
                 Name = "itemsGrid",
                 Size = new Size(200, 190),
+                MinimumSize = new Size(200, 190),
                 Location = new Point(10, 10),
                 Visible = true,
                 BorderStyle = BorderStyle.FixedSingle,
