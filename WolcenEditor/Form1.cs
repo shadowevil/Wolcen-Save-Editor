@@ -326,7 +326,7 @@ namespace WolcenEditor
             var expeditionLevels = new Dictionary<int, string>();
             foreach (var i in Enumerable.Range(1, 50))
                 expeditionLevels.Add(i, (37 + (3 * i)).ToString());
-            BindToComboBox(cboExpedition, expeditionLevels, cData.PlayerData.SoftcoreNormal, "ExpeditionsMaxLevelReached");
+            BindToComboBox(cboExpedition, expeditionLevels, cData.PlayerData.SoftcoreStandard, "ExpeditionsMaxLevelReached");
 
 
             if (cData.Character.Progression.LastPlayed == null)
@@ -452,12 +452,12 @@ namespace WolcenEditor
             }
             else chkAllCosmetics.Checked = false;
 
-            if (cData.PlayerData.SoftcoreNormal.CompletedStory)
+            if (cData.PlayerData.SoftcoreStandard.CompletedStory)
                 chkChampion.Checked = true;
             else
                 chkChampion.Checked = false;
 
-            if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            if (cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
                 extraSkillButton.Checked = true;
             else
                 extraSkillButton.Checked = false;
@@ -706,19 +706,19 @@ namespace WolcenEditor
         private void extraSkillButton_CheckedChanged(object sender, EventArgs e)
         {
             if (cData.PlayerData == null) return;
-            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+            if (extraSkillButton.Checked == true && !cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
             {
-                cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
+                cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = "wonder_2_construct" });
             }
             else if (extraSkillButton.Checked == false)
             {
-                if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
+                if (cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Any(x => x.Name == "wonder_2_construct"))
                 {
-                    for (int i = 0; i < cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects.Count; i++)
+                    for (int i = 0; i < cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Count; i++)
                     {
-                        if (cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
+                        if (cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects[i].Name == "wonder_2_construct")
                         {
-                            cData.PlayerData.SoftcoreNormal.CityBuilding.FinishedProjects[i].Name = "";
+                            cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects[i].Name = "";
                         }
                     }
                 }
@@ -840,11 +840,11 @@ namespace WolcenEditor
             if (cData.PlayerData == null) return;
             if (chkChampion.Checked)
             {
-                cData.PlayerData.SoftcoreNormal.CompletedStory = true;
+                cData.PlayerData.SoftcoreStandard.CompletedStory = true;
             }
             else
             {
-                cData.PlayerData.SoftcoreNormal.CompletedStory = false;
+                cData.PlayerData.SoftcoreStandard.CompletedStory = false;
             }
         }
 

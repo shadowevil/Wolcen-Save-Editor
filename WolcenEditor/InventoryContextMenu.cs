@@ -381,6 +381,7 @@ namespace WolcenEditor
             newGridItem.Quality = 1;
             newGridItem.Rarity = 1;
             newGridItem.Value = "0";
+            newGridItem.ItemVersion = "1.1.0.0";
             if (selectedNode.Name.ToLower().Contains("unique"))
             {
                 newGridItem.Rarity = 6;

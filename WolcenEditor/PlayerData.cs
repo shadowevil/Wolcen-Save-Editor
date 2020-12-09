@@ -15,7 +15,7 @@ namespace WolcenEditor
         public bool EulaAgreement { get; set; }
         public string[] NewsReadIds { get; set; }
         public AccountCosmeticInventory AccountCosmeticInventory { get; set; }
-        public SoftcoreNormal SoftcoreNormal { get; set; }
+        public SoftcoreStandard SoftcoreStandard { get; set; }
     }
 
     public static class PlayerDataIO
@@ -51,7 +51,7 @@ namespace WolcenEditor
         }
     }
 
-    public class SoftcoreNormal
+    public class SoftcoreStandard
     {
         public bool CompletedStory { get; set; }
         public int ExpeditionsMaxLevelReached { get; set; }
@@ -60,7 +60,6 @@ namespace WolcenEditor
 
     public class CityBuilding
     {
-        public int Version { get; set; }
         public int FinishedTurns { get; set; }
         public IList<FinishedProjects> FinishedProjects { get; set; }
         public IList<OngoingProjects> OngoingProjects { get; set; }
