@@ -15,6 +15,7 @@ namespace WolcenEditor
         public int Type { get; set; }
         public string ItemType { get; set; }
         public string ItemVersion { get; set; }
+        public string ItemGameplayVersion { get; set; }
         public string Value { get; set; }
         public int Level { get; set; }
         public ItemArmor Armor { get; set; }
