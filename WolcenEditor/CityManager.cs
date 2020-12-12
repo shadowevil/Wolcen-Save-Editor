@@ -93,7 +93,7 @@ namespace WolcenEditor
             foreach (var project in buildingProjects)
             {
                 var i = buildingListView.FindStringExact(project);
-                foreach (var item in cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects)
+                foreach (var item in cData.PlayerData.SoftcoreSeason.CityBuilding.FinishedProjects)
                 {
                     if (project == WolcenStaticData.CityProjectLocalization[item.Name])
                         buildingListView.SetItemChecked(i, true);
@@ -117,7 +117,7 @@ namespace WolcenEditor
             {
                 // Item is checked and does not already exist in our save file.
                 var localizedName = WolcenStaticData.CityProjectInFile[buildingListView.Items[i].ToString()];
-                if (buildingListView.GetItemChecked(i) == true && !cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Any(x => x.Name == localizedName))
+                if (buildingListView.GetItemChecked(i) == true && !cData.PlayerData.SoftcoreSeason.CityBuilding.FinishedProjects.Any(x => x.Name == localizedName))
                 {
                     //hacky fix for unlocking stash tabs from the city menu
                     if (localizedName == "buy_stash_1")
@@ -133,21 +133,21 @@ namespace WolcenEditor
                             cData.PlayerChest.Panels[4].InventoryGrid = new List<InventoryGrid>();
                     }
 
-                    cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = localizedName });
+                    cData.PlayerData.SoftcoreSeason.CityBuilding.FinishedProjects.Add(new FinishedProjects { Name = localizedName });
                 }
                 else if (buildingListView.GetItemChecked(i) == false)
                 {
-                    var toBeRemoved = cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Where(x => x.Name == localizedName);
+                    var toBeRemoved = cData.PlayerData.SoftcoreSeason.CityBuilding.FinishedProjects.Where(x => x.Name == localizedName);
                     foreach(var item in toBeRemoved.ToList())
                     {
-                        cData.PlayerData.SoftcoreStandard.CityBuilding.FinishedProjects.Remove(item);
+                        cData.PlayerData.SoftcoreSeason.CityBuilding.FinishedProjects.Remove(item);
                     }
                 }
             }
         }
 
         // Gets the image of a building image and scales it to half by default.
-        private static Bitmap GetBuildingImage(string filePath, double scale = 0.5)
+        private static Bitmap GetBuildingImage(string filePath, double scale = 0.4)
         {
             var originalImage = new Bitmap(filePath);
             var newSize = new Size((int) (originalImage.Width * scale), (int) (originalImage.Height * scale));
