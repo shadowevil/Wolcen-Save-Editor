@@ -1173,6 +1173,7 @@ namespace WolcenEditor
                     RemainingStatsPoints = 0,
                     Gold = "0",
                     PrimordialAffinity = "0",
+                    HuntCurrency = "0",
                     IsAutoDashAvailable = 1,
                     DashStatusActivation = 1
                 },
