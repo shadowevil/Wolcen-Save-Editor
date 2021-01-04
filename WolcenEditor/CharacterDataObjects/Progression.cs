@@ -12,6 +12,9 @@ namespace WolcenEditor
     {
         public string Name { get; set; }
         public int Step { get; set; }
+        public string QuestId { get; set; }
+        public int StepId { get; set; }
+        public string state { get; set; }
     }
 
     public class LastPlayed

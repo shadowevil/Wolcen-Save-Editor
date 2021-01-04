@@ -18,6 +18,7 @@ namespace WolcenEditor
         public int RemainingStatsPoints { get; set; }
         public string Gold { get; set; }
         public string PrimordialAffinity { get; set; }
+        public string HuntCurrency { get; set; }
         public int IsAutoDashAvailable { get; set; }
         public int DashStatusActivation { get; set; }
 
