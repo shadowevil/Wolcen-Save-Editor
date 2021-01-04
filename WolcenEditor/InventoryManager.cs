@@ -501,6 +501,8 @@ namespace WolcenEditor
             _tmpNew.Quality = _tmp.Quality;
             _tmpNew.Type = _tmp.Type;
             _tmpNew.ItemType = _tmp.ItemType;
+            _tmpNew.ItemVersion = _tmp.ItemVersion;
+            _tmpNew.ItemGameplayVersion = _tmp.ItemGameplayVersion;
             _tmpNew.Value = _tmp.Value;
             _tmpNew.Level = _tmp.Level;
             _tmpNew.Sockets = _tmp.Sockets;
@@ -537,6 +539,8 @@ namespace WolcenEditor
                     _tmpNew.Quality = _tmp.Quality;
                     _tmpNew.Type = _tmp.Type;
                     _tmpNew.ItemType = _tmp.ItemType;
+                    _tmpNew.ItemVersion = _tmp.ItemVersion;
+                    _tmpNew.ItemGameplayVersion = _tmp.ItemGameplayVersion;
                     _tmpNew.Value = _tmp.Value;
                     _tmpNew.Level = _tmp.Level;
                     _tmpNew.Armor = _tmp.Armor;
@@ -566,6 +570,8 @@ namespace WolcenEditor
                     _tmpNew.Quality = _tmpE.Quality;
                     _tmpNew.Type = _tmpE.Type;
                     _tmpNew.ItemType = _tmpE.ItemType;
+                    _tmpNew.ItemVersion = _tmpE.ItemVersion;
+                    _tmpNew.ItemGameplayVersion = _tmpE.ItemGameplayVersion;
                     _tmpNew.Value = _tmpE.Value;
                     _tmpNew.Level = _tmpE.Level;
                     _tmpNew.Armor = _tmpE.Armor;
@@ -596,6 +602,8 @@ namespace WolcenEditor
                 _newBeltItem.Quality = gridItem.Quality;
                 _newBeltItem.Type = gridItem.Type;
                 _newBeltItem.ItemType = gridItem.ItemType;
+                _newBeltItem.ItemVersion = "1.1.0.2";
+                _newBeltItem.ItemGameplayVersion = "1.1.0.2";
                 _newBeltItem.Value = gridItem.Value;
                 _newBeltItem.Level = gridItem.Level;
                 _newBeltItem.Potion = gridItem.Potion;
@@ -629,6 +637,8 @@ namespace WolcenEditor
                 _newInvItem.Quality = beltItem.Quality;
                 _newInvItem.Type = beltItem.Type;
                 _newInvItem.ItemType = beltItem.ItemType;
+                _newInvItem.ItemVersion = beltItem.ItemVersion;
+                _newInvItem.ItemGameplayVersion = beltItem.ItemGameplayVersion;
                 _newInvItem.Value = beltItem.Value;
                 _newInvItem.Level = beltItem.Level;
                 _newInvItem.Potion = beltItem.Potion;

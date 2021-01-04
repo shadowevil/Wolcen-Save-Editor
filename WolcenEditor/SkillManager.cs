@@ -56,7 +56,8 @@ namespace WolcenEditor
             { "player_whirlwind", new SkillImageBox("Bladestorm") },
             { "player_ringofpain", new SkillImageBox("Blood for Blood") },
             { "player_reave", new SkillImageBox("Wrath of Baapheth") },
-            { "player_solarfall", new SkillImageBox("Solarfall") }
+            { "player_solarfall", new SkillImageBox("Solarfall") },
+            { "player_owlshot", new SkillImageBox("Talon Shot") }
         };
 
         public static void LoadTree(ref TabControl tabControl)
